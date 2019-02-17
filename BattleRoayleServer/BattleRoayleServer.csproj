@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSInteraction">
-      <HintPath>..\..\..\..\Documents\GitHub\NewCSInteraction\CSInteraction\CSInteraction\bin\Debug\CSInteraction.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -71,6 +68,11 @@
     <None Include="App.config" />
     <None Include="Diagram\ClassDiagram1.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\lib\CSInteraction\CSInteraction.csproj">
+      <Project>{ca5aa8ca-e6c9-42db-b7ee-1d3028548aab}</Project>
+      <Name>CSInteraction</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

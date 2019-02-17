@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleRoayleServer", "BattleRoayleServer\BattleRoayleServer.csproj", "{13541E0B-3412-4D56-9F3B-90965CD517CF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSInteraction", "lib\CSInteraction\CSInteraction.csproj", "{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{13541E0B-3412-4D56-9F3B-90965CD517CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13541E0B-3412-4D56-9F3B-90965CD517CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13541E0B-3412-4D56-9F3B-90965CD517CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
