@@ -16,6 +16,8 @@ namespace BattleRoayleServer
 
         public DateTime QuentityGameTime { get; private set; }
 
+		public DataOfAccount() { throw new NotImplementedException(); }
+
         public DataOfAccount(long quantityKills, long quentityDeaths, long quentityBattles, DateTime quentityGameTime)
         {
             QuantityKills = quantityKills;
