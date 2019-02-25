@@ -20,7 +20,7 @@ namespace BattleRoayleServer
             throw new System.NotImplementedException();
         }
 
-        public void DeleteOfQueue(ServerClient client)
+        public void DeleteOfQueue(QueueGamer gamer)
         {
             throw new System.NotImplementedException();
         }
