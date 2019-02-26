@@ -11,5 +11,10 @@ namespace BattleRoayleServer
 		/// Когда true - осуществляется перезарядка магазина
 		/// </summary>
 		private bool reload;
+
+		public Magazin(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
+		{
+
+		}
 	}
 }

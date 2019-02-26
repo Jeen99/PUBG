@@ -54,7 +54,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Создает список клиентов
 		/// </summary>
-		private void CreateClients(IList<gamers> gamers)
+		private void CreateClients(IList<QueueGamer> gamers)
 		{
 			throw new System.NotImplementedException();
 		}

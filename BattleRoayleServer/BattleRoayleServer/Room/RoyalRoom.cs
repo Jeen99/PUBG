@@ -15,5 +15,15 @@ namespace BattleRoayleServer
         {
             //создаем игру на основе той информации, что пришла к нам с геймерами
         }
-    }
+
+		public void StartRoom()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

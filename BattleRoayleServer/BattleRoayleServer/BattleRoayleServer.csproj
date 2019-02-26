@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSInteraction">
-      <HintPath>..\..\..\..\Documents\GitHub\NewCSInteraction\CSInteraction\CSInteraction\bin\Debug\CSInteraction.dll</HintPath>
+    <Reference Include="CSInteraction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CSInteraction\CSInteraction\bin\Debug\CSInteraction.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,6 +56,9 @@
     <Compile Include="Components\ObjectPickUp.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />
+    <Compile Include="HandlerException\ConsoleLogger.cs" />
+    <Compile Include="HandlerException\Handler_StandartExceptions.cs" />
+    <Compile Include="HandlerException\ILogger.cs" />
     <Compile Include="Modifier\Modifier.cs" />
     <Compile Include="Components\Shot.cs" />
     <Compile Include="GameModel\CellField.cs" />

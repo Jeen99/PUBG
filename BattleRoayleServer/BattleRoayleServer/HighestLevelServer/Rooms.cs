@@ -7,11 +7,11 @@ namespace BattleRoayleServer
 {
     public class Rooms
     {
-        List<Room> rooms;
+        List<IRoom> rooms;
 
         public Rooms()
         {
-            rooms = new List<Room>();
+            rooms = new List<IRoom>();
         }
 
         public void AddRoom(List<QueueGamer> gamers)
@@ -19,7 +19,7 @@ namespace BattleRoayleServer
 
         }
 
-        public void DeliteRoom(Room room )
+        public void DeliteRoom(IRoom room )
         {
 
         }

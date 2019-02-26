@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
-	enum Directions
+	public enum Directions
 	{
 		right,
 		left,
