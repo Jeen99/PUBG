@@ -19,7 +19,7 @@ namespace BattleRoayleServer
         {
             this.client = client;
 			client.Controler = this;
-			client.EventEndSession += HandlerDisconnectClient;
+			client.EventEndSession += Handler_StandartExceptions.Handler_LostConnectServerClient;
         }
 
         public IControler GetNewControler(ServerClient client)
@@ -36,6 +36,7 @@ namespace BattleRoayleServer
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
+					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
 					break;
 			}
 		}
@@ -53,10 +54,10 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public void HandlerDisconnectClient(ServerClient client)
+
+		public override string ToString()
 		{
-			//отвязваемся от обработки данного клиента
-			client.Controler = null;
+			return "AuthorizationControler";
 		}
 	}
 }

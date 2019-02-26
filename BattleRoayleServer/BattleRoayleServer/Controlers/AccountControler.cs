@@ -26,15 +26,12 @@ namespace BattleRoayleServer
 			{
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
+					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), 
+						msg.TypeMessage.ToString());
 					break;
 			}
         }
 
-		private void HandlerDisconnectClient(ServerClient client)
-		{
-			//отвязваемся от обработки данного клиента
-			client.Controler = null;
-		}
 
 		public AccountControler(ServerClient client)
 		{
@@ -45,7 +42,7 @@ namespace BattleRoayleServer
 		{
 			this.client = client;
 			client.Controler = this;
-			client.EventEndSession += HandlerDisconnectClient;
+			client.EventEndSession += Handler_StandartExceptions.Handler_LostConnectServerClient;
 
 			//получаем данные об аккаунте
 			data = BDAccounts.GetDataOfAccount(login, password);
@@ -60,6 +57,11 @@ namespace BattleRoayleServer
 		public AccountControler(QueueGamer gamer)
 		{
 
+		}
+
+		public override string ToString()
+		{
+			return "AccountControler";
 		}
 	}
 }
