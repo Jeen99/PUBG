@@ -9,7 +9,8 @@ namespace BattleRoayleServer
     {
         public static bool ExistAccount(string Login, string Password)
         {
-            return false;
+			//простейшая реализация
+            return true;
         }
 
         public static bool CreateAccount(string Login, string Password)
@@ -17,9 +18,9 @@ namespace BattleRoayleServer
             return false;
         }
 
-        public static DataOfAccount GetDataOfAccount()
+        public static DataOfAccount GetDataOfAccount(string nickName, string password)
         {
-            return new DataOfAccount();
+            return new DataOfAccount(nickName, password, 0, 0, 0, DateTime.Now);
         }
 
         public static bool AddToStatistic(AchievementsOfBattle achievements)
