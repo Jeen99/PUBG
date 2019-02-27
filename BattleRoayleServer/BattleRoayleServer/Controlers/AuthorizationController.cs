@@ -7,24 +7,25 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-    class AuthorizationControler:IControler
+    class AuthorizationController:IController
     {
         private ServerClient client;
-        public AuthorizationControler()
+        public AuthorizationController()
         {
             client = null;
         }
 
-        public AuthorizationControler(ServerClient client)
+        public AuthorizationController(ServerClient client)
         {
             this.client = client;
 			client.Controler = this;
+			//привязываем обработчик только один раз
 			client.EventEndSession += Handler_StandartExceptions.Handler_LostConnectServerClient;
         }
 
-        public IControler GetNewControler(ServerClient client)
+        public IController GetNewControler(ServerClient client)
         {
-            return new AuthorizationControler(client);
+            return new AuthorizationController(client);
         }
 
 		public void HanlderNewMessage(IMessage msg)
@@ -45,7 +46,7 @@ namespace BattleRoayleServer
 		{
 			if (BDAccounts.ExistAccount(msg.Login, msg.Password))
 			{
-				new AccountControler(client, msg.Login, msg.Password);
+				new AccountController(client, msg.Login, msg.Password);
 				client.SendMessage(new SuccessAuthorization());
 			}
 			else
@@ -57,7 +58,7 @@ namespace BattleRoayleServer
 
 		public override string ToString()
 		{
-			return "AuthorizationControler";
+			return "AuthorizationController";
 		}
 	}
 }

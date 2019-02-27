@@ -19,12 +19,12 @@ namespace CSInteraction.Server
         private TcpClient Client;
         private BinaryFormatter formatter;
         private Thread ThreadOfHandlerMsg;
-        public IControler Controler { get; set; }
+        public IController Controler { get; set; }
         private Mutex SendMsgSinch = new Mutex();
         //уведомляет о получении нового сообщения от клиента
         public event EndSession EventEndSession;
 
-        public ServerClient(TcpClient client, IControler baseControler)
+        public ServerClient(TcpClient client, IController baseControler)
         {
             Client = client;
             formatter = new BinaryFormatter();

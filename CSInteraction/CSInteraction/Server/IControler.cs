@@ -7,9 +7,9 @@ using CSInteraction.ProgramMessage;
 
 namespace CSInteraction.Server
 {
-       public interface IControler
+       public interface IController
        {
         void HanlderNewMessage(IMessage msg);
-        IControler GetNewControler(ServerClient client);
+        IController GetNewControler(ServerClient client);
     }   
 }

@@ -64,8 +64,8 @@
     <Compile Include="GameModel\CellField.cs" />
     <Compile Include="Components\Component.cs" />
     <Compile Include="Components\ComponentState.cs" />
-    <Compile Include="Controlers\AccountControler.cs" />
-    <Compile Include="Controlers\AuthorizationControler.cs" />
+    <Compile Include="Controlers\AccountController.cs" />
+    <Compile Include="Controlers\AuthorizationController.cs" />
     <Compile Include="DataBase\AchievementsOfBattle.cs" />
     <Compile Include="DataBase\BDAccounts.cs" />
     <Compile Include="DataBase\DataOfAccount.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Room\IRoomLogic.cs" />
     <Compile Include="HighestLevelServer\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controlers\QueueControler.cs" />
+    <Compile Include="Controlers\QueueController.cs" />
     <Compile Include="HighestLevelServer\QueueGamer.cs" />
     <Compile Include="HighestLevelServer\QueueRoyalBattle.cs" />
     <Compile Include="Room\RoyalRoom.cs" />

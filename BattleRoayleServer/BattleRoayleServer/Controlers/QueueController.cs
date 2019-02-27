@@ -7,9 +7,9 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-    class QueueControler : IControler
+    class QueueController : IController
     {
-        public IControler GetNewControler(ServerClient client)
+        public IController GetNewControler(ServerClient client)
         {
             throw new NotImplementedException();
         }
@@ -30,7 +30,7 @@ namespace BattleRoayleServer
 
 		public override string ToString()
 		{
-			return "QueueControler";
+			return "QueueController";
 		}
 	}
 }

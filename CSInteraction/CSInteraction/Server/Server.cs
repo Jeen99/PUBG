@@ -10,13 +10,13 @@ namespace CSInteraction.Server
         {
             public string IPAdress { get; private set; }
             public int Port { get; private set; }
-            private IControler BaseControler { get; set; }
+            private IController BaseControler { get; set; }
             public List<ServerClient> ConnectedClients { get; private set; }
 
             private TcpListener ServerPoint;
             private Thread ThreadCheckNewClient;
             //конструктор
-            public Server(string ipAdress, int port, IControler baseControler)
+            public Server(string ipAdress, int port, IController baseControler)
             {
                 if (baseControler != null)
                 {

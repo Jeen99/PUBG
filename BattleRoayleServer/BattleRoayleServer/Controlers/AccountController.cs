@@ -7,7 +7,7 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-    public class AccountControler : IControler
+    public class AccountController : IController
 	{
 		private ServerClient client;
 		/// <summary>
@@ -15,9 +15,9 @@ namespace BattleRoayleServer
 		/// </summary>
 		private DataOfAccount data;
 
-		public IControler GetNewControler(ServerClient client)
+		public IController GetNewControler(ServerClient client)
         {
-			return new AccountControler(client);
+			return new AccountController(client);
 		}
 
         public void HanlderNewMessage(IMessage msg)
@@ -33,16 +33,15 @@ namespace BattleRoayleServer
         }
 
 
-		public AccountControler(ServerClient client)
+		public AccountController(ServerClient client)
 		{
 			this.client = client;
 		}
 
-		public AccountControler(ServerClient client, string login, string password)
+		public AccountController(ServerClient client, string login, string password)
 		{
 			this.client = client;
 			client.Controler = this;
-			client.EventEndSession += Handler_StandartExceptions.Handler_LostConnectServerClient;
 
 			//получаем данные об аккаунте
 			data = BDAccounts.GetDataOfAccount(login, password);
@@ -54,14 +53,14 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public AccountControler(QueueGamer gamer)
+		public AccountController(QueueGamer gamer)
 		{
 
 		}
 
 		public override string ToString()
 		{
-			return "AccountControler";
+			return "AccountController";
 		}
 	}
 }
