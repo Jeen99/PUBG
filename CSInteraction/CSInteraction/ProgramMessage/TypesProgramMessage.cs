@@ -14,6 +14,7 @@ namespace CSInteraction.ProgramMessage
 		SuccessAuthorization,
 		DataAccount,
 		JoinToQueue,
-		JoinedToQueue
+		JoinedToQueue,
+		ChangeCountPlayersInQueue
 	}
 }
