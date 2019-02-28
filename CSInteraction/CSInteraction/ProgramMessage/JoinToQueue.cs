@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace CSInteraction.ProgramMessage
 {
-	[Serializable]
-	public enum TypesProgramMessage
+	class JoinToQueue : IMessage
 	{
-		Authorization,
-		ErrorAuhorization,
-		SuccessAuthorization,
-		DataAccount,
-		JoinToQueue
+		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.JoinToQueue;
 	}
 }
