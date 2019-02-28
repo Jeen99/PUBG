@@ -24,6 +24,9 @@ namespace BattleRoayleServer
         {
 			switch (msg.TypeMessage)
 			{
+				case TypesProgramMessage.JoinToQueue:
+					Handler_JoinToQueue();
+					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
 					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), 
@@ -31,7 +34,13 @@ namespace BattleRoayleServer
 					break;
 			}
         }
-
+		/// <summary>
+		/// Обработчик сообщения от клинта JoinToQueue
+		/// </summary>
+		private void Handler_JoinToQueue()
+		{
+			new QueueController(client, data);
+		}
 
 		public AccountController(ServerClient client)
 		{
@@ -42,20 +51,29 @@ namespace BattleRoayleServer
 		{
 			this.client = client;
 			client.Controler = this;
+			InitializeDataAboutClient(login, password);
+		}
 
+		/// <summary>
+		/// получает данные о клиенте и записывает их в поле data
+		/// </summary>
+		private void InitializeDataAboutClient(string login,string password)
+		{
 			//получаем данные об аккаунте
 			data = BDAccounts.GetDataOfAccount(login, password);
 			if (data != null)
 			{
 				//отправляем данные об аккаунте
-				client.SendMessage(new DataAccount(data.QuantityKills,data.QuentityBattles,
+				client.SendMessage(new DataAccount(data.QuantityKills, data.QuentityBattles,
 					data.QuentityDeaths, data.QuentityGameTime));
 			}
 		}
 
 		public AccountController(QueueGamer gamer)
 		{
-
+			client = gamer.Client;
+			client.Controler = this;
+			InitializeDataAboutClient(gamer.NickName, gamer.Password);
 		}
 
 		public override string ToString()

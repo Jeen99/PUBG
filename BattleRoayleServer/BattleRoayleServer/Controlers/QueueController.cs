@@ -32,10 +32,36 @@ namespace BattleRoayleServer
 
 		public void HanlderNewMessage(IMessage msg)
         {
-            throw new NotImplementedException();
-        }
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.DeleteOfQueue:
+					Handler_DeleteOfMessage();
+					break;
+				default:
+					//записываем в лог, сообщение что не смогли обработать сообщение
+					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(),
+						msg.TypeMessage.ToString());
+					break;
+			}
+		}
 
-		
+		/// <summary>
+		/// Обрабатывает удаление игрока из очереди
+		/// </summary>
+		private void Handler_DeleteOfMessage()
+		{
+			if (Program.QueueOfServer.DeleteOfQueue(gamer))
+			{
+				//удаление прошло успешно
+				client.SendMessage(new SuccessExitOfQueue());
+				new AccountController(gamer);
+			}
+			else
+			{
+				client.SendMessage(new FailedExitOfQueue());
+			}
+		}
+
 		public override string ToString()
 		{
 			return "QueueController";

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CSInteraction.ProgramMessage
 {	[Serializable]
-	public class FailedExitOfQueue : IMessage
+	public class SuccessExitOfQueue : IMessage
 	{
-		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.FailedExitOfQueue;
+		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.SuccessExitOfQueue;
 	}
 }

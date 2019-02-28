@@ -18,6 +18,6 @@ namespace CSInteraction.ProgramMessage
 		ChangeCountPlayersInQueue,
 		DeleteOfQueue,
 		FailedExitOfQueue,
-		SuccessExitOfQueuecs
+		SuccessExitOfQueue
 	}
 }

@@ -45,15 +45,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\BaseClient.cs" />
-    <Compile Include="ProgramMessage\Authorization.cs" />
+    <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
+    <Compile Include="ProgramMessage\Queue\FailedExitOfQueue.cs" />
+    <Compile Include="ProgramMessage\Queue\SuccessExitOfQueue.cs" />
+    <Compile Include="ProgramMessage\SignUpInAccount\Authorization.cs" />
     <Compile Include="Common\InsideMessage.cs" />
-    <Compile Include="ProgramMessage\ChangeCountPlayersInQueue.cs" />
-    <Compile Include="ProgramMessage\DataAccount.cs" />
-    <Compile Include="ProgramMessage\ErrorAuhorization.cs" />
+    <Compile Include="ProgramMessage\Queue\ChangeCountPlayersInQueue.cs" />
+    <Compile Include="ProgramMessage\Account\DataAccount.cs" />
+    <Compile Include="ProgramMessage\SignUpInAccount\ErrorAuhorization.cs" />
     <Compile Include="ProgramMessage\IMessage.cs" />
-    <Compile Include="ProgramMessage\JoinedToQueue.cs" />
-    <Compile Include="ProgramMessage\JoinToQueue.cs" />
-    <Compile Include="ProgramMessage\SuccessAuthorization.cs" />
+    <Compile Include="ProgramMessage\Queue\JoinedToQueue.cs" />
+    <Compile Include="ProgramMessage\Queue\JoinToQueue.cs" />
+    <Compile Include="ProgramMessage\SignUpInAccount\SuccessAuthorization.cs" />
     <Compile Include="ProgramMessage\TypesProgramMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\IControler.cs" />

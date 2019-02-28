@@ -14,11 +14,19 @@ namespace BattleRoayleServer
 
 		public ServerClient Client { get; private set; }
 
+		/// <summary>
+		/// Указывет, что данный игрок сейчас будет добавлне в комнату 
+		/// и поэтому не может быть удален из очереди
+		/// </summary>
+		public bool AddInRoom { get; set;}
+
         public QueueGamer( ServerClient client, DataOfAccount data)
         {
             NickName = data.NickName;
 			Password = data.Password;
             Client = client;
-        }
+			AddInRoom = false;
+
+		}
     }
 }
