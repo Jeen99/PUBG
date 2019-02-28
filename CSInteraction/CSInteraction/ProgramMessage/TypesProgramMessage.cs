@@ -13,6 +13,7 @@ namespace CSInteraction.ProgramMessage
 		ErrorAuhorization,
 		SuccessAuthorization,
 		DataAccount,
-		JoinToQueue
+		JoinToQueue,
+		JoinedToQueue
 	}
 }
