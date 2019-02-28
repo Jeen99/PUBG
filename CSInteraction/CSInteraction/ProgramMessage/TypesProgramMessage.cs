@@ -15,6 +15,9 @@ namespace CSInteraction.ProgramMessage
 		DataAccount,
 		JoinToQueue,
 		JoinedToQueue,
-		ChangeCountPlayersInQueue
+		ChangeCountPlayersInQueue,
+		DeleteOfQueue,
+		FailedExitOfQueue,
+		SuccessExitOfQueuecs
 	}
 }

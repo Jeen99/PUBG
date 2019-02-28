@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSInteraction.ProgramMessage.Queue
-{
-	class DeleteOfQueue
+namespace CSInteraction.ProgramMessage
+{	[Serializable]
+	public class DeleteOfQueue : IMessage
 	{
+		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.DeleteOfQueue;
 	}
 }
