@@ -7,11 +7,9 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-    public class AccountControler : IControler
-	{
-		private ServerClient client;
-
-		public IControler GetNewControler(ServerClient client)
+    class QueueController : IController
+    {
+        public IController GetNewControler(ServerClient client)
         {
             throw new NotImplementedException();
         }
@@ -21,19 +19,18 @@ namespace BattleRoayleServer
             throw new NotImplementedException();
         }
 
-		private void HandlerDisconnectClient(ServerClient client)
+		/// <summary>
+		/// Удаляем игрока из очереди
+		/// </summary>
+		/// <param name="client"></param>
+		public void HandlerDisconnectClient(ServerClient client)
 		{
 			throw new System.NotImplementedException();
 		}
 
-		public AccountControler(ServerClient client, string Login, string password)
+		public override string ToString()
 		{
-
-		}
-
-		public AccountControler(QueueGamer gamer)
-		{
-
+			return "QueueController";
 		}
 	}
 }

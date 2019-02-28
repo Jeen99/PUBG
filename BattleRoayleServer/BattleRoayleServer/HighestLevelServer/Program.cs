@@ -55,7 +55,7 @@ namespace BattleRoayleServer
 
         static private void AutomaticLoadServer()
         {
-            server = new Server("127.0.0.1", 11000, new AuthorizationControler());
+            server = new Server("127.0.0.1", 11000, new AuthorizationController());
             if (server.StartServer())
             {
                 Console.WriteLine("Сервер запущен");
@@ -81,7 +81,7 @@ namespace BattleRoayleServer
                     continue;
                 }
 
-                server = new Server(ipAdress, portServer, new AuthorizationControler());
+                server = new Server(ipAdress, portServer, new AuthorizationController());
 
                 if (server.StartServer())
                 {

@@ -27,6 +27,9 @@
   <Comment CommentText="Классы для работы с  очередью">
     <Position X="24.542" Y="11.021" Height="0.291" Width="4.512" />
   </Comment>
+  <Comment CommentText="Классы отчечающие за логирование ошибок">
+    <Position X="1.01" Y="20.01" Height="0.302" Width="2.992" />
+  </Comment>
   <Class Name="BattleRoayleServer.GameObjectState">
     <Position X="7.25" Y="1" Width="1.5" />
     <TypeIdentifier>
@@ -66,7 +69,7 @@
   <Class Name="BattleRoayleServer.RoomNetwork">
     <Position X="6.25" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAACAAAAAAIAACAAABAAAAAAAAAAg=</HashCode>
+      <HashCode>AAIAAAAAACAAAAAAACAAAAAAIAACAAABAAAAAAAAAAg=</HashCode>
       <FileName>Room\RoomNetwork.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -74,7 +77,7 @@
   <Class Name="BattleRoayleServer.RoyalRoom">
     <Position X="4.5" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAgAAAACAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Room\RoyalRoom.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -218,7 +221,7 @@
   <Class Name="BattleRoayleServer.NetworkClient">
     <Position X="8" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAgAAAAAAAAAAAIBAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAIBAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Gamer\NetworkClient.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -241,7 +244,7 @@
   <Class Name="BattleRoayleServer.AuthorizationControler">
     <Position X="15" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAACAIAAAAABAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAgAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Controlers\AuthorizationControler.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -263,7 +266,7 @@
   <Class Name="BattleRoayleServer.AccountControler">
     <Position X="17" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAACAIAAAAABAAAAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAAAAAAAAAAQBAAAAAA=</HashCode>
       <FileName>Controlers\AccountControler.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -271,7 +274,7 @@
   <Class Name="BattleRoayleServer.QueueControler">
     <Position X="24.25" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAACAIAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAGAIAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Controlers\QueueControler.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -296,6 +299,21 @@
       <HashCode>AAAAAAAAACAAAAAAQAAAAAAAAAAAAAEAIAAAAAAAQAA=</HashCode>
       <FileName>Common\QuantTimer.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="BattleRoayleServer.Handler_StandartExceptions">
+    <Position X="2.75" Y="20.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HandlerException\Handler_StandartExceptions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BattleRoayleServer.ConsoleLogger">
+    <Position X="0.5" Y="22.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HandlerException\ConsoleLogger.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="BattleRoayleServer.IRoomLogic">
     <Position X="9.75" Y="11" Width="1.5" />
@@ -365,6 +383,13 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>GameEventMsg\IComponentEvent.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="BattleRoayleServer.ILogger">
+    <Position X="0.5" Y="20.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HandlerException\ILogger.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Enum Name="TypesGameObject" Collapsed="true">

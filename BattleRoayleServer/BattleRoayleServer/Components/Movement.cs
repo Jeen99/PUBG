@@ -17,5 +17,10 @@ namespace BattleRoayleServer
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
 		private SolidBody body;
+
+		public Movement(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
+		{
+
+		}
 	}
 }

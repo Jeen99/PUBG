@@ -13,5 +13,10 @@ namespace BattleRoayleServer
 		/// </summary>
 		private bool reload;
 		private Magazin magazin;
+
+		public Shot(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
+		{
+
+		}
 	}
 }

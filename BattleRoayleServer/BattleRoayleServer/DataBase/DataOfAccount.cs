@@ -20,12 +20,15 @@ namespace BattleRoayleServer
 
         public DateTime QuentityGameTime { get; private set; }
 
-        public DataOfAccount(long quantityKills, long quentityDeaths, long quentityBattles, DateTime quentityGameTime)
-        {
-            QuantityKills = quantityKills;
-            QuentityDeaths = quentityDeaths;
-            QuentityBattles = quentityBattles;
-            QuentityGameTime = quentityGameTime;
-        }
-    }
+		public DataOfAccount(string nickName, string password, long quantityKills, 
+			long quentityDeaths, long quentityBattles, DateTime quentityGameTime)
+		{
+			NickName = nickName;
+			Password = password;
+			QuantityKills = quantityKills;
+			QuentityDeaths = quentityDeaths;
+			QuentityBattles = quentityBattles;
+			QuentityGameTime = quentityGameTime;
+		}
+	}
 }

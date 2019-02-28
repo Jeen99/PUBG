@@ -6,15 +6,8 @@ using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
-	public enum Directions
+	interface ILogger
 	{
-		right,
-		left,
-		bottom,
-		top,
-		right_bottom,
-		right_top,
-		left_bottom,
-		left_top
+		void AddInLog(string header = "", string description = "");
 	}
 }
