@@ -9,25 +9,33 @@ namespace BattleRoayleServer
 {
     class QueueController : IController
     {
+		private ServerClient client;
+		/// <summary>
+		/// Модель игрока в игроовой очереди
+		/// </summary>
+		private QueueGamer gamer;
+
         public IController GetNewControler(ServerClient client)
         {
             throw new NotImplementedException();
         }
 
-        public void HanlderNewMessage(IMessage msg)
+		public QueueController(ServerClient client, DataOfAccount data)
+		{
+			this.client = client;
+			client.Controler = this;
+			gamer = new QueueGamer(client, data);
+			//добавляем игрока в очередь
+			Program.QueueOfServer.AddGamer(gamer);
+		}
+
+
+		public void HanlderNewMessage(IMessage msg)
         {
             throw new NotImplementedException();
         }
 
-		/// <summary>
-		/// Удаляем игрока из очереди
-		/// </summary>
-		/// <param name="client"></param>
-		public void HandlerDisconnectClient(ServerClient client)
-		{
-			throw new System.NotImplementedException();
-		}
-
+		
 		public override string ToString()
 		{
 			return "QueueController";

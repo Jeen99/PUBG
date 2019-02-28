@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	class JoinedToQueue : IMessage
-	{		
-		public TypesProgramMessage TypeMessage { get; private set; } = TypesProgramMessage.JoinedToQueue;	
+	public class JoinToQueue : IMessage
+	{
+		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.JoinToQueue;
 	}
 }

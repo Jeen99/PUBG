@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	class ChangeCountPlayersInQueue:IMessage
+	public class ChangeCountPlayersInQueue:IMessage
 	{
 		/// <summary>
 		/// Игроков в очереди на момент подключения

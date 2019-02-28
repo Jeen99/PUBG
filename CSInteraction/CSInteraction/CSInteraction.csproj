@@ -47,9 +47,12 @@
     <Compile Include="Client\BaseClient.cs" />
     <Compile Include="ProgramMessage\Authorization.cs" />
     <Compile Include="Common\InsideMessage.cs" />
+    <Compile Include="ProgramMessage\ChangeCountPlayersInQueue.cs" />
     <Compile Include="ProgramMessage\DataAccount.cs" />
     <Compile Include="ProgramMessage\ErrorAuhorization.cs" />
     <Compile Include="ProgramMessage\IMessage.cs" />
+    <Compile Include="ProgramMessage\JoinedToQueue.cs" />
+    <Compile Include="ProgramMessage\JoinToQueue.cs" />
     <Compile Include="ProgramMessage\SuccessAuthorization.cs" />
     <Compile Include="ProgramMessage\TypesProgramMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

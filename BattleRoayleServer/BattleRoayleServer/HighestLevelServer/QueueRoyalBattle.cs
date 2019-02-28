@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSInteraction.Server;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
 namespace BattleRoayleServer
 {
     class QueueRoyalBattle
     {
-        private List<QueueGamer> queueOfGamer = new List<QueueGamer>();
+        private ObservableCollection<QueueGamer> queueOfGamer;
 
         public QueueRoyalBattle()
         {
-            queueOfGamer = new List<QueueGamer>();
-        }
+			queueOfGamer = new ObservableCollection<QueueGamer>();
+		}
 
         public void AddGamer(QueueGamer gamer)
         {
-            throw new System.NotImplementedException();
+			queueOfGamer.Add(gamer);
         }
 
         public void DeleteOfQueue(QueueGamer gamer)
