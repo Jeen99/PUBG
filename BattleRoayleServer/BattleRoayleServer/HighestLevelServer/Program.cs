@@ -10,9 +10,9 @@ namespace BattleRoayleServer
 {
     class Program
     {
-        private static Server server;
-        private static QueueRoyalBattle queueOfServer;
-        private static Rooms roomsOfRoyaleBattle;
+        public static Server Server { get; private set; }
+        public static QueueRoyalBattle QueueOfServer { get; private set; }
+        public static Rooms RoomsOfRoyaleBattle { get; private set; }
 
         static void Main(string[] args)
         {
@@ -27,10 +27,10 @@ namespace BattleRoayleServer
                     break;
             }
             //создаем очередь, обрабатывающая игроков, ожидающих боя 
-            queueOfServer = new QueueRoyalBattle();
+            QueueOfServer = new QueueRoyalBattle();
             
             //создаем класс, который будет хранит все игровые комнаты, активные в данный момент
-            roomsOfRoyaleBattle = new Rooms();
+            RoomsOfRoyaleBattle = new Rooms();
         }
         static private int StartMessage()
         {
@@ -55,8 +55,8 @@ namespace BattleRoayleServer
 
         static private void AutomaticLoadServer()
         {
-            server = new Server("127.0.0.1", 11000, new AuthorizationController());
-            if (server.StartServer())
+            Server = new Server("127.0.0.1", 11000, new AuthorizationController());
+            if (Server.StartServer())
             {
                 Console.WriteLine("Сервер запущен");
             }
@@ -81,9 +81,9 @@ namespace BattleRoayleServer
                     continue;
                 }
 
-                server = new Server(ipAdress, portServer, new AuthorizationController());
+                Server = new Server(ipAdress, portServer, new AuthorizationController());
 
-                if (server.StartServer())
+                if (Server.StartServer())
                 {
                     Console.WriteLine("Сервер запущен");
                     break;

@@ -12,6 +12,12 @@ namespace CSInteraction.ProgramMessage
 		Authorization,
 		ErrorAuhorization,
 		SuccessAuthorization,
-		DataAccount
+		DataAccount,
+		JoinToQueue,
+		JoinedToQueue,
+		ChangeCountPlayersInQueue,
+		DeleteOfQueue,
+		FailedExitOfQueue,
+		SuccessExitOfQueue
 	}
 }
