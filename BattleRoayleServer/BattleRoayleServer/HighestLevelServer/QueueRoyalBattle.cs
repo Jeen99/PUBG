@@ -13,6 +13,14 @@ namespace BattleRoayleServer
     class QueueRoyalBattle
     {
         private ObservableCollection<QueueGamer> queueOfGamer;
+		/// <summary>
+		/// Количество игроков необходимых для создания комнаты
+		/// </summary>
+		private const int _GamersInRoom = 2;
+		/// <summary>
+		/// true = идет процесс создания комнаты
+		/// </summary>
+		private bool CreatingRoom = false;
 
         public QueueRoyalBattle()
         {
@@ -35,7 +43,7 @@ namespace BattleRoayleServer
 				}
 			}
 			//проверяем количество игроков в очереди
-			if (queueOfGamer.Count >= 8)
+			if (queueOfGamer.Count >= _GamersInRoom && CreatingRoom)
 			{
 				//создаем новую комнату в отдельном потоке
 				Task.Run(() => CreateNewRoom());
@@ -46,17 +54,21 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void CreateNewRoom()
 		{
-			List<QueueGamer> gamers = new List<QueueGamer>(8);
-			for (int i = 0; i < 8; i++)
+			CreatingRoom = true;
+			List<QueueGamer> gamers = new List<QueueGamer>(_GamersInRoom);
+			for (int i = 0; i < _GamersInRoom; i++)
 			{
-				gamers.Add(queueOfGamer[0]);
-				queueOfGamer[0].AddInRoom = true;				
+				queueOfGamer[0].AddInRoom = true;
+				gamers.Add(queueOfGamer[0]);							
 			}
-			//удаляем первые 8 игроков в очереди
-			for (int i = 0; i < 8; i++)
+			for (int i = 0; i < _GamersInRoom; i++)
 			{
 				queueOfGamer.RemoveAt(0);
 			}
+			CreatingRoom = false;
+
+			//проверяем - хватает ли клиентов для создания еще одной комнаты
+			QueueOfGamer_CollectionChanged(null, null);
 		}
 		/// <summary>
 		/// Добавляет игрока в очередь
