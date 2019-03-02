@@ -16,7 +16,7 @@
     <Position X="6.562" Y="10.323" Height="0.302" Width="2.835" />
   </Comment>
   <Comment CommentText="Классовая структура игрового поля на сервере">
-    <Position X="0.75" Y="14.75" Height="0.344" Width="3.2" />
+    <Position X="0.598" Y="15.122" Height="0.344" Width="3.2" />
   </Comment>
   <Comment CommentText="Класс для хранения всех данных игры">
     <Position X="0.5" Y="9.208" Height="0.521" Width="1.804" />
@@ -40,7 +40,7 @@
   <Class Name="BattleRoayleServer.GameObject">
     <Position X="4.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAkIAQAiACgAAgAAAAAAAAAQAABAAABIA=</HashCode>
+      <HashCode>AAAAAAAAACAAkIAQAiAAgAAgAAAAAAAAAQAABAAAAIA=</HashCode>
       <FileName>GameObject\GameObject.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -58,22 +58,6 @@
       <FileName>Components\Component.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BattleRoayleServer.RoyalGameModel">
-    <Position X="0.5" Y="12" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAgAAAAAAAAAAAAAAgAAAAIAAAAAAAgAA=</HashCode>
-      <FileName>GameModel\RoyalGameModel.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.RoomNetwork">
-    <Position X="6.25" Y="13.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAIAAAAAACAAAAAAACAAAAAAIAACAAABAAAAAAAAAAg=</HashCode>
-      <FileName>Room\RoomNetwork.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="BattleRoayleServer.RoyalRoom">
     <Position X="4.5" Y="13.5" Width="1.5" />
     <TypeIdentifier>
@@ -85,13 +69,13 @@
   <Class Name="BattleRoayleServer.RoyalRoomLogic">
     <Position X="9.75" Y="14.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABCAQQAAAEBAIAAAAAAAgAAAAAAgABgIQAAI=</HashCode>
+      <HashCode>AAAAAAAABCAQQAAAABAAAIAAAAAgAAAAAAgABgAQAAI=</HashCode>
       <FileName>Room\RoyalRoomLogic.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.RoyalField">
-    <Position X="0.5" Y="17" Width="1.5" />
+    <Position X="0.5" Y="17.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAABAAAAAAAAABAAAAAAABAAAAAAAAAAAAAg=</HashCode>
       <FileName>GameModel\RoyalField.cs</FileName>
@@ -99,7 +83,7 @@
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.CellField">
-    <Position X="2.25" Y="16.75" Width="1.5" />
+    <Position X="2.5" Y="17.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAEAAAIBAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameModel\CellField.cs</FileName>
@@ -206,10 +190,10 @@
     <Position X="4.5" Y="6" Width="1.5" />
     <InheritanceLine Type="BattleRoayleServer.GameObject" FixedToPoint="true">
       <Path>
-        <Point X="5.5" Y="5.574" />
-        <Point X="5.5" Y="5.814" />
-        <Point X="4.26" Y="5.814" />
-        <Point X="4.26" Y="6.562" />
+        <Point X="5.5" Y="4.93" />
+        <Point X="5.5" Y="5.305" />
+        <Point X="4.125" Y="5.305" />
+        <Point X="4.125" Y="6.562" />
         <Point X="4.5" Y="6.562" />
       </Path>
     </InheritanceLine>
@@ -221,7 +205,7 @@
   <Class Name="BattleRoayleServer.NetworkClient">
     <Position X="8" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAIBAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAAAAAACAAAAAAABIBAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Gamer\NetworkClient.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -241,11 +225,11 @@
       <FileName>Components\Magazin.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BattleRoayleServer.AuthorizationControler">
+  <Class Name="BattleRoayleServer.AuthorizationController">
     <Position X="15" Y="11.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAgAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Controlers\AuthorizationControler.cs</FileName>
+      <FileName>Controlers\AuthorizationController.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -263,33 +247,25 @@
       <FileName>DataBase\DataOfAccount.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BattleRoayleServer.AccountControler">
+  <Class Name="BattleRoayleServer.AccountController">
     <Position X="17" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAAAAAAAAAAQBAAAAAA=</HashCode>
-      <FileName>Controlers\AccountControler.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.QueueControler">
-    <Position X="24.25" Y="11.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAGAIAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Controlers\QueueControler.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAGAAAAAAARAAAAAAAAAAAQBACAAAA=</HashCode>
+      <FileName>Controlers\AccountController.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.QueueRoyalBattle">
     <Position X="26" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAAAAAAAQAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <HashCode>AAAAIAAAAAAIAAAAAQAAAAAAAAAAAQAAAEAAAAEAACA=</HashCode>
       <FileName>HighestLevelServer\QueueRoyalBattle.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.QueueGamer">
     <Position X="27.75" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAAAAAAAAQ=</HashCode>
+      <HashCode>AAAAAAAAAAAAAABAAAAAAAAAAAAAAAECAAAAAAAAAAQ=</HashCode>
       <FileName>HighestLevelServer\QueueGamer.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -315,10 +291,34 @@
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="BattleRoayleServer.QueueController" Collapsed="true">
+    <Position X="24.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAAAACAAAAAABACAAAA=</HashCode>
+      <FileName>Controlers\QueueController.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BattleRoayleServer.RoyalGameModel">
+    <Position X="2" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAEAAAAgAAAAAAAAIAAAAAgAAAAIAAAAAAAgAA=</HashCode>
+      <FileName>GameModel\RoyalGameModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BattleRoayleServer.RoomNetwork">
+    <Position X="6.25" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAACAAAAAAACAAAAAAIAACAAABAAAAAAAAAAg=</HashCode>
+      <FileName>Room\RoomNetwork.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
   <Interface Name="BattleRoayleServer.IRoomLogic">
     <Position X="9.75" Y="11" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAQAAAAEBAAAAAAAAAgAAAAAAgAAAIQAAA=</HashCode>
+      <HashCode>AAAAAAAAACAQAAAAABAAAIAAAAAgAAAAAAgAAAAQAAA=</HashCode>
       <FileName>Room\IRoomLogic.cs</FileName>
     </TypeIdentifier>
   </Interface>
@@ -339,12 +339,12 @@
   <Interface Name="BattleRoayleServer.IGameModel">
     <Position X="0.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAgAA=</HashCode>
+      <HashCode>AAAgAAAEAAAAAAAAAAAAAIAAAAAgAAAAAAAAAAAAgAA=</HashCode>
       <FileName>GameModel\IGameModel.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.IField">
-    <Position X="0.5" Y="15.25" Width="1.5" />
+    <Position X="0.5" Y="15.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
       <FileName>GameModel\IField.cs</FileName>
@@ -371,15 +371,8 @@
       <FileName>Gamer\INetworkClient.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="BattleRoayleServer.IGameObjectEvent">
-    <Position X="23" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAQAAAAA=</HashCode>
-      <FileName>GameEventMsg\IGameObjectEvent.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
   <Interface Name="BattleRoayleServer.IComponentEvent">
-    <Position X="19.5" Y="6.25" Width="1.5" />
+    <Position X="20.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>GameEventMsg\IComponentEvent.cs</FileName>
@@ -414,7 +407,7 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="BattleRoayleServer.TypesComponentEvent">
-    <Position X="21.25" Y="6.25" Width="1.5" />
+    <Position X="22.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ComponentMsg\TypesComponentEvent.cs</FileName>

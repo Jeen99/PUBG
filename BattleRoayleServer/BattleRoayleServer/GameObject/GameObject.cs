@@ -6,7 +6,6 @@ using System.Threading;
 
 namespace BattleRoayleServer
 {
-	public delegate void ForHappenedObjectEvent(IGameObjectEvent msg);
     public abstract class GameObject
     {
 		//получение id - не должно переопределясться
@@ -24,8 +23,6 @@ namespace BattleRoayleServer
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
 		private System.Collections.Generic.Queue<IComponentMsg> messageQueue;
-
-		public event ForHappenedObjectEvent HappenedObjectEvent;
 
 		protected GameObject()
 		{
@@ -80,14 +77,10 @@ namespace BattleRoayleServer
         /// <summary>
         /// Запускает обрабтку накопившихся сообщений по истечении некоторого времени
         /// </summary>
-        public int Process()
+        public int Process(double quantValue)
         {
             throw new System.NotImplementedException();
         }
 
-		private void HandlerComponentEvent()
-		{
-			throw new System.NotImplementedException();
-		}
 	}
 }

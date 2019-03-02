@@ -13,17 +13,20 @@ namespace BattleRoayleServer
 
         public RoyalRoom(IList<QueueGamer> gamers)
         {
-            //создаем игру на основе той информации, что пришла к нам с геймерами
+			GameLogic = new RoyalRoomLogic(gamers.Count);
+			NetworkLogic = new RoomNetwork(gamers, GameLogic);
         }
 
 		public void StartRoom()
 		{
-			throw new NotImplementedException();
+			GameLogic.Start();
+			NetworkLogic.Start();
 		}
 
 		public void Dispose()
 		{
-			throw new NotImplementedException();
+			NetworkLogic.Dispose();
+			GameLogic.Dispose();
 		}
 	}
 }

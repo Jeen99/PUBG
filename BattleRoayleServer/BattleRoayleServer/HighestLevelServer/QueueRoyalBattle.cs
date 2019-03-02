@@ -65,6 +65,7 @@ namespace BattleRoayleServer
 			{
 				queueOfGamer.RemoveAt(0);
 			}
+			Program.RoomsOfRoyaleBattle.AddRoom(gamers);			
 			CreatingRoom = false;
 
 			//проверяем - хватает ли клиентов для создания еще одной комнаты
