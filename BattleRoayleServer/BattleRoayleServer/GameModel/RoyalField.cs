@@ -20,7 +20,19 @@ namespace BattleRoayleServer
 		/// </summary>
 		private const int lengthOfSideCell = 10;
 
-		public void Put(string gameobject)
+		public RoyalField()
+		{
+			content = new CellField[lengthOfSide, lengthOfSide];
+			for (int i = 0; i < lengthOfSide; i++)
+			{
+				for (int j = 0; j < lengthOfSide; j++)
+				{
+					content[i, j] = new CellField(new Tuple<double, double>(i * lengthOfSideCell, j * lengthOfSideCell));
+				}
+			}
+		}
+
+		public void Put(GameObject gameobject)
         {
             throw new NotImplementedException();
         }

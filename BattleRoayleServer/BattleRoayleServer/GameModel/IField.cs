@@ -7,7 +7,7 @@ namespace BattleRoayleServer
 {
     public interface IField
     {
-        void Put(string gameobject);
+        void Put(GameObject gameobject);
         void Remove(GameObject gameObject);
     }
 }

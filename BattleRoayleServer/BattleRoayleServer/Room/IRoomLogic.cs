@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 
 namespace BattleRoayleServer
 {
-    public delegate void ForHappenedGameEvent (IGameObjectEvent msg);
     public interface IRoomLogic
     {
-        /// <summary>
-        /// Уведомляет подписавшихся о том, что произолшло игровое событие
-        /// </summary>
-        /// <remarks>Передает необходимые данные в виде интерфейса IGameEventData</remarks>
-        event ForHappenedGameEvent HappenedGameEvent;
-
         /// <summary>
         /// Возвращает состояние объектов в данный момент времени
         /// </summary>
@@ -22,6 +16,8 @@ namespace BattleRoayleServer
 		/// Содержит список живых игроков
 		/// </summary>
 		IList<IPlayer> Players { get; }
+
+		ObservableCollection<IComponentEvent> HappenedEvents { get; }
 
 		/// <summary>
 		/// Запускает игровую комнату
@@ -39,11 +35,6 @@ namespace BattleRoayleServer
         /// Удаляет игрока из игровой комнаты
         /// </summary>
         void RemovePlayer();
-        /// <summary>
-        /// Получаем описание событий, произошедшиз в комента
-        /// </summary>
-        /// <remarks>Например добавление игрока, убийство одно игрока другим и т.д.</remarks>
-        void GetRoomEvents();
         /// <summary>
         /// Особождает ресурсы игровой комнаты
         /// </summary>
