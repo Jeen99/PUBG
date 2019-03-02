@@ -75,7 +75,6 @@
     <Compile Include="ComponentMsg\IComponentMsg.cs" />
     <Compile Include="GameModel\IField.cs" />
     <Compile Include="GameModel\IGameModel.cs" />
-    <Compile Include="GameEventMsg\IGameObjectEvent.cs" />
     <Compile Include="GameEventMsg\IComponentEvent.cs" />
     <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Gamer\INetworkClient.cs" />

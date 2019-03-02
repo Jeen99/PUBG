@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Collections.Concurrent;
+using System.Collections.ObjectModel;
 
 namespace BattleRoayleServer
 {
@@ -11,7 +13,12 @@ namespace BattleRoayleServer
         public IList<IPlayer> Players { get; private set; }
         public IList<GameObject> GameObjects { get; private set; }
         public IField Field { get; private set; }
+		/// <summary>
+		/// Колекция событий произошедших в игре
+		/// </summary>
+		public ObservableCollection<IComponentEvent> HappenedEvents { get; private set; }
 
+		
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами
 		/// </summary>
@@ -21,22 +28,42 @@ namespace BattleRoayleServer
 		/// </remarks>
 		private void CreateStaticGameObject()
 		{
-			throw new System.NotImplementedException();
+			//скрипт создания игровых объектов
 		}
 
 		/// <summary>
 		/// Создает игроков и добавляет их на карту в список игроков и список игрвовых объектов
 		/// </summary>
-		private void CreatePlayers()
+		private void CreatePlayers(int gamersInRoom)
 		{
-			throw new System.NotImplementedException();
+			for (int i = 0; i < gamersInRoom; i++)
+			{
+				//создаем игрока
+				Gamer gamer = new Gamer();
+				Players.Add(gamer);
+				GameObjects.Add(gamer);
+				Field.Put(gamer);
+			}
 		}
 
-		public RoyalGameModel()
-        {
-            //инициализируем поля
-            //создание и добавление в GameObjects и Field статических объектов карты
+		public RoyalGameModel(int gamersInRoom)
+		{
+			//инициализируем полей
+			Players = new List<IPlayer>();
+			GameObjects = new List<GameObject>();
+			Field = new RoyalField();
+			HappenedEvents = new ObservableCollection<IComponentEvent>();
 
-        }
+			//создание и добавление в GameObjects и Field статических объектов карты
+			CreateStaticGameObject();
+			CreatePlayers(gamersInRoom);
+
+		}
+
+		public void RemoveGameObject(GameObject gameObject)
+		{
+
+		}
+
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,24 +14,38 @@ namespace BattleRoayleServer
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
 
-		public event ForHappenedGameEvent HappenedGameEvent;
-
-        public RoyalRoomLogic()
+        public RoyalRoomLogic(int GamersInRoom)
         {
-            //инициализация компонентов, создание таймера
-            //список игроков нужен нам для создания ника
-            //создаем карту 
+			roomContext = new RoyalGameModel(GamersInRoom);
+			timerNewIteration = new Timer(50);
+			timerNewIteration.SynchronizingObject = null;
+			timerNewIteration.AutoReset = true;
+			timerNewIteration.Elapsed += TickQuantTimer;
+			quantTimer = new QuantTimer();
         }
-        //необходимо реализовать
-        /// <summary>
-        /// Создает список состяний игровых объектов
-        /// </summary>
-        public IList<GameObjectState> RoomState { get; }
 
+
+		//необходимо реализовать
+		/// <summary>
+		/// Создает список состяний игровых объектов
+		/// </summary>
+		public IList<GameObjectState> RoomState { get; }
+
+		/// <summary>
+		/// Посредник между коллецией игроков игровой модели и внешней средой
+		/// </summary>
 		public IList<IPlayer> Players {
 			get
 			{
 				return roomContext.Players;
+			}
+		}
+		/// <summary>
+		/// Посредник между коллецией событий игровой модели и внешней средой
+		/// </summary>
+		public ObservableCollection<IComponentEvent> HappenedEvents {
+			get {
+				return roomContext.HappenedEvents;
 			}
 		}
 
@@ -40,9 +55,15 @@ namespace BattleRoayleServer
         }
 
         //вызывается при срабатывании таймера
-        private void TickQuantTimer()
+        private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
-
+				quantTimer.Tick();
+				foreach (GameObject gameObject in roomContext.GameObjects)
+				{
+					if (!gameObject.Destroyed())
+						gameObject.Process(quantTimer.QuantValue);
+					else roomContext.RemoveGameObject(gameObject);
+				}
         }
 
         public void EndGame()
@@ -55,10 +76,6 @@ namespace BattleRoayleServer
             throw new NotImplementedException();
         }
 
-        public void GetRoomEvents()
-        {
-            throw new NotImplementedException();
-        }
 
         public void RemovePlayer()
         {
@@ -75,9 +92,5 @@ namespace BattleRoayleServer
             throw new NotImplementedException();
         }
 
-		private void HandlerObjectEvent(IGameObjectEvent msg)
-		{
-			throw new System.NotImplementedException();
-		}
 	}
 }
