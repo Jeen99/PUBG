@@ -8,5 +8,6 @@ namespace BattleRoayleServer
 	public interface IComponentEvent
 	{
 		TypesComponentEvent Type { get; set; }
+		Tuple<double, double> CentreHappenedEvent { get; }
 	}
 }

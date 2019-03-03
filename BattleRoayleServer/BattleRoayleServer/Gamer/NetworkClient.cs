@@ -17,13 +17,16 @@ namespace BattleRoayleServer
 
 		public string Password { get; private set; }
 
-		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password)
+		public byte ID { get; private set; } 
+
+		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password, byte id)
 		{
 			this.gamerRoomLogic = gamerRoomLogic;
 			Nick = nick;
 			Gamer = gamer;
 			Gamer.Controler = this;
 			Password = password;
+			ID = id;
 
 		}
 

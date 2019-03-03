@@ -68,7 +68,7 @@ namespace BattleRoayleServer
 			for(int i = 0; i < roomLogic.Players.Count; i++)
 			{
 				Clients.Add(new NetworkClient(roomLogic.Players[i], gamers[i].Client, 
-					gamers[i].NickName, gamers[i].Password));
+					gamers[i].NickName, gamers[i].Password, (byte)i));
 			}
 		}
 	}
