@@ -10,6 +10,7 @@ namespace BattleRoayleServer
 		StartMoveGamer,
 		EndMoveGamer,
 		TimeQuantPassed,
-		ObjectPickUp
+		ObjectPickUp,
+		CollisionObjects
 	}
 }

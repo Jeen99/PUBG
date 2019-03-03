@@ -8,23 +8,23 @@ namespace BattleRoayleServer
     public class CellField
     {
 
-		private IList<GameObject> onThisCell;
+		private IList<IFieldObject> onThisCell;
 		/// <summary>
 		/// Объекты находищиеся в пределах этой клетки
 		/// </summary>
-		public IList<GameObject> OnThisCell {
+		public IList<IFieldObject> OnThisCell {
 			get
 			{
+			
 				if (onThisCell == null)
 				{
-					onThisCell = new List<GameObject>();
+					onThisCell = new List<IFieldObject>();
 				}
 				return onThisCell;
 			}
 		}
 
-		
-       
+		    
         /// <summary>
         /// Расположение левого вернего угла клетки на карте
         /// </summary>
