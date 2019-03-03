@@ -30,17 +30,22 @@
   <Comment CommentText="Классы отчечающие за логирование ошибок">
     <Position X="1.01" Y="20.01" Height="0.302" Width="2.992" />
   </Comment>
-  <Class Name="BattleRoayleServer.GameObjectState">
+  <Class Name="BattleRoayleServer.GameObjectState" Collapsed="true">
     <Position X="7.25" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAEAAA=</HashCode>
       <FileName>GameObject\GameObjectState.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.GameObject">
     <Position X="4.75" Y="1" Width="1.5" />
+    <Members>
+      <Field Name="counterID" Hidden="true" />
+      <Field Name="sinchGetId" Hidden="true" />
+      <Field Name="sinchWorkWithComponent" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAkIAQAiAAgAAgAAAAAAAAAQAABAAAAIA=</HashCode>
+      <HashCode>AAAAAAAAACAAkIAQAiAAgAAgAAAAAACAAQAABAAAAIA=</HashCode>
       <FileName>GameObject\GameObject.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -54,7 +59,7 @@
   <Class Name="BattleRoayleServer.Component">
     <Position X="11.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAABAAAAAAAAAAAYAAAAAAAAAAAAAAABAIAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAABAIAAAA=</HashCode>
       <FileName>Components\Component.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -100,14 +105,15 @@
   <Class Name="BattleRoayleServer.SolidBody">
     <Position X="14" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAACJAIAEAAAAAAACAAEAAAAAAAAA=</HashCode>
       <FileName>Components\SolidBody.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.CircleBody">
     <Position X="16.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
       <FileName>Components\CircleBody.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -144,7 +150,7 @@
   <Class Name="BattleRoayleServer.TimeQuantPassed">
     <Position X="19.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>ComponentMsg\TimeQuantPassed.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -173,7 +179,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.Shot">
-    <Position X="11.75" Y="5" Width="1.5" />
+    <Position X="12.5" Y="5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Components\Shot.cs</FileName>
@@ -187,14 +193,13 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.Modifier">
-    <Position X="4.5" Y="6" Width="1.5" />
-    <InheritanceLine Type="BattleRoayleServer.GameObject" FixedToPoint="true">
+    <Position X="10.75" Y="5.5" Width="1.5" />
+    <InheritanceLine Type="BattleRoayleServer.Component" ManuallyRouted="true" FixedToPoint="true">
       <Path>
-        <Point X="5.5" Y="4.93" />
-        <Point X="5.5" Y="5.305" />
-        <Point X="4.125" Y="5.305" />
-        <Point X="4.125" Y="6.562" />
-        <Point X="4.5" Y="6.562" />
+        <Point X="12.5" Y="4.141" />
+        <Point X="12.5" Y="4.76" />
+        <Point X="11.438" Y="4.76" />
+        <Point X="11.438" Y="5.5" />
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
@@ -205,7 +210,7 @@
   <Class Name="BattleRoayleServer.NetworkClient">
     <Position X="8" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAAAACAAAAAAABIBAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAAAAAAGAAAAAAABIBAAAAACAAAAAAAAAAA=</HashCode>
       <FileName>Gamer\NetworkClient.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -396,7 +401,7 @@
     <Position X="21.5" Y="1.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAIAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAACAAA=</HashCode>
-      <FileName>ComponentMsg\TypeComponentMsg.cs</FileName>
+      <FileName>ComponentMsg\TypesComponentMsg.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="BattleRoayleServer.Directions" Collapsed="true">
@@ -410,7 +415,7 @@
     <Position X="22.25" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>ComponentMsg\TypesComponentEvent.cs</FileName>
+      <FileName>GameEventMsg\TypesComponentEvent.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="BattleRoayleServer.TypesWeapon" Collapsed="true">

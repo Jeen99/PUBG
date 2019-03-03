@@ -5,9 +5,9 @@ using System.Text;
 
 namespace BattleRoayleServer
 {
-	public class Modifier : GameObject
+	public class Modifier : Component
 	{
-		public Modifier() : base()
+		public Modifier(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
 		{
 
 		}
