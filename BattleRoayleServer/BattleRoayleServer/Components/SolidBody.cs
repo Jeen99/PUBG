@@ -53,11 +53,17 @@ namespace BattleRoayleServer
 			{
 				foreach (IFieldObject fieldObject in cell.OnThisCell)
 				{
-					if (fieldObject.CheckCollision(this))
+					//проверка на возможность столкновения
+					if (this.TypeSolid == TypesSolid.Solid && fieldObject.TypeSolid == TypesSolid.Solid)
 					{
-						//произошло столкновение отпраляем участникам сообщение об этом
-						this.SendMessage(new CollisionObjects(fieldObject));
-						fieldObject.SendMessage(new CollisionObjects(this));
+						if (fieldObject.CheckCollision(this))
+						{
+
+							//произошло столкновение отпраляем участникам сообщение об этом
+							this.SendMessage(new CollisionObjects(fieldObject));
+							fieldObject.SendMessage(new CollisionObjects(this));
+
+						}
 					}
 				}
 			}
@@ -66,13 +72,8 @@ namespace BattleRoayleServer
 
 		protected abstract bool CheckCollisionWithCircle(IFieldObject fieldObject);
 		protected abstract bool CheckCollisionWithRectangle(IFieldObject fieldObject);
-		public virtual bool CheckCollision(IFieldObject fieldObject)
-		{
-			//могут столкнуться только твердое с полутвердым и твердым, и полутвердое с твердым
-			if ((this.TypeSolid == TypesSolid.Solid &&
-				(fieldObject.TypeSolid == TypesSolid.SemiSolid || fieldObject.TypeSolid == TypesSolid.Solid))
-				|| (this.TypeSolid == TypesSolid.SemiSolid && fieldObject.TypeSolid == TypesSolid.Solid))
-			{
+		public bool CheckCollision(IFieldObject fieldObject)
+		{		
 				switch (fieldObject.Type)
 				{
 					case TypesSolidBody.Circle:
@@ -81,19 +82,17 @@ namespace BattleRoayleServer
 						return CheckCollisionWithRectangle(this);
 					default:
 						return false;
-				}
-			}
-			else return false;//столкновения нет
+				}		
 		}
 
 		public abstract IList<Directions> CheckCovered(Tuple<double, double> XDiapason, Tuple<double, double> YDiapason);
+
 		public abstract TypesSolidBody Type { get; }
 	}
 
 	public enum TypesSolid
 	{
 		Solid,
-		SemiSolid,
 		Transparent
 	}
 }
