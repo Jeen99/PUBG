@@ -5,11 +5,14 @@ using System.Text;
 
 namespace BattleRoayleServer
 {
-	public class Modifier : Component
+	public class Modifier : GameObject
 	{
-		public Modifier(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
+		public Modifier():base()
 		{
 
 		}
+
+		public override TypesGameObject Type => throw new NotImplementedException();
+
 	}
 }

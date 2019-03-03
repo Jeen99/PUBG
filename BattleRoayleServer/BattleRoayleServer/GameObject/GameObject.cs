@@ -28,7 +28,7 @@ namespace BattleRoayleServer
 		public ulong ID { get; private set; }
 		public IList<Component> Components { get; protected set; }
 
-		protected GameObject()
+		public GameObject()
 		{
 			//иницализация всех полей
 			ID = GetID();
@@ -46,7 +46,7 @@ namespace BattleRoayleServer
 				var states = new List<ComponentState>();
 				lock (sinchWorkWithComponent)
 				{
-					if (Destroyed()) return null;
+					if (Destroyed) return null;
 					else
 					{
 						foreach (var component in Components)
@@ -88,17 +88,14 @@ namespace BattleRoayleServer
         /// <summary>
         /// Возвращает true, если объект уничтожен
         /// </summary>
-        public virtual bool Destroyed()
-        {
-           return true;
-        }
-
+        public bool Destroyed { get; protected set; }
+       
         /// <summary>
         /// Запускает обрабтку накопившихся сообщений по истечении некоторого времени
         /// </summary>
         public virtual void Process(double quantValue)
         {
-			if (Destroyed()) return;
+			if (Destroyed) return;
 			else
 			{
 				lock (sinchWorkWithComponent)
