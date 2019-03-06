@@ -36,7 +36,7 @@ namespace BattleRoayleServer
 			private	set { diapasonY = value; }
 		}
 		public RectangleBody(GameObject owner, IGameModel gameModel, Tuple<double, double> location, Tuple<double, double> size, TypesSolid typeSolid) 
-			: base(gameModel, owner, location, typeSolid)
+			: base(owner, gameModel, location, typeSolid)
 		{
 			Size = size;
 		}
@@ -44,9 +44,6 @@ namespace BattleRoayleServer
 		public Tuple<double, double> Size { get; private set; }
 
 		public override TypesSolidBody Type { get; } = TypesSolidBody.Rectangle;
-
-		public override ComponentState State { get; }
-		
 
 		public override void AppendCoords(double dX, double dY)
 		{
@@ -105,6 +102,11 @@ namespace BattleRoayleServer
 				return false;
 			}
 			else return true;
+		}
+
+		public override void Dispose()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

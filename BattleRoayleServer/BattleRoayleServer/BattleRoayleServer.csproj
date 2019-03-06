@@ -54,7 +54,7 @@
     <Compile Include="ComponentMsg\EndMoveGamer.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Magazin.cs" />
-    <Compile Include="Components\ObjectPickUp.cs" />
+    <Compile Include="ComponentMsg\ObjectPickUp.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="GameModel\IFieldObject.cs" />
     <Compile Include="GameObject\Stone.cs" />
@@ -79,7 +79,6 @@
     <Compile Include="GameModel\IField.cs" />
     <Compile Include="GameModel\IGameModel.cs" />
     <Compile Include="GameEventMsg\IComponentEvent.cs" />
-    <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Gamer\INetworkClient.cs" />
     <Compile Include="Components\Movement.cs" />
     <Compile Include="Components\RectangleBody.cs" />
@@ -104,6 +103,7 @@
     <Compile Include="ComponentMsg\TimeQuantPassed.cs" />
     <Compile Include="GameEventMsg\TypesComponentEvent.cs" />
     <Compile Include="GameObject\TypesGameObject.cs" />
+    <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Weapon\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>

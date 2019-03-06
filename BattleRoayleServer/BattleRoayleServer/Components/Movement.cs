@@ -18,9 +18,19 @@ namespace BattleRoayleServer
 		/// </summary>
 		private SolidBody body;
 
-		public Movement(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
+		public Movement(GameObject parent) : base(parent)
 		{
 
+		}
+
+		public override void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void ProcessMsg(IComponentMsg msg)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

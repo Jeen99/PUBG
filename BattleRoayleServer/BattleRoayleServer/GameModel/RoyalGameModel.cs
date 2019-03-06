@@ -42,7 +42,8 @@ namespace BattleRoayleServer
 				Gamer gamer = new Gamer();
 				Players.Add(gamer);
 				GameObjects.Add(gamer);
-				Field.Put(gamer);
+				//добавление игрока на карту
+				//Field.Put(gamer);
 			}
 		}
 

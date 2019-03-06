@@ -37,15 +37,12 @@ namespace BattleRoayleServer
 		}
 
 		public CircleBody(GameObject owner, IGameModel gameModel, Tuple<double, double> location, double radius, TypesSolid typeSolid)
-			: base(gameModel, owner, location, typeSolid)
+			: base(owner, gameModel, location, typeSolid)
 		{
 			Radius = radius;
 		}
 
 		public double Radius { get; private set; }
-
-		//необходимо реализовать 
-		public override ComponentState State { get; }
 
 		public override TypesSolidBody Type { get; } = TypesSolidBody.Circle;
 
@@ -119,6 +116,11 @@ namespace BattleRoayleServer
 				return false;
 			}
 			else return true;
+		}
+
+		public override void Dispose()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

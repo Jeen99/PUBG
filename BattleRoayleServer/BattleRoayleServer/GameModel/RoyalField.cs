@@ -54,28 +54,28 @@ namespace BattleRoayleServer
 					switch (direction)
 					{
 						case Directions.bottom:
-							coveredCells.Add(content[xCentreCell - 1, yCentreCell]);
+							coveredCells.Add(content[X - 1, Y]);
 							break;
 						case Directions.left:
-							coveredCells.Add(content[xCentreCell, yCentreCell - 1]);
+							coveredCells.Add(content[X, Y - 1]);
 							break;
 						case Directions.left_bottom:
-							coveredCells.Add(content[xCentreCell - 1, yCentreCell - 1]);
+							coveredCells.Add(content[X - 1, Y - 1]);
 							break;
 						case Directions.left_top:
-							coveredCells.Add(content[xCentreCell + 1, yCentreCell - 1]);
+							coveredCells.Add(content[X + 1, Y - 1]);
 							break;
 						case Directions.right:
-							coveredCells.Add(content[xCentreCell, yCentreCell + 1]);
+							coveredCells.Add(content[X, Y + 1]);
 							break;
 						case Directions.right_bottom:
-							coveredCells.Add(content[xCentreCell - 1, yCentreCell + 1]);
+							coveredCells.Add(content[X - 1, Y + 1]);
 							break;
 						case Directions.right_top:
-							coveredCells.Add(content[xCentreCell + 1, yCentreCell + 1]);
+							coveredCells.Add(content[X + 1, Y + 1]);
 							break;
 						case Directions.top:
-							coveredCells.Add(content[xCentreCell + 1, yCentreCell]);
+							coveredCells.Add(content[X + 1, Y]);
 							break;
 					}
 				}

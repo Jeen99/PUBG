@@ -7,12 +7,14 @@ namespace BattleRoayleServer
 {
 	public abstract class SolidBody : Component, IFieldObject
 	{
+		protected IGameModel gameModel;
 
-		protected SolidBody(IGameModel gameModel, GameObject parent, Tuple<double, double> location, TypesSolid typesSolid)
-			: base(gameModel, parent)
+		protected SolidBody(GameObject parent, IGameModel gameModel, Tuple<double, double> location, TypesSolid typesSolid)
+			: base(parent)
 		{
 			TypeSolid = typesSolid;
 			Location = location;
+			this.gameModel = gameModel; 
 			//размещаем объект на игровой карте
 			gameModel.Field.Put(this);
 		}

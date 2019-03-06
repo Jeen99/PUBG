@@ -10,23 +10,25 @@ namespace BattleRoayleServer
         /// <summary>
         /// ссылка на хранилище всех данных об игре
         /// </summary>
-        protected IGameModel gameModel;
 		public GameObject Parent { get; private set; }
 
-		protected Component(IGameModel gameModel, GameObject parent)
+		protected Component(GameObject parent)
 		{
-			this.gameModel = gameModel;
 			Parent = parent;
 		}
 
-        public abstract ComponentState State { get; }
-       
-		
+        public virtual ComponentState State
+		{
+			get { return null; }
+		}
+       	
         /// <summary>
         /// Запускает алгоритм обработки сообщения
         /// </summary>
         /// <param name="msg"></param>
         public abstract void ProcessMsg(IComponentMsg msg);
+
+		public abstract void Dispose();
         
     }
 }

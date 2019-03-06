@@ -60,7 +60,7 @@ namespace BattleRoayleServer
 				quantTimer.Tick();
 				foreach (GameObject gameObject in roomContext.GameObjects)
 				{
-					if (!gameObject.Destroyed())
+					if (!gameObject.Destroyed)
 						gameObject.Process(quantTimer.QuantValue);
 					else roomContext.RemoveGameObject(gameObject);
 				}

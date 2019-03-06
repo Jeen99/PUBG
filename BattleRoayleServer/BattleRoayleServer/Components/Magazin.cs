@@ -12,9 +12,19 @@ namespace BattleRoayleServer
 		/// </summary>
 		private bool reload;
 
-		public Magazin(IGameModel gameModel, GameObject parent) : base(gameModel, parent)
+		public Magazin(GameObject parent) : base(parent)
 		{
 
+		}
+
+		public override void Dispose()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void ProcessMsg(IComponentMsg msg)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
