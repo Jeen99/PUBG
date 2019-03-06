@@ -14,5 +14,6 @@ namespace BattleRoayleServer
 
 		public override TypesGameObject Type => throw new NotImplementedException();
 
-	}
+        public override TypesBehaveObjects TypesBehave => throw new NotImplementedException();
+    }
 }
