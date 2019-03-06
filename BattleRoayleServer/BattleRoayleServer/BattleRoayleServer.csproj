@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\ObservalableQueue.cs" />
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
     <Compile Include="Components\CircleBody.cs" />
     <Compile Include="Common\Directions.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="GameModel\IFieldObject.cs" />
     <Compile Include="GameObject\Stone.cs" />
+    <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />
     <Compile Include="HandlerException\ConsoleLogger.cs" />
     <Compile Include="HandlerException\Handler_StandartExceptions.cs" />

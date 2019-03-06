@@ -63,5 +63,8 @@
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\ServerClient.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

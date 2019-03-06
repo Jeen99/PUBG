@@ -58,10 +58,11 @@ namespace BattleRoayleServer
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
 				quantTimer.Tick();
+				TimeQuantPassed msg = new TimeQuantPassed();
 				foreach (GameObject gameObject in roomContext.GameObjects)
 				{
 					if (!gameObject.Destroyed)
-						gameObject.Process(quantTimer.QuantValue);
+						gameObject.SendMessage(new TimeQuantPassed(quantTimer.QuantValue));
 					else roomContext.RemoveGameObject(gameObject);
 				}
         }
