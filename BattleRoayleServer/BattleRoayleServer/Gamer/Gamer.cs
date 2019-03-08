@@ -15,9 +15,9 @@ namespace BattleRoayleServer
 
 		public override TypesGameObject Type => throw new NotImplementedException();
 
-		public override TypesBehaveObjects TypesBehave => throw new NotImplementedException();
+        public override TypesBehaveObjects TypesBehave => throw new NotImplementedException();
 
-		public Tuple<int, int> GetLocation()
+        public Tuple<int, int> GetLocation()
         {
             throw new NotImplementedException();
         }

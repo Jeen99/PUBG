@@ -33,10 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSInteraction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\CSInteraction\CSInteraction\bin\Debug\CSInteraction.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -111,6 +107,11 @@
     <None Include="App.config" />
     <None Include="GameLogic.cd" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\CSInteraction\CSInteraction\CSInteraction.csproj">
+      <Project>{ca5aa8ca-e6c9-42db-b7ee-1d3028548aab}</Project>
+      <Name>CSInteraction</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
