@@ -26,13 +26,15 @@ namespace CSInteraction.Client
         //уведомляет о получении нового сообщения от сервера
         public event NewMessage EventNewMessage;
         public event EndSession EventEndSession;
-        //конструктор
-        public BaseClient(string ipAdress, int port)
+		public ObservalableQueue<IMessage> ReceivedMsg { get; private set; }
+		//конструктор
+		public BaseClient(string ipAdress, int port)
         {
             IPAdress = ipAdress;
             Port = port;
             Status = StatusClient.Initialize;
-        }
+			ReceivedMsg = new ObservalableQueue<IMessage>();
+		}
         //закрывает подлючение
         public void Close()
         {
@@ -55,22 +57,26 @@ namespace CSInteraction.Client
         //подключаемся к серверу
         public bool ConnectToServer()
         {
-            if (StreamWithServer == null) StreamWithServer = new TcpClient();
-            try
-            {
-                StreamWithServer.Connect(IPAdress, Port);
-            }
-            catch (Exception)
-            {
-                Status = StatusClient.FailConect;
-                return false;
-            }
-            //обработка сообщений производитсва в отдельном потоке
-            ThreadOfHandlerMsg = new Thread(StartReadMessage);
-            ThreadOfHandlerMsg.Start();
-            Status = StatusClient.Connect;
-            formatter = new BinaryFormatter();
-            return true;
+			if (StreamWithServer == null) StreamWithServer = new TcpClient();
+			if (!StreamWithServer.Connected)
+			{
+				try
+				{
+					StreamWithServer.Connect(IPAdress, Port);
+				}
+				catch (Exception)
+				{
+					Status = StatusClient.FailConect;
+					return false;
+				}
+				//обработка сообщений производитсва в отдельном потоке
+				ThreadOfHandlerMsg = new Thread(StartReadMessage);
+				ThreadOfHandlerMsg.Start();
+				Status = StatusClient.Connect;
+				formatter = new BinaryFormatter();
+				return true;
+			}
+		    return true;
         }
         //отправляет сообщение серверу
         public bool SendMessage(IMessage msg)
@@ -190,12 +196,14 @@ namespace CSInteraction.Client
                 MemStream.Seek(0, SeekOrigin.Begin);
                 ObjectMsg = (IMessage)formatter.Deserialize(MemStream);
             }
+			ReceivedMsg.Enqueue(ObjectMsg);
             //генерируем событие
-            Task.Run(()=>EventNewMessage(ObjectMsg));
+			if(EventNewMessage != null)
+            Task.Run(()=>EventNewMessage());
         }
     }
 
-    public delegate void NewMessage(IMessage msg);
+    public delegate void NewMessage();
     public delegate void EndSession();
 
     public enum StatusClient

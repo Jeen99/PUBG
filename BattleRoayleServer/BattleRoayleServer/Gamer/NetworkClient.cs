@@ -30,8 +30,9 @@ namespace BattleRoayleServer
 
 		}
 
-		public void HanlderNewMessage(IMessage msg)
+		public void HanlderNewMessage()
 		{
+			IMessage msg = Gamer.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
 				default:
@@ -49,6 +50,11 @@ namespace BattleRoayleServer
 		public override string ToString()
 		{
 			return "NetworkClient";
+		}
+
+		public void Dispose()
+		{
+			//ничего не делаем;
 		}
 	}
 }

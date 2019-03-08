@@ -18,6 +18,9 @@ namespace CSInteraction.ProgramMessage
 		ChangeCountPlayersInQueue,
 		DeleteOfQueue,
 		FailedExitOfQueue,
-		SuccessExitOfQueue
+		SuccessExitOfQueue,
+		LoadedAccountForm,
+		AddInBattle,
+		LoadedQueueForm
 	}
 }

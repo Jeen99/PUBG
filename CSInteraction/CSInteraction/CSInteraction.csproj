@@ -45,9 +45,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\BaseClient.cs" />
+    <Compile Include="Common\ObservalableQueue.cs" />
+    <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
     <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\FailedExitOfQueue.cs" />
+    <Compile Include="ProgramMessage\Queue\LoadedQueueForm.cs" />
     <Compile Include="ProgramMessage\Queue\SuccessExitOfQueue.cs" />
+    <Compile Include="ProgramMessage\Room\AddInBattle.cs" />
     <Compile Include="ProgramMessage\SignUpInAccount\Authorization.cs" />
     <Compile Include="Common\InsideMessage.cs" />
     <Compile Include="ProgramMessage\Queue\ChangeCountPlayersInQueue.cs" />
@@ -64,7 +68,7 @@
     <Compile Include="Server\ServerClient.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

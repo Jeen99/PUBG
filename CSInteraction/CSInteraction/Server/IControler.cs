@@ -9,7 +9,8 @@ namespace CSInteraction.Server
 {
        public interface IController
        {
-        void HanlderNewMessage(IMessage msg);
+        void HanlderNewMessage();
         IController GetNewControler(ServerClient client);
+		void Dispose();
     }   
 }

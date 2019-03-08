@@ -57,14 +57,17 @@ namespace BattleRoayleServer
         //вызывается при срабатывании таймера
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
-				quantTimer.Tick();
-				TimeQuantPassed msg = new TimeQuantPassed();
-				foreach (GameObject gameObject in roomContext.GameObjects)
+			quantTimer.Tick();
+			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
+			foreach (GameObject gameObject in roomContext.GameObjects)
+			{
+				if (!gameObject.Destroyed)
 				{
-					if (!gameObject.Destroyed)
-						gameObject.SendMessage(new TimeQuantPassed(quantTimer.QuantValue));
-					else roomContext.RemoveGameObject(gameObject);
+					if(gameObject.TypesBehave == TypesBehaveObjects.Active)
+					gameObject.SendMessage(msg);
 				}
+				else roomContext.RemoveGameObject(gameObject);
+			}
         }
 
         public void EndGame()

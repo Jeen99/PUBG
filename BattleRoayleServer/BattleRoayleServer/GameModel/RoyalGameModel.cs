@@ -17,7 +17,6 @@ namespace BattleRoayleServer
 		/// Колекция событий произошедших в игре
 		/// </summary>
 		public ObservableCollection<IComponentEvent> HappenedEvents { get; private set; }
-
 		
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами

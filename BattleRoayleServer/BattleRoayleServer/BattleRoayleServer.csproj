@@ -48,7 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\ObservalableQueue.cs" />
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
     <Compile Include="Components\CircleBody.cs" />
     <Compile Include="Common\Directions.cs" />

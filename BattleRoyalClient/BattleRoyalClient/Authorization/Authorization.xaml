@@ -1,0 +1,18 @@
+﻿<Window x:Class="BattleRoyalClient.Autorization"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BattleRoyalClient"
+        mc:Ignorable="d"
+        Title="Авторитизация" Height="450" Width="800">
+    <StackPanel VerticalAlignment="Center">
+        <TextBlock Text="Введите логин: " FontSize="14" Width="500" Margin="5, 5, 5 ,0"/> 
+        <TextBox x:Name="Login" AcceptsReturn="True" Height="24" 
+                 Width="500" TextAlignment="Left" FontSize="16" MaxLength="50" Margin="5"/>
+        <TextBlock Text="Введите пароль: " FontSize="14" Width="500" Margin="5, 0, 5 ,0"/>
+        <TextBox x:Name="Password" AcceptsReturn="True" MaxLength="50" Height="24" 
+                 Width="500" TextAlignment="Left" FontSize="15" Margin="5"/>
+        <Button x:Name="SignIn" FontSize="20" Width="200" Height="40" Margin="5">Войти</Button>
+    </StackPanel>
+</Window>

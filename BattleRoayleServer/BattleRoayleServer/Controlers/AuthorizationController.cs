@@ -28,8 +28,9 @@ namespace BattleRoayleServer
             return new AuthorizationController(client);
         }
 
-		public void HanlderNewMessage(IMessage msg)
+		public void HanlderNewMessage()
 		{
+			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.Authorization:
@@ -59,6 +60,11 @@ namespace BattleRoayleServer
 		public override string ToString()
 		{
 			return "AuthorizationController";
+		}
+
+		public void Dispose()
+		{
+			//ничего не делаем
 		}
 	}
 }

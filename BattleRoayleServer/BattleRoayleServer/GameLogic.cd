@@ -13,7 +13,7 @@
     <Position X="11.115" Y="0.5" Height="0.344" Width="2.106" />
   </Comment>
   <Comment CommentText="Классовая структруа иговой комнаты">
-    <Position X="10.02" Y="10.625" Height="0.302" Width="2.835" />
+    <Position X="6.139" Y="10.625" Height="0.302" Width="2.835" />
   </Comment>
   <Comment CommentText="Классовая структура игрового поля на сервере">
     <Position X="0.598" Y="15.122" Height="0.344" Width="3.2" />
@@ -22,7 +22,7 @@
     <Position X="0.5" Y="9.208" Height="0.521" Width="1.804" />
   </Comment>
   <Comment CommentText="Классовая структура для подключения к серверу и вхождения в аккаунт">
-    <Position X="17.406" Y="10.917" Height="0.333" Width="5.085" />
+    <Position X="15.647" Y="10.965" Height="0.333" Width="5.085" />
   </Comment>
   <Comment CommentText="Классы для работы с  очередью">
     <Position X="24.542" Y="11.021" Height="0.291" Width="4.512" />
@@ -45,7 +45,7 @@
       <Field Name="sinchWorkWithComponent" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAkIAQAiAAgAAgAAAAAACAAQAABAAAAIA=</HashCode>
+      <HashCode>AAAAAAAAACAAkIAQAiAAgAAgAAAAAACAAYAABAAAAIA=</HashCode>
       <FileName>GameObject\GameObject.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -97,7 +97,7 @@
   <Class Name="BattleRoayleServer.Gamer">
     <Position X="2.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAA=</HashCode>
       <FileName>Gamer\Gamer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -150,7 +150,7 @@
   <Class Name="BattleRoayleServer.TimeQuantPassed">
     <Position X="19.75" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
       <FileName>ComponentMsg\TimeQuantPassed.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -173,7 +173,7 @@
       </Path>
     </InheritanceLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAA=</HashCode>
       <FileName>Weapon\Gun.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -194,7 +194,7 @@
   <Class Name="BattleRoayleServer.Modifier">
     <Position X="4" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAA=</HashCode>
       <FileName>Modifier\Modifier.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -246,7 +246,7 @@
   <Class Name="BattleRoayleServer.AccountController">
     <Position X="17" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAGAAAAAAARAAAAAAAAAAAQBACAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAGAAAAAAARAAAAAAAQAAAQBACAAAA=</HashCode>
       <FileName>Controlers\AccountController.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -431,7 +431,7 @@
     </TypeIdentifier>
   </Enum>
   <Enum Name="BattleRoayleServer.TypesSolidBody" Collapsed="true">
-    <Position X="2" Y="1.5" Width="1.5" />
+    <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAAAAAAAAAA=</HashCode>
       <FileName>GameModel\IFieldObject.cs</FileName>

@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
-namespace BattleRoayleServer
+namespace CSInteraction.Common
 {
-	class ObservalableQueue<T>:ObservableCollection<T>
+	public class ObservalableQueue<T> : ObservableCollection<T>
 	{
 		private object sinchAccess = new object();
 

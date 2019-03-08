@@ -10,7 +10,7 @@ namespace BattleRoayleServer
         public static bool ExistAccount(string Login, string Password)
         {
 			//простейшая реализация
-            return true;
+			return true;
         }
 
         public static bool CreateAccount(string Login, string Password)

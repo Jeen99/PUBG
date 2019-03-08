@@ -16,7 +16,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Количество игроков необходимых для создания комнаты
 		/// </summary>
-		private const int _GamersInRoom = 1;
+		private const int _GamersInRoom = 2;
 		/// <summary>
 		/// true = идет процесс создания комнаты
 		/// </summary>
@@ -58,12 +58,13 @@ namespace BattleRoayleServer
 			List<QueueGamer> gamers = new List<QueueGamer>(_GamersInRoom);
 			for (int i = 0; i < _GamersInRoom; i++)
 			{
-				queueOfGamer[0].AddInRoom = true;
-				gamers.Add(queueOfGamer[0]);							
+				queueOfGamer[i].AddInRoom = true;
+				gamers.Add(queueOfGamer[i]);							
 			}
 			for (int i = 0; i < _GamersInRoom; i++)
 			{
 				queueOfGamer.RemoveAt(0);
+				queueOfGamer[0].Client.Controler.Dispose();
 			}
 			Program.RoomsOfRoyaleBattle.AddRoom(gamers);			
 			CreatingRoom = false;
@@ -89,9 +90,18 @@ namespace BattleRoayleServer
         {
 			if (!gamer.AddInRoom)
 			{
-				return queueOfGamer.Remove(gamer);
+				for (int i = 0; i < queueOfGamer.Count; i++)
+				{
+					if (queueOfGamer[i].NickName == gamer.NickName &&
+						queueOfGamer[i].Password == gamer.Password)
+					{
+						queueOfGamer.RemoveAt(i);
+						return true;
+					}
+				}
+				
 			}
-			else return false;
+			 return false;
         }
     }
 }

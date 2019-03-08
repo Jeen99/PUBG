@@ -20,12 +20,16 @@ namespace BattleRoayleServer
 			return new AccountController(client);
 		}
 
-        public void HanlderNewMessage(IMessage msg)
+        public void HanlderNewMessage()
         {
+			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.JoinToQueue:
 					Handler_JoinToQueue();
+					break;
+				case TypesProgramMessage.LoadedAccountForm:
+					Handler_LoadedAccountForm();
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
@@ -34,6 +38,16 @@ namespace BattleRoayleServer
 					break;
 			}
         }
+
+		private void Handler_LoadedAccountForm()
+		{
+			if (data != null)
+			{
+				//отправляем данные об аккаунте
+				client.SendMessage(new DataAccount(data.QuantityKills, data.QuentityBattles,
+					data.QuentityDeaths, data.QuentityGameTime));
+			}
+		}
 		/// <summary>
 		/// Обработчик сообщения от клинта JoinToQueue
 		/// </summary>
@@ -61,12 +75,6 @@ namespace BattleRoayleServer
 		{
 			//получаем данные об аккаунте
 			data = BDAccounts.GetDataOfAccount(login, password);
-			if (data != null)
-			{
-				//отправляем данные об аккаунте
-				client.SendMessage(new DataAccount(data.QuantityKills, data.QuentityBattles,
-					data.QuentityDeaths, data.QuentityGameTime));
-			}
 		}
 
 		public AccountController(QueueGamer gamer)
@@ -79,6 +87,11 @@ namespace BattleRoayleServer
 		public override string ToString()
 		{
 			return "AccountController";
+		}
+
+		public void Dispose()
+		{
+			//ничего не делаем
 		}
 	}
 }
