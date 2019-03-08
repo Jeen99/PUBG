@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleRoayleServer", "Battl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSInteraction", "..\CSInteraction\CSInteraction\CSInteraction.csproj", "{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleRoyalClient", "..\BattleRoyalClient\BattleRoyalClient\BattleRoyalClient.csproj", "{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
