@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CSInteraction.Common
 {
-	public class ObservalableQueue<T> : ObservableCollection<T>
+	public class ObservableQueue<T> : ObservableCollection<T>
 	{
 		private object sinchAccess = new object();
 

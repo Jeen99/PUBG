@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using CSInteraction.ProgramMessage;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -11,7 +13,7 @@ namespace BattleRoayleServer
         IList<IPlayer> Players { get;}
         IList<GameObject> GameObjects { get; }
         IField Field { get;}
-		ObservableCollection<IComponentEvent> HappenedEvents { get; }
+		ObservableQueue<IMessage> HappenedEvents { get; }
 		void RemoveGameObject(GameObject gameObject);
 
 	}

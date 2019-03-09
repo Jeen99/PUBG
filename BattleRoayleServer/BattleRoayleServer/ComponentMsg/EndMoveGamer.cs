@@ -7,6 +7,6 @@ namespace BattleRoayleServer
 {
 	public class EndMoveGamer : IComponentMsg
 	{
-		public TypesComponentMsg Type { get; private set; }
+		public TypesComponentMsg Type { get; } = TypesComponentMsg.EndMoveGamer;
 	}
 }

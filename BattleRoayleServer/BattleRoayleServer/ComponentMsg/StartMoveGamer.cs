@@ -10,6 +10,11 @@ namespace BattleRoayleServer
 	{
 		public Directions Direction { get; private set; }
 
-		public TypesComponentMsg Type { get; private set; }
+		public TypesComponentMsg Type { get; } = TypesComponentMsg.StartMoveGamer;
+
+		public StartMoveGamer(Directions direction)
+		{
+			Direction = direction;
+		}
 	}
 }

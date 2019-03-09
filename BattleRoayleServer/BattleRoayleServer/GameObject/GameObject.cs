@@ -25,7 +25,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
-		private ObservalableQueue<IComponentMsg> messageQueue;
+		private ObservableQueue<IComponentMsg> messageQueue;
 		public ulong ID { get; private set; }
 		public IList<Component> Components { get; protected set; }
 
@@ -33,7 +33,7 @@ namespace BattleRoayleServer
 		{
 			//иницализация всех полей
 			ID = GetID();
-			messageQueue = new ObservalableQueue<IComponentMsg>();
+			messageQueue = new ObservableQueue<IComponentMsg>();
 			messageQueue.CollectionChanged += Process;
 			//коллекцию компонентов каждый объект реализует сам
 		}

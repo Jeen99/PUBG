@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -17,9 +18,11 @@ namespace BattleRoayleServer
         public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(50);
-			timerNewIteration.SynchronizingObject = null;
-			timerNewIteration.AutoReset = true;
+			timerNewIteration = new Timer(50)
+			{
+				SynchronizingObject = null,
+				AutoReset = true
+			};
 			timerNewIteration.Elapsed += TickQuantTimer;
 			quantTimer = new QuantTimer();
         }
@@ -43,7 +46,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Посредник между коллецией событий игровой модели и внешней средой
 		/// </summary>
-		public ObservableCollection<IComponentEvent> HappenedEvents {
+		public ObservableCollection<IMessage> HappenedEvents {
 			get {
 				return roomContext.HappenedEvents;
 			}

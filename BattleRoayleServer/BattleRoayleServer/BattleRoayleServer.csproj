@@ -74,7 +74,6 @@
     <Compile Include="ComponentMsg\IComponentMsg.cs" />
     <Compile Include="GameModel\IField.cs" />
     <Compile Include="GameModel\IGameModel.cs" />
-    <Compile Include="GameEventMsg\IComponentEvent.cs" />
     <Compile Include="Gamer\INetworkClient.cs" />
     <Compile Include="Components\Movement.cs" />
     <Compile Include="Components\RectangleBody.cs" />
@@ -97,7 +96,6 @@
     <Compile Include="ComponentMsg\StartMoveGamer.cs" />
     <Compile Include="ComponentMsg\TypesComponentMsg.cs" />
     <Compile Include="ComponentMsg\TimeQuantPassed.cs" />
-    <Compile Include="GameEventMsg\TypesComponentEvent.cs" />
     <Compile Include="GameObject\TypesGameObject.cs" />
     <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Weapon\Weapon.cs" />

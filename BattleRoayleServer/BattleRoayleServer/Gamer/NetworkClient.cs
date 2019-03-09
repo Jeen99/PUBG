@@ -33,13 +33,7 @@ namespace BattleRoayleServer
 		public void HanlderNewMessage()
 		{
 			IMessage msg = Gamer.ReceivedMsg.Dequeue();
-			switch (msg.TypeMessage)
-			{
-				default:
-					//записываем в лог, сообщение что не смогли обработать сообщение
-					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
-					break;
-			}
+			gamerRoomLogic.PerformAction(msg);		
 		}
 
 		public IController GetNewControler(ServerClient client)

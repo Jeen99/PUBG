@@ -27,9 +27,11 @@ namespace BattleRoayleServer
 			Clients = new List<INetworkClient>();
 			this.roomLogic = roomLogic;
 			roomLogic.HappenedEvents.CollectionChanged += HandlerGameEvent;
-			timerTotalSinch = new Timer(3 * 1000);
-			timerTotalSinch.SynchronizingObject = null;
-			timerTotalSinch.AutoReset = true;
+			timerTotalSinch = new Timer(3 * 1000)
+			{
+				SynchronizingObject = null,
+				AutoReset = true
+			};
 			timerTotalSinch.Elapsed += HandlerTotalSinch;
 			CreateClients(gamers);
 		}

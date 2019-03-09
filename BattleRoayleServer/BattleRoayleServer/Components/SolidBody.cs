@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -61,7 +62,10 @@ namespace BattleRoayleServer
 					{
 						if (fieldObject.CheckCollision(this))
 						{
-
+							//уменьшает координаты смещения в 2 раза
+							Location = new Tuple<double, double>(Location.Item1 - dX/2, Location.Item2 - dY/2);
+							//перемещаем объект на карте
+							gameModel.Field.Move(this);
 							//произошло столкновение отпраляем участникам сообщение об этом
 							this.SendMessage(new CollisionObjects(fieldObject));
 							fieldObject.SendMessage(new CollisionObjects(this));
@@ -70,6 +74,7 @@ namespace BattleRoayleServer
 					}
 				}
 			}
+			gameModel.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, Location));
 
 		}
 

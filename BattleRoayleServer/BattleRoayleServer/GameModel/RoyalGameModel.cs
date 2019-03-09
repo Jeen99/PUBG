@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
+using CSInteraction.ProgramMessage;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -16,7 +18,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Колекция событий произошедших в игре
 		/// </summary>
-		public ObservableCollection<IComponentEvent> HappenedEvents { get; private set; }
+		public ObservableQueue<IMessage> HappenedEvents { get; private set; }
 		
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами
@@ -52,7 +54,7 @@ namespace BattleRoayleServer
 			Players = new List<IPlayer>();
 			GameObjects = new List<GameObject>();
 			Field = new RoyalField();
-			HappenedEvents = new ObservableCollection<IComponentEvent>();
+			HappenedEvents = new ObservableQueue<IMessage>();
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			CreateStaticGameObject();
