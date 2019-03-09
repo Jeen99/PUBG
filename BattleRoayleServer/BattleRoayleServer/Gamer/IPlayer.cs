@@ -9,6 +9,7 @@ namespace BattleRoayleServer
     public interface IPlayer
     {
         void PerformAction(IMessage action);
+		ulong ID { get; }
         /// <summary>
         /// Возращает координтаы игрока на карте
         /// </summary>

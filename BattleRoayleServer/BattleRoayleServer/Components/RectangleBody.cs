@@ -40,6 +40,8 @@ namespace BattleRoayleServer
 			: base(owner, gameModel, location, typeSolid)
 		{
 			Size = size;
+			//размещаем объект на игровой карте
+			gameModel.Field.Put(this);
 		}
 
 		public Tuple<double, double> Size { get; private set; }

@@ -47,10 +47,14 @@
     <Compile Include="Client\BaseClient.cs" />
     <Compile Include="Common\Directions.cs" />
     <Compile Include="Common\ObservableQueue.cs" />
+    <Compile Include="Common\TypesGameObject.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
+    <Compile Include="ProgramMessage\Battle\GameObjectState.cs" />
     <Compile Include="ProgramMessage\Battle\GoTo.cs" />
     <Compile Include="ProgramMessage\Battle\PlayerMoved.cs" />
+    <Compile Include="ProgramMessage\Battle\RoomState.cs" />
     <Compile Include="ProgramMessage\Battle\StopMove.cs" />
+    <Compile Include="ProgramMessage\Battle\Location.cs" />
     <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\FailedExitOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\LoadedQueueForm.cs" />

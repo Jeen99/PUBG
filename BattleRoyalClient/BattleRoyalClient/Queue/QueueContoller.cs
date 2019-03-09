@@ -44,14 +44,22 @@ namespace BattleRoyalClient
 					Handle_FailedExitOfQueue();
 					break;
 				case TypesProgramMessage.AddInBattle:
-					Handler_AddInBattle();
+					Handler_AddInBattle((AddInBattle)msg);
 					break;
 			}
 		}
 
-		private void Handler_AddInBattle()
+		private void Handler_AddInBattle(AddInBattle msg)
 		{
-
+			view.Dispatcher.Invoke(()=>
+			{
+				client.EventEndSession -= this.Client_EventEndSession;
+				client.EventNewMessage -= this.Client_EventNewMessage;
+				Battle battleForm = new Battle(msg.ID, client, model.NickName, model.Password);
+				battleForm.Show();
+				view.Transition = true;
+				view.Close();
+			});
 		}
 
 		private void Handler_SuccessExitOfQueue()

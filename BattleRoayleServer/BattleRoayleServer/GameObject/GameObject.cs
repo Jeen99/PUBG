@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Collections.Specialized;
 using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -62,25 +63,29 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Создаем список состояний компонентов игрового объекта
 		/// </summary>
-		public GameObjectState State {
+		public IMessage State {
 			get
 			{
-				var states = new List<ComponentState>();
+				
 				lock (sinchWorkWithComponent)
 				{
-					if (Destroyed) return null;
-					else
+					if (TypesBehave == TypesBehaveObjects.Active)
 					{
-						foreach (var component in Components)
+						var states = new List<IMessage>();
+						if (Destroyed) return null;
+						else
 						{
-							var state =  component.State;
-							if (state != null)
+							foreach (var component in Components)
 							{
-								states.Add(state);
+								var state = component.State;
+								if (state != null)
+								{
+									states.Add(state);
+								}
 							}
+							return new GameObjectState(ID, Type, states);
 						}
-						return new GameObjectState(ID, Type, states);
-					}
+					}return null;
 				}
 			}
 		}

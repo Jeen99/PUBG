@@ -8,6 +8,14 @@ namespace BattleRoayleServer
 {
     public class RoyalField:IField
     {
+
+		public double LengthOfSide
+		{
+			get
+			{
+				return lengthOfSide * lengthOfSideCell;
+			}
+		}
         /// <summary>
         /// Задано статически
         /// </summary>

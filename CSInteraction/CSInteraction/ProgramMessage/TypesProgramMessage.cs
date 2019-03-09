@@ -24,6 +24,9 @@ namespace CSInteraction.ProgramMessage
 		LoadedQueueForm,
 		GoTo,
 		StopMove,
-		PlayerMoved
+		PlayerMoved,
+		Location,
+		GameObjectState,
+		RoomState
 	}
 }

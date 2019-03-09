@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSInteraction.ProgramMessage;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -12,9 +13,9 @@ namespace BattleRoayleServer
 		{
 			this.Components = new List<Component>
 			{
-				new CircleBody(this, context, location, 1.5, TypesSolid.Solid),
-				new Movement(this, (SolidBody)Components[0], 2)
+				new CircleBody(this, context, location, 1.5, TypesSolid.Solid),			
 			};
+			Components.Add(new Movement(this, (SolidBody)Components[0], 2));
 			body = (SolidBody)Components[0];
 		}
 

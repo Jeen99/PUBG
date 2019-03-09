@@ -35,8 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSInteraction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\CSInteraction\CSInteraction\bin\Debug\CSInteraction.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,12 +60,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Battle\Battle.xaml.cs">
+      <DependentUpon>Battle.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Battle\BattleModel.cs" />
+    <Compile Include="Battle\GameActionController.cs" />
+    <Compile Include="Battle\IBattleModel.cs" />
+    <Compile Include="GameObjects\Gamer.cs" />
+    <Compile Include="GameObjects\IGameObject.cs" />
+    <Compile Include="Painter.cs" />
     <Compile Include="Queue\IQueueModel.cs" />
     <Compile Include="Queue\Queue.xaml.cs">
       <DependentUpon>Queue.xaml</DependentUpon>
     </Compile>
     <Compile Include="Queue\QueueContoller.cs" />
     <Compile Include="Queue\QueueModel.cs" />
+    <Compile Include="Battle\UserActionController.cs" />
     <Page Include="Account\Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -81,6 +96,10 @@
     <Compile Include="Authorization\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
+    <Page Include="Battle\Battle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Queue\Queue.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -117,12 +136,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\CSInteraction\CSInteraction\CSInteraction.csproj">
-      <Project>{ca5aa8ca-e6c9-42db-b7ee-1d3028548aab}</Project>
-      <Name>CSInteraction</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
