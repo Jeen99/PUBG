@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
     <Compile Include="Components\CircleBody.cs" />
-    <Compile Include="Common\Directions.cs" />
     <Compile Include="ComponentMsg\EndMoveGamer.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Magazin.cs" />

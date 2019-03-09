@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace CSInteraction.Common
 {
-	class Directions
+	[Serializable]
+	public enum Directions
 	{
+		right,
+		left,
+		bottom,
+		top,
+		right_bottom,
+		right_top,
+		left_bottom,
+		left_top
 	}
 }

@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Client\BaseClient.cs" />
+    <Compile Include="Common\Directions.cs" />
     <Compile Include="Common\ObservalableQueue.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
     <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
