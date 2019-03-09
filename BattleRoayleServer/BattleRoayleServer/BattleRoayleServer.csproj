@@ -52,6 +52,7 @@
     <Compile Include="ComponentMsg\ObjectPickUp.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="GameModel\IFieldObject.cs" />
+    <Compile Include="GameObject\Box.cs" />
     <Compile Include="GameObject\Stone.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />

@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSInteraction.ProgramMessage;
-using System.Drawing
 
 namespace BattleRoayleServer
 {
     public class Gamer : GameObject, IPlayer
     {
-		public Gamer():base()
+		public Gamer(Tuple<double, double> location, IGameModel context):base()
 		{
-
+			this.Components = new List<Component>
+			{
+				new CircleBody(this, context, location, 1.5, TypesSolid.Solid),
+				new Movement(this, (SolidBody)Components[0], 2)
+			};
+			body = (SolidBody)Components[0];
 		}
 
 		/// <summary>

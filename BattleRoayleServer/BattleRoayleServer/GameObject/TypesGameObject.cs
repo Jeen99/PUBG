@@ -2,5 +2,6 @@
 {
 	Player,
 	Stone,
-	Three
+	Three,
+	Box
 }

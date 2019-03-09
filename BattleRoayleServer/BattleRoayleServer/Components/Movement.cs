@@ -57,11 +57,13 @@ namespace BattleRoayleServer
 		{
 		
 		}*/
+
 		private void Handler_EndMoveGamer()
 		{
 			//прекращаем движение
 			active = false;
 		}
+
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			if (active)
@@ -72,32 +74,32 @@ namespace BattleRoayleServer
 				switch (currentDirection)
 				{
 					case Directions.bottom:
-						dY -= speed * msg.QuantTime;
+						dY -= speed * msg.QuantTime / 1000;
 						break;
 					case Directions.left:
-						dX -= speed * msg.QuantTime;
+						dX -= speed * msg.QuantTime / 1000;
 						break;
 					case Directions.left_bottom:
-						dX -= speed * msg.QuantTime;
-						dY -= speed * msg.QuantTime;
+						dX -= speed * msg.QuantTime / 1000;
+						dY -= speed * msg.QuantTime / 1000;
 						break;
 					case Directions.left_top:
-						dX -= speed * msg.QuantTime;
-						dY = speed * msg.QuantTime;
+						dX -= speed * msg.QuantTime / 1000;
+						dY = speed * msg.QuantTime / 1000;
 						break;
 					case Directions.right:
-						dX = speed * msg.QuantTime;
+						dX = speed * msg.QuantTime / 1000;
 						break;
 					case Directions.right_bottom:
-						dX = speed * msg.QuantTime;
-						dY -= speed * msg.QuantTime;
+						dX = speed * msg.QuantTime / 1000;
+						dY -= speed * msg.QuantTime / 1000;
 						break;
 					case Directions.right_top:
-						dX = speed * msg.QuantTime;
-						dY = speed * msg.QuantTime;
+						dX = speed * msg.QuantTime / 1000;
+						dY = speed * msg.QuantTime / 1000;
 						break;
 					case Directions.top:
-						dY = speed * msg.QuantTime;
+						dY = speed * msg.QuantTime / 1000;
 						break;
 				}
 				body.AppendCoords(dX, dY);

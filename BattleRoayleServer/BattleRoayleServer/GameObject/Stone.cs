@@ -10,9 +10,9 @@ namespace BattleRoayleServer
 	{
 		public override TypesGameObject Type { get; } = TypesGameObject.Stone;
 
-        public override TypesBehaveObjects TypesBehave => throw new NotImplementedException();
+        public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
-        public Stone(IGameModel roomContext, Tuple<double, double> location, double radius, byte angle)
+        public Stone(IGameModel roomContext, Tuple<double, double> location, double radius)
 		{
 			Components = new List<Component>
 			{
