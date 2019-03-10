@@ -41,16 +41,16 @@ namespace BattleRoyalClient
 			//клонируем основное изображение
 			Bitmap frame = (Bitmap)battleContoller.Model.GetBackground;
 			//получаем центр экрана
-			Tuple<double, double> CentreScreen = battleContoller.Model.CentreScreen;
+			PointF CentreScreen = battleContoller.Model.CentreScreen;
 			//вычисляем дипазоны
-			Tuple<double, double> DiapasonX = new Tuple<double, double>(CentreScreen.Item1 - Field.Width / 2, CentreScreen.Item1 + Field.Width / 2);
-			Tuple<double, double> DiapasonY = new Tuple<double, double>(CentreScreen.Item2 - Field.Height / 2, CentreScreen.Item1 + Field.Height / 2);
+			Tuple<double, double> DiapasonX = new Tuple<double, double>(CentreScreen.X - Field.Width / 2, CentreScreen.X + Field.Width / 2);
+			Tuple<double, double> DiapasonY = new Tuple<double, double>(CentreScreen.Y - Field.Height / 2, CentreScreen.Y + Field.Height / 2);
 			using (Graphics gr = Graphics.FromImage(frame))
 			{
 				foreach (var gameObject in battleContoller.Model.GameObjects)
 				{
-					if(DiapasonX.Item1 <= gameObject.Value.Location.Item1 && DiapasonX.Item2 >= gameObject.Value.Location.Item1 &&
-						DiapasonY.Item1 <= gameObject.Value.Location.Item2 && DiapasonY.Item2 >= gameObject.Value.Location.Item2)
+					if(DiapasonX.Item1 <= gameObject.Value.Location.X && DiapasonX.Item2 >= gameObject.Value.Location.X &&
+						DiapasonY.Item1 <= gameObject.Value.Location.Y && DiapasonY.Item2 >= gameObject.Value.Location.Y)
 						gameObject.Value.Draw(gr);
 					
 				}

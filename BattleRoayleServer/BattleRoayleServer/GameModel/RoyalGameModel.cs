@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using CSInteraction.ProgramMessage;
 using CSInteraction.Common;
 using System.Collections.Specialized;
+using System.Drawing;
 
 namespace BattleRoayleServer
 {
@@ -31,15 +32,15 @@ namespace BattleRoayleServer
 		private void CreateStaticGameObject()
 		{
 			//скрипт создания игровых объектов
-			Stone stone = new Stone(this, new Tuple<double, double>(10, 10), 8);
+			Stone stone = new Stone(this, new PointF(10, 10), 8);
 			GameObjects.AddOrUpdate(stone.ID, stone,(k,v)=> { return v; });
-			stone = new Stone(this, new Tuple<double, double>(30, 28), 1);
+			stone = new Stone(this, new PointF(30, 28), 1);
 			GameObjects.AddOrUpdate(stone.ID, stone, (k, v) => { return v; });
-			stone = new Stone(this, new Tuple<double, double>(78, 30), 2);
+			stone = new Stone(this, new PointF(78, 30), 2);
 			GameObjects.AddOrUpdate(stone.ID, stone, (k, v) => { return v; });
-			Box box = new Box(this, new Tuple<double, double>(40, 100));
+			Box box = new Box(this, new PointF(40, 100));
 			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
-			box = new Box(this, new Tuple<double, double>(150, 10));
+			box = new Box(this, new PointF(150, 10));
 			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
 		}
 
@@ -56,16 +57,16 @@ namespace BattleRoayleServer
 				GameObjects.AddOrUpdate(gamer.ID,gamer, (k, v) => { return v; });
 			}
 		}
-		private Tuple<double, double> CreatePlayerLocation(int index)
+		private PointF CreatePlayerLocation(int index)
 		{
 			switch (index)
 			{
 				case 0:
-					return new Tuple<double, double>(50, 70);
+					return new PointF(50, 70);
 				case 1:
-					return new Tuple<double, double>(100, 170);
+					return new PointF(100, 170);
 				default:
-					return new Tuple<double, double>(0, 0);
+					return new PointF(0, 0);
 			}
 		}
 		public RoyalGameModel(int gamersInRoom)

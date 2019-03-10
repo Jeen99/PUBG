@@ -9,25 +9,25 @@ namespace BattleRoyalClient
 {
 	class Gamer : IGameObject
 	{
-		public Tuple<double, double> Location { get; set; }
-		private const double Radius = 1.5;
+		public PointF Location { get; set; }
+		private const float Radius = 1.5F;
 		public void Draw(Graphics gr)
 		{
 			using (Brush NewBrush = new SolidBrush(Color.Black))
 			{
-				gr.FillEllipse(NewBrush, (float)(Location.Item1 - Radius / 2), (float)(Location.Item2 - Radius / 2),
+				gr.FillEllipse(NewBrush, (Location.X - Radius / 2), (Location.Y - Radius / 2),
 					(float)Radius, (float)Radius);
 			}
 		}
 
-		public Gamer(Tuple<double, double> location)
+		public Gamer(PointF location)
 		{
 			Location = location;
 		}
 
 		public Gamer()
 		{
-			Location = new Tuple<double, double>(0,0);
+			Location = new PointF(0, 0);
 		}
 	}
 }

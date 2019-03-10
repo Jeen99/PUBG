@@ -29,7 +29,7 @@ namespace BattleRoyalClient
 			}
 		}
 
-		public Tuple<double, double> CentreScreen {
+		public PointF CentreScreen {
 			get {
 				return GameObjects[id].Location;
 			}

@@ -16,13 +16,13 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Скорость игрока
 		/// </summary>
-		private double speed;
+		private float speed;
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
 		private SolidBody body;
 
-		public Movement(GameObject parent, SolidBody body, double speed) : base(parent)
+		public Movement(GameObject parent, SolidBody body, float speed) : base(parent)
 		{
 			this.speed = speed;
 			this.body = body;
@@ -68,38 +68,39 @@ namespace BattleRoayleServer
 		{
 			if (active)
 			{
-				double dX = 0;
-				double dY = 0;
+				float dX = 0;
+				float dY = 0;
+				float delta = (float)(speed * msg.QuantTime / 1000);
 
 				switch (currentDirection)
 				{
 					case Directions.bottom:
-						dY -= speed * msg.QuantTime / 1000;
+						dY -= delta;
 						break;
 					case Directions.left:
-						dX -= speed * msg.QuantTime / 1000;
+						dX -= delta;
 						break;
 					case Directions.left_bottom:
-						dX -= speed * msg.QuantTime / 1000;
-						dY -= speed * msg.QuantTime / 1000;
+						dX -= delta;
+						dY -= delta;
 						break;
 					case Directions.left_top:
-						dX -= speed * msg.QuantTime / 1000;
-						dY = speed * msg.QuantTime / 1000;
+						dX -= delta;
+						dY = delta;
 						break;
 					case Directions.right:
-						dX = speed * msg.QuantTime / 1000;
+						dX = delta;
 						break;
 					case Directions.right_bottom:
-						dX = speed * msg.QuantTime / 1000;
-						dY -= speed * msg.QuantTime / 1000;
+						dX = delta;
+						dY -= delta;
 						break;
 					case Directions.right_top:
-						dX = speed * msg.QuantTime / 1000;
-						dY = speed * msg.QuantTime / 1000;
+						dX = delta;
+						dY = delta;
 						break;
 					case Directions.top:
-						dY = speed * msg.QuantTime / 1000;
+						dY = delta;
 						break;
 				}
 				body.AppendCoords(dX, dY);

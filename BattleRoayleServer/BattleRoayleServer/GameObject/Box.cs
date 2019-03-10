@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,11 @@ namespace BattleRoayleServer
 {
 	 class Box:GameObject
 	{
-		public Box(IGameModel context, Tuple<double, double> location): base()
+		public Box(IGameModel context, PointF location): base()
 		{
 			this.Components = new List<Component>
 			{
-				new RectangleBody(this, context, location, new Tuple<double, double>(3,3), TypesSolid.Solid)
+				new RectangleBody(this, context, location, new Tuple<float, float>(3,3), TypesSolid.Solid)
 			};
 		}
 

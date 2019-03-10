@@ -11,6 +11,6 @@ namespace BattleRoyalClient
 		event ChangeModel BattleChangeModel;
 		Bitmap GetBackground { get; }
 		ConcurrentDictionary<ulong, IGameObject> GameObjects { get; }
-		Tuple<double, double> CentreScreen { get; }
+		PointF CentreScreen { get; }
 	}
 }

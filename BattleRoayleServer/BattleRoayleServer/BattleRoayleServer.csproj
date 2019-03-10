@@ -45,9 +45,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
-    <Compile Include="Components\CircleBody.cs" />
     <Compile Include="ComponentMsg\EndMoveGamer.cs" />
     <Compile Include="Components\Collector.cs" />
+    <Compile Include="Components\Collision\CircleBody.cs" />
+    <Compile Include="Components\Collision\RectangleBody.cs" />
+    <Compile Include="Components\Collision\SolidBody.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="ComponentMsg\ObjectPickUp.cs" />
     <Compile Include="Common\QuantTimer.cs" />
@@ -75,7 +77,6 @@
     <Compile Include="GameModel\IGameModel.cs" />
     <Compile Include="Gamer\INetworkClient.cs" />
     <Compile Include="Components\Movement.cs" />
-    <Compile Include="Components\RectangleBody.cs" />
     <Compile Include="Room\INetwork.cs" />
     <Compile Include="Gamer\IPlayer.cs" />
     <Compile Include="Room\IRoom.cs" />
@@ -91,7 +92,6 @@
     <Compile Include="GameModel\RoyalGameModel.cs" />
     <Compile Include="Room\RoyalRoomLogic.cs" />
     <Compile Include="GameModel\RoyalField.cs" />
-    <Compile Include="Components\SolidBody.cs" />
     <Compile Include="ComponentMsg\StartMoveGamer.cs" />
     <Compile Include="ComponentMsg\TypesComponentMsg.cs" />
     <Compile Include="ComponentMsg\TimeQuantPassed.cs" />
@@ -108,5 +108,6 @@
       <Name>CSInteraction</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

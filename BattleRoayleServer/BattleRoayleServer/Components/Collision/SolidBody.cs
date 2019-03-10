@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using CSInteraction.Common;
@@ -11,7 +12,7 @@ namespace BattleRoayleServer
 	{
 		protected IGameModel gameModel;
 
-		protected SolidBody(GameObject parent, IGameModel gameModel, Tuple<double, double> location, TypesSolid typesSolid)
+		protected SolidBody(GameObject parent, IGameModel gameModel, PointF location, TypesSolid typesSolid)
 			: base(parent)
 		{
 			TypeSolid = typesSolid;
@@ -25,7 +26,13 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Расположение объекта на игровой карте
 		/// </summary>
-		public Tuple<double, double> Location { get; private set; }
+		private PointF location; // если не выносить в переменную, не получается 
+		//изменить свойство, без создания нового объекта
+		public PointF Location
+		{
+			get { return location; }
+			private set { location = value; }	// не везде используется
+		}
 
 		public IList<CellField> CoveredCells { get; set; }
 
@@ -46,21 +53,26 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Перемещает объект на переданное расстояние, под заданным углом
 		/// </summary>
-		public virtual void AppendCoords(double dX, double dY)
+		public virtual void AppendCoords(float dX, float dY)
 		{
 			//изменяем координаты
 			//проверка на граничные значения
-			double NewX;
-			double NewY;
-			if (Location.Item1 + dX < 0) NewX = 0;
-			else if (Location.Item1 + dX > gameModel.Field.LengthOfSide) NewX = gameModel.Field.LengthOfSide;
-			else NewX = Location.Item1 + dX;
+			if (Location.X + dX < 0)
+				location.X = 0;
+			else 
+				if (Location.X + dX > gameModel.Field.LengthOfSide)
+				location.X = gameModel.Field.LengthOfSide;
+			else
+				location.X = Location.X + dX;
 
-			if (Location.Item2 + dY < 0) NewY = 0;
-			else if (Location.Item2 + dY > gameModel.Field.LengthOfSide) NewY = gameModel.Field.LengthOfSide;
-			else NewY = Location.Item2 + dY;
+			if (Location.Y + dY < 0)
+				location.Y = 0;
+			else 
+				if (Location.Y + dY > gameModel.Field.LengthOfSide)
+					location.Y = gameModel.Field.LengthOfSide;
+			else
+				location.Y = Location.Y + dY;
 
-			Location = new Tuple<double, double>(NewX, NewY);
 			gameModel.Field.Move(this);
 			//проверяем на столкновение 
 			//в каждой клетке, на которой находится игрок
@@ -74,13 +86,13 @@ namespace BattleRoayleServer
 						if (fieldObject.CheckCollision(this))
 						{
 							//уменьшает координаты смещения в 2 раза
-							Location = new Tuple<double, double>(Location.Item1 - dX / 2, Location.Item2 - dY / 2);
+							location.X -= dX / 2;
+							location.Y -= dY / 2;
 							//перемещаем объект на карте
 							gameModel.Field.Move(this);
 							//произошло столкновение отпраляем участникам сообщение об этом
 							this.SendMessage(new CollisionObjects(fieldObject));
 							fieldObject.SendMessage(new CollisionObjects(this));
-
 						}
 					}
 				}
@@ -91,6 +103,7 @@ namespace BattleRoayleServer
 
 		protected abstract bool CheckCollisionWithCircle(IFieldObject fieldObject);
 		protected abstract bool CheckCollisionWithRectangle(IFieldObject fieldObject);
+
 		public bool CheckCollision(IFieldObject fieldObject)
 		{
 			switch (fieldObject.Type)
@@ -101,16 +114,17 @@ namespace BattleRoayleServer
 					return CheckCollisionWithRectangle(this);
 				default:
 					return false;
-			}
+			}		
 		}
 
-		public abstract IList<Directions> CheckCovered(Tuple<double, double> XDiapason, Tuple<double, double> YDiapason);
+		public abstract IList<Directions> CheckCovered(Tuple<float, float> XDiapason, Tuple<float, float> YDiapason);
 
 		public abstract TypesSolidBody Type { get; }
 
 		public override IMessage State 
 		{
-			get {
+			get 
+			{
 				return new Location(this.Location);
 			}
 		}

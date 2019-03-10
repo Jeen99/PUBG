@@ -10,6 +10,6 @@ namespace BattleRoyalClient
 	interface IGameObject
 	{
 		void Draw(Graphics gr);
-		Tuple<double, double> Location { get; }
+		PointF Location { get; }
 	}
 }
