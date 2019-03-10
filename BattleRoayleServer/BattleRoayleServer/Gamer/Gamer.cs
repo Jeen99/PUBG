@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using CSInteraction.ProgramMessage;
@@ -17,12 +18,12 @@ namespace BattleRoayleServer
 
         public override TypesBehaveObjects TypesBehave => throw new NotImplementedException();
 
-        public Tuple<int, int> GetLocation()
-        {
-            throw new NotImplementedException();
-        }
+		public PointF GetLocation()
+		{
+			throw new NotImplementedException();
+		}
 
-        public void PerformAction(IMessage action)
+		public void PerformAction(IMessage action)
         {
             throw new NotImplementedException();
         }

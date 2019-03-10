@@ -23,14 +23,13 @@ namespace BattleRoayleServer
 				return onThisCell;
 			}
 		}
-
-		    
+	    
         /// <summary>
         /// Расположение левого вернего угла клетки на карте
         /// </summary>
-        public Tuple<double, double> Location { get; private set; }
+        public Tuple<float, float> Location { get; private set; }
 
-		public CellField(Tuple<double, double> location)
+		public CellField(Tuple<float, float> location)
 		{
 			Location = location;
 		}

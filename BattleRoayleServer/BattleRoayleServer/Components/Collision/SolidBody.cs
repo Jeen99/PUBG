@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -9,7 +10,7 @@ namespace BattleRoayleServer
 	{
 		protected IGameModel gameModel;
 
-		protected SolidBody(GameObject parent, IGameModel gameModel, Tuple<double, double> location, TypesSolid typesSolid)
+		protected SolidBody(GameObject parent, IGameModel gameModel, PointF location, TypesSolid typesSolid)
 			: base(parent)
 		{
 			TypeSolid = typesSolid;
@@ -24,7 +25,13 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Расположение объекта на игровой карте
 		/// </summary>
-		public Tuple<double, double> Location { get; private set; }
+		private PointF location; // если не выносить в переменную, не получается 
+		//изменить свойство, без создания нового объекта
+		public PointF Location
+		{
+			get { return location; }
+			private set { location = value; }
+		}
 
 		public IList<CellField> CoveredCells { get; set; }
 
@@ -44,10 +51,11 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Перемещает объект на переданное расстояние, под заданным углом
 		/// </summary>
-		public virtual void AppendCoords(double dX, double dY)
+		public virtual void AppendCoords(float dX, float dY)
 		{
 			//изменяем координаты
-			Location = new Tuple<double, double>(Location.Item1 + dX, Location.Item2 + dY);
+			location.X += dX;
+			location.Y += dY;
 			gameModel.Field.Move(this);
 			//проверяем на столкновение 
 			//в каждой клетке, на которой находится игрок
@@ -60,11 +68,9 @@ namespace BattleRoayleServer
 					{
 						if (fieldObject.CheckCollision(this))
 						{
-
 							//произошло столкновение отпраляем участникам сообщение об этом
 							this.SendMessage(new CollisionObjects(fieldObject));
 							fieldObject.SendMessage(new CollisionObjects(this));
-
 						}
 					}
 				}
@@ -74,20 +80,21 @@ namespace BattleRoayleServer
 
 		protected abstract bool CheckCollisionWithCircle(IFieldObject fieldObject);
 		protected abstract bool CheckCollisionWithRectangle(IFieldObject fieldObject);
+
 		public bool CheckCollision(IFieldObject fieldObject)
-		{		
-				switch (fieldObject.Type)
-				{
-					case TypesSolidBody.Circle:
-						return CheckCollisionWithCircle(this);
-					case TypesSolidBody.Rectangle:
-						return CheckCollisionWithRectangle(this);
-					default:
-						return false;
-				}		
+		{
+			switch (fieldObject.Type)
+			{
+				case TypesSolidBody.Circle:
+					return CheckCollisionWithCircle(this);
+				case TypesSolidBody.Rectangle:
+					return CheckCollisionWithRectangle(this);
+				default:
+					return false;
+			}		
 		}
 
-		public abstract IList<Directions> CheckCovered(Tuple<double, double> XDiapason, Tuple<double, double> YDiapason);
+		public abstract IList<Directions> CheckCovered(Tuple<float, float> XDiapason, Tuple<float, float> YDiapason);
 
 		public abstract TypesSolidBody Type { get; }
 	}
