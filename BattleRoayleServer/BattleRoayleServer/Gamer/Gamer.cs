@@ -29,13 +29,16 @@ namespace BattleRoayleServer
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
 
-		// дичь какая-то, без нее не хочет интерфейс реализовываться, хотя должен
-		PointF IPlayer.Location =>  body.Location;
-
-		public PointF Location()
+		
+		PointF IPlayer.Location
 		{
+			get
+			{
 				return body.Location;
+			}
 		}
+
+		
 
 		public void PerformAction(IMessage action)
 		{
