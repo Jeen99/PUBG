@@ -10,6 +10,7 @@ namespace BattleRoayleServer
         IList<INetworkClient> Clients { get; }
 
         void Start();
+		void Stop();
         void Dispose();
     }
 }

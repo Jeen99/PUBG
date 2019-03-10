@@ -46,13 +46,13 @@
   <ItemGroup>
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
     <Compile Include="Components\CircleBody.cs" />
-    <Compile Include="Common\Directions.cs" />
     <Compile Include="ComponentMsg\EndMoveGamer.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="ComponentMsg\ObjectPickUp.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="GameModel\IFieldObject.cs" />
+    <Compile Include="GameObject\Box.cs" />
     <Compile Include="GameObject\Stone.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />
@@ -63,19 +63,16 @@
     <Compile Include="Components\Shot.cs" />
     <Compile Include="GameModel\CellField.cs" />
     <Compile Include="Components\Component.cs" />
-    <Compile Include="Components\ComponentState.cs" />
     <Compile Include="Controlers\AccountController.cs" />
     <Compile Include="Controlers\AuthorizationController.cs" />
     <Compile Include="DataBase\AchievementsOfBattle.cs" />
     <Compile Include="DataBase\BDAccounts.cs" />
     <Compile Include="DataBase\DataOfAccount.cs" />
     <Compile Include="GameObject\GameObject.cs" />
-    <Compile Include="GameObject\GameObjectState.cs" />
     <Compile Include="Gamer\Gamer.cs" />
     <Compile Include="ComponentMsg\IComponentMsg.cs" />
     <Compile Include="GameModel\IField.cs" />
     <Compile Include="GameModel\IGameModel.cs" />
-    <Compile Include="GameEventMsg\IComponentEvent.cs" />
     <Compile Include="Gamer\INetworkClient.cs" />
     <Compile Include="Components\Movement.cs" />
     <Compile Include="Components\RectangleBody.cs" />
@@ -98,8 +95,6 @@
     <Compile Include="ComponentMsg\StartMoveGamer.cs" />
     <Compile Include="ComponentMsg\TypesComponentMsg.cs" />
     <Compile Include="ComponentMsg\TimeQuantPassed.cs" />
-    <Compile Include="GameEventMsg\TypesComponentEvent.cs" />
-    <Compile Include="GameObject\TypesGameObject.cs" />
     <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Weapon\Weapon.cs" />
   </ItemGroup>

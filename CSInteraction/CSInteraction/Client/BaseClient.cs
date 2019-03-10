@@ -26,14 +26,14 @@ namespace CSInteraction.Client
         //уведомляет о получении нового сообщения от сервера
         public event NewMessage EventNewMessage;
         public event EndSession EventEndSession;
-		public ObservalableQueue<IMessage> ReceivedMsg { get; private set; }
+		public ObservableQueue<IMessage> ReceivedMsg { get; private set; }
 		//конструктор
 		public BaseClient(string ipAdress, int port)
         {
             IPAdress = ipAdress;
             Port = port;
             Status = StatusClient.Initialize;
-			ReceivedMsg = new ObservalableQueue<IMessage>();
+			ReceivedMsg = new ObservableQueue<IMessage>();
 		}
         //закрывает подлючение
         public void Close()

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -40,6 +41,8 @@ namespace BattleRoayleServer
 			: base(owner, gameModel, location, typeSolid)
 		{
 			Radius = radius;
+			//размещаем объект на игровой карте
+			gameModel.Field.Put(this);
 		}
 
 		public double Radius { get; private set; }
