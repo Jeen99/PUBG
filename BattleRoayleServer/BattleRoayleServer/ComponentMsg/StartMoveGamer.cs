@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -9,6 +10,11 @@ namespace BattleRoayleServer
 	{
 		public Directions Direction { get; private set; }
 
-		public TypesComponentMsg Type { get; private set; }
+		public TypesComponentMsg Type { get; } = TypesComponentMsg.StartMoveGamer;
+
+		public StartMoveGamer(Directions direction)
+		{
+			Direction = direction;
+		}
 	}
 }

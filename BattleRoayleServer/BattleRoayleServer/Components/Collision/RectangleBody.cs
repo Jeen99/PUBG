@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -40,6 +41,8 @@ namespace BattleRoayleServer
 			: base(owner, gameModel, location, typeSolid)
 		{
 			Size = size;
+			//размещаем объект на игровой карте
+			gameModel.Field.Put(this);
 		}
 
 		public Tuple<float, float> Size { get; private set; }

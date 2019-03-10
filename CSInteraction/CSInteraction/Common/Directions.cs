@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleRoayleServer
+namespace CSInteraction.Common
 {
+	[Serializable]
 	public enum Directions
 	{
 		right,

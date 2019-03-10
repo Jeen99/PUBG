@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
     public class RoyalField : IField
     {
+
+		public float LengthOfSide
+		{
+			get
+			{
+				return lengthOfSide * lengthOfSideCell;
+			}
+		}
         /// <summary>
         /// Задано статически
         /// </summary>
@@ -23,11 +33,12 @@ namespace BattleRoayleServer
 		public RoyalField()
 		{
 			content = new CellField[lengthOfSide, lengthOfSide];
+
 			for (int i = 0; i < lengthOfSide; i++)
 			{
 				for (int j = 0; j < lengthOfSide; j++)
 				{
-					content[i, j] = new CellField(new Tuple<float, float>(i * lengthOfSideCell, j * lengthOfSideCell));
+					content[i, j] = new CellField(new PointF(i * lengthOfSideCell, j * lengthOfSideCell));
 				}
 			}
 		}

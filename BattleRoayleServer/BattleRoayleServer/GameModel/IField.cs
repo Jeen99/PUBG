@@ -10,5 +10,7 @@ namespace BattleRoayleServer
         void Put(IFieldObject fieldObject);
         void Remove(IFieldObject fieldObject);
 		void Move(IFieldObject fieldObject);
-    }
+		float LengthOfSide { get; }
+
+	}
 }

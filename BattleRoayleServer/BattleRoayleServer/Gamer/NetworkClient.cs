@@ -17,8 +17,6 @@ namespace BattleRoayleServer
 
 		public string Password { get; private set; }
 
-		public byte ID { get; private set; } 
-
 		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password, byte id)
 		{
 			this.gamerRoomLogic = gamerRoomLogic;
@@ -26,20 +24,15 @@ namespace BattleRoayleServer
 			Gamer = gamer;
 			Gamer.Controler = this;
 			Password = password;
-			ID = id;
+			//посылаем сообщение о том, что игрок добавлен в игровую комнату
+			gamer.SendMessage(new AddInBattle(gamerRoomLogic.ID));
 
 		}
 
 		public void HanlderNewMessage()
 		{
 			IMessage msg = Gamer.ReceivedMsg.Dequeue();
-			switch (msg.TypeMessage)
-			{
-				default:
-					//записываем в лог, сообщение что не смогли обработать сообщение
-					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
-					break;
-			}
+			gamerRoomLogic.PerformAction(msg);		
 		}
 
 		public IController GetNewControler(ServerClient client)

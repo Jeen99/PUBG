@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 
@@ -27,9 +28,9 @@ namespace BattleRoayleServer
         /// <summary>
         /// Расположение левого вернего угла клетки на карте
         /// </summary>
-        public Tuple<float, float> Location { get; private set; }
+        public PointF Location { get; private set; }
 
-		public CellField(Tuple<float, float> location)
+		public CellField(PointF location)
 		{
 			Location = location;
 		}

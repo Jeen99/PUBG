@@ -20,7 +20,7 @@ namespace CSInteraction.Server
         private BinaryFormatter formatter;
         private Thread ThreadOfHandlerMsg;
         public IController Controler { get; set; }
-		public ObservalableQueue<IMessage> ReceivedMsg { get; private set; }
+		public ObservableQueue<IMessage> ReceivedMsg { get; private set; }
 		private Mutex SendMsgSinch = new Mutex();
         //уведомляет о получении нового сообщения от клиента
         public event EndSession EventEndSession;
@@ -31,7 +31,7 @@ namespace CSInteraction.Server
             formatter = new BinaryFormatter();
             //создаем обработчик сообшений от пользователя
             Controler = baseControler.GetNewControler(this);
-			ReceivedMsg = new ObservalableQueue<IMessage>();
+			ReceivedMsg = new ObservableQueue<IMessage>();
 			//обработка сообщений производитсва в отдельном потоке
 			ThreadOfHandlerMsg = new Thread(StartReadMessage);
             ThreadOfHandlerMsg.Start();

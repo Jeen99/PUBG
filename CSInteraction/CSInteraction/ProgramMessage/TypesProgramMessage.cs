@@ -21,6 +21,12 @@ namespace CSInteraction.ProgramMessage
 		SuccessExitOfQueue,
 		LoadedAccountForm,
 		AddInBattle,
-		LoadedQueueForm
+		LoadedQueueForm,
+		GoTo,
+		StopMove,
+		PlayerMoved,
+		Location,
+		GameObjectState,
+		RoomState
 	}
 }

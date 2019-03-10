@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using CSInteraction.ProgramMessage;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -11,13 +13,13 @@ namespace BattleRoayleServer
         /// <summary>
         /// Возвращает состояние объектов в данный момент времени
         /// </summary>
-        IList<GameObjectState> RoomState { get; }
+       IMessage RoomState { get; }
 		/// <summary>
 		/// Содержит список живых игроков
 		/// </summary>
 		IList<IPlayer> Players { get; }
 
-		ObservableCollection<IComponentEvent> HappenedEvents { get; }
+		ObservableQueue<IMessage> HappenedEvents { get; }
 
 		/// <summary>
 		/// Запускает игровую комнату

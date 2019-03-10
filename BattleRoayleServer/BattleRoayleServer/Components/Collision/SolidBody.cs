@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -15,9 +17,8 @@ namespace BattleRoayleServer
 		{
 			TypeSolid = typesSolid;
 			Location = location;
-			this.gameModel = gameModel; 
-			//размещаем объект на игровой карте
-			gameModel.Field.Put(this);
+			this.gameModel = gameModel;
+			
 		}
 
 		public TypesSolid TypeSolid { get; private set; }
@@ -30,17 +31,18 @@ namespace BattleRoayleServer
 		public PointF Location
 		{
 			get { return location; }
-			private set { location = value; }
+			private set { location = value; }	// не везде используется
 		}
 
 		public IList<CellField> CoveredCells { get; set; }
 
 		public override void ProcessMsg(IComponentMsg msg)
-		{
-			switch (msg.Type)
-			{
-				//данный компонент не обрабатывает никакие внешние сообщения на данных момент
-			}
+		{		
+				switch (msg.Type)
+				{
+					//данный компонент не обрабатывает никакие внешние сообщения на данных момент
+				}
+			
 		}
 
 		public void SendMessage(IComponentMsg msg)
@@ -54,8 +56,23 @@ namespace BattleRoayleServer
 		public virtual void AppendCoords(float dX, float dY)
 		{
 			//изменяем координаты
-			location.X += dX;
-			location.Y += dY;
+			//проверка на граничные значения
+			if (Location.X + dX < 0)
+				location.X = 0;
+			else 
+				if (Location.X + dX > gameModel.Field.LengthOfSide)
+				location.X = gameModel.Field.LengthOfSide;
+			else
+				location.X = Location.X + dX;
+
+			if (Location.Y + dY < 0)
+				location.Y = 0;
+			else 
+				if (Location.Y + dY > gameModel.Field.LengthOfSide)
+					location.Y = gameModel.Field.LengthOfSide;
+			else
+				location.Y = Location.Y + dY;
+
 			gameModel.Field.Move(this);
 			//проверяем на столкновение 
 			//в каждой клетке, на которой находится игрок
@@ -68,6 +85,11 @@ namespace BattleRoayleServer
 					{
 						if (fieldObject.CheckCollision(this))
 						{
+							//уменьшает координаты смещения в 2 раза
+							location.X -= dX / 2;
+							location.Y -= dY / 2;
+							//перемещаем объект на карте
+							gameModel.Field.Move(this);
 							//произошло столкновение отпраляем участникам сообщение об этом
 							this.SendMessage(new CollisionObjects(fieldObject));
 							fieldObject.SendMessage(new CollisionObjects(this));
@@ -75,6 +97,7 @@ namespace BattleRoayleServer
 					}
 				}
 			}
+			gameModel.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, Location));
 
 		}
 
@@ -97,6 +120,14 @@ namespace BattleRoayleServer
 		public abstract IList<Directions> CheckCovered(Tuple<float, float> XDiapason, Tuple<float, float> YDiapason);
 
 		public abstract TypesSolidBody Type { get; }
+
+		public override IMessage State 
+		{
+			get 
+			{
+				return new Location(this.Location);
+			}
+		}
 	}
 
 	public enum TypesSolid
