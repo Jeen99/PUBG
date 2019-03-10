@@ -55,9 +55,10 @@ namespace BattleRoyalClient
 					
 				}
 			}
-			//Bitmap bit = frame.Clone(new Rectangle((int)DiapasonX.Item1, (int)DiapasonY.Item1,
-				//(int)Field.Width, (int)Field.Height));
-			Field.Source = BitmapToImageSource(frame);
+			
+			Bitmap bit = frame.Clone(new Rectangle(0, 0,
+				120, 60), frame.PixelFormat);
+			Field.Source = BitmapToImageSource(bit);
 
 		}
 		BitmapImage BitmapToImageSource(Bitmap bitmap)
