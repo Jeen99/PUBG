@@ -142,7 +142,7 @@ namespace CSInteraction.Server
                 int ReadBytes = 0;
                 while (ReadBytes != length)
                 {
-                    int readed = stream.Read(data, 0, length - ReadBytes);
+                    int readed = stream.Read(data, ReadBytes, length - ReadBytes);
                     ReadBytes += readed;
                     if (readed == 0) return 0;
                 }
