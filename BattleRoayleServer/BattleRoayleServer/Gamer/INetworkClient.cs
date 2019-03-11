@@ -11,6 +11,5 @@ namespace BattleRoayleServer
         string Nick { get; }
         ServerClient Gamer { get; }
 		string Password { get; }
-		byte ID { get; }
 	}
 }

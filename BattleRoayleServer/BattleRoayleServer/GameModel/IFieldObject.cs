@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -15,7 +17,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Координаты центра игрового объекта на карте
 		/// </summary>
-		Tuple<double, double> Location { get; }
+		PointF Location { get; }
 		/// <summary>
 		/// Ссылка на рродительский объект
 		/// </summary>
@@ -27,7 +29,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Возвращает клетки на которые еще заходит данный объект кроме центральной
 		/// </summary>
-		IList<Directions> CheckCovered(Tuple<double, double> XDiapason, Tuple<double, double> YDiapason);
+		IList<Directions> CheckCovered(Tuple<float, float> XDiapason, Tuple<float, float> YDiapason);
 		/// <summary>
 		/// Бывают круглые и прямоугольники
 		/// </summary>

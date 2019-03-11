@@ -1,12 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-    public class RoyalField:IField
+    public class RoyalField : IField
     {
+
+		public float LengthOfSide
+		{
+			get
+			{
+				return lengthOfSide * lengthOfSideCell;
+			}
+		}
         /// <summary>
         /// Задано статически
         /// </summary>
@@ -23,11 +33,12 @@ namespace BattleRoayleServer
 		public RoyalField()
 		{
 			content = new CellField[lengthOfSide, lengthOfSide];
+
 			for (int i = 0; i < lengthOfSide; i++)
 			{
 				for (int j = 0; j < lengthOfSide; j++)
 				{
-					content[i, j] = new CellField(new Tuple<double, double>(i * lengthOfSideCell, j * lengthOfSideCell));
+					content[i, j] = new CellField(new PointF(i * lengthOfSideCell, j * lengthOfSideCell));
 				}
 			}
 		}
@@ -38,11 +49,11 @@ namespace BattleRoayleServer
 		private List<CellField> GetCovered(IFieldObject fieldObject)
 		{
 			//определяем центральную клетку, на которых находиться данный объект
-			int X = (int)Math.Truncate(fieldObject.Location.Item1 / lengthOfSideCell);
-			int Y = (int)Math.Truncate(fieldObject.Location.Item2 / lengthOfSideCell);
+			int X = (int)Math.Truncate(fieldObject.Location.X / lengthOfSideCell);
+			int Y = (int)Math.Truncate(fieldObject.Location.Y / lengthOfSideCell);
 
-			IList<Directions> directionsCoveredCells = fieldObject.CheckCovered(new Tuple<double, double>(X * lengthOfSideCell, (X + 1) * lengthOfSideCell),
-				new Tuple<double, double>(Y * lengthOfSideCell, (Y + 1) * lengthOfSideCell));
+			IList<Directions> directionsCoveredCells = fieldObject.CheckCovered(new Tuple<float, float>(X * lengthOfSideCell, (X + 1) * lengthOfSideCell),
+				new Tuple<float, float>(Y * lengthOfSideCell, (Y + 1) * lengthOfSideCell));
 
 			List<CellField> coveredCells;
 			if (directionsCoveredCells != null)
@@ -94,8 +105,8 @@ namespace BattleRoayleServer
 		public void Put(IFieldObject fieldObject)
         {
 			//определяем центральную клетку, на которых находиться данный объект
-			int X = (int)Math.Truncate(fieldObject.Location.Item1 / lengthOfSideCell);
-			int Y = (int)Math.Truncate(fieldObject.Location.Item2 / lengthOfSideCell);
+			int X = (int)Math.Truncate(fieldObject.Location.X / lengthOfSideCell);
+			int Y = (int)Math.Truncate(fieldObject.Location.Y / lengthOfSideCell);
 
 			List<CellField> coveredCells = GetCovered(fieldObject);
 			fieldObject.CoveredCells = coveredCells;
@@ -126,12 +137,14 @@ namespace BattleRoayleServer
 			var newCoveredCells = GetCovered(fieldObject);
 			var coveredCells = fieldObject.CoveredCells.Except(newCoveredCells);
 			
-				foreach (CellField cell in coveredCells)
-				{
-					if (cell.OnThisCell.Contains(fieldObject)) cell.OnThisCell.Remove(fieldObject);
-					else cell.OnThisCell.Add(fieldObject);
-				}
-				fieldObject.CoveredCells = newCoveredCells;
+			foreach (CellField cell in coveredCells)
+			{
+				if (cell.OnThisCell.Contains(fieldObject))
+					cell.OnThisCell.Remove(fieldObject);
+				else
+					cell.OnThisCell.Add(fieldObject);
+			}
+			fieldObject.CoveredCells = newCoveredCells;
 		}
 	}
 }

@@ -20,12 +20,13 @@ namespace BattleRoayleServer
 		//выполнеят действия по созданию комнаты
         public void AddRoom(List<QueueGamer> gamers)
         {
-			rooms.Add(new RoyalRoom(gamers));
+			IRoom room = new RoyalRoom(gamers);
+			rooms.Add(room);
+			room.StartRoom();
         }
 
-        public void DeliteRoom(IRoom room )
-        {
-			
+        public void DeliteRoom(IRoom room)
+        {		
 			if(rooms.Remove(room))
 			{
 				room.Dispose();

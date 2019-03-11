@@ -4,18 +4,24 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Specialized;
 
 namespace CSInteraction.Common
 {
-	public class ObservalableQueue<T> : ObservableCollection<T>
+	public class ObservableQueue<T> : List<T>, INotifyCollectionChanged
 	{
 		private object sinchAccess = new object();
+
+		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
 		public void Enqueue(T newElement)
 		{
 			lock (sinchAccess)
 			{
 				Add(newElement);
+				if(CollectionChanged!=null)
+				CollectionChanged(this, 
+					new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, Count));
 			}
 		}
 
@@ -25,9 +31,10 @@ namespace CSInteraction.Common
 			{
 				if (Count > 0)
 				{
-					var FirstElement = this[0];
-					RemoveAt(0);
+					T FirstElement = this[0];
+					this.RemoveAt(0);
 					return FirstElement;
+					
 				}
 				else return default(T);
 			}

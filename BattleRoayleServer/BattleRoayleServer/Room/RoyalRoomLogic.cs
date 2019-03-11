@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using CSInteraction.ProgramMessage;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -17,19 +19,31 @@ namespace BattleRoayleServer
         public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(50);
-			timerNewIteration.SynchronizingObject = null;
-			timerNewIteration.AutoReset = true;
+			timerNewIteration = new Timer(50)
+			{
+				SynchronizingObject = null,
+				AutoReset = true
+			};
 			timerNewIteration.Elapsed += TickQuantTimer;
 			quantTimer = new QuantTimer();
         }
 
-
-		//необходимо реализовать
 		/// <summary>
 		/// Создает список состяний игровых объектов
 		/// </summary>
-		public IList<GameObjectState> RoomState { get; }
+		public IMessage RoomState
+		{
+			get
+			{
+				List<IMessage> states = new List<IMessage>();
+				foreach (var gameObject in roomContext.GameObjects)
+				{
+					IMessage msg = gameObject.Value.State;
+					if (msg!=null)states.Add(msg);
+				}
+				return new RoomState(states);
+			}
+		}
 
 		/// <summary>
 		/// Посредник между коллецией игроков игровой модели и внешней средой
@@ -43,7 +57,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Посредник между коллецией событий игровой модели и внешней средой
 		/// </summary>
-		public ObservableCollection<IComponentEvent> HappenedEvents {
+		public ObservableQueue<IMessage> HappenedEvents {
 			get {
 				return roomContext.HappenedEvents;
 			}
@@ -59,27 +73,21 @@ namespace BattleRoayleServer
         {
 			quantTimer.Tick();
 			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
-			foreach (GameObject gameObject in roomContext.GameObjects)
+			foreach (var gameObject in roomContext.GameObjects)
 			{
-				if (!gameObject.Destroyed)
+				if (!gameObject.Value.Destroyed)
 				{
-					if(gameObject.TypesBehave == TypesBehaveObjects.Active)
-					gameObject.SendMessage(msg);
+					if(gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
+					gameObject.Value.SendMessage(msg);
 				}
-				else roomContext.RemoveGameObject(gameObject);
+				else roomContext.RemoveGameObject(gameObject.Value);
 			}
         }
 
         public void EndGame()
         {
-            throw new NotImplementedException();
-        }
-
-        public IList<GameObjectState> GetAllObjectStates()
-        {
-            throw new NotImplementedException();
-        }
-
+			timerNewIteration.Stop();
+		}
 
         public void RemovePlayer()
         {
@@ -88,13 +96,14 @@ namespace BattleRoayleServer
 
         public void Start()
         {
-            throw new NotImplementedException();
+			timerNewIteration.Start();
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
-        }
+			timerNewIteration.Close();
+			//осовобождение ресурсво модели
+		}
 
 	}
 }

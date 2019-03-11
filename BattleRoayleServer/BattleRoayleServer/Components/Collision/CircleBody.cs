@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
 	public class CircleBody : SolidBody
 	{
-		private Tuple<double, double> diapasonX;
-		public Tuple<double, double> DiapasonX
+		private Tuple<float, float> diapasonX;
+		public Tuple<float, float> DiapasonX
 		{
 			get
 			{
 				if (diapasonX == null)
-					diapasonX = new Tuple<double, double>(Location.Item1 - Radius, Location.Item1 + Radius);
+					diapasonX = new Tuple<float, float>(Location.X - Radius, Location.Y + Radius);
 				return diapasonX;
 			}
 			private set
@@ -21,13 +23,13 @@ namespace BattleRoayleServer
 				diapasonX = value;
 			}
 		}
-		private Tuple<double, double> diapasonY;
-		public Tuple<double, double> DiapasonY
+		private Tuple<float, float> diapasonY;
+		public Tuple<float, float> DiapasonY
 		{
 			get
 			{
 				if (diapasonY == null)
-					diapasonY = new Tuple<double, double>(Location.Item2 - Radius, Location.Item2 + Radius);
+					diapasonY = new Tuple<float, float>(Location.X - Radius, Location.Y + Radius);
 				return diapasonY;
 			}
 			private set
@@ -36,37 +38,41 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public CircleBody(GameObject owner, IGameModel gameModel, Tuple<double, double> location, double radius, TypesSolid typeSolid)
+		public CircleBody(GameObject owner, IGameModel gameModel, PointF location, float radius, TypesSolid typeSolid)
 			: base(owner, gameModel, location, typeSolid)
 		{
 			Radius = radius;
+			//размещаем объект на игровой карте
+			gameModel.Field.Put(this);
 		}
 
-		public double Radius { get; private set; }
+		public float Radius { get; private set; }
 
 		public override TypesSolidBody Type { get; } = TypesSolidBody.Circle;
 
-		public override void AppendCoords(double dX, double dY)
+		public override void AppendCoords(float dX, float dY)
 		{
 			base.AppendCoords(dX, dY);
 			DiapasonX = null;
 			DiapasonY = null;
 		}
 
-		public override IList<Directions> CheckCovered(Tuple<double, double> XDiapason, Tuple<double, double> YDiapason)
+		public override IList<Directions> CheckCovered(Tuple<float, float> XDiapason, Tuple<float, float> YDiapason)
 		{
 			List<Directions> directionsCoveredCells = new List<Directions>();
 
 			if (XDiapason.Item1 > DiapasonX.Item1)
 			{
 				directionsCoveredCells.Add(Directions.left);
-				double RasnX = Math.Pow(XDiapason.Item1 - Location.Item1, 2);
-				double KvRadius = Math.Pow(Radius, 2);
-				if (RasnX + Math.Pow(YDiapason.Item1 - Location.Item2, 2) < KvRadius)
+
+				float RasnX = (float)Math.Pow(XDiapason.Item1 - Location.X, 2);
+				float KvRadius = (float)Math.Pow(Radius, 2);
+
+				if (RasnX + Math.Pow(YDiapason.Item1 - Location.Y, 2) < KvRadius)
 				{
 					directionsCoveredCells.Add(Directions.left_bottom);
 				}
-				if (RasnX + Math.Pow(YDiapason.Item2 - Location.Item2, 2) < KvRadius)
+				if (RasnX + Math.Pow(YDiapason.Item2 - Location.Y, 2) < KvRadius)
 				{
 					directionsCoveredCells.Add(Directions.left_top);
 				}
@@ -74,35 +80,43 @@ namespace BattleRoayleServer
 			if (XDiapason.Item2 < DiapasonX.Item2)
 			{
 				directionsCoveredCells.Add(Directions.right);
-				double RasnX = Math.Pow(XDiapason.Item2 - Location.Item1, 2);
-				double KvRadius = Math.Pow(Radius, 2);
-				if (RasnX + Math.Pow(YDiapason.Item1 - Location.Item2, 2) < KvRadius)
+
+				float RasnX = (float)Math.Pow(XDiapason.Item2 - Location.X, 2);
+				float KvRadius = (float)Math.Pow(Radius, 2);
+
+				if (RasnX + Math.Pow(YDiapason.Item1 - Location.Y, 2) < KvRadius)
 				{
 					directionsCoveredCells.Add(Directions.right_bottom);
 				}
-				if (RasnX + Math.Pow(YDiapason.Item2 - Location.Item2, 2) < KvRadius)
+				if (RasnX + Math.Pow(YDiapason.Item2 - Location.Y, 2) < KvRadius)
 				{
 					directionsCoveredCells.Add(Directions.right_top);
 				}
 			}
 			if (XDiapason.Item1 < DiapasonX.Item1 && XDiapason.Item2 > DiapasonX.Item2)
 			{
-				if (YDiapason.Item1 > DiapasonY.Item1) directionsCoveredCells.Add(Directions.bottom);
-				if (YDiapason.Item2 < DiapasonY.Item2) directionsCoveredCells.Add(Directions.top);
+				if (YDiapason.Item1 > DiapasonY.Item1)
+					directionsCoveredCells.Add(Directions.bottom);
+				if (YDiapason.Item2 < DiapasonY.Item2)
+					directionsCoveredCells.Add(Directions.top);
 			}
-			if (directionsCoveredCells.Count > 0) return directionsCoveredCells;
-			else return null;
+			if (directionsCoveredCells.Count > 0)
+				return directionsCoveredCells;
+			else
+				return null;
 		}
 
 		protected override bool CheckCollisionWithCircle(IFieldObject fieldObject)
 		{
 			CircleBody circleBody = (CircleBody)fieldObject;
 			//определяем расстоняие между 2 центрами окружностей
-			double distance = Math.Sqrt(Math.Pow(this.Location.Item1 - circleBody.Location.Item1, 2)
-				+ Math.Pow(this.Location.Item2 - circleBody.Location.Item2, 2));
-			if (distance < circleBody.Radius + this.Radius) return true;
-			else return false;
+			float distance = (float)Math.Sqrt(Math.Pow(this.Location.X - circleBody.Location.X, 2)
+				+ Math.Pow(this.Location.Y - circleBody.Location.Y, 2));
 
+			if (distance < circleBody.Radius + this.Radius)
+				return true;
+			else
+				return false;
 		}
 
 		protected override bool CheckCollisionWithRectangle(IFieldObject fieldObject)

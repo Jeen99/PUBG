@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -17,7 +18,7 @@ namespace BattleRoayleServer
 			Parent = parent;
 		}
 
-        public virtual ComponentState State
+        public virtual IMessage State
 		{
 			get { return null; }
 		}
