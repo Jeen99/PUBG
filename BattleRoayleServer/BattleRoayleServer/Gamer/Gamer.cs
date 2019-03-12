@@ -30,7 +30,7 @@ namespace BattleRoayleServer
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
 
 		
-		PointF IPlayer.Location
+		public PointF Location
 		{
 			get
 			{
