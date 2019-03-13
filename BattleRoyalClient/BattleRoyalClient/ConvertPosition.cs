@@ -10,14 +10,29 @@ namespace BattleRoyalClient
 	static class ConvertPosition
 	{
 		private const int scale = 10;
+
 		public static PointF ConvertToViewLocation(PointF location)
 		{
-			return new PointF(location.X * scale, location.Y * scale);
+			location.X *= scale;
+			location.Y *= scale;
+			return location;
 		}
 
 		public static PointF ConvertToServerLocation(PointF location)
 		{
-			return new PointF(location.X / scale, location.Y / scale);
+			location.X /= scale;
+			location.Y /= scale;
+			return location;
+		}
+
+		public static float ConvertToViewAxis(float coordiant)
+		{
+			return coordiant * scale;
+		}
+
+		public static float ConvertToServerAxis(float coordiant)
+		{
+			return coordiant / scale;
 		}
 	}
 }

@@ -4,30 +4,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
 	static class Painter
 	{
-		private static Bitmap BoxImage;
-		private static Bitmap StoneImage;
-		public static void DrawBox(Graphics gr, PointF Location)
+
+		public static void Draw(IGameObject gameObject, Graphics gr)
 		{
-				if (BoxImage == null)
-				{
-					BoxImage = new Bitmap(Properties.Recources.Box);
-				}
-				gr.DrawImage(BoxImage, new RectangleF(Location,  new Size(30,30)));
-				
+			switch (gameObject.Type)
+			{
+				case TypesGameObject.Player:
+					DrawGamer(gameObject as Gamer, gr);
+					break;
+			}
 		}
 
-		public static void DrawStone(Graphics gr, PointF Location, Size size)
+		private static void DrawGamer(Gamer gamer, Graphics gr)
 		{	
-				if (StoneImage == null)
-				{
-					StoneImage = new Bitmap(Properties.Recources.Stone); 
-				}
-				gr.DrawImage(StoneImage, new RectangleF(Location,  size));
+			gr.DrawImage(Properties.Recources.Gamer, new RectangleF(
+				ConvertPosition.ConvertToViewLocation(gamer.Location), 
+				new Size(30, 30)));
+			
 		}
 
 	}

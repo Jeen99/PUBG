@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
@@ -12,14 +13,9 @@ namespace BattleRoyalClient
 		public PointF Location { get; set; }
 		private Bitmap GamerImage;
 		private const float Radius = 1.5F;
-		public void Draw(Graphics gr)
-		{
-			if (GamerImage == null)
-			{
-				GamerImage = new Bitmap(Properties.Recources.Gamer);
-			}
-			gr.DrawImage(GamerImage, new RectangleF(Location, new Size(30,30)));
-		}
+		
+
+		public TypesGameObject Type { get; } = TypesGameObject.Player;
 
 		public Gamer(PointF location)
 		{

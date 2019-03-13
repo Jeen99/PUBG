@@ -8,15 +8,13 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CSInteraction.Client;
 using CSInteraction.Common;
 using System.IO;
 using System.Drawing;
-using Rectangle = System.Drawing.Rectangle;
 using Size = System.Drawing.Size;
+using System.Windows.Media.Imaging;
 
 namespace BattleRoyalClient
 {
@@ -28,6 +26,7 @@ namespace BattleRoyalClient
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
 		private Bitmap background;
+		private Size sizeBattleScreen = new Size(1500, 1000);
 		
 		public bool Transition { get; set; }
 		public Battle(ulong id, BaseClient client, string nickName, string password)
@@ -36,32 +35,26 @@ namespace BattleRoyalClient
 			battleContoller = new GameActionController(id, client, nickName, password, this);
 			battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
-			background = CreateBackGround();
+			background = new Bitmap(sizeBattleScreen.Width, sizeBattleScreen.Height);
 		}
 
 		private void Model_BattleChangeModel()
 		{
 			//клонируем основное изображение
-			Bitmap frame = (Bitmap)background.Clone();
-			
-			using (Graphics gr = Graphics.FromImage(frame))
+			using (Graphics gr = Graphics.FromImage(background))
 			{
-				foreach (var gameObject in battleContoller.Model.VisibleObjects)
+				//создаем новый фон
+				CreateBackground(gr);
+				List<IGameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
+				foreach (IGameObject gameObject in visibleObjects)
 				{
-					gameObject.Draw(gr);
+					Painter.Draw(gameObject, gr);
 				}
+				gr.RotateTransform(180);
+				Field.Source = BitmapToImageSource(background);
 			}
-
-			PointF Location = new PointF();
-			if (battleContoller.Model.DiapasonX.Item1 < 0) Location.X = 0;
-			else Location.X = battleContoller.Model.DiapasonX.Item1;
-
-			if (battleContoller.Model.DiapasonY.Item1 < 0) Location.Y = 0;
-			else Location.Y = battleContoller.Model.DiapasonY.Item1;
-
-			Bitmap bit = frame.Clone(new RectangleF(Location, new Size(300,200)), frame.PixelFormat);
-			Field.Source = BitmapToImageSource(bit);
-
+				
+			
 		}
 		BitmapImage BitmapToImageSource(Bitmap bitmap)
 		{
@@ -81,20 +74,55 @@ namespace BattleRoyalClient
 		/// <summary>
 		/// Рисует статическую картнику карту 
 		/// </summary>
-		public Bitmap CreateBackGround()
+		public void CreateBackground(Graphics frame)
 		{
-			Bitmap bitmap = new Bitmap(Properties.Recources.Field);
-			using (Graphics gr = Graphics.FromImage(bitmap))
+			//очищаем кадр от предыдущих изображений
+			frame.Clear(System.Drawing.Color.FromArgb(128, 175,73));
+
+
+			//определяем выходит ли область обзора за границу карты
+			OverflowMap overflow = battleContoller.Model.Chararcter.GetOverflow;
+
+			if (overflow.Left != 0 || overflow.Right != 0 || 
+				overflow.Top != 0 || overflow.Bottom != 0)
 			{
-				Painter.DrawStone(gr, new PointF(10, 10), new System.Drawing.Size(160,160));
-				Painter.DrawStone(gr, new PointF(30, 28), new System.Drawing.Size(20, 20));
-				Painter.DrawStone(gr, new PointF(78, 30), new System.Drawing.Size(40, 40));
-				Painter.DrawBox(gr, new PointF(40, 100));
-				Painter.DrawBox(gr, new PointF(150, 10));
+				using (Pen NewPen = new Pen(new SolidBrush(Color.Red), 3))
+				{
+					//настраиваем перо
+					NewPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+					NewPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+					NewPen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+					if (overflow.Left != 0)
+					{
+						float xBias = ConvertPosition.ConvertToViewAxis(overflow.Left);
+						frame.DrawLine(NewPen, new PointF(xBias, 0), 
+							new PointF(xBias, sizeBattleScreen.Height));
+					}
+
+					if (overflow.Top != 0)
+					{
+						float yBias = sizeBattleScreen.Height - ConvertPosition.ConvertToViewAxis(overflow.Top);
+						frame.DrawLine(NewPen, new PointF(0, yBias),
+							new PointF(sizeBattleScreen.Width, yBias));
+					}
+
+					if (overflow.Right != 0)
+					{
+						float xBias = sizeBattleScreen.Width -  ConvertPosition.ConvertToViewAxis(overflow.Right);
+						frame.DrawLine(NewPen, new PointF(xBias, 0),
+							new PointF(xBias, sizeBattleScreen.Height));
+					}
+
+					if (overflow.Bottom != 0)
+					{
+						float yBias = ConvertPosition.ConvertToViewAxis(overflow.Top);
+						frame.DrawLine(NewPen, new PointF(0, yBias),
+							new PointF(sizeBattleScreen.Width, yBias));
+					}
+				}
+				
 			}
 			
-
-			return bitmap;
 
 		}
 	}

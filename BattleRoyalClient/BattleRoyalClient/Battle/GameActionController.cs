@@ -60,6 +60,10 @@ namespace BattleRoyalClient
 			{
 				case TypesGameObject.Player:
 					model.GameObjects.AddOrUpdate(msg.ID,AddGamer(msg), (k,v) => UpdateGamer(v, msg));
+					if (msg.ID == model.Chararcter.ID)
+					{
+						model.Chararcter.CharacterChange();
+					}
 					break;
 			}
 		}
@@ -71,7 +75,7 @@ namespace BattleRoyalClient
 				switch (message.TypeMessage)
 				{
 					case TypesProgramMessage.Location:
-						gamer.Location = ConvertPosition.ConvertToViewLocation((message as Location).LocationBody);
+						gamer.Location = (message as Location).LocationBody;
 						break;
 				}
 			}
@@ -85,7 +89,7 @@ namespace BattleRoyalClient
 				switch (message.TypeMessage)
 				{
 					case TypesProgramMessage.Location:
-						gamer.Location = ConvertPosition.ConvertToViewLocation((message as Location).LocationBody);
+						gamer.Location = (message as Location).LocationBody;
 						break;
 				}
 			}

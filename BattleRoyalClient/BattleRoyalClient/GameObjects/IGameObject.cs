@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
 	interface IGameObject
 	{
-		void Draw(Graphics gr);
+		TypesGameObject Type { get; }
 		PointF Location { get; }
 	}
 }

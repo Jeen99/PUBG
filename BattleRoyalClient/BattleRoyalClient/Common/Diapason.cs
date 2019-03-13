@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BattleRoyalClient
 {
-	class Diapason
+	public class Diapason
 	{
 		public float Right { get; set; }
 		public float Left { get; set;}
 
-		public Diapason(float left, float right)
+		public Diapason(float left = 0, float right = 0)
 		{
 			Left = left;
 			Right = right;

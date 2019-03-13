@@ -66,10 +66,12 @@
     <Compile Include="Battle\BattleModel.cs" />
     <Compile Include="Battle\GameActionController.cs" />
     <Compile Include="Battle\IBattleModel.cs" />
+    <Compile Include="Common\Diapason.cs" />
     <Compile Include="ConvertPosition.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
     <Compile Include="GameObjects\IGameObject.cs" />
     <Compile Include="Painter.cs" />
+    <Compile Include="Battle\PlayerChararcter.cs" />
     <Compile Include="Properties\Recources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -10,8 +10,7 @@ namespace BattleRoyalClient
 	interface IBattleModel
 	{
 		event ChangeModel BattleChangeModel;
-		List<IGameObject> VisibleObjects { get; }
-		Tuple<float, float> DiapasonX { get ; }
-		Tuple<float, float> DiapasonY { get ; }
+		PlayerChararcter Chararcter { get; }
+		Size SizeMap { get; }
 	}
 }
