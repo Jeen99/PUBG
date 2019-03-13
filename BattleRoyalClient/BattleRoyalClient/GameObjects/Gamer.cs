@@ -10,14 +10,15 @@ namespace BattleRoyalClient
 	class Gamer : IGameObject
 	{
 		public PointF Location { get; set; }
+		private Bitmap GamerImage;
 		private const float Radius = 1.5F;
 		public void Draw(Graphics gr)
 		{
-			using (Brush NewBrush = new SolidBrush(Color.Black))
+			if (GamerImage == null)
 			{
-				gr.FillEllipse(NewBrush, (Location.X - Radius / 2), (Location.Y - Radius / 2),
-					(float)Radius, (float)Radius);
+				GamerImage = new Bitmap(Properties.Recources.Gamer);
 			}
+			gr.DrawImage(GamerImage, new RectangleF(Location, new Size(30,30)));
 		}
 
 		public Gamer(PointF location)

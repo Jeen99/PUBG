@@ -14,59 +14,68 @@ namespace BattleRoyalClient
 		public event ChangeModel BattleChangeModel;
 		public string Passwrod { get; private set; }
 		public string NickName { get; private set; }
+		
+		/// <summary>
+		/// Диапазон видимых координат по X
+		/// </summary>
+		private Tuple<float, float> diapasonX;
+		private Tuple<float, float> diapasonY;
+		private const float VisibleWidth = 300; 
+		private const float VisibleHeight = 200;
+		/// <summary>
+		/// Идентификатор объекта игрока которым управляет клиент
+		/// </summary>
 		private ulong id;
-		private const double Height = 400;
-		private const double Width = 800;
 
-		public ConcurrentDictionary<ulong, IGameObject> GameObjects { get; private set; }
+		public ConcurrentDictionary<ulong, IGameObject> GameObjects { get; } 
+			= new ConcurrentDictionary<ulong, IGameObject>();
 
-		private Bitmap background;
-		public Bitmap GetBackground
-		{
-			get
-			{
-				return (Bitmap)background;
+		
+		public List<IGameObject> VisibleObjects {
+			get {
+				if (diapasonX == null || diapasonY == null)
+				{
+					CalculateVisibleRegion(); 
+				}
+				List<IGameObject> visibleObjects = new List<IGameObject>();
+				foreach (var keyValue in GameObjects)
+				{
+					IGameObject gameObject = keyValue.Value;
+					if (diapasonX.Item1 <= gameObject.Location.X && gameObject.Location.X <= diapasonX.Item2 &&
+						diapasonY.Item1 <= gameObject.Location.Y && gameObject.Location.Y <= diapasonY.Item2)
+					{
+						visibleObjects.Add(gameObject);
+					}
+				}
+				return visibleObjects;
 			}
 		}
 
-		public PointF CentreScreen {
-			get {
-				return GameObjects[id].Location;
-			}
+		public Tuple<float, float> DiapasonX { get => diapasonX; }
+		public Tuple<float, float> DiapasonY { get => diapasonY; }
+
+		public void GamerMoved()
+		{
+			CalculateVisibleRegion();
+		}
+
+		public void CalculateVisibleRegion()
+		{
+			PointF location = GameObjects[id].Location;
+			diapasonX = new Tuple<float, float>(location.X - VisibleWidth / 2, location.X + VisibleWidth / 2);
+			diapasonY = new Tuple<float, float>(location.Y - VisibleHeight / 2, location.Y + VisibleHeight / 2);
 		}
 
 		public void CreateChangeModel()
 		{
 			BattleChangeModel();		
 		}
-
-		/// <summary>
-		/// Рисует статическую картнику карту 
-		/// </summary>
-		public Bitmap CreateBackGround()
-		{
-			Bitmap bitmap = new Bitmap(1000, 1000);
-			using (Graphics gr = Graphics.FromImage(bitmap))
-			{
-				gr.Clear(Color.Green);
-				Painter.DrawStone(gr, new Tuple<double, double>(10, 10), 8);
-				Painter.DrawStone(gr, new Tuple<double, double>(30,  28), 1);
-				Painter.DrawStone(gr, new Tuple<double, double>(78, 30), 2);
-				Painter.DrawBox(gr, new Tuple<double, double>(40, 100));
-				Painter.DrawBox(gr, new Tuple<double, double>(150, 10));
-			}
-
-			return bitmap;
-			
-		}
-
+	
 		public BattleModel(ulong id, string passwrod, string nickName)
 		{
 			Passwrod = passwrod;
 			NickName = nickName;
 			this.id = id;
-			background = CreateBackGround();
-			GameObjects = new ConcurrentDictionary<ulong, IGameObject>();
 		}
 	}
 }

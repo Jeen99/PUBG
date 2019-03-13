@@ -9,22 +9,25 @@ namespace BattleRoyalClient
 {
 	static class Painter
 	{
-		public static void DrawBox(Graphics gr, Tuple<double, double> Location)
+		private static Bitmap BoxImage;
+		private static Bitmap StoneImage;
+		public static void DrawBox(Graphics gr, PointF Location)
 		{
-			using (Brush NewBrush = new  SolidBrush(Color.Brown))
-			{
-				gr.FillRectangle(NewBrush, (float)Location.Item1, (float)Location.Item2, 3, 3);
-			}
+				if (BoxImage == null)
+				{
+					BoxImage = new Bitmap(Properties.Recources.Box);
+				}
+				gr.DrawImage(BoxImage, new RectangleF(Location,  new Size(30,30)));
 				
 		}
 
-		public static void DrawStone(Graphics gr, Tuple<double, double> Location,  double Radius)
-		{
-			using (Brush NewBrush = new SolidBrush(Color.Gray))
-			{
-				gr.FillEllipse(NewBrush, (float)(Location.Item1 - Radius/2), (float)(Location.Item2 - Radius/2), 
-					(float)Radius, (float)Radius);
-			}
+		public static void DrawStone(Graphics gr, PointF Location, Size size)
+		{	
+				if (StoneImage == null)
+				{
+					StoneImage = new Bitmap(Properties.Recources.Stone); 
+				}
+				gr.DrawImage(StoneImage, new RectangleF(Location,  size));
 		}
 
 	}

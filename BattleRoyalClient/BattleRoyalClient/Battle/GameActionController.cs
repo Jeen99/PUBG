@@ -71,7 +71,7 @@ namespace BattleRoyalClient
 				switch (message.TypeMessage)
 				{
 					case TypesProgramMessage.Location:
-						gamer.Location = (message as Location).LocationBody;
+						gamer.Location = ConvertPosition.ConvertToViewLocation((message as Location).LocationBody);
 						break;
 				}
 			}
@@ -85,7 +85,7 @@ namespace BattleRoyalClient
 				switch (message.TypeMessage)
 				{
 					case TypesProgramMessage.Location:
-						gamer.Location = (message as Location).LocationBody;
+						gamer.Location = ConvertPosition.ConvertToViewLocation((message as Location).LocationBody);
 						break;
 				}
 			}

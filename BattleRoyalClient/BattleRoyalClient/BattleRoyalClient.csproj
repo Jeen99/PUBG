@@ -66,9 +66,15 @@
     <Compile Include="Battle\BattleModel.cs" />
     <Compile Include="Battle\GameActionController.cs" />
     <Compile Include="Battle\IBattleModel.cs" />
+    <Compile Include="ConvertPosition.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
     <Compile Include="GameObjects\IGameObject.cs" />
     <Compile Include="Painter.cs" />
+    <Compile Include="Properties\Recources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Recources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Queue\IQueueModel.cs" />
     <Compile Include="Queue\Queue.xaml.cs">
       <DependentUpon>Queue.xaml</DependentUpon>
@@ -114,19 +120,14 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\Recources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Recources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClientLogic.cd" />
     <None Include="Properties\Settings.settings">
@@ -136,6 +137,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stone.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Field.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Box.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Gamer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
