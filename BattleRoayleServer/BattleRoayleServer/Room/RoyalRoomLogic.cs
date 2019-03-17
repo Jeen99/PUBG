@@ -78,7 +78,7 @@ namespace BattleRoayleServer
 				if (!gameObject.Value.Destroyed)
 				{
 					if(gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
-					gameObject.Value.SendMessage(msg);
+					gameObject.Value.Process(msg);
 				}
 				else roomContext.RemoveGameObject(gameObject.Value);
 			}

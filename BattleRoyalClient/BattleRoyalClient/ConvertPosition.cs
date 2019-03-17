@@ -11,17 +11,17 @@ namespace BattleRoyalClient
 	{
 		private const int scale = 10;
 
-		public static PointF ConvertToViewLocation(PointF location)
+		public static PointF ConvertToViewLocation(PointF location, PointF startAxises)
 		{
-			location.X *= scale;
-			location.Y *= scale;
+			location.X = (location.X - startAxises.X) * scale;
+			location.Y = (location.Y - startAxises.Y) * scale;
 			return location;
 		}
 
-		public static PointF ConvertToServerLocation(PointF location)
+		public static PointF ConvertToServerLocation(PointF location, PointF startAxises)
 		{
-			location.X /= scale;
-			location.Y /= scale;
+			location.X  = (location.X + startAxises.X) / scale; ;
+			location.Y = (location.Y + startAxises.Y) / scale;
 			return location;
 		}
 
@@ -33,6 +33,20 @@ namespace BattleRoyalClient
 		public static float ConvertToServerAxis(float coordiant)
 		{
 			return coordiant / scale;
+		}
+
+		public static SizeF ConvertToViewSize(SizeF size)
+		{
+			size.Width *= scale;
+			size.Height *= scale;
+			return size;
+		}
+
+		public static SizeF ConvertToServerSize(SizeF size)
+		{
+			size.Width /= scale;
+			size.Height /= scale;
+			return size;
 		}
 	}
 }

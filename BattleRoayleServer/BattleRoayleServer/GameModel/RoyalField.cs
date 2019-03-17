@@ -24,11 +24,11 @@ namespace BattleRoayleServer
         /// <summary>
         /// Размер стороны карты(карта квадратная)
         /// </summary>
-        private const int lengthOfSide = 100;
+        private const int lengthOfSide = 25;
 		/// <summary>
 		/// Длина стороны клетки
 		/// </summary>
-		private const int lengthOfSideCell = 10;
+		private const int lengthOfSideCell = 20;
 
 		public RoyalField()
 		{
@@ -38,7 +38,8 @@ namespace BattleRoayleServer
 			{
 				for (int j = 0; j < lengthOfSide; j++)
 				{
-					content[i, j] = new CellField(new PointF(i * lengthOfSideCell, j * lengthOfSideCell));
+					content[i, j] = new CellField(new RectangleF(i * lengthOfSideCell, j * lengthOfSideCell, 
+						lengthOfSideCell, lengthOfSideCell));
 				}
 			}
 		}
@@ -48,54 +49,25 @@ namespace BattleRoayleServer
 		/// </summary>
 		private List<CellField> GetCovered(IFieldObject fieldObject)
 		{
-			//определяем центральную клетку, на которых находиться данный объект
-			int X = (int)Math.Truncate(fieldObject.Location.X / lengthOfSideCell);
-			int Y = (int)Math.Truncate(fieldObject.Location.Y / lengthOfSideCell);
+			//определяем центральную клетку, на которых находиться данный объект	
+			int X = (int)Math.Floor(fieldObject.Shape.Location.X / lengthOfSideCell);
+			int Y = (int)Math.Floor(fieldObject.Shape.Location.Y / lengthOfSideCell);
 
-			IList<Directions> directionsCoveredCells = fieldObject.CheckCovered(new Tuple<float, float>(X * lengthOfSideCell, (X + 1) * lengthOfSideCell),
-				new Tuple<float, float>(Y * lengthOfSideCell, (Y + 1) * lengthOfSideCell));
+			if (Y >= lengthOfSide) Y = lengthOfSide - 1;
+			if (X >= lengthOfSide) X = lengthOfSide - 1;
 
-			List<CellField> coveredCells;
-			if (directionsCoveredCells != null)
-			{
-				coveredCells = new List<CellField>(directionsCoveredCells.Count);
-				foreach (Directions direction in directionsCoveredCells)
-				{
+			List<CellField> coveredCells = new List<CellField>() { content[X, Y] };
 
-					switch (direction)
-					{
-						case Directions.bottom:
-							coveredCells.Add(content[X - 1, Y]);
-							break;
-						case Directions.left:
-							coveredCells.Add(content[X, Y - 1]);
-							break;
-						case Directions.left_bottom:
-							coveredCells.Add(content[X - 1, Y - 1]);
-							break;
-						case Directions.left_top:
-							coveredCells.Add(content[X + 1, Y - 1]);
-							break;
-						case Directions.right:
-							coveredCells.Add(content[X, Y + 1]);
-							break;
-						case Directions.right_bottom:
-							coveredCells.Add(content[X - 1, Y + 1]);
-							break;
-						case Directions.right_top:
-							coveredCells.Add(content[X + 1, Y + 1]);
-							break;
-						case Directions.top:
-							coveredCells.Add(content[X + 1, Y]);
-							break;
-					}
-				}
-				coveredCells.Add(content[X, Y]);
-			}
-			else
-			{
-			    coveredCells = new List<CellField>() { content[X, Y] };
-			}
+			//определяем на каких клетках находится еще данный объект
+			int limit = lengthOfSide - 1;
+
+			if (X <  limit)
+				if (content[X + 1 , Y].Shape.IntersectsWith(fieldObject.Shape)) coveredCells.Add(content[X + 1, Y]);
+			if (Y < limit)
+				if (content[X, Y + 1].Shape.IntersectsWith(fieldObject.Shape)) coveredCells.Add(content[X, Y + 1]);
+			if (X < limit && Y < limit)
+				if (content[X + 1, Y + 1].Shape.IntersectsWith(fieldObject.Shape)) coveredCells.Add(content[X + 1, Y + 1]);
+
 			return coveredCells;
 		}
 
@@ -104,10 +76,6 @@ namespace BattleRoayleServer
 		/// </summary>
 		public void Put(IFieldObject fieldObject)
         {
-			//определяем центральную клетку, на которых находиться данный объект
-			int X = (int)Math.Truncate(fieldObject.Location.X / lengthOfSideCell);
-			int Y = (int)Math.Truncate(fieldObject.Location.Y / lengthOfSideCell);
-
 			List<CellField> coveredCells = GetCovered(fieldObject);
 			fieldObject.CoveredCells = coveredCells;
 
@@ -135,15 +103,26 @@ namespace BattleRoayleServer
 		{
 			//определяем новые клетки, на которых находиться данный объект
 			var newCoveredCells = GetCovered(fieldObject);
-			var coveredCells = fieldObject.CoveredCells.Except(newCoveredCells);
-			
-			foreach (CellField cell in coveredCells)
+			//получаем клетки с которых нужно удалить объект
+			var deleteCells = fieldObject.CoveredCells.Except(newCoveredCells);
+			if (deleteCells != null)
 			{
-				if (cell.OnThisCell.Contains(fieldObject))
+				foreach (CellField cell in deleteCells)
+				{
 					cell.OnThisCell.Remove(fieldObject);
-				else
-					cell.OnThisCell.Add(fieldObject);
+				}
+				//получаем клетки с которых нужно удалить объект
 			}
+
+			var addCells = newCoveredCells.Except(fieldObject.CoveredCells);
+			if (addCells != null)
+			{
+				foreach (CellField cell in addCells)
+				{
+					cell.OnThisCell.Add(fieldObject);
+				}
+			}
+
 			fieldObject.CoveredCells = newCoveredCells;
 		}
 	}

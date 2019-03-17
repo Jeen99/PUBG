@@ -15,6 +15,7 @@ using System.IO;
 using System.Drawing;
 using Size = System.Drawing.Size;
 using System.Windows.Media.Imaging;
+using Image = System.Drawing.Image;
 
 namespace BattleRoyalClient
 {
@@ -36,6 +37,13 @@ namespace BattleRoyalClient
 			battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
 			background = new Bitmap(sizeBattleScreen.Width, sizeBattleScreen.Height);
+			this.KeyDown += userContoller.User_KeyDown;
+			this.KeyUp += userContoller.User_KeyUp;
+		}
+
+		private void Battle_KeyDown(object sender, KeyEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void Model_BattleChangeModel()
@@ -45,16 +53,16 @@ namespace BattleRoyalClient
 			{
 				//создаем новый фон
 				CreateBackground(gr);
+				PointF startAxises = battleContoller.Model.Chararcter.StartAxises;
 				List<IGameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
 				foreach (IGameObject gameObject in visibleObjects)
 				{
-					Painter.Draw(gameObject, gr);
-				}
-				gr.RotateTransform(180);
-				Field.Source = BitmapToImageSource(background);
+					Painter.Draw(gameObject, gr, startAxises);
+				}			
 			}
-				
-			
+			//background.RotateFlip(RotateFlipType.Rotate180FlipX);
+			Field.Source = BitmapToImageSource(background);
+
 		}
 		BitmapImage BitmapToImageSource(Bitmap bitmap)
 		{

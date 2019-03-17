@@ -11,6 +11,6 @@ namespace BattleRoyalClient
 	interface IGameObject
 	{
 		TypesGameObject Type { get; }
-		PointF Location { get; }
+		PointF Location { get; set; }
 	}
 }

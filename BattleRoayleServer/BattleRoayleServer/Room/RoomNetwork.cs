@@ -36,7 +36,6 @@ namespace BattleRoayleServer
 			};
 			timerTotalSinch.Elapsed += HandlerTotalSinch;
 			//отправляем данные для загрузки комнаты
-			HandlerTotalSinch(null, null);
 		}
 		/// <summary>
 		/// Вызывается на каждое срабатывание таймера
@@ -55,14 +54,20 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerGameEvent(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			throw new NotImplementedException();
+			//пока отправляем всем клиентам
+			IMessage message = roomLogic.HappenedEvents.Dequeue();
+			foreach (INetworkClient client in Clients)
+			{
+				client.Gamer.SendMessage(message);
+			}
 		}
 
         public void Start()
         {
 			//запускаем таймер
 			timerTotalSinch.Start();
-        }
+			HandlerTotalSinch(null, null);
+		}
 
         public void Dispose()
         {

@@ -39,8 +39,19 @@ namespace BattleRoyalClient
 					Handler_RoomState((RoomState)msg);
 					view.Dispatcher.Invoke(()=> { model.CreateChangeModel(); });			
 					break;
+				case TypesProgramMessage.PlayerMoved:
+					Handler_PlayerMoved(msg as PlayerMoved);
+					break;
 			}
 		}
+
+		private void Handler_PlayerMoved(PlayerMoved moved)
+		{
+			model.GameObjects[moved.PlayerID].Location = moved.NewLocation;
+			if (moved.PlayerID == model.Chararcter.ID) model.Chararcter.CharacterChange();
+			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });
+		}
+
 		private void Handler_RoomState(RoomState msg)
 		{
 			foreach (IMessage message in msg.GameObjectsStates)
@@ -65,17 +76,57 @@ namespace BattleRoyalClient
 						model.Chararcter.CharacterChange();
 					}
 					break;
+				case TypesGameObject.Box:
+					model.GameObjects.AddOrUpdate(msg.ID, AddBox(msg), (k, v) => UpdateBox(v, msg));
+					break;
+				case TypesGameObject.Stone:
+					model.GameObjects.AddOrUpdate(msg.ID, AddStone(msg), (k, v) => UpdateStone(v, msg));
+					break;
 			}
 		}
+
+		private IGameObject AddStone(GameObjectState msg)
+		{
+			Stone stone = new Stone();
+			foreach (IMessage message in msg.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						stone.Shape = state.Shape;
+						break;
+				}
+			}
+			return stone;
+		}
+		private IGameObject UpdateStone(IGameObject gameObject, GameObjectState newData)
+		{
+			Stone stone = (Stone)gameObject;
+			foreach (IMessage message in newData.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						stone.Shape = state.Shape;
+						break;
+				}
+			}
+			return stone;
+		}
+
 		private IGameObject AddGamer(GameObjectState msg)
 		{
 			Gamer gamer = new Gamer();
 			foreach (IMessage message in msg.StatesComponents)
 			{
+				
 				switch (message.TypeMessage)
 				{
-					case TypesProgramMessage.Location:
-						gamer.Location = (message as Location).LocationBody;
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						gamer.Shape = state.Shape;
 						break;
 				}
 			}
@@ -88,14 +139,46 @@ namespace BattleRoyalClient
 			{
 				switch (message.TypeMessage)
 				{
-					case TypesProgramMessage.Location:
-						gamer.Location = (message as Location).LocationBody;
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						gamer.Shape = state.Shape;
 						break;
 				}
 			}
 			return gamer;
 		}
-		
+
+		private IGameObject AddBox(GameObjectState msg)
+		{
+			Box box = new Box();
+			foreach (IMessage message in msg.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						box.Shape = state.Shape;
+						break;
+				}
+			}
+			return box;
+		}
+		private IGameObject UpdateBox(IGameObject gameObject, GameObjectState newData)
+		{
+			Box box = (Box)gameObject;
+			foreach (IMessage message in newData.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						box.Shape = state.Shape;
+						break;
+				}
+			}
+			return box;
+		}
+
 
 		private void Client_EventEndSession()
 		{

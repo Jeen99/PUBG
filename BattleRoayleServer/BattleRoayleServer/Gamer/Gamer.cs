@@ -12,12 +12,11 @@ namespace BattleRoayleServer
 	{
 		public Gamer(PointF location, IGameModel context):base()
 		{
-			this.Components = new List<Component>
-			{
-				new CircleBody(this, context, location, 1.5F, TypesSolid.Solid),			
-			};
-			Components.Add(new Movement(this, (SolidBody)Components[0], 2));
-			body = (SolidBody)Components[0];
+			this.Components = new List<Component>(2);
+			body = new SolidBody(this, context, new RectangleF(location, new SizeF(10,10)), TypesSolid.Solid);
+			Components.Add(body);
+			Components.Add(new Movement(this, body, 40));
+			
 		}
 
 		/// <summary>
@@ -34,7 +33,7 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				return body.Location;
+				return body.Shape.Location;
 			}
 		}
 

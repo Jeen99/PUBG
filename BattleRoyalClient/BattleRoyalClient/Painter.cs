@@ -10,23 +10,46 @@ namespace BattleRoyalClient
 {
 	static class Painter
 	{
-
-		public static void Draw(IGameObject gameObject, Graphics gr)
+		private static PointF CenterScreen = new  PointF(750, 500);
+		public static void Draw(IGameObject gameObject, Graphics gr, PointF startAxises )
 		{
 			switch (gameObject.Type)
 			{
 				case TypesGameObject.Player:
 					DrawGamer(gameObject as Gamer, gr);
 					break;
+				case TypesGameObject.Stone:
+					DrawStone(gameObject as Stone, gr, startAxises);
+					break;
+				case TypesGameObject.Box:
+					DrawBox(gameObject as Box, gr, startAxises);
+					break;
 			}
+		}
+		private static void DrawBox(Box box, Graphics gr, PointF startAxises)
+		{
+			
+			gr.DrawImage(Properties.Recources.Box, new RectangleF(
+				ConvertPosition.ConvertToViewLocation(box.Shape.Location, startAxises), 
+				ConvertPosition.ConvertToViewSize(box.Shape.Size)));
+
+		}
+
+		private static void DrawStone(Stone stone, Graphics gr, PointF startAxises)
+		{
+			gr.DrawImage(Properties.Recources.Stone, new RectangleF(
+				ConvertPosition.ConvertToViewLocation(stone.Shape.Location, startAxises),
+				ConvertPosition.ConvertToViewSize(stone.Shape.Size)));
 		}
 
 		private static void DrawGamer(Gamer gamer, Graphics gr)
-		{	
-			gr.DrawImage(Properties.Recources.Gamer, new RectangleF(
-				ConvertPosition.ConvertToViewLocation(gamer.Location), 
-				new Size(30, 30)));
-			
+		{
+			if (CenterScreen == null)
+			{
+				CenterScreen = new PointF(750 - (gamer.Shape.Width/2), 500 - (gamer.Shape.Height / 2));
+			}
+			gr.DrawImage(Properties.Recources.Gamer, new RectangleF(CenterScreen,
+				ConvertPosition.ConvertToViewSize(gamer.Shape.Size)));			
 		}
 
 	}

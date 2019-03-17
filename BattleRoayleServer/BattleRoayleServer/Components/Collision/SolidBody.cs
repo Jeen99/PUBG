@@ -8,40 +8,39 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public abstract class SolidBody : Component, IFieldObject
+	public class SolidBody : Component, IFieldObject
 	{
 		protected IGameModel gameModel;
 
-		protected SolidBody(GameObject parent, IGameModel gameModel, PointF location, TypesSolid typesSolid)
+		public SolidBody(GameObject parent, IGameModel gameModel,RectangleF shape, TypesSolid typesSolid)
 			: base(parent)
 		{
 			TypeSolid = typesSolid;
-			Location = location;
 			this.gameModel = gameModel;
-			
+			this.shape = shape;
+			gameModel.Field.Put(this);
+			CoveredCells = new List<CellField>();
 		}
-
+		
 		public TypesSolid TypeSolid { get; private set; }
 
 		/// <summary>
 		/// Расположение объекта на игровой карте
 		/// </summary>
-		private PointF location; // если не выносить в переменную, не получается 
-		//изменить свойство, без создания нового объекта
-		public PointF Location
-		{
-			get { return location; }
-			private set { location = value; }	// не везде используется
-		}
+		private RectangleF shape;
+		public RectangleF Shape { get { return shape; }}
 
 		public IList<CellField> CoveredCells { get; set; }
 
 		public override void ProcessMsg(IComponentMsg msg)
-		{		
+		{
+			if (msg != null)
+			{
 				switch (msg.Type)
 				{
 					//данный компонент не обрабатывает никакие внешние сообщения на данных момент
 				}
+			}
 			
 		}
 
@@ -56,22 +55,22 @@ namespace BattleRoayleServer
 		public virtual void AppendCoords(float dX, float dY)
 		{
 			//изменяем координаты
-			//проверка на граничные значения
-			if (Location.X + dX < 0)
-				location.X = 0;
+			//проверка на граничные значения X
+			if (shape.X + dX < 0)
+				shape.X = 0;
 			else 
-				if (Location.X + dX > gameModel.Field.LengthOfSide)
-				location.X = gameModel.Field.LengthOfSide;
+				if (shape.X + dX > gameModel.Field.LengthOfSide)
+				shape.X = gameModel.Field.LengthOfSide;
 			else
-				location.X = Location.X + dX;
-
-			if (Location.Y + dY < 0)
-				location.Y = 0;
+				shape.X = shape.X + dX;
+			//проверка на граничные значения Y
+			if (shape.Y + dY < 0)
+				shape.Y = 0;
 			else 
-				if (Location.Y + dY > gameModel.Field.LengthOfSide)
-					location.Y = gameModel.Field.LengthOfSide;
+				if (shape.Y + dY > gameModel.Field.LengthOfSide)
+					shape.Y = gameModel.Field.LengthOfSide;
 			else
-				location.Y = Location.Y + dY;
+				shape.Y = shape.Y + dY;
 
 			gameModel.Field.Move(this);
 			//проверяем на столкновение 
@@ -81,51 +80,37 @@ namespace BattleRoayleServer
 				foreach (IFieldObject fieldObject in cell.OnThisCell)
 				{
 					//проверка на возможность столкновения
-					if (this.TypeSolid == TypesSolid.Solid && fieldObject.TypeSolid == TypesSolid.Solid)
+					if (this.TypeSolid == TypesSolid.Solid && fieldObject.TypeSolid == TypesSolid.Solid
+						&& !Equals(fieldObject, this))
 					{
-						if (fieldObject.CheckCollision(this))
+						if (fieldObject.Shape.IntersectsWith(this.Shape))
 						{
-							//уменьшает координаты смещения в 2 раза
-							location.X -= dX / 2;
-							location.Y -= dY / 2;
-							//перемещаем объект на карте
+							//убираем перемещение
+							shape.X -= dX;
+							shape.Y -= dY;
+							//возвращаем объект нормлаьно
 							gameModel.Field.Move(this);
 							//произошло столкновение отпраляем участникам сообщение об этом
 							this.SendMessage(new CollisionObjects(fieldObject));
 							fieldObject.SendMessage(new CollisionObjects(this));
+							break;
 						}
 					}
 				}
 			}
-			gameModel.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, Location));
+			gameModel.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
 
 		}
 
-		protected abstract bool CheckCollisionWithCircle(IFieldObject fieldObject);
-		protected abstract bool CheckCollisionWithRectangle(IFieldObject fieldObject);
-
-		public bool CheckCollision(IFieldObject fieldObject)
+		public override void Dispose()
 		{
-			switch (fieldObject.Type)
-			{
-				case TypesSolidBody.Circle:
-					return CheckCollisionWithCircle(this);
-				case TypesSolidBody.Rectangle:
-					return CheckCollisionWithRectangle(this);
-				default:
-					return false;
-			}		
+			throw new NotImplementedException();
 		}
-
-		public abstract IList<Directions> CheckCovered(Tuple<float, float> XDiapason, Tuple<float, float> YDiapason);
-
-		public abstract TypesSolidBody Type { get; }
-
-		public override IMessage State 
+		public override IMessage State
 		{
-			get 
+			get
 			{
-				return new Location(this.Location);
+				return new BodyState(Shape);
 			}
 		}
 	}

@@ -16,7 +16,7 @@ namespace BattleRoyalClient
 		public string NickName { get; private set; }
 
 		//пока задаем прямо в коде
-		public Size SizeMap { get; } = new Size(1000, 1000);
+		public Size SizeMap { get; } = new Size(500, 500);
 
 		public PlayerChararcter Chararcter { get; private set; }
 		

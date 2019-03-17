@@ -36,19 +36,19 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
     <Compile Include="ComponentMsg\EndMoveGamer.cs" />
     <Compile Include="Components\Collector.cs" />
-    <Compile Include="Components\Collision\CircleBody.cs" />
-    <Compile Include="Components\Collision\RectangleBody.cs" />
     <Compile Include="Components\Collision\SolidBody.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="ComponentMsg\ObjectPickUp.cs" />

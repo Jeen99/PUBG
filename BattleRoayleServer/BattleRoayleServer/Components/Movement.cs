@@ -35,20 +35,23 @@ namespace BattleRoayleServer
 
 		public override void ProcessMsg(IComponentMsg msg)
 		{
-			switch (msg.Type)
+			if (msg != null)
 			{
-				case TypesComponentMsg.StartMoveGamer:
-					Handler_StartMoveGamer(msg as StartMoveGamer);
-					break;
-				case TypesComponentMsg.EndMoveGamer:
-					Handler_EndMoveGamer();
-					break;
-				case TypesComponentMsg.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg as TimeQuantPassed);
-					break;
-				/*case TypesComponentMsg.CollisionObjects:
-					Handler_CollisionObjects((CollisionObjects)msg);
-					break;*/
+				switch (msg.Type)
+				{
+					case TypesComponentMsg.StartMoveGamer:
+						Handler_StartMoveGamer(msg as StartMoveGamer);
+						break;
+					case TypesComponentMsg.EndMoveGamer:
+						Handler_EndMoveGamer();
+						break;
+					case TypesComponentMsg.TimeQuantPassed:
+						Handler_TimeQuantPassed(msg as TimeQuantPassed);
+						break;
+						/*case TypesComponentMsg.CollisionObjects:
+							Handler_CollisionObjects((CollisionObjects)msg);
+							break;*/
+				}
 			}
 
 		}
@@ -75,32 +78,32 @@ namespace BattleRoayleServer
 				switch (currentDirection)
 				{
 					case Directions.bottom:
-						dY -= delta;
+						dY = delta;
 						break;
 					case Directions.left:
 						dX -= delta;
 						break;
 					case Directions.left_bottom:
 						dX -= delta;
-						dY -= delta;
+						dY = delta;
 						break;
 					case Directions.left_top:
 						dX -= delta;
-						dY = delta;
+						dY -= delta;
 						break;
 					case Directions.right:
 						dX = delta;
 						break;
 					case Directions.right_bottom:
 						dX = delta;
-						dY -= delta;
+						dY = delta;
 						break;
 					case Directions.right_top:
 						dX = delta;
-						dY = delta;
+						dY = -delta;
 						break;
 					case Directions.top:
-						dY = delta;
+						dY = -delta;
 						break;
 				}
 				body.AppendCoords(dX, dY);

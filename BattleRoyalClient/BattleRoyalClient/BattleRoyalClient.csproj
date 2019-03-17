@@ -68,8 +68,10 @@
     <Compile Include="Battle\IBattleModel.cs" />
     <Compile Include="Common\Diapason.cs" />
     <Compile Include="ConvertPosition.cs" />
+    <Compile Include="GameObjects\Box.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
     <Compile Include="GameObjects\IGameObject.cs" />
+    <Compile Include="GameObjects\Stone.cs" />
     <Compile Include="Painter.cs" />
     <Compile Include="Battle\PlayerChararcter.cs" />
     <Compile Include="Properties\Recources.Designer.cs">
@@ -142,9 +144,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Stone.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Field.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Box.png" />

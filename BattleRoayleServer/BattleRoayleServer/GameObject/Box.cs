@@ -11,12 +11,10 @@ namespace BattleRoayleServer
 {
 	 class Box:GameObject
 	{
-		public Box(IGameModel context, PointF location): base()
+		public Box(IGameModel context, PointF location, Size size): base()
 		{
-			this.Components = new List<Component>
-			{
-				new RectangleBody(this, context, location, new Tuple<float, float>(3,3), TypesSolid.Solid)
-			};
+			this.Components = new List<Component>(1);
+			Components.Add(new SolidBody(this, context, new RectangleF(location, size), TypesSolid.Solid));
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

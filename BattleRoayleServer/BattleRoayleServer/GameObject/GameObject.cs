@@ -26,7 +26,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
-		private ObservableQueue<IComponentMsg> messageQueue;
+		private Queue<IComponentMsg> messageQueue;
 		public ulong ID { get; private set; }
 		public IList<Component> Components { get; protected set; }
 
@@ -34,25 +34,30 @@ namespace BattleRoayleServer
 		{
 			//иницализация всех полей
 			ID = GetID();
-			messageQueue = new ObservableQueue<IComponentMsg>();
-			messageQueue.CollectionChanged += Process;
+			messageQueue = new Queue<IComponentMsg>();
 			//коллекцию компонентов каждый объект реализует сам
 		}
 
 		/// <summary>
 		/// Вызывается на каждое новое добавленный новый элемент колекции
 		/// </summary>
-		protected virtual void Process(object sender, NotifyCollectionChangedEventArgs e)
+		public virtual void Process(TimeQuantPassed quantPassed)
 		{
 			if (Destroyed) return;
 			else
 			{
 				lock (sinchWorkWithComponent)
 				{
-					IComponentMsg msg = messageQueue.Dequeue();
-					foreach (Component component in Components)
+					//добавляем сообщение о прохождении кванта в конец очереди
+					messageQueue.Enqueue(quantPassed);
+					//рассылваем сообщение всем объектам
+					while (messageQueue.Count > 0)
 					{
-						component.ProcessMsg(msg);
+						IComponentMsg msg = messageQueue.Dequeue();
+						foreach (Component component in Components)
+						{
+							component.ProcessMsg(msg);
+						}
 					}
 				}
 			}
@@ -68,24 +73,21 @@ namespace BattleRoayleServer
 			{
 				
 				lock (sinchWorkWithComponent)
-				{
-					if (TypesBehave == TypesBehaveObjects.Active)
+				{				
+					var states = new List<IMessage>();
+					if (Destroyed) return null;
+					else
 					{
-						var states = new List<IMessage>();
-						if (Destroyed) return null;
-						else
+						foreach (var component in Components)
 						{
-							foreach (var component in Components)
+							var state = component.State;
+							if (state != null)
 							{
-								var state = component.State;
-								if (state != null)
-								{
-									states.Add(state);
-								}
+								states.Add(state);
 							}
-							return new GameObjectState(ID, Type, states);
 						}
-					}return null;
+						return new GameObjectState(ID, Type, states);
+					};
 				}
 			}
 		}

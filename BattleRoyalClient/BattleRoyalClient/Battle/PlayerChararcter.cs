@@ -60,6 +60,14 @@ namespace BattleRoyalClient
 			}
 		}
 
+
+		public PointF StartAxises
+		{
+			get {
+				return new PointF(x.Left,y.Left);
+			}		
+		}
+
 		public List<IGameObject> VisibleObjects
 		{
 			get
