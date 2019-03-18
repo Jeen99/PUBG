@@ -10,7 +10,7 @@ namespace BattleRoayleServer
 	public class NetworkClient : INetworkClient, IController
 	{
 		private IPlayer gamerRoomLogic;
-
+		public event GamerIsLoaded Event_GamerIsLoaded;
 		public string Nick { get; private set; }
 
 		public ServerClient Gamer { get; private set; }
@@ -32,7 +32,20 @@ namespace BattleRoayleServer
 		public void HanlderNewMessage()
 		{
 			IMessage msg = Gamer.ReceivedMsg.Dequeue();
-			gamerRoomLogic.PerformAction(msg);		
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.LoadedBattleForm:
+					Handler_LoadedBattleForm();
+					break;
+				default:
+					gamerRoomLogic.PerformAction(msg);
+					break;
+			}
+					
+		}
+		public void Handler_LoadedBattleForm()
+		{
+			Event_GamerIsLoaded(this);
 		}
 
 		public IController GetNewControler(ServerClient client)

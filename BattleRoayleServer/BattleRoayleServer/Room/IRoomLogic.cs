@@ -41,6 +41,11 @@ namespace BattleRoayleServer
         /// Особождает ресурсы игровой комнаты
         /// </summary>
         void Dispose();
-    }
+		/// <summary>
+		/// Возвращает информацию обо всех объектов в игровой комнате
+		/// </summary>
+		IMessage GetInitializeData();
+
+	}
 
 }

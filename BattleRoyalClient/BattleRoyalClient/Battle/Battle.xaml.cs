@@ -15,7 +15,8 @@ using System.IO;
 using System.Drawing;
 using Size = System.Drawing.Size;
 using System.Windows.Media.Imaging;
-using Image = System.Drawing.Image;
+using CSInteraction.ProgramMessage;
+
 
 namespace BattleRoyalClient
 {
@@ -39,6 +40,7 @@ namespace BattleRoyalClient
 			background = new Bitmap(sizeBattleScreen.Width, sizeBattleScreen.Height);
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
+			client.SendMessage(new LoadedBattleForm());
 		}
 
 		private void Battle_KeyDown(object sender, KeyEventArgs e)

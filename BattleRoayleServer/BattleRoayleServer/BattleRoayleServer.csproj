@@ -46,6 +46,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Delegates.cs" />
     <Compile Include="ComponentMsg\CollisionObjects.cs" />
     <Compile Include="ComponentMsg\EndMoveGamer.cs" />
     <Compile Include="Components\Collector.cs" />

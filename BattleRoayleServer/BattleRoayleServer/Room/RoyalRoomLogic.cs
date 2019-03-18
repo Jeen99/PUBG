@@ -29,7 +29,7 @@ namespace BattleRoayleServer
         }
 
 		/// <summary>
-		/// Создает список состяний игровых объектов
+		/// Создает список состяний игровых объектов (только активных)
 		/// </summary>
 		public IMessage RoomState
 		{
@@ -38,11 +38,26 @@ namespace BattleRoayleServer
 				List<IMessage> states = new List<IMessage>();
 				foreach (var gameObject in roomContext.GameObjects)
 				{
-					IMessage msg = gameObject.Value.State;
-					if (msg!=null)states.Add(msg);
+					if (gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
+					{
+						IMessage msg = gameObject.Value.State;
+						if (msg != null) states.Add(msg);
+					}
 				}
 				return new RoomState(states);
 			}
+		}
+
+		//возврашает состояние всех объектов (активных и неактивных)
+		public IMessage GetInitializeData()
+		{
+			List<IMessage> states = new List<IMessage>();
+			foreach (var gameObject in roomContext.GameObjects)
+			{		
+					IMessage msg = gameObject.Value.State;
+					if (msg != null) states.Add(msg);	
+			}
+			return new RoomState(states);
 		}
 
 		/// <summary>

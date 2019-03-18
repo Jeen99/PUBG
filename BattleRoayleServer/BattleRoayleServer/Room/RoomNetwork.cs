@@ -81,9 +81,18 @@ namespace BattleRoayleServer
 		{
 			for(int i = 0; i < roomLogic.Players.Count; i++)
 			{
-				Clients.Add(new NetworkClient(roomLogic.Players[i], gamers[i].Client, 
-					gamers[i].NickName, gamers[i].Password, (byte)i));
+				var client = new NetworkClient(roomLogic.Players[i], gamers[i].Client,
+				   gamers[i].NickName, gamers[i].Password, (byte)i);
+				client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
+				Clients.Add(client);
 			}
+		}
+		/// <summary>
+		/// Отправляет загрузившимуся клиенту данные обо всех объектах на карте
+		/// </summary>
+		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
+		{
+			client.Gamer.SendMessage(roomLogic.GetInitializeData());
 		}
 
 		public void Stop()
