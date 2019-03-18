@@ -10,10 +10,10 @@ namespace CSInteraction.ProgramMessage
 	[Serializable]
 	public class GoTo : IMessage
 	{
-		public Directions DirectionMove { get; private set; }
+		public Direction DirectionMove { get; private set; }
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.GoTo;
 
-		public GoTo(Directions direction)
+		public GoTo(Direction direction)
 		{
 			DirectionMove = direction;
 		}

@@ -8,11 +8,11 @@ namespace BattleRoayleServer
 {
 	public class StartMoveGamer:IComponentMsg
 	{
-		public Directions Direction { get; private set; }
+		public Direction Direction { get; private set; }
 
 		public TypesComponentMsg Type { get; } = TypesComponentMsg.StartMoveGamer;
 
-		public StartMoveGamer(Directions direction)
+		public StartMoveGamer(Direction direction)
 		{
 			Direction = direction;
 		}
