@@ -66,7 +66,6 @@ namespace BattleRoayleServer
         {
 			//запускаем таймер
 			timerTotalSinch.Start();
-			HandlerTotalSinch(null, null);
 		}
 
         public void Dispose()
