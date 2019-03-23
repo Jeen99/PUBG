@@ -5,6 +5,7 @@ using System.Threading;
 using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
+using CSInteraction.Common;
 
 namespace ServerTest
 {
@@ -44,6 +45,23 @@ namespace ServerTest
 			Room.Field.Step(1 / 60, 6, 3);
 			solid.Parent.Model.Field.DestroyBody(solid.Body);
 			Assert.AreEqual(solid.CoveredObjects.Count, 0);
+		}
+
+		[TestMethod]
+		public void TestMagazin_WorkMagazin()
+		{
+			Magazin magazin = new Magazin(null, TypesWeapon.Gun, 500, 3000);
+			//делаем 8 выстрелов
+			for (int i = 0; i < 8; i++)
+			{
+				Assert.IsNotNull(magazin.GetBullet());
+				Assert.IsNull(magazin.GetBullet());
+				Thread.Sleep(550);
+			}
+			//перезаряжаем 
+			Assert.IsNull(magazin.GetBullet());
+			Thread.Sleep(3050);
+			Assert.IsNotNull(magazin.GetBullet());
 		}
 	}
 }

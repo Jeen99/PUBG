@@ -31,6 +31,9 @@ namespace CSInteraction.ProgramMessage
 		LoadedBattleForm,
 		GameObjectDelete,
 		TryPickUp,
-		AddWeapon
+		AddWeapon,
+		StartReloadWeapon,
+		EndRelaodWeapon,
+		MakeReloadWeapon
 	}
 }

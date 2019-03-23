@@ -195,7 +195,7 @@ namespace BattleRoayleServer
 			{
 				switch (gameObject.Parent.Type)
 				{
-					case TypesGameObject.Gun:
+					case TypesGameObject.Weapon:
 						pickUpObjects.Add(gameObject);
 						break;
 				}

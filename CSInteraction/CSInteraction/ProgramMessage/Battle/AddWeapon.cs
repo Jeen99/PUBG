@@ -11,10 +11,12 @@ namespace CSInteraction.ProgramMessage
 	public class AddWeapon : IMessage
 	{
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.AddWeapon;
-		public TypesGameObject TypeWeapon { get; private set; }
+		public ulong ID { get; private set; }
+		public TypesWeapon TypeWeapon { get; private set; }
 
-		public AddWeapon(TypesGameObject typeWeapon)
+		public AddWeapon(ulong iD, TypesWeapon typeWeapon)
 		{
+			ID = iD;
 			TypeWeapon = typeWeapon;
 		}
 	}

@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 namespace CSInteraction.Common
 {
 	[Serializable]
-	public enum TypesGameObject
+	public enum TypesWeapon
 	{
-		Player,
-		Stone,
-		Three,
-		Box,
-		Weapon
+		Gun,
+		ShotGun,
+		AssaultRifle,
+		Grenade
 	}
 }

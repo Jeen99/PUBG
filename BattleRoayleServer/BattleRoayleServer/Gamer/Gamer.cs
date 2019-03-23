@@ -54,6 +54,9 @@ namespace BattleRoayleServer
 				case TypesProgramMessage.TryPickUp:
 					Handler_TryPickUp();
 					break;
+				case TypesProgramMessage.MakeReloadWeapon:
+					Handler_MakeReloadWeapon();
+						break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
 					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), action.TypeMessage.ToString());
@@ -69,6 +72,11 @@ namespace BattleRoayleServer
 		private void Handler_GoTo(GoTo msg)
 		{
 			SendMessage(new StartMoveGamer(msg.DirectionMove));
+		}
+
+		private void Handler_MakeReloadWeapon()
+		{
+			SendMessage(new MakeReload());
 		}
 	}
 }

@@ -12,5 +12,6 @@ namespace BattleRoayleServer
 		ObjectPickUp,
 		CollisionObjects,
 		PickUpLoot,
+		MakeReload
 	}
 }

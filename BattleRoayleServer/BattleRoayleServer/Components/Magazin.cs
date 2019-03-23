@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
+using System.Timers;
 
 namespace BattleRoayleServer
 {
@@ -11,10 +14,106 @@ namespace BattleRoayleServer
 		/// Когда true - осуществляется перезарядка магазина
 		/// </summary>
 		private bool reload;
+		private float durationReload_BetweenShots;
+		private float durationReload_Magazin;
+		private int bulletsInMagazin;
 
-		public Magazin(GameObject parent) : base(parent)
+		private Timer reloadMagazin;
+
+		public TypesWeapon TypeMagazin { get; private set; }
+
+		public Magazin(GameObject parent, TypesWeapon typeWeapon, float duration_BetweenShots,
+			float duration_Magazin) : base(parent)
 		{
+			TypeMagazin = typeWeapon;
 
+			durationReload_BetweenShots = duration_BetweenShots;
+			durationReload_Magazin = duration_Magazin;
+
+			CreateNewMagazin();
+			//создаем таймер
+			reloadMagazin = new Timer()
+			{
+				AutoReset = false		
+			};
+			reload = false;
+		}
+
+		private void Handler_ReloadBetweenShots(object sender, ElapsedEventArgs e)
+		{
+			reload = false;
+			bulletsInMagazin--;
+		}
+
+		private void Handler_ReloadMagazin(object sender, ElapsedEventArgs e)
+		{
+			reload = false;
+			CreateNewMagazin();
+			if (Parent != null)
+			{
+				Parent.Model.HappenedEvents.Enqueue(new EndReloadWeapon(Parent.ID));
+			}
+		}
+
+		private void Create_ReloadMagazin()
+		{
+			reload = true;
+			reloadMagazin.Interval = (durationReload_Magazin);
+			reloadMagazin.Elapsed -= Handler_ReloadBetweenShots;
+			reloadMagazin.Elapsed -= Handler_ReloadMagazin;
+			reloadMagazin.Elapsed += Handler_ReloadMagazin;
+			reloadMagazin.Start();
+			if (Parent != null)
+			{
+				Parent.Model.HappenedEvents.Enqueue(new StartReloadWeapon(Parent.ID));
+			}
+		}
+
+		private void Create_ReloadBetweenShots()
+		{
+			reload = true;
+			reloadMagazin.Interval = (durationReload_BetweenShots);
+			reloadMagazin.Elapsed -= Handler_ReloadBetweenShots;
+			reloadMagazin.Elapsed -= Handler_ReloadMagazin;
+			reloadMagazin.Elapsed += Handler_ReloadBetweenShots;
+			reloadMagazin.Start();
+		}
+
+		public IBullet GetBullet()
+		{
+			if (!reload)
+			{
+				if (bulletsInMagazin > 1)
+					Create_ReloadBetweenShots();
+				else
+					Create_ReloadMagazin();
+
+				return CreateBullet();
+			}
+			else
+			{
+				return null;
+			}
+		}
+
+		private IBullet CreateBullet()
+		{
+			switch (TypeMagazin)
+			{
+				case TypesWeapon.Gun:
+					return new GunBullet();
+				default: return null;
+			}
+		}
+
+		private void CreateNewMagazin()
+		{
+			switch (TypeMagazin)
+			{
+				case TypesWeapon.Gun:
+					bulletsInMagazin = 8;
+					break;
+			}
 		}
 
 		public override void Dispose()
@@ -24,7 +123,12 @@ namespace BattleRoayleServer
 
 		public override void ProcessMsg(IComponentMsg msg)
 		{
-			throw new NotImplementedException();
+			switch (msg.Type)
+			{
+				case TypesComponentMsg.MakeReload:
+					Create_ReloadMagazin();
+					break;
+			}
 		}
 	}
 }

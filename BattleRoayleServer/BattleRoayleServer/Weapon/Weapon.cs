@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -13,14 +14,7 @@ namespace BattleRoayleServer
 		{
 
 		}
+
+		public virtual TypesWeapon TypeWeapon { get; }
 	}
-
-	enum TypesWeapon
-    {
-        Gun,
-        ShotGun,
-        AssaultRifle,
-        Grenade
-    }
-
 }

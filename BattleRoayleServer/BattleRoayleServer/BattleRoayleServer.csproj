@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Delegates.cs" />
+    <Compile Include="ComponentMsg\MakeReload.cs" />
     <Compile Include="ComponentMsg\PickUpLoot.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Collision\RoomContactListener.cs" />
@@ -95,6 +96,8 @@
     <Compile Include="ComponentMsg\StartMoveGamer.cs" />
     <Compile Include="ComponentMsg\TypesComponentMsg.cs" />
     <Compile Include="ComponentMsg\TimeQuantPassed.cs" />
+    <Compile Include="Weapon\Bullet\GunBullet.cs" />
+    <Compile Include="Weapon\Bullet\IBullet.cs" />
     <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Weapon\Weapon.cs" />
   </ItemGroup>

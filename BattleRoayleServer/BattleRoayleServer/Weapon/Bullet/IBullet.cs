@@ -4,15 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CSInteraction.Common
+namespace BattleRoayleServer
 {
-	[Serializable]
-	public enum TypesGameObject
+	public interface IBullet
 	{
-		Player,
-		Stone,
-		Three,
-		Box,
-		Weapon
+		float Distance { get; }
+		float Damage { get; }
 	}
 }

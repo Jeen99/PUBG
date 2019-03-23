@@ -43,15 +43,40 @@ namespace BattleRoayleServer
 			{
 				switch (item.Parent.Type)
 				{
-					case TypesGameObject.Gun:
-						if (weapons[0] == null)
-						{
-							weapons[0] = (Weapon)item.Parent;
-							item.BodyDelete();
-							Parent.Model.HappenedEvents.Enqueue(new AddWeapon(Parent.Type));
-						}
+					case TypesGameObject.Weapon:
+						PickUpWeapon(item);
 						break;
 				}
+			}
+		}
+
+		private void PickUpWeapon(SolidBody weaponBody)
+		{
+			Weapon weapon = (Weapon)body.Parent;
+			switch (weapon.TypeWeapon)
+			{
+				case TypesWeapon.Gun:
+					TrySaveWeapon(0, weapon, weaponBody);
+					break;
+				case TypesWeapon.ShotGun:
+					TrySaveWeapon(1, weapon, weaponBody);
+					break;
+				case TypesWeapon.AssaultRifle:
+					TrySaveWeapon(2, weapon, weaponBody);
+					break;
+				case TypesWeapon.Grenade:
+					TrySaveWeapon(3, weapon, weaponBody);
+					break;
+			}
+		}
+
+		private void TrySaveWeapon(int index, Weapon weapon, SolidBody weaponBody)
+		{
+			if (weapons[index] == null)
+			{
+				weapons[index] = (Weapon)weapon;
+				weaponBody.BodyDelete();
+				Parent.Model.HappenedEvents.Enqueue(new AddWeapon(Parent.ID, weapon.TypeWeapon));
 			}
 		}
 
