@@ -8,9 +8,9 @@ namespace BattleRoayleServer
 	public enum TypesComponentMsg
 	{
 		StartMoveGamer,
-		EndMoveGamer,
 		TimeQuantPassed,
 		ObjectPickUp,
-		CollisionObjects
+		CollisionObjects,
+		PickUpLoot,
 	}
 }

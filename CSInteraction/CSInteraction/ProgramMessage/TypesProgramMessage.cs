@@ -28,6 +28,9 @@ namespace CSInteraction.ProgramMessage
 		BodyState,
 		GameObjectState,
 		RoomState,
-		LoadedBattleForm
+		LoadedBattleForm,
+		GameObjectDelete,
+		TryPickUp,
+		AddWeapon
 	}
 }

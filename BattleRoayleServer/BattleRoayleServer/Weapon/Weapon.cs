@@ -9,7 +9,7 @@ namespace BattleRoayleServer
 {
 	public abstract class Weapon : GameObject
 	{
-		protected Weapon() : base()
+		public Weapon(IGameModel model) : base(model)
 		{
 
 		}

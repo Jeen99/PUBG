@@ -10,13 +10,20 @@ namespace BattleRoayleServer
 {
 	public class Gamer : GameObject, IPlayer
 	{
-		public Gamer(PointF location, IGameModel context):base()
+		private const float restetution = 0.2f;
+		private const float friction = 0.3f;
+		private const float density = 0.5f;
+
+		public Gamer(PointF location, IGameModel context) : base(context)
 		{
-			this.Components = new List<Component>(2);
-			body = new SolidBody(this, context, new RectangleF(location, new SizeF(10,10)), TypesSolid.Solid);
+			this.Components = new List<Component>(3);
+			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
+				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Player,
+				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
 			Components.Add(body);
-			Components.Add(new Movement(this, body, 40));
-			
+			Components.Add(new Movement(this, body, 40f));
+			Components.Add(new Collector(this, body));
+
 		}
 
 		/// <summary>
@@ -28,7 +35,7 @@ namespace BattleRoayleServer
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
 
-		
+
 		PointF IPlayer.Location
 		{
 			get
@@ -37,8 +44,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		
-
 		public void PerformAction(IMessage action)
 		{
 			switch (action.TypeMessage)
@@ -46,8 +51,8 @@ namespace BattleRoayleServer
 				case TypesProgramMessage.GoTo:
 					Handler_GoTo((GoTo)action);
 					break;
-				case TypesProgramMessage.StopMove:
-					Handler_StopMove((StopMove)action);
+				case TypesProgramMessage.TryPickUp:
+					Handler_TryPickUp();
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
@@ -56,9 +61,9 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void Handler_StopMove(StopMove msg)
+		private void Handler_TryPickUp()
 		{
-			SendMessage(new EndMoveGamer());
+			SendMessage(new PickUpLoot());
 		}
 
 		private void Handler_GoTo(GoTo msg)

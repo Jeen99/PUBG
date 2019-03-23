@@ -8,15 +8,26 @@ using CSInteraction.ProgramMessage;
 using CSInteraction.Common;
 using System.Collections.Specialized;
 using System.Drawing;
+using Box2DX.Common;
+using Box2DX.Collision;
+using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
     public class RoyalGameModel : IGameModel
     {
+		/// <summary>
+		///ширина одной стороны игровой карты 
+		/// </summary>
+		private const float lengthOfSide = 500;
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
         public ConcurrentDictionary<ulong,GameObject> GameObjects { get; private set; }
-        public IField Field { get; private set; }
+		/// <summary>
+		/// Объекты которые нужно удалить с карты
+		/// </summary>
+		public List<SolidBody> NeedDelete { get; } = new List<SolidBody>();
+        public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
 		/// </summary>
@@ -42,6 +53,8 @@ namespace BattleRoayleServer
 			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
 			box = new Box(this, new PointF(150, 10), new Size(12, 12));
 			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
+			Gun gun = new Gun(new PointF(50,70),this);
+			GameObjects.AddOrUpdate(gun.ID, gun, (k, v) => { return v; });
 		}
 
 		/// <summary>
@@ -74,7 +87,15 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			GameObjects = new ConcurrentDictionary<ulong, GameObject>();
-			Field = new RoyalField();
+
+			AABB frameField = new AABB();
+			frameField.LowerBound.Set(0,0);
+			frameField.UpperBound.Set(lengthOfSide, lengthOfSide);
+			Field = new World(frameField, new Vec2(0, 0), false);
+			var solver = new RoomContactListener();
+			Field.SetContactListener(solver);
+			CreateFrame();
+
 			HappenedEvents = new ObservableQueue<IMessage>();
 
 			//создание и добавление в GameObjects и Field статических объектов карты
@@ -82,11 +103,64 @@ namespace BattleRoayleServer
 			CreatePlayers(gamersInRoom);
 
 		}
-
-		public void RemoveGameObject(GameObject gameObject)
+		public void CreateFrame()
 		{
+			//bottom
+			BodyDef bDefBottom = new BodyDef();
+			bDefBottom.Position.Set(0, 0);
+			bDefBottom.Angle = 0;
 
-		}
+			PolygonDef pDefBottom = new PolygonDef();
+			pDefBottom.Restitution = 0.3f;
+			pDefBottom.Friction = 0.2f;
+			pDefBottom.Density = 0;
+			pDefBottom.SetAsBox(lengthOfSide, 1);
+
+			var frame  = Field.CreateBody(bDefBottom);
+			frame.CreateShape(pDefBottom);
+
+			//left
+			BodyDef bDefLeft = new BodyDef();
+			bDefLeft.Position.Set(0, 0);
+			bDefLeft.Angle = 0;
+
+			PolygonDef pDefLeft = new PolygonDef();
+			pDefLeft.Restitution = 0.3f;
+			pDefLeft.Friction = 0.2f;
+			pDefLeft.Density = 0;
+			pDefLeft.SetAsBox(1, lengthOfSide);
+
+			frame = Field.CreateBody(bDefLeft);
+			frame.CreateShape(pDefLeft);
+
+			//top
+			BodyDef bDefTop = new BodyDef();
+			bDefTop.Position.Set(0, lengthOfSide - 1);
+			bDefTop.Angle = 0;
+
+			PolygonDef pDefTop = new PolygonDef();
+			pDefTop.Restitution = 0.3f;
+			pDefTop.Friction = 0.2f;
+			pDefTop.Density = 0;
+			pDefTop.SetAsBox(lengthOfSide, 1);
+
+			frame = Field.CreateBody(bDefTop);
+			frame.CreateShape(pDefTop);
+
+			//right
+			BodyDef bDefRight = new BodyDef();
+			bDefRight.Position.Set(lengthOfSide - 1, 0);
+			bDefRight.Angle = 0;
+
+			PolygonDef pDefRight = new PolygonDef();
+			pDefRight.Restitution = 0.3f;
+			pDefRight.Friction = 0.2f;
+			pDefRight.Density = 0;
+			pDefRight.SetAsBox(1, lengthOfSide);
+
+			frame = Field.CreateBody(bDefRight);
+			frame.CreateShape(pDefRight);
+		}		
 
     }
 }

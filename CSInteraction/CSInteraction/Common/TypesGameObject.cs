@@ -12,6 +12,7 @@ namespace CSInteraction.Common
 		Player,
 		Stone,
 		Three,
-		Box
+		Box,
+		Gun
 	}
 }

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Drawing;
 using CSInteraction.Common;
 
+
+
 namespace BattleRoyalClient
 {
 	static class Painter
@@ -40,6 +42,7 @@ namespace BattleRoyalClient
 			gr.DrawImage(Properties.Recources.Stone, new RectangleF(
 				ConvertPosition.ConvertToViewLocation(stone.Shape.Location, startAxises),
 				ConvertPosition.ConvertToViewSize(stone.Shape.Size)));
+			
 		}
 
 		private static void DrawGamer(Gamer gamer, Graphics gr)

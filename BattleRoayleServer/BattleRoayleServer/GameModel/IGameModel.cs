@@ -6,6 +6,9 @@ using System.Text;
 using CSInteraction.ProgramMessage;
 using CSInteraction.Common;
 using System.Collections.Concurrent;
+using Box2DX.Common;
+using Box2DX.Collision;
+using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
@@ -13,9 +16,9 @@ namespace BattleRoayleServer
     {
         IList<IPlayer> Players { get;}
 		ConcurrentDictionary<ulong, GameObject> GameObjects { get; }
-        IField Field { get;}
+        World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
-		void RemoveGameObject(GameObject gameObject);
+		List<SolidBody> NeedDelete { get; }
 
 	}
 }

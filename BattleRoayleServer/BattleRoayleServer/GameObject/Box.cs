@@ -11,10 +11,16 @@ namespace BattleRoayleServer
 {
 	 class Box:GameObject
 	{
-		public Box(IGameModel context, PointF location, Size size): base()
+		private const float restetution = 0.2f;
+		private const float friction = 0.1f;
+		private const float density = 0;
+
+		public Box(IGameModel context, PointF location, Size size) : base(context)
 		{
 			this.Components = new List<Component>(1);
-			Components.Add(new SolidBody(this, context, new RectangleF(location, size), TypesSolid.Solid));
+			Components.Add(new SolidBody(this, new RectangleF(location, size), restetution, 
+				friction, density, TypesBody.Rectangle,TypesSolid.Solid, (ushort)CollideCategory.Box, 
+				(ushort)CollideCategory.Player));
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

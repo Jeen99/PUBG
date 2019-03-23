@@ -23,6 +23,8 @@ namespace BattleRoayleServer
 				return retID;
 			}
 		}
+
+		public IGameModel Model { get; private set; }
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
@@ -30,11 +32,12 @@ namespace BattleRoayleServer
 		public ulong ID { get; private set; }
 		public IList<Component> Components { get; protected set; }
 
-		public GameObject()
+		public GameObject(IGameModel model)
 		{
 			//иницализация всех полей
 			ID = GetID();
 			messageQueue = new Queue<IComponentMsg>();
+			Model = model;
 			//коллекцию компонентов каждый объект реализует сам
 		}
 
@@ -70,8 +73,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		public IMessage State {
 			get
-			{
-				
+			{	
 				lock (sinchWorkWithComponent)
 				{				
 					var states = new List<IMessage>();
@@ -87,7 +89,7 @@ namespace BattleRoayleServer
 							}
 						}
 						return new GameObjectState(ID, Type, states);
-					};
+					}
 				}
 			}
 		}

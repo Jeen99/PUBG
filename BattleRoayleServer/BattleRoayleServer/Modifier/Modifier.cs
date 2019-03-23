@@ -8,9 +8,8 @@ namespace BattleRoayleServer
 {
 	public class Modifier : GameObject
 	{
-		public Modifier():base()
+		public Modifier(IGameModel model) : base(model)
 		{
-
 		}
 
 		public override TypesGameObject Type => throw new NotImplementedException();
