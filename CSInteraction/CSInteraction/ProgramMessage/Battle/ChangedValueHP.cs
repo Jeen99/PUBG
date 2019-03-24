@@ -9,13 +9,13 @@ namespace CSInteraction.ProgramMessage
 	[Serializable]
 	public class ChangedValueHP:IMessage
 	{
-		public float NewValueHp { get; private set; }
+		public float NewValueHP { get; private set; }
 
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.ChangedValueHP;
 
 		public ChangedValueHP(float newValueHp)
 		{
-			NewValueHp = newValueHp;
+			NewValueHP = newValueHp;
 		}
 	}
 }

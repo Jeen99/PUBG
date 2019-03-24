@@ -42,6 +42,11 @@ namespace CSInteraction.ProgramMessage
 		GotDamage,
 		MakedShot,
 		ChangedValueHP,
-		HappenedDeath
+		HappenedDeath,
+		CurrentWeaponState,
+		MagazinState,
+		HealthyState,
+		CollectorState
+
 	}
 }

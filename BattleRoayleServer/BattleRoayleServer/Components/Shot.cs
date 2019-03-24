@@ -72,10 +72,11 @@ namespace BattleRoayleServer
 		private Vec2 RotateVector(float angle, IBullet bullet)
 		{
 			//в радианах, на вход угол в градусах
+			//угол расчитывается против часовой стрелки
 			double RadAngle = angle * (System.Math.PI / 180);
 			return new Vec2()
 			{
-				X = (float)(0 * System.Math.Cos(RadAngle) - bullet.Distance * System.Math.Sin(RadAngle)),
+				X = (float)(bullet.Distance * System.Math.Sin(RadAngle)- 0 * System.Math.Cos(RadAngle)),
 				Y = (float)(0 * System.Math.Sin(RadAngle) + bullet.Distance * System.Math.Cos(RadAngle))
 			};
 		}

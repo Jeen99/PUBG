@@ -39,6 +39,14 @@ namespace BattleRoayleServer
 			reload = false;
 		}
 
+		public override IMessage State
+		{
+			get
+			{
+				return new MagazinState(bulletsInMagazin);
+			}
+		}
+
 		private void Handler_ReloadBetweenShots(object sender, ElapsedEventArgs e)
 		{
 			reload = false;

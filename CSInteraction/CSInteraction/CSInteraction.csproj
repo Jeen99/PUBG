@@ -59,12 +59,16 @@
     <Compile Include="ProgramMessage\ServerMsg\GotDamage.cs" />
     <Compile Include="ProgramMessage\Battle\MakedShot.cs" />
     <Compile Include="ProgramMessage\ServerMsg\HappenedDeath.cs" />
+    <Compile Include="ProgramMessage\State\CollectorState.cs" />
+    <Compile Include="ProgramMessage\State\CurrentWeaponState.cs" />
     <Compile Include="ProgramMessage\State\GameObjectState.cs" />
     <Compile Include="ProgramMessage\Battle\GoTo.cs" />
     <Compile Include="ProgramMessage\Battle\AddWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\MakeReloadWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\MakeShot.cs" />
     <Compile Include="ProgramMessage\Battle\PlayerMoved.cs" />
+    <Compile Include="ProgramMessage\State\HealthyState.cs" />
+    <Compile Include="ProgramMessage\State\MagazinState.cs" />
     <Compile Include="ProgramMessage\State\RoomState.cs" />
     <Compile Include="ProgramMessage\Battle\StartReloadWeapon.cs" />
     <Compile Include="ProgramMessage\State\BodyState.cs" />

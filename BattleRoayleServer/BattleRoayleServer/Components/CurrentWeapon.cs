@@ -21,6 +21,21 @@ namespace BattleRoayleServer
 			currentWeapon = null;
 		}
 
+		public override IMessage State
+		{
+			get
+			{
+				if (currentWeapon != null)
+				{
+					return new CurrentWeaponState(currentWeapon.TypeWeapon);
+				}
+				else
+				{
+					return null;
+				}
+			}
+		}
+
 		public override void Dispose()
 		{
 			throw new NotImplementedException();

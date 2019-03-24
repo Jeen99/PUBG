@@ -30,7 +30,13 @@ namespace BattleRoayleServer
 					break;
 			}
 		}
-
+		public override IMessage State
+		{
+			get
+			{
+				return new HealthyState(HP);
+			}
+		}
 		private void Handler_UpdateComponent(GotDamage msg)
 		{
 			HP -= msg.Damage;
