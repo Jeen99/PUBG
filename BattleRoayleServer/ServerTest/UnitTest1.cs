@@ -68,19 +68,39 @@ namespace ServerTest
 		public void TestShot_Shot()
 		{
 			var Room = new RoyalGameModel(2);
-			Gamer gamer = (Gamer)Room.Players[0];
+			Gamer firstGamer = (Gamer)Room.Players[0];
 			Room.Field.Step(1 / 60, 6, 3);
 			//поднимаем оружие
-			gamer.SendMessage(new TryPickUp());
-			gamer.Update();
-			CurrentWeapon currentWeapon = (CurrentWeapon)gamer.GetComponent(typeof(CurrentWeapon));
+			firstGamer.SendMessage(new TryPickUp());
+			firstGamer.Update();
+			CurrentWeapon currentWeapon = (CurrentWeapon)firstGamer.GetComponent(typeof(CurrentWeapon));
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//удаляем объект с карты
 			Room.NeedDelete[0].Body.GetWorld().DestroyBody(Room.NeedDelete[0].Body);
 			Room.NeedDelete.Clear();
 			//делаем выстрел
-			gamer.SendMessage(new MakeShot(0));
-			gamer.Update();
+			firstGamer.SendMessage(new MakeShot(2));
+			firstGamer.Update();
+			//проверяем
+			Gamer secondGamer = (Gamer)Room.Players[1];
+			secondGamer.Update();
+			Healthy healtySecondGamer = (Healthy)secondGamer.GetComponent(typeof(Healthy));
+			Assert.AreEqual(healtySecondGamer.HP, 92);
+
+			//делаем 2 выстрел
+			firstGamer.SendMessage(new MakeShot(0));
+			firstGamer.Update();
+			//выстрел не должен произойти
+			secondGamer.Update();
+			Assert.AreEqual(healtySecondGamer.HP, 92);
+
+			Thread.Sleep(500);
+			//делаем 3 выстрел
+			firstGamer.SendMessage(new MakeShot(0));
+			firstGamer.Update();
+			//выстрел должен произойти
+			secondGamer.Update();
+			Assert.AreEqual(healtySecondGamer.HP, 84);
 		}
 	}
 }

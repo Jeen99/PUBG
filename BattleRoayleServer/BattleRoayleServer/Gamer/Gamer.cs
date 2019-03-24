@@ -33,6 +33,9 @@ namespace BattleRoayleServer
 			var currentWeapon = new CurrentWeapon(this, collector);
 			components.AddOrUpdate(currentWeapon.GetType(), currentWeapon, (k, v) => { return v; });
 
+			var healthy = new Healthy(this);
+			components.AddOrUpdate(healthy.GetType(), healthy, (k, v) => { return v; });
+
 		}
 
 		/// <summary>

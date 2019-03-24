@@ -59,10 +59,10 @@ namespace BattleRoayleServer
 						Y = position.Y + sweepVector.Y
 					};
 					//получаем только первый встетившийся на пути пули объект
-					Shape[] hits = new Shape[1];
-					BodyHolder.Body.GetWorld().Raycast(segment, hits, 1, true, null);
+					Shape[] hits = new Shape[2];
+					BodyHolder.Body.GetWorld().Raycast(segment, hits, 2, true, null);
 					//отправляем ему сообщение о нанесении урона
-					SolidBody attacked = (SolidBody)hits[0].GetBody().GetUserData();
+					SolidBody attacked = (SolidBody)hits[1].GetBody().GetUserData();
 					var damageMsg = new GotDamage(bullet.Damage);
 					attacked.Parent.SendMessage(damageMsg);
 				}
