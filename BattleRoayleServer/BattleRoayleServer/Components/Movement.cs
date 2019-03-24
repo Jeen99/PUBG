@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 using Box2DX.Common;
 
 namespace BattleRoayleServer
@@ -31,16 +32,16 @@ namespace BattleRoayleServer
 			return;
 		}
 
-		public override void ProcessMsg(IComponentMsg msg)
+		public override void ProcessMsg(IMessage msg)
 		{
 			if (msg != null)
 			{
-				switch (msg.Type)
+				switch (msg.TypeMessage)
 				{
-					case TypesComponentMsg.StartMoveGamer:
-						Handler_StartMoveGamer(msg as StartMoveGamer);
+					case  TypesProgramMessage.GoTo:
+						Handler_StartMoveGamer(msg as GoTo);
 						break;
-					case TypesComponentMsg.TimeQuantPassed:
+					case TypesProgramMessage.TimeQuantPassed:
 						Handler_TimeQuantPassed();
 						break;
 				}
@@ -53,9 +54,9 @@ namespace BattleRoayleServer
 
 		}
 
-		private void Handler_StartMoveGamer(StartMoveGamer msg)
+		private void Handler_StartMoveGamer(GoTo msg)
 		{
-			currentDirection = msg.Direction;
+			currentDirection = msg.DirectionMove;
 			float dX = 0;
 			float dY = 0;
 

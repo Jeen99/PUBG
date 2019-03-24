@@ -50,13 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Delegates.cs" />
-    <Compile Include="ComponentMsg\MakeReload.cs" />
-    <Compile Include="ComponentMsg\PickUpLoot.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Collision\RoomContactListener.cs" />
     <Compile Include="Components\Collision\SolidBody.cs" />
+    <Compile Include="Components\CurrentWeapon.cs" />
     <Compile Include="Components\Magazin.cs" />
-    <Compile Include="ComponentMsg\ObjectPickUp.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="GameObject\Box.cs" />
     <Compile Include="GameObject\Stone.cs" />
@@ -75,7 +73,6 @@
     <Compile Include="DataBase\DataOfAccount.cs" />
     <Compile Include="GameObject\GameObject.cs" />
     <Compile Include="Gamer\Gamer.cs" />
-    <Compile Include="ComponentMsg\IComponentMsg.cs" />
     <Compile Include="GameModel\IGameModel.cs" />
     <Compile Include="Gamer\INetworkClient.cs" />
     <Compile Include="Components\Movement.cs" />
@@ -93,9 +90,6 @@
     <Compile Include="HighestLevelServer\Rooms.cs" />
     <Compile Include="GameModel\RoyalGameModel.cs" />
     <Compile Include="Room\RoyalRoomLogic.cs" />
-    <Compile Include="ComponentMsg\StartMoveGamer.cs" />
-    <Compile Include="ComponentMsg\TypesComponentMsg.cs" />
-    <Compile Include="ComponentMsg\TimeQuantPassed.cs" />
     <Compile Include="Weapon\Bullet\GunBullet.cs" />
     <Compile Include="Weapon\Bullet\IBullet.cs" />
     <Compile Include="Weapon\Gun.cs" />

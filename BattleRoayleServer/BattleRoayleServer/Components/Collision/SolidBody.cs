@@ -146,13 +146,13 @@ namespace BattleRoayleServer
 
 		public TypesSolid TypeSolid { get; private set; }
 
-		public override void ProcessMsg(IComponentMsg msg)
+		public override void ProcessMsg(IMessage msg)
 		{
 			if (msg != null)
 			{
-				switch (msg.Type)
+				switch (msg.TypeMessage)
 				{
-					case TypesComponentMsg.TimeQuantPassed:
+					case TypesProgramMessage.TimeQuantPassed:
 						Handler_TimeQuantPassed();
 						break;
 				}
@@ -169,7 +169,7 @@ namespace BattleRoayleServer
 			shape.Location = new PointF(position.X, position.Y);
 			Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
 		}
-		public void SendMessage(IComponentMsg msg)
+		public void SendMessage(IMessage msg)
 		{
 			Parent.SendMessage(msg);
 		}

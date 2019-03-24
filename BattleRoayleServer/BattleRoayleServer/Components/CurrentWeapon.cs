@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	//отвечает за выстрел
-	public class Shot:Component
+	public class CurrentWeapon : Component
 	{
-		/// <summary>
-		/// Когда false - перезарядка, выстрел не возможен
-		/// </summary>
-		private bool reload;
-		private Magazin magazin;
-
-		public Shot(GameObject parent) : base(parent)
+		private Collector inventory;
+		private Weapon currentWeapon;
+		public CurrentWeapon(GameObject parent, Collector collector) : base(parent)
 		{
-
+			inventory = collector;
+			currentWeapon = null;
 		}
 
 		public override void Dispose()

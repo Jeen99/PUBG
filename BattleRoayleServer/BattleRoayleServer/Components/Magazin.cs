@@ -121,11 +121,11 @@ namespace BattleRoayleServer
 			throw new NotImplementedException();
 		}
 
-		public override void ProcessMsg(IComponentMsg msg)
+		public override void ProcessMsg(IMessage msg)
 		{
-			switch (msg.Type)
+			switch (msg.TypeMessage)
 			{
-				case TypesComponentMsg.MakeReload:
+				case TypesProgramMessage.MakeReloadWeapon:
 					Create_ReloadMagazin();
 					break;
 			}

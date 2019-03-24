@@ -28,7 +28,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
-		private Queue<IComponentMsg> messageQueue;
+		private Queue<IMessage> messageQueue;
 		public ulong ID { get; private set; }
 		public IList<Component> Components { get; protected set; }
 
@@ -36,7 +36,7 @@ namespace BattleRoayleServer
 		{
 			//иницализация всех полей
 			ID = GetID();
-			messageQueue = new Queue<IComponentMsg>();
+			messageQueue = new Queue<IMessage>();
 			Model = model;
 			//коллекцию компонентов каждый объект реализует сам
 		}
@@ -56,7 +56,7 @@ namespace BattleRoayleServer
 					//рассылваем сообщение всем объектам
 					while (messageQueue.Count > 0)
 					{
-						IComponentMsg msg = messageQueue.Dequeue();
+						IMessage msg = messageQueue.Dequeue();
 						foreach (Component component in Components)
 						{
 							component.ProcessMsg(msg);
@@ -103,7 +103,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Добавляет сообщение в очередь обработки сообщений
 		/// </summary>
-		public void SendMessage(IComponentMsg msg)
+		public void SendMessage(IMessage msg)
         {
 			messageQueue.Enqueue(msg);
         }

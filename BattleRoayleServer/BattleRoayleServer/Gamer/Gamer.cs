@@ -46,37 +46,7 @@ namespace BattleRoayleServer
 
 		public void PerformAction(IMessage action)
 		{
-			switch (action.TypeMessage)
-			{
-				case TypesProgramMessage.GoTo:
-					Handler_GoTo((GoTo)action);
-					break;
-				case TypesProgramMessage.TryPickUp:
-					Handler_TryPickUp();
-					break;
-				case TypesProgramMessage.MakeReloadWeapon:
-					Handler_MakeReloadWeapon();
-						break;
-				default:
-					//записываем в лог, сообщение что не смогли обработать сообщение
-					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), action.TypeMessage.ToString());
-					break;
-			}
-		}
-
-		private void Handler_TryPickUp()
-		{
-			SendMessage(new PickUpLoot());
-		}
-
-		private void Handler_GoTo(GoTo msg)
-		{
-			SendMessage(new StartMoveGamer(msg.DirectionMove));
-		}
-
-		private void Handler_MakeReloadWeapon()
-		{
-			SendMessage(new MakeReload());
+			SendMessage(action);
 		}
 	}
 }

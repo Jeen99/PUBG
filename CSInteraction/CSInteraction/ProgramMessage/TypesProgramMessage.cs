@@ -34,6 +34,8 @@ namespace CSInteraction.ProgramMessage
 		AddWeapon,
 		StartReloadWeapon,
 		EndRelaodWeapon,
-		MakeReloadWeapon
+		MakeReloadWeapon,
+		ChoiceWeapon,
+		TimeQuantPassed
 	}
 }

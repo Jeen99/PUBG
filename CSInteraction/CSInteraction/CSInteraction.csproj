@@ -51,6 +51,7 @@
     <Compile Include="Common\TypesGameObject.cs" />
     <Compile Include="Common\TypesWeapon.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
+    <Compile Include="ProgramMessage\Battle\ChoiceWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\EndReloadWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\GameObjectDelete.cs" />
     <Compile Include="ProgramMessage\Battle\GameObjectState.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="ProgramMessage\Queue\SuccessExitOfQueue.cs" />
     <Compile Include="ProgramMessage\Room\AddInBattle.cs" />
     <Compile Include="ProgramMessage\Room\LoadedBattleForm.cs" />
+    <Compile Include="ProgramMessage\ServerMsg\TimeQuantPassed.cs" />
     <Compile Include="ProgramMessage\SignUpInAccount\Authorization.cs" />
     <Compile Include="Common\InsideMessage.cs" />
     <Compile Include="ProgramMessage\Queue\ChangeCountPlayersInQueue.cs" />
@@ -87,5 +89,6 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
