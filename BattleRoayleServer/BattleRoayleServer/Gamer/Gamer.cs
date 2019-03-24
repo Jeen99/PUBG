@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Collections.Concurrent;
 using CSInteraction.ProgramMessage;
 using CSInteraction.Common;
 
@@ -16,17 +17,21 @@ namespace BattleRoayleServer
 
 		public Gamer(PointF location, IGameModel context) : base(context)
 		{
-			this.Components = new List<Component>(4);
+
+			this.Components = new ConcurrentDictionary<Type, Component>();
 			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
 				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Player,
 				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
-			Components.Add(body);
+			Components.AddOrUpdate(body.GetType(), body, (k, v) => { return v; });
+
 			var movement = new Movement(this, body, 40f);
-			Components.Add(movement);
+			Components.AddOrUpdate(movement.GetType(), movement, (k, v) => { return v; });
+
 			var collector = new Collector(this, body);
-			Components.Add(collector);
+			Components.AddOrUpdate(collector.GetType(), collector, (k, v) => { return v; });
+
 			var currentWeapon = new CurrentWeapon(this, collector);
-			Components.Add(currentWeapon);
+			Components.AddOrUpdate(currentWeapon.GetType(), currentWeapon, (k, v) => { return v; });
 
 		}
 

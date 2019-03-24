@@ -10,15 +10,14 @@ namespace BattleRoayleServer
 	//отвечает за выстрел
 	public class Shot:Component
 	{
-		/// <summary>
-		/// Когда false - перезарядка, выстрел не возможен
-		/// </summary>
-		private bool reload;
+
 		private Magazin magazin;
+		public SolidBody BodyHolder { get; set; }
 
-		public Shot(GameObject parent) : base(parent)
+
+		public Shot(GameObject parent, Magazin magazin) : base(parent)
 		{
-
+			this.magazin = magazin;
 		}
 
 		public override void Dispose()
@@ -28,7 +27,18 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
-			throw new NotImplementedException();
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.MakeShot:
+					Handler_MakeShot(msg as MakeShot);
+					break;
+			}
 		}
+
+		private void Handler_MakeShot(MakeShot msg)
+		{
+
+		}
+
 	}
 }

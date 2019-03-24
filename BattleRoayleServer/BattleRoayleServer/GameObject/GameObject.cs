@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections.Specialized;
+using System.Collections.Concurrent;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
 
@@ -30,7 +30,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private Queue<IMessage> messageQueue;
 		public ulong ID { get; private set; }
-		public IList<Component> Components { get; protected set; }
+		public ConcurrentDictionary<Type,Component> Components { get; protected set; }
 
 		public GameObject(IGameModel model)
 		{
@@ -60,9 +60,9 @@ namespace BattleRoayleServer
 					while (messageQueue.Count > 0)
 					{
 						IMessage msg = messageQueue.Dequeue();
-						foreach (Component component in Components)
+						foreach (var component in Components)
 						{
-							component.UpdateComponent(msg);
+							component.Value.UpdateComponent(msg);
 						}
 					}
 				}
@@ -85,7 +85,7 @@ namespace BattleRoayleServer
 					{
 						foreach (var component in Components)
 						{
-							var state = component.State;
+							var state = component.Value.State;
 							if (state != null)
 							{
 								states.Add(state);
@@ -123,6 +123,12 @@ namespace BattleRoayleServer
         /// Возвращает true, если объект уничтожен
         /// </summary>
         public bool Destroyed { get; protected set; }
-       
+
+		public Component GetComponent(Type type)
+		{
+			Component component = null;
+			Components.TryGetValue(type, out component);
+			return component;
+		}
 	}
 }

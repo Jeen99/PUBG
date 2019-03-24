@@ -39,7 +39,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public void Handler_AddWeapon(AddWeapon msg)
+		private void Handler_AddWeapon(AddWeapon msg)
 		{
 			//если это первое подобранное оружие делаем его выбранным
 			if (currentWeapon == null)
@@ -48,7 +48,7 @@ namespace BattleRoayleServer
 				Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(msg.TypeWeapon));
 			}
 		}
-		public void Handler_MakeShot(MakeShot shot)
+		private void Handler_MakeShot(MakeShot shot)
 		{
 			if (currentWeapon != null)
 			{
@@ -58,11 +58,12 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public void Handler_ChoiceWeapon(ChoiceWeapon msg)
+		private void Handler_ChoiceWeapon(ChoiceWeapon msg)
 		{
 			if (msg.ChooseWeapon != currentWeapon.TypeWeapon)
 			{
 				currentWeapon = inventory.GetWeapon(msg.ChooseWeapon);
+				currentWeapon.SetBodyHolder((SolidBody)Parent.GetComponent(typeof(SolidBody)));
 				//отправляем сообщение об этом
 				Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(msg.ChooseWeapon));
 			}

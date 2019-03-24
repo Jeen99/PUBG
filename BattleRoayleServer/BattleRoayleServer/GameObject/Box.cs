@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Common;
+using System.Collections.Concurrent;
 using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
@@ -17,10 +18,12 @@ namespace BattleRoayleServer
 
 		public Box(IGameModel context, PointF location, Size size) : base(context)
 		{
-			this.Components = new List<Component>(1);
-			Components.Add(new SolidBody(this, new RectangleF(location, size), restetution, 
-				friction, density, TypesBody.Rectangle,TypesSolid.Solid, (ushort)CollideCategory.Box, 
-				(ushort)CollideCategory.Player));
+			this.Components = new ConcurrentDictionary<Type, Component>();
+
+			var body = new SolidBody(this, new RectangleF(location, size), restetution,
+				friction, density, TypesBody.Rectangle, TypesSolid.Solid, (ushort)CollideCategory.Box,
+				(ushort)CollideCategory.Player);
+			Components.AddOrUpdate(body.GetType(),body, (k, v) => { return v; });
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

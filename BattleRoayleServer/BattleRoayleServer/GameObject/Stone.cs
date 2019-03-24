@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Common;
+using System.Collections.Concurrent;
 
 namespace BattleRoayleServer
 {
@@ -20,10 +21,11 @@ namespace BattleRoayleServer
 
         public Stone(IGameModel roomContext, PointF location, Size size):base(roomContext)
 		{
-			Components = new List<Component>(1);
-			Components.Add(new SolidBody(this, new RectangleF(location, size), restetution,
+			Components = new ConcurrentDictionary<Type, Component>();
+			var body = new SolidBody(this, new RectangleF(location, size), restetution,
 				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Box,
-				(ushort)CollideCategory.Player));
+				(ushort)CollideCategory.Player);
+			Components.AddOrUpdate(body.GetType(), body, (k, v) => { return v; });
 		}
 	}
 }

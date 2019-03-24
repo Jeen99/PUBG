@@ -17,7 +17,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-		    SolidBody solid = (SolidBody)gamer.Components[0];
+		    SolidBody solid = (SolidBody)gamer.GetComponent(typeof(SolidBody));
 			Room.Field.Step(1 / 60, 6, 3);
 			Assert.AreEqual(solid.CoveredObjects.Count, 1);
 		}
@@ -27,7 +27,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-			SolidBody solid = (SolidBody)gamer.Components[0];
+			SolidBody solid = (SolidBody)gamer.GetComponent(typeof(SolidBody));
 			solid.Body.SetLinearVelocity(new Vec2(30F, 0));
 			Room.Field.Step(1, 6, 3);
 			solid.BodyMove();
@@ -41,7 +41,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-			SolidBody solid = (SolidBody)gamer.Components[0];
+			SolidBody solid = (SolidBody)gamer.GetComponent(typeof(SolidBody));
 			Room.Field.Step(1 / 60, 6, 3);
 			solid.Parent.Model.Field.DestroyBody(solid.Body);
 			Assert.AreEqual(solid.CoveredObjects.Count, 0);

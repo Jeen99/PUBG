@@ -14,7 +14,7 @@ namespace BattleRoayleServer
 		{
 
 		}
-
+		public abstract void SetBodyHolder(SolidBody solidBody);
 		public virtual TypesWeapon TypeWeapon { get; }
 	}
 }
