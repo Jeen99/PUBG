@@ -51,10 +51,11 @@ namespace BattleRoayleServer
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.TryPickUp:
+					Handler_TryPickUp();
 					break;
 			}
 		}
-		private void Handler_PickUpLoot()
+		private void Handler_TryPickUp()
 		{
 			var listObjects = body.GetPickUpObjects();
 			foreach (var item in listObjects)
@@ -70,7 +71,7 @@ namespace BattleRoayleServer
 
 		private void PickUpWeapon(SolidBody weaponBody)
 		{
-			Weapon weapon = (Weapon)body.Parent;
+			Weapon weapon = (Weapon)weaponBody.Parent;
 			switch (weapon.TypeWeapon)
 			{
 				case TypesWeapon.Gun:

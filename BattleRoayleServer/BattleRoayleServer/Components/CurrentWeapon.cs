@@ -12,6 +12,9 @@ namespace BattleRoayleServer
 	{
 		private Collector inventory;
 		private Weapon currentWeapon;
+
+		public Weapon GetCurrentWeapon { get => currentWeapon; }
+
 		public CurrentWeapon(GameObject parent, Collector collector) : base(parent)
 		{
 			inventory = collector;
@@ -44,8 +47,7 @@ namespace BattleRoayleServer
 			//если это первое подобранное оружие делаем его выбранным
 			if (currentWeapon == null)
 			{
-				currentWeapon = inventory.GetWeapon(msg.TypeWeapon);
-				Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(msg.TypeWeapon));
+				ChangeWeapon(msg.TypeWeapon);
 			}
 		}
 		private void Handler_MakeShot(MakeShot shot)
@@ -62,11 +64,16 @@ namespace BattleRoayleServer
 		{
 			if (msg.ChooseWeapon != currentWeapon.TypeWeapon)
 			{
-				currentWeapon = inventory.GetWeapon(msg.ChooseWeapon);
-				currentWeapon.SetBodyHolder((SolidBody)Parent.GetComponent(typeof(SolidBody)));
-				//отправляем сообщение об этом
-				Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(msg.ChooseWeapon));
+				ChangeWeapon(msg.ChooseWeapon);
 			}
+		}
+
+		private void ChangeWeapon(TypesWeapon type)
+		{
+			currentWeapon = inventory.GetWeapon(type);
+			currentWeapon.Holder = Parent;
+			//отправляем сообщение об этом
+			Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(type));
 		}
 	}
 }

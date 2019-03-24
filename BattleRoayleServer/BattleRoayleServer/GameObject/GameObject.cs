@@ -30,7 +30,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private Queue<IMessage> messageQueue;
 		public ulong ID { get; private set; }
-		public ConcurrentDictionary<Type,Component> Components { get; protected set; }
+		protected ConcurrentDictionary<Type, Component> components;
 
 		public GameObject(IGameModel model)
 		{
@@ -60,7 +60,7 @@ namespace BattleRoayleServer
 					while (messageQueue.Count > 0)
 					{
 						IMessage msg = messageQueue.Dequeue();
-						foreach (var component in Components)
+						foreach (var component in components)
 						{
 							component.Value.UpdateComponent(msg);
 						}
@@ -83,7 +83,7 @@ namespace BattleRoayleServer
 					if (Destroyed) return null;
 					else
 					{
-						foreach (var component in Components)
+						foreach (var component in components)
 						{
 							var state = component.Value.State;
 							if (state != null)
@@ -127,7 +127,7 @@ namespace BattleRoayleServer
 		public Component GetComponent(Type type)
 		{
 			Component component = null;
-			Components.TryGetValue(type, out component);
+			components.TryGetValue(type, out component);
 			return component;
 		}
 	}

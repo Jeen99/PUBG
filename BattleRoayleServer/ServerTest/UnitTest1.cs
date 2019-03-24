@@ -6,6 +6,7 @@ using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
 using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 
 namespace ServerTest
 {
@@ -62,6 +63,24 @@ namespace ServerTest
 			Assert.IsNull(magazin.GetBullet());
 			Thread.Sleep(3050);
 			Assert.IsNotNull(magazin.GetBullet());
+		}
+		[TestMethod]
+		public void TestShot_Shot()
+		{
+			var Room = new RoyalGameModel(2);
+			Gamer gamer = (Gamer)Room.Players[0];
+			Room.Field.Step(1 / 60, 6, 3);
+			//поднимаем оружие
+			gamer.SendMessage(new TryPickUp());
+			gamer.Update();
+			CurrentWeapon currentWeapon = (CurrentWeapon)gamer.GetComponent(typeof(CurrentWeapon));
+			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
+			//удаляем объект с карты
+			Room.NeedDelete[0].Body.GetWorld().DestroyBody(Room.NeedDelete[0].Body);
+			Room.NeedDelete.Clear();
+			//делаем выстрел
+			gamer.SendMessage(new MakeShot(0));
+			gamer.Update();
 		}
 	}
 }

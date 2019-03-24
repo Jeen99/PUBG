@@ -38,6 +38,8 @@ namespace CSInteraction.ProgramMessage
 		ChoiceWeapon,
 		TimeQuantPassed,
 		ChangedCurrentWeapon,
-		MakeShot
+		MakeShot,
+		GotDamage,
+		MakedShot
 	}
 }

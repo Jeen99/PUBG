@@ -55,6 +55,8 @@
     <Compile Include="ProgramMessage\Battle\ChoiceWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\EndReloadWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\GameObjectDelete.cs" />
+    <Compile Include="ProgramMessage\ServerMsg\GotDamage.cs" />
+    <Compile Include="ProgramMessage\Battle\MakedShot.cs" />
     <Compile Include="ProgramMessage\State\GameObjectState.cs" />
     <Compile Include="ProgramMessage\Battle\GoTo.cs" />
     <Compile Include="ProgramMessage\Battle\AddWeapon.cs" />

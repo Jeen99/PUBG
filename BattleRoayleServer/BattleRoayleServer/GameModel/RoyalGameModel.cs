@@ -77,7 +77,7 @@ namespace BattleRoayleServer
 				case 0:
 					return new PointF(50, 70);
 				case 1:
-					return new PointF(100, 170);
+					return new PointF(65, 70);
 				default:
 					return new PointF(0, 0);
 			}
