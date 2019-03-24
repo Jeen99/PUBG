@@ -17,7 +17,6 @@ namespace BattleRoayleServer
 
 		private Magazin magazin;
 
-
 		public Shot(GameObject parent, Magazin magazin) : base(parent)
 		{
 			this.magazin = magazin;
@@ -66,8 +65,6 @@ namespace BattleRoayleServer
 					SolidBody attacked = (SolidBody)hits[0].GetBody().GetUserData();
 					var damageMsg = new GotDamage(bullet.Damage);
 					attacked.Parent.SendMessage(damageMsg);
-					attacked.Parent.Model.
-
 				}
 			}
 		}

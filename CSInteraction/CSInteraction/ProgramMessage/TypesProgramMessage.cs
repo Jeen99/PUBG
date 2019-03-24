@@ -40,6 +40,8 @@ namespace CSInteraction.ProgramMessage
 		ChangedCurrentWeapon,
 		MakeShot,
 		GotDamage,
-		MakedShot
+		MakedShot,
+		ChangedValueHP,
+		HappenedDeath
 	}
 }

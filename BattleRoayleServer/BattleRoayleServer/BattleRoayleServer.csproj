@@ -54,6 +54,7 @@
     <Compile Include="Components\Collision\RoomContactListener.cs" />
     <Compile Include="Components\Collision\SolidBody.cs" />
     <Compile Include="Components\CurrentWeapon.cs" />
+    <Compile Include="Components\Healthy.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="GameObject\Box.cs" />
