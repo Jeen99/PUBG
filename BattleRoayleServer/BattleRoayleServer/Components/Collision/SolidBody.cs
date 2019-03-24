@@ -146,7 +146,7 @@ namespace BattleRoayleServer
 
 		public TypesSolid TypeSolid { get; private set; }
 
-		public override void ProcessMsg(IMessage msg)
+		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg != null)
 			{
@@ -169,11 +169,7 @@ namespace BattleRoayleServer
 			shape.Location = new PointF(position.X, position.Y);
 			Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
 		}
-		public void SendMessage(IMessage msg)
-		{
-			Parent.SendMessage(msg);
-		}
-
+		
 		public override void Dispose()
 		{
 			throw new NotImplementedException();

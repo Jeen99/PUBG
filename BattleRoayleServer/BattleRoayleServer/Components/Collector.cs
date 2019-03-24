@@ -11,6 +11,23 @@ namespace BattleRoayleServer
 	{
 		private Modifier[] modifiers;
 		private Weapon[] weapons;
+
+		public Weapon GetWeapon(TypesWeapon typeWeapon)
+		{
+			switch (typeWeapon)
+			{
+				case TypesWeapon.Gun:
+					return weapons[0];
+				case TypesWeapon.AssaultRifle:
+					return weapons[2];
+				case TypesWeapon.Grenade:
+					return weapons[3];
+				case TypesWeapon.ShotGun:
+					return weapons[1];
+				default:
+					return null;
+			}
+		}
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
@@ -22,13 +39,14 @@ namespace BattleRoayleServer
 			weapons = new Weapon[4];
 			this.body = body;
 		}
+
 		//необходимо реализовать state
 		public override void Dispose()
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void ProcessMsg(IMessage msg)
+		public override void UpdateComponent(IMessage msg)
 		{
 			switch (msg.TypeMessage)
 			{
@@ -76,7 +94,9 @@ namespace BattleRoayleServer
 			{
 				weapons[index] = (Weapon)weapon;
 				weaponBody.BodyDelete();
-				Parent.Model.HappenedEvents.Enqueue(new AddWeapon(Parent.ID, weapon.TypeWeapon));
+				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
+				Parent.SendMessage(msg);
+				Parent.Model.HappenedEvents.Enqueue(msg);
 			}
 		}
 

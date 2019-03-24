@@ -32,7 +32,7 @@ namespace BattleRoayleServer
 			return;
 		}
 
-		public override void ProcessMsg(IMessage msg)
+		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg != null)
 			{

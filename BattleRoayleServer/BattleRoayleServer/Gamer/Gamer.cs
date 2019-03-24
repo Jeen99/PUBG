@@ -16,13 +16,17 @@ namespace BattleRoayleServer
 
 		public Gamer(PointF location, IGameModel context) : base(context)
 		{
-			this.Components = new List<Component>(3);
+			this.Components = new List<Component>(4);
 			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
 				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Player,
 				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
 			Components.Add(body);
-			Components.Add(new Movement(this, body, 40f));
-			Components.Add(new Collector(this, body));
+			var movement = new Movement(this, body, 40f);
+			Components.Add(movement);
+			var collector = new Collector(this, body);
+			Components.Add(collector);
+			var currentWeapon = new CurrentWeapon(this, collector);
+			Components.Add(currentWeapon);
 
 		}
 

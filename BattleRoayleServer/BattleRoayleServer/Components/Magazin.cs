@@ -121,7 +121,7 @@ namespace BattleRoayleServer
 			throw new NotImplementedException();
 		}
 
-		public override void ProcessMsg(IMessage msg)
+		public override void UpdateComponent(IMessage msg)
 		{
 			switch (msg.TypeMessage)
 			{

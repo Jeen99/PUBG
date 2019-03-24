@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.ProgramMessage;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -22,9 +23,49 @@ namespace BattleRoayleServer
 			throw new NotImplementedException();
 		}
 
-		public override void ProcessMsg(IMessage msg)
+		public override void UpdateComponent(IMessage msg)
 		{
-			throw new NotImplementedException();
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.ChoiceWeapon:
+					Handler_ChoiceWeapon(msg as ChoiceWeapon);
+					break;
+				case TypesProgramMessage.MakeShot:
+					Handler_MakeShot(msg as MakeShot);
+					break;
+				case TypesProgramMessage.AddWeapon:
+					Handler_AddWeapon(msg as AddWeapon);
+					break;
+			}
+		}
+
+		public void Handler_AddWeapon(AddWeapon msg)
+		{
+			//если это первое подобранное оружие делаем его выбранным
+			if (currentWeapon == null)
+			{
+				currentWeapon = inventory.GetWeapon(msg.TypeWeapon);
+				Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(msg.TypeWeapon));
+			}
+		}
+		public void Handler_MakeShot(MakeShot shot)
+		{
+			if (currentWeapon != null)
+			{
+				currentWeapon.SendMessage(shot);
+				//обновляем объект раньше очереди, тк выстрел операция с наивысшим приорететом
+				currentWeapon.Update();
+			}
+		}
+
+		public void Handler_ChoiceWeapon(ChoiceWeapon msg)
+		{
+			if (msg.ChooseWeapon != currentWeapon.TypeWeapon)
+			{
+				currentWeapon = inventory.GetWeapon(msg.ChooseWeapon);
+				//отправляем сообщение об этом
+				Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(msg.ChooseWeapon));
+			}
 		}
 	}
 }

@@ -27,7 +27,7 @@ namespace BattleRoayleServer
         /// Запускает алгоритм обработки сообщения
         /// </summary>
         /// <param name="msg"></param>
-        public abstract void ProcessMsg(IMessage msg);
+        public abstract void UpdateComponent(IMessage msg);
 
 		public abstract void Dispose();
         

@@ -105,7 +105,7 @@ namespace BattleRoayleServer
 							solidBody.BodyMove();
 						}
 						//запускаем  обработку всех событий на этом объекте
-						solidBody.Parent.Process(msg);
+						solidBody.Parent.Update(msg);
 					}
 					else
 					{

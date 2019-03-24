@@ -42,9 +42,9 @@ namespace BattleRoayleServer
 		}
 
 		/// <summary>
-		/// Вызывается на каждое новое добавленный новый элемент колекции
+		/// Обновляет состоняие объекта исходя на основе сообщений пришедших данному объекту
 		/// </summary>
-		public virtual void Process(TimeQuantPassed quantPassed)
+		public virtual void Update(TimeQuantPassed quantPassed = null)
 		{
 			if (Destroyed) return;
 			else
@@ -52,14 +52,17 @@ namespace BattleRoayleServer
 				lock (sinchWorkWithComponent)
 				{
 					//добавляем сообщение о прохождении кванта в конец очереди
-					messageQueue.Enqueue(quantPassed);
+					if (quantPassed != null)
+					{
+						messageQueue.Enqueue(quantPassed);
+					}
 					//рассылваем сообщение всем объектам
 					while (messageQueue.Count > 0)
 					{
 						IMessage msg = messageQueue.Dequeue();
 						foreach (Component component in Components)
 						{
-							component.ProcessMsg(msg);
+							component.UpdateComponent(msg);
 						}
 					}
 				}

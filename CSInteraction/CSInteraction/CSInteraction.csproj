@@ -51,6 +51,7 @@
     <Compile Include="Common\TypesGameObject.cs" />
     <Compile Include="Common\TypesWeapon.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
+    <Compile Include="ProgramMessage\Battle\ChangedCurrentWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\ChoiceWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\EndReloadWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\GameObjectDelete.cs" />
@@ -58,10 +59,10 @@
     <Compile Include="ProgramMessage\Battle\GoTo.cs" />
     <Compile Include="ProgramMessage\Battle\AddWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\MakeReloadWeapon.cs" />
+    <Compile Include="ProgramMessage\Battle\MakeShot.cs" />
     <Compile Include="ProgramMessage\Battle\PlayerMoved.cs" />
     <Compile Include="ProgramMessage\Battle\RoomState.cs" />
     <Compile Include="ProgramMessage\Battle\StartReloadWeapon.cs" />
-    <Compile Include="ProgramMessage\Battle\StopMove.cs" />
     <Compile Include="ProgramMessage\Battle\BodyState.cs" />
     <Compile Include="ProgramMessage\Battle\TryPickUp.cs" />
     <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
