@@ -23,7 +23,7 @@ namespace BattleRoyalClient
 	/// <summary>
 	/// Логика взаимодействия для Battle.xaml
 	/// </summary>
-	public partial class Battle : Window
+	public partial class Battle : Window//, IBattleView
 	{
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
@@ -43,11 +43,6 @@ namespace BattleRoyalClient
 			client.SendMessage(new LoadedBattleForm());
 		}
 
-		private void Battle_KeyDown(object sender, KeyEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
 		private void Model_BattleChangeModel()
 		{
 			//клонируем основное изображение
@@ -56,8 +51,8 @@ namespace BattleRoyalClient
 				//создаем новый фон
 				CreateBackground(gr);
 				PointF startAxises = battleContoller.Model.Chararcter.StartAxises;
-				List<IGameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
-				foreach (IGameObject gameObject in visibleObjects)
+				List<GameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
+				foreach (GameObject gameObject in visibleObjects)
 				{
 					Painter.Draw(gameObject, gr, startAxises);
 				}			

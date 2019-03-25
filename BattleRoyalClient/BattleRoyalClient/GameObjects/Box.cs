@@ -8,25 +8,21 @@ using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
-	class Box : IGameObject
+	class Box : GameObject
 	{
-		public TypesGameObject Type{ get; } = TypesGameObject.Box;
-
-		private RectangleF shape;
-		public RectangleF Shape {
-			get { return shape; }
-			set { shape = value; }
-		}
-		public PointF Location { get => shape.Location; set => shape.Location = value; }
-
-		public Box(RectangleF shape)
-		{
-			this.shape = shape;
-		}
-
 		public Box()
 		{
-			shape = new RectangleF();
+			base.Type = TypesGameObject.Box;     // ПЕРЕДЕЛАТЬ!!
+		}
+
+		public Box(RectangleF shape, double angle = 0) : base(shape, angle)
+		{
+			base.Type = TypesGameObject.Box;     // ПЕРЕДЕЛАТЬ!!
+		}
+
+		public Box(PointF location, SizeF size, double angle = 0) : base(location, size, angle)
+		{
+			base.Type = TypesGameObject.Box;     // ПЕРЕДЕЛАТЬ!!
 		}
 	}
 }

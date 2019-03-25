@@ -47,7 +47,7 @@ namespace BattleRoyalClient
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
 		{
-			model.GameObjects[moved.PlayerID].Location = moved.NewLocation;
+			model.GameObjects[moved.PlayerID].Update(moved.NewLocation);
 			if (moved.PlayerID == model.Chararcter.ID) model.Chararcter.CharacterChange();
 			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });
 		}
@@ -85,7 +85,7 @@ namespace BattleRoyalClient
 			}
 		}
 
-		private IGameObject AddStone(GameObjectState msg)
+		private GameObject AddStone(GameObjectState msg)
 		{
 			Stone stone = new Stone();
 			foreach (IMessage message in msg.StatesComponents)
@@ -100,7 +100,7 @@ namespace BattleRoyalClient
 			}
 			return stone;
 		}
-		private IGameObject UpdateStone(IGameObject gameObject, GameObjectState newData)
+		private GameObject UpdateStone(GameObject gameObject, GameObjectState newData)
 		{
 			Stone stone = (Stone)gameObject;
 			foreach (IMessage message in newData.StatesComponents)
@@ -116,7 +116,7 @@ namespace BattleRoyalClient
 			return stone;
 		}
 
-		private IGameObject AddGamer(GameObjectState msg)
+		private GameObject AddGamer(GameObjectState msg)
 		{
 			Gamer gamer = new Gamer();
 			foreach (IMessage message in msg.StatesComponents)
@@ -132,7 +132,7 @@ namespace BattleRoyalClient
 			}
 			return gamer;
 		}
-		private IGameObject UpdateGamer(IGameObject gameObject, GameObjectState newData)
+		private GameObject UpdateGamer(GameObject gameObject, GameObjectState newData)
 		{
 			Gamer gamer = (Gamer)gameObject;
 			foreach (IMessage message in newData.StatesComponents)
@@ -148,7 +148,7 @@ namespace BattleRoyalClient
 			return gamer;
 		}
 
-		private IGameObject AddBox(GameObjectState msg)
+		private GameObject AddBox(GameObjectState msg)
 		{
 			Box box = new Box();
 			foreach (IMessage message in msg.StatesComponents)
@@ -163,7 +163,7 @@ namespace BattleRoyalClient
 			}
 			return box;
 		}
-		private IGameObject UpdateBox(IGameObject gameObject, GameObjectState newData)
+		private GameObject UpdateBox(GameObject gameObject, GameObjectState newData)
 		{
 			Box box = (Box)gameObject;
 			foreach (IMessage message in newData.StatesComponents)

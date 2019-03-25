@@ -20,8 +20,8 @@ namespace BattleRoyalClient
 
 		public PlayerChararcter Chararcter { get; private set; }
 		
-		public ConcurrentDictionary<ulong, IGameObject> GameObjects { get; } 
-			= new ConcurrentDictionary<ulong, IGameObject>();
+		public ConcurrentDictionary<ulong, GameObject> GameObjects { get; } 
+			= new ConcurrentDictionary<ulong, GameObject>();
 
 		
 		public void CreateChangeModel()
