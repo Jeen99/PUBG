@@ -11,7 +11,8 @@ namespace CSInteraction.Common
 	{
 		Player,
 		Stone,
-		Three,
-		Box
+		Box,
+		Bush,
+		Tree,
 	}
 }
