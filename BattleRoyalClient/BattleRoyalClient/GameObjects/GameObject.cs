@@ -5,7 +5,7 @@ namespace BattleRoyalClient
 {
 	abstract class GameObject
 	{
-		public TypesGameObject Type { get; protected set; }
+		public abstract TypesGameObject Type { get; protected set; }
 
 		public Model3D Model3D { get; set; } // вынести из класса
 

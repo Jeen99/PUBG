@@ -10,19 +10,18 @@ namespace BattleRoyalClient
 {
 	class Gamer : GameObject
 	{
-		public Gamer()
+		public override TypesGameObject Type { get; protected set; } = TypesGameObject.Player;
+
+		public Gamer() : base()
 		{
-			base.Type = TypesGameObject.Player;		// ПЕРЕДЕЛАТЬ!!
 		}
 
 		public Gamer(RectangleF shape, double angle = 0) : base(shape, angle)
 		{
-			base.Type = TypesGameObject.Player;
 		}
 
 		public Gamer(PointF location, SizeF size, double angle = 0) : base(location, size, angle)
 		{
-			base.Type = TypesGameObject.Player;
 		}
 	}
 }

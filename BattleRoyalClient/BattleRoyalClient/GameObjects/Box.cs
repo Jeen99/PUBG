@@ -10,19 +10,18 @@ namespace BattleRoyalClient
 {
 	class Box : GameObject
 	{
-		public Box()
+		public override TypesGameObject Type { get; protected set; } = TypesGameObject.Box;
+
+		public Box() : base()
 		{
-			base.Type = TypesGameObject.Box;     // ПЕРЕДЕЛАТЬ!!
 		}
 
 		public Box(RectangleF shape, double angle = 0) : base(shape, angle)
 		{
-			base.Type = TypesGameObject.Box;     // ПЕРЕДЕЛАТЬ!!
 		}
 
 		public Box(PointF location, SizeF size, double angle = 0) : base(location, size, angle)
 		{
-			base.Type = TypesGameObject.Box;     // ПЕРЕДЕЛАТЬ!!
 		}
 	}
 }
