@@ -141,6 +141,7 @@
     <EmbeddedResource Include="Properties\Recources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Recources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="ClientLogic.cd" />
     <None Include="Properties\Settings.settings">
@@ -152,13 +153,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Stone.png" />
+    <Resource Include="Resources\Stone.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Box.png" />
+    <Resource Include="Resources\Box.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Gamer.png" />
+    <Resource Include="Resources\Player.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

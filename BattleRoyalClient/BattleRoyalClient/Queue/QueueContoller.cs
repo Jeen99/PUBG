@@ -58,7 +58,7 @@ namespace BattleRoyalClient
 			{
 				client.EventEndSession -= this.Client_EventEndSession;
 				client.EventNewMessage -= this.Client_EventNewMessage;
-				Battle battleForm = new Battle(msg.ID, client, model.NickName, model.Password);
+				BattleView3d battleForm = new BattleView3d(msg.ID, client, model.NickName, model.Password);
 				battleForm.Show();
 				view.Transition = true;
 				view.Close();

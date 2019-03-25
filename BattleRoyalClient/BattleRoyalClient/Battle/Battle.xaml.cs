@@ -34,7 +34,7 @@ namespace BattleRoyalClient
 		public Battle(ulong id, BaseClient client, string nickName, string password)
 		{
 			InitializeComponent();
-			battleContoller = new GameActionController(id, client, nickName, password, this);
+			//battleContoller = new GameActionController(id, client, nickName, password, this);
 			battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
 			background = new Bitmap(sizeBattleScreen.Width, sizeBattleScreen.Height);

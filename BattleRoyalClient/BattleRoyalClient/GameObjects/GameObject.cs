@@ -7,6 +7,8 @@ namespace BattleRoyalClient
 	{
 		public TypesGameObject Type { get; protected set; }
 
+		public Model3D Model3D { get; set; } // вынести из класса
+
 		private RectangleF shape;
 		public RectangleF Shape
 		{

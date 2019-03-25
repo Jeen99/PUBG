@@ -26,7 +26,7 @@ namespace BattleRoyalClient
 		
 		public void CreateChangeModel()
 		{
-			BattleChangeModel();		
+			BattleChangeModel?.Invoke();
 		}
 	
 		public BattleModel(ulong id, string passwrod, string nickName)
