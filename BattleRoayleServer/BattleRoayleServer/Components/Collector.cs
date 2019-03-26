@@ -79,13 +79,13 @@ namespace BattleRoayleServer
 				if (weapons[i] != null)
 				{
 					weapons[i].Holder = null;
-					var body = weapons[i].GetComponent(typeof(SolidBody));
+					var body = weapons[i].Components.GetComponent<SolidBody>();
 					CountObjects++;
 				}			
 			}
 
 			//создаем коробку с лутом
-			var position = (Parent.GetComponent(typeof(SolidBody)) as SolidBody).Body.GetPosition();
+			var position = Parent.Components.GetComponent<SolidBody>().Body.GetPosition();
 			LootBox lootBox = new LootBox(Parent.Model,this, new PointF(position.X, position.Y));
 			Parent.Model.AddGameObject(lootBox);
 		}
@@ -120,7 +120,7 @@ namespace BattleRoayleServer
 		private void PickUpLootBox(SolidBody lootBoxBody)
 		{
 			//получаем коллекцию
-			Collector collector = (lootBoxBody.Parent.GetComponent(typeof(Collector)) as Collector);
+			Collector collector = (lootBoxBody.Parent.Components.GetComponent<Collector>());
 			//добавляем предметы, которых у нас еще нет
 			for (int i = 0; i < collector.modifiers.Length; i++)
 			{

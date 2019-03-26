@@ -6,8 +6,8 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public abstract class Component
-    {
+	public abstract class Component : IComponent
+	{
         /// <summary>
         /// ссылка на хранилище всех данных об игре
         /// </summary>

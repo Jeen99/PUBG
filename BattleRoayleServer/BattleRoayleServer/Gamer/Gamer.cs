@@ -20,26 +20,25 @@ namespace BattleRoayleServer
 		public Gamer(PointF location, IGameModel context) : base(context)
 		{
 
-			this.components = new ConcurrentDictionary<Type, Component>();
 			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
 				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Player,
 				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
-			components.AddOrUpdate(body.GetType(), body, (k, v) => { return v; });
+			Components.Add(body);
 
 			var movement = new Movement(this, body, 40f);
-			components.AddOrUpdate(movement.GetType(), movement, (k, v) => { return v; });
+			Components.Add(movement);
 
 			var collector = new Collector(this, body);
-			components.AddOrUpdate(collector.GetType(), collector, (k, v) => { return v; });
+			Components.Add(collector);
 
 			var currentWeapon = new CurrentWeapon(this, collector);
-			components.AddOrUpdate(currentWeapon.GetType(), currentWeapon, (k, v) => { return v; });
+			Components.Add(currentWeapon);
 
 			var healthy = new Healthy(this);
-			components.AddOrUpdate(healthy.GetType(), healthy, (k, v) => { return v; });
+			Components.Add(healthy);
 
 			var playerDied = new PlayerDied(this);
-			components.AddOrUpdate(playerDied.GetType(), playerDied, (k, v) => { return v; });
+			Components.Add(playerDied);
 		}
 
 		/// <summary>

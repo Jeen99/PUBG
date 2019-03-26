@@ -15,7 +15,7 @@ namespace BattleRoayleServer
     public interface IGameModel
     {
         IList<IPlayer> Players { get;}
-		ConcurrentDictionary<ulong, GameObject> GameObjects { get; }
+		Dictionary<ulong, GameObject> GameObjects { get; }
         World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
 		void AddGameObject(GameObject gameObject);

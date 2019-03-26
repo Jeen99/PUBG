@@ -17,18 +17,16 @@ namespace BattleRoayleServer
 
 		public Gun(PointF location, IGameModel context) : base(context)
 		{
-			this.components = new ConcurrentDictionary<Type, Component>();
-
 			SolidBody body = new SolidBody(this, new System.Drawing.RectangleF(location, new SizeF(8,8)),
 				restetution, friction, density, TypesBody.Circle, TypesSolid.Transparent, (ushort)CollideCategory.Loot,
 				(ushort)CollideCategory.Player);
-			components.AddOrUpdate(body.GetType(), body, (k, v) => { return v; });
+			Components.Add(body);
 
 			var magazin = new Magazin(this, TypesWeapon.Gun, 500, 3000);
-			components.AddOrUpdate(magazin.GetType(), magazin, (k, v) => { return v; });
+			Components.Add(magazin);
 
 			var shot = new Shot(this, magazin);
-			components.AddOrUpdate(shot.GetType(), shot, (k, v) => { return v; });
+			Components.Add(shot);
 		}
 		public override TypesWeapon TypeWeapon { get; } = TypesWeapon.Gun;
 

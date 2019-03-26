@@ -40,7 +40,7 @@ namespace BattleRoayleServer
 
 		private void Handler_MakeShot(MakeShot msg)
 		{
-			SolidBody BodyHolder = (SolidBody)(Parent as Weapon).Holder.GetComponent(typeof(SolidBody));
+			SolidBody BodyHolder = (SolidBody)(Parent as Weapon).Holder.Components.GetComponent<SolidBody>();
 			if (BodyHolder != null)
 			{
 				//получаем патрон

@@ -18,12 +18,11 @@ namespace BattleRoayleServer
 
 		public Box(IGameModel context, PointF location, Size size) : base(context)
 		{
-			this.components = new ConcurrentDictionary<Type, Component>();
-
+		
 			var body = new SolidBody(this, new RectangleF(location, size), restetution,
 				friction, density, TypesBody.Rectangle, TypesSolid.Solid, (ushort)CollideCategory.Box,
 				(ushort)CollideCategory.Player);
-			components.AddOrUpdate(body.GetType(),body, (k, v) => { return v; });
+			Components.Add(body);
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

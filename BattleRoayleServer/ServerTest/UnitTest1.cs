@@ -18,7 +18,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-		    SolidBody solid = (SolidBody)gamer.GetComponent(typeof(SolidBody));
+		    SolidBody solid = (SolidBody)gamer.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			Assert.AreEqual(solid.CoveredObjects.Count, 1);
 		}
@@ -28,7 +28,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-			SolidBody solid = (SolidBody)gamer.GetComponent(typeof(SolidBody));
+			SolidBody solid = (SolidBody)gamer.Components.GetComponent<SolidBody>();
 			solid.Body.SetLinearVelocity(new Vec2(30F, 0));
 			Room.Field.Step(1, 6, 3);
 			solid.BodyMove();
@@ -42,7 +42,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-			SolidBody solid = (SolidBody)gamer.GetComponent(typeof(SolidBody));
+			SolidBody solid = (SolidBody)gamer.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			solid.Parent.Model.Field.DestroyBody(solid.Body);
 			Assert.AreEqual(solid.CoveredObjects.Count, 0);
@@ -73,7 +73,7 @@ namespace ServerTest
 			//поднимаем оружие
 			firstGamer.SendMessage(new TryPickUp());
 			firstGamer.Update();
-			CurrentWeapon currentWeapon = (CurrentWeapon)firstGamer.GetComponent(typeof(CurrentWeapon));
+			CurrentWeapon currentWeapon = (CurrentWeapon)firstGamer.Components.GetComponent<CurrentWeapon>();
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//делаем выстрел
 			firstGamer.SendMessage(new MakeShot(2));
@@ -81,7 +81,7 @@ namespace ServerTest
 			//проверяем
 			Gamer secondGamer = (Gamer)Room.Players[1];
 			secondGamer.Update();
-			Healthy healtySecondGamer = (Healthy)secondGamer.GetComponent(typeof(Healthy));
+			Healthy healtySecondGamer = (Healthy)secondGamer.Components.GetComponent<Healthy>();
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			//делаем 2 выстрел

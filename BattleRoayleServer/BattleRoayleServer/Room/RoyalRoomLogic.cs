@@ -113,19 +113,15 @@ namespace BattleRoayleServer
 					}
 					else
 					{
-						//удаляем объект из списка объектов
-						GameObject deleted;
-						roomContext.GameObjects.TryRemove(solidBody.Parent.ID,out deleted);
-						if (deleted != null)
+						
+						roomContext.GameObjects.Remove(solidBody.Parent.ID);
+						if (solidBody.Parent is Gamer)
 						{
-							if (deleted is Gamer)
+							roomContext.Players.Remove((IPlayer)solidBody.Parent);
+							if (roomContext.Players.Count <= 0)
 							{
-								roomContext.Players.Remove((IPlayer)deleted);
-								if (roomContext.Players.Count <= 0)
-								{
-									timerNewIteration.Stop();
-									EventRoomLogicEndWork?.Invoke(this);
-								}
+								timerNewIteration.Stop();
+								EventRoomLogicEndWork?.Invoke(this);
 							}
 						}
 					} 

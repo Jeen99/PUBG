@@ -18,14 +18,12 @@ namespace BattleRoayleServer
 
 		public LootBox(IGameModel model, Collector collector, PointF location) : base(model)
 		{
-			this.components = new ConcurrentDictionary<Type, Component>();
-
 			SolidBody body = new SolidBody(this, new System.Drawing.RectangleF(location, new SizeF(8, 8)),
 				restetution, friction, density, TypesBody.Circle, TypesSolid.Transparent, (ushort)CollideCategory.Loot,
 				(ushort)CollideCategory.Player);
-			components.AddOrUpdate(body.GetType(), body, (k, v) => { return v; });
+			Components.Add(body);
 			collector.SetNewParent(this);
-			components.AddOrUpdate(collector.GetType(), collector, (k, v) => { return v; });
+			Components.Add(collector);
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

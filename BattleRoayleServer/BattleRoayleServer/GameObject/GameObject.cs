@@ -31,8 +31,7 @@ namespace BattleRoayleServer
 		private Queue<IMessage> messageQueue;
 		public ulong ID { get; private set; }
 
-		protected ConcurrentDictionary<Type, Component> components;
-		public ConcurrentDictionary<Type, Component> Components { get => components; }
+		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
 
 		public GameObject(IGameModel model)
@@ -63,10 +62,7 @@ namespace BattleRoayleServer
 					while (messageQueue.Count > 0)
 					{
 						IMessage msg = messageQueue.Dequeue();
-						foreach (var component in components)
-						{
-							component.Value.UpdateComponent(msg);
-						}
+						Components.UpdateComponents(msg);
 					}
 				}
 			}
@@ -86,9 +82,9 @@ namespace BattleRoayleServer
 					if (Destroyed) return null;
 					else
 					{
-						foreach (var component in components)
+						foreach (IComponent component in Components)
 						{
-							var state = component.Value.State;
+							var state = component.State;
 							if (state != null)
 							{
 								states.Add(state);
@@ -118,11 +114,11 @@ namespace BattleRoayleServer
 		/// </summary>
 		public virtual void Dispose()
 		{
-			foreach (var item in components)
+			foreach (IComponent item in Components)
 			{
-				item.Value.Dispose();
+				item.Dispose();
 			}
-			components.Clear();
+			Components.Clear();
 			messageQueue.Clear();
 			Destroyed = true;
 			Model.HappenedEvents.Enqueue(new GameObjectDestroy(ID));
@@ -135,11 +131,5 @@ namespace BattleRoayleServer
         /// </summary>
         public bool Destroyed { get; protected set; }
 		
-		public Component GetComponent(Type type)
-		{
-			Component component = null;
-			components.TryGetValue(type, out component);
-			return component;
-		}
 	}
 }
