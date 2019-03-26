@@ -7,15 +7,37 @@ using System.Threading.Tasks;
 namespace CSInteraction.Common
 {
 	[Serializable]
-	public enum Directions
+	public enum DirectionHorisontal
 	{
-		right,
-		left,
-		bottom,
-		top,
-		right_bottom,
-		right_top,
-		left_bottom,
-		left_top
+		Left,
+		Right,
+		None
+	}
+
+	[Serializable]
+	public enum DirectionVertical
+	{
+		Up,
+		Down,
+		None
+	}
+
+	[Serializable]
+	public class Direction
+	{
+		public DirectionHorisontal Horisontal { get; set; }
+		public DirectionVertical Vertical { get; set; }
+
+		public Direction()
+		{
+			Horisontal = DirectionHorisontal.None;
+			Vertical = DirectionVertical.None;
+		}
+
+		public Direction(DirectionHorisontal horisontal, DirectionVertical vertical)
+		{
+			Horisontal = horisontal;
+			Vertical = vertical;
+		}
 	}
 }

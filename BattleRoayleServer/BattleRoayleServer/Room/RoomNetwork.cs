@@ -36,7 +36,6 @@ namespace BattleRoayleServer
 			};
 			timerTotalSinch.Elapsed += HandlerTotalSinch;
 			//отправляем данные для загрузки комнаты
-			HandlerTotalSinch(null, null);
 		}
 		/// <summary>
 		/// Вызывается на каждое срабатывание таймера
@@ -55,14 +54,19 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerGameEvent(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
 		{
-			throw new NotImplementedException();
+			//пока отправляем всем клиентам
+			IMessage message = roomLogic.HappenedEvents.Dequeue();
+			foreach (INetworkClient client in Clients)
+			{
+				client.Gamer.SendMessage(message);
+			}
 		}
 
         public void Start()
         {
 			//запускаем таймер
 			timerTotalSinch.Start();
-        }
+		}
 
         public void Dispose()
         {
@@ -76,9 +80,18 @@ namespace BattleRoayleServer
 		{
 			for(int i = 0; i < roomLogic.Players.Count; i++)
 			{
-				Clients.Add(new NetworkClient(roomLogic.Players[i], gamers[i].Client, 
-					gamers[i].NickName, gamers[i].Password, (byte)i));
+				var client = new NetworkClient(roomLogic.Players[i], gamers[i].Client,
+				   gamers[i].NickName, gamers[i].Password, (byte)i);
+				client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
+				Clients.Add(client);
 			}
+		}
+		/// <summary>
+		/// Отправляет загрузившимуся клиенту данные обо всех объектах на карте
+		/// </summary>
+		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
+		{
+			client.Gamer.SendMessage(roomLogic.GetInitializeData());
 		}
 
 		public void Stop()

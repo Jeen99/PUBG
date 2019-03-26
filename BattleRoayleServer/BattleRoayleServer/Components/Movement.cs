@@ -6,9 +6,9 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public class Movement:Component
+	public class Movement : Component
 	{
-		private Directions currentDirection;
+		private Direction currentDirection;
 		/// <summary>
 		/// Если true игрок двигается в настоящее время
 		/// </summary>
@@ -35,20 +35,23 @@ namespace BattleRoayleServer
 
 		public override void ProcessMsg(IComponentMsg msg)
 		{
-			switch (msg.Type)
+			if (msg != null)
 			{
-				case TypesComponentMsg.StartMoveGamer:
-					Handler_StartMoveGamer(msg as StartMoveGamer);
-					break;
-				case TypesComponentMsg.EndMoveGamer:
-					Handler_EndMoveGamer();
-					break;
-				case TypesComponentMsg.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg as TimeQuantPassed);
-					break;
-				/*case TypesComponentMsg.CollisionObjects:
-					Handler_CollisionObjects((CollisionObjects)msg);
-					break;*/
+				switch (msg.Type)
+				{
+					case TypesComponentMsg.StartMoveGamer:
+						Handler_StartMoveGamer(msg as StartMoveGamer);
+						break;
+					case TypesComponentMsg.EndMoveGamer:
+						Handler_EndMoveGamer();
+						break;
+					case TypesComponentMsg.TimeQuantPassed:
+						Handler_TimeQuantPassed(msg as TimeQuantPassed);
+						break;
+						/*case TypesComponentMsg.CollisionObjects:
+							Handler_CollisionObjects((CollisionObjects)msg);
+							break;*/
+				}
 			}
 
 		}
@@ -68,43 +71,42 @@ namespace BattleRoayleServer
 		{
 			if (active)
 			{
+				// если не задано направление, то останавливаем движение
+				if (currentDirection.Horisontal == DirectionHorisontal.None &&
+					currentDirection.Vertical == DirectionVertical.None)
+				{
+					active = false;
+					return;
+				}
+
 				float dX = 0;
 				float dY = 0;
 				float delta = (float)(speed * msg.QuantTime / 1000);
 
-				switch (currentDirection)
+				// смещение по горизонтали
+				switch(currentDirection.Horisontal)
 				{
-					case Directions.bottom:
-						dY -= delta;
-						break;
-					case Directions.left:
+					case DirectionHorisontal.Left:
 						dX -= delta;
 						break;
-					case Directions.left_bottom:
-						dX -= delta;
+
+					case DirectionHorisontal.Right:
+						dX = delta;
+						break;
+				}
+				// смещение по вертикали
+				switch (currentDirection.Vertical)
+				{
+					case DirectionVertical.Up:
 						dY -= delta;
 						break;
-					case Directions.left_top:
-						dX -= delta;
-						dY = delta;
-						break;
-					case Directions.right:
-						dX = delta;
-						break;
-					case Directions.right_bottom:
-						dX = delta;
-						dY -= delta;
-						break;
-					case Directions.right_top:
-						dX = delta;
-						dY = delta;
-						break;
-					case Directions.top:
+
+					case DirectionVertical.Down:
 						dY = delta;
 						break;
 				}
-				body.AppendCoords(dX, dY);
-				
+
+				body.AppendCoords(dX, dY);	
 			}
 		}
 

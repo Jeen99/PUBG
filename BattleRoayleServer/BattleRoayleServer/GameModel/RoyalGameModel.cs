@@ -32,15 +32,15 @@ namespace BattleRoayleServer
 		private void CreateStaticGameObject()
 		{
 			//скрипт создания игровых объектов
-			Stone stone = new Stone(this, new PointF(10, 10), 8);
+			Stone stone = new Stone(this, new PointF(10, 10), new Size(14,14));
 			GameObjects.AddOrUpdate(stone.ID, stone,(k,v)=> { return v; });
-			stone = new Stone(this, new PointF(30, 28), 1);
+			stone = new Stone(this, new PointF(30, 28), new Size(12, 12));
 			GameObjects.AddOrUpdate(stone.ID, stone, (k, v) => { return v; });
-			stone = new Stone(this, new PointF(78, 30), 2);
+			stone = new Stone(this, new PointF(78, 30), new Size(15, 15));
 			GameObjects.AddOrUpdate(stone.ID, stone, (k, v) => { return v; });
-			Box box = new Box(this, new PointF(40, 100));
+			Box box = new Box(this, new PointF(40, 100), new Size(12, 12));
 			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
-			box = new Box(this, new PointF(150, 10));
+			box = new Box(this, new PointF(150, 10), new Size(12, 12));
 			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
 		}
 

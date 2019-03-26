@@ -25,8 +25,9 @@ namespace CSInteraction.ProgramMessage
 		GoTo,
 		StopMove,
 		PlayerMoved,
-		Location,
+		BodyState,
 		GameObjectState,
-		RoomState
+		RoomState,
+		LoadedBattleForm
 	}
 }

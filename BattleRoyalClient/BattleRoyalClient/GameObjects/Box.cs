@@ -8,23 +8,23 @@ using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
-	class Gamer : IGameObject
+	class Box : IGameObject
 	{
+		public TypesGameObject Type{ get; } = TypesGameObject.Box;
+
 		private RectangleF shape;
-		public RectangleF Shape
-		{
+		public RectangleF Shape {
 			get { return shape; }
 			set { shape = value; }
 		}
 		public PointF Location { get => shape.Location; set => shape.Location = value; }
-		public TypesGameObject Type { get; } = TypesGameObject.Player;
 
-		public Gamer(RectangleF shape) 
+		public Box(RectangleF shape)
 		{
 			this.shape = shape;
 		}
 
-		public Gamer()
+		public Box()
 		{
 			shape = new RectangleF();
 		}

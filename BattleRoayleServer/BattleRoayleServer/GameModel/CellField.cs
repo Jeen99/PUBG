@@ -28,11 +28,11 @@ namespace BattleRoayleServer
         /// <summary>
         /// Расположение левого вернего угла клетки на карте
         /// </summary>
-        public PointF Location { get; private set; }
+        public RectangleF Shape { get; private set; }
 
-		public CellField(PointF location)
+		public CellField(RectangleF shape)
 		{
-			Location = location;
+			Shape = shape;
 		}
 
     }

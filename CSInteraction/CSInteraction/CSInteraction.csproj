@@ -55,12 +55,13 @@
     <Compile Include="ProgramMessage\Battle\PlayerMoved.cs" />
     <Compile Include="ProgramMessage\Battle\RoomState.cs" />
     <Compile Include="ProgramMessage\Battle\StopMove.cs" />
-    <Compile Include="ProgramMessage\Battle\Location.cs" />
+    <Compile Include="ProgramMessage\Battle\BodyState.cs" />
     <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\FailedExitOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\LoadedQueueForm.cs" />
     <Compile Include="ProgramMessage\Queue\SuccessExitOfQueue.cs" />
     <Compile Include="ProgramMessage\Room\AddInBattle.cs" />
+    <Compile Include="ProgramMessage\Room\LoadedBattleForm.cs" />
     <Compile Include="ProgramMessage\SignUpInAccount\Authorization.cs" />
     <Compile Include="Common\InsideMessage.cs" />
     <Compile Include="ProgramMessage\Queue\ChangeCountPlayersInQueue.cs" />

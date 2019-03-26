@@ -8,14 +8,15 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CSInteraction.Client;
 using CSInteraction.Common;
 using System.IO;
 using System.Drawing;
-using Rectangle = System.Drawing.Rectangle;
+using Size = System.Drawing.Size;
+using System.Windows.Media.Imaging;
+using CSInteraction.ProgramMessage;
+
 
 namespace BattleRoyalClient
 {
@@ -26,7 +27,9 @@ namespace BattleRoyalClient
 	{
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
-
+		private Bitmap background;
+		private Size sizeBattleScreen = new Size(1500, 1000);
+		
 		public bool Transition { get; set; }
 		public Battle(ulong id, BaseClient client, string nickName, string password)
 		{
@@ -34,31 +37,33 @@ namespace BattleRoyalClient
 			battleContoller = new GameActionController(id, client, nickName, password, this);
 			battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
+			background = new Bitmap(sizeBattleScreen.Width, sizeBattleScreen.Height);
+			this.KeyDown += userContoller.User_KeyDown;
+			this.KeyUp += userContoller.User_KeyUp;
+			client.SendMessage(new LoadedBattleForm());
+		}
+
+		private void Battle_KeyDown(object sender, KeyEventArgs e)
+		{
+			throw new NotImplementedException();
 		}
 
 		private void Model_BattleChangeModel()
 		{
 			//клонируем основное изображение
-			Bitmap frame = (Bitmap)battleContoller.Model.GetBackground;
-			//получаем центр экрана
-			PointF CentreScreen = battleContoller.Model.CentreScreen;
-			//вычисляем дипазоны
-			Tuple<double, double> DiapasonX = new Tuple<double, double>(CentreScreen.X - Field.Width / 2, CentreScreen.X + Field.Width / 2);
-			Tuple<double, double> DiapasonY = new Tuple<double, double>(CentreScreen.Y - Field.Height / 2, CentreScreen.Y + Field.Height / 2);
-			using (Graphics gr = Graphics.FromImage(frame))
+			using (Graphics gr = Graphics.FromImage(background))
 			{
-				foreach (var gameObject in battleContoller.Model.GameObjects)
+				//создаем новый фон
+				CreateBackground(gr);
+				PointF startAxises = battleContoller.Model.Chararcter.StartAxises;
+				List<IGameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
+				foreach (IGameObject gameObject in visibleObjects)
 				{
-					if(DiapasonX.Item1 <= gameObject.Value.Location.X && DiapasonX.Item2 >= gameObject.Value.Location.X &&
-						DiapasonY.Item1 <= gameObject.Value.Location.Y && DiapasonY.Item2 >= gameObject.Value.Location.Y)
-						gameObject.Value.Draw(gr);
-					
-				}
+					Painter.Draw(gameObject, gr, startAxises);
+				}			
 			}
-			
-			Bitmap bit = frame.Clone(new Rectangle(0, 0,
-				120, 60), frame.PixelFormat);
-			Field.Source = BitmapToImageSource(bit);
+			//background.RotateFlip(RotateFlipType.Rotate180FlipX);
+			Field.Source = BitmapToImageSource(background);
 
 		}
 		BitmapImage BitmapToImageSource(Bitmap bitmap)
@@ -75,6 +80,60 @@ namespace BattleRoyalClient
 
 				return bitmapimage;
 			}
+		}
+		/// <summary>
+		/// Рисует статическую картнику карту 
+		/// </summary>
+		public void CreateBackground(Graphics frame)
+		{
+			//очищаем кадр от предыдущих изображений
+			frame.Clear(System.Drawing.Color.FromArgb(128, 175,73));
+
+
+			//определяем выходит ли область обзора за границу карты
+			OverflowMap overflow = battleContoller.Model.Chararcter.GetOverflow;
+
+			if (overflow.Left != 0 || overflow.Right != 0 || 
+				overflow.Top != 0 || overflow.Bottom != 0)
+			{
+				using (Pen NewPen = new Pen(new SolidBrush(Color.Red), 3))
+				{
+					//настраиваем перо
+					NewPen.StartCap = System.Drawing.Drawing2D.LineCap.Round;
+					NewPen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
+					NewPen.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+					if (overflow.Left != 0)
+					{
+						float xBias = ConvertPosition.ConvertToViewAxis(overflow.Left);
+						frame.DrawLine(NewPen, new PointF(xBias, 0), 
+							new PointF(xBias, sizeBattleScreen.Height));
+					}
+
+					if (overflow.Top != 0)
+					{
+						float yBias = sizeBattleScreen.Height - ConvertPosition.ConvertToViewAxis(overflow.Top);
+						frame.DrawLine(NewPen, new PointF(0, yBias),
+							new PointF(sizeBattleScreen.Width, yBias));
+					}
+
+					if (overflow.Right != 0)
+					{
+						float xBias = sizeBattleScreen.Width -  ConvertPosition.ConvertToViewAxis(overflow.Right);
+						frame.DrawLine(NewPen, new PointF(xBias, 0),
+							new PointF(xBias, sizeBattleScreen.Height));
+					}
+
+					if (overflow.Bottom != 0)
+					{
+						float yBias = ConvertPosition.ConvertToViewAxis(overflow.Top);
+						frame.DrawLine(NewPen, new PointF(0, yBias),
+							new PointF(sizeBattleScreen.Width, yBias));
+					}
+				}
+				
+			}
+			
+
 		}
 	}
 }

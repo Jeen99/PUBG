@@ -14,12 +14,10 @@ namespace BattleRoayleServer
 
         public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
-        public Stone(IGameModel roomContext, PointF location, float radius)
+        public Stone(IGameModel roomContext, PointF location, Size size)
 		{
-			Components = new List<Component>
-			{
-				new CircleBody(this,roomContext, location, radius, TypesSolid.Solid)
-			};
+			Components = new List<Component>(1);
+			Components.Add(new SolidBody(this, roomContext, new RectangleF(location, size), TypesSolid.Solid));
 		}
 	}
 }
