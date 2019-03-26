@@ -37,6 +37,9 @@ namespace BattleRoyalClient
 				case Key.Down:
 					direction.Vertical = DirectionVertical.Down;
 					break;
+				case Key.Escape:
+					client.Close();
+					break;
 			}
 
 			if (e.Key == Key.Up	  ||

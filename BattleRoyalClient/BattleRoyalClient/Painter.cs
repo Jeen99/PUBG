@@ -13,7 +13,7 @@ namespace BattleRoyalClient
 	static class Painter
 	{
 		private static PointF CenterScreen = new  PointF(750, 500);
-		public static void Draw(IGameObject gameObject, Graphics gr, PointF startAxises )
+		public static void Draw(GameObject gameObject, Graphics gr, PointF startAxises )
 		{
 			switch (gameObject.Type)
 			{

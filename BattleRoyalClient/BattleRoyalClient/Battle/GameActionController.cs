@@ -20,8 +20,9 @@ namespace BattleRoyalClient
 		}
 		
 		private BaseClient client;
-		private Battle view;
-		public GameActionController(ulong id, BaseClient client, string nickName, string password, Battle view)
+		private BattleView3d view;
+
+		public GameActionController(ulong id, BaseClient client, string nickName, string password, BattleView3d view)
 		{
 			this.client = client;
 			model = new BattleModel(id, nickName, password);
@@ -47,10 +48,16 @@ namespace BattleRoyalClient
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
 		{
-			var gamer = (Gamer)model.GameObjects[moved.PlayerID];
-			gamer.OldLocation = gamer.Location;
-			gamer.Location = moved.NewLocation;
-			if (moved.PlayerID == model.Chararcter.ID) model.Chararcter.CharacterChange();
+			var gamer = model.GameObjects[moved.PlayerID];
+			var shapeGamer = model.GameObjects[moved.PlayerID].Shape;
+			shapeGamer.X = moved.NewLocation.X;
+			shapeGamer.Y = moved.NewLocation.Y;
+
+			gamer.Shape = shapeGamer;
+
+			if (moved.PlayerID == model.Chararcter.ID)
+				model.Chararcter.CharacterChange();
+
 			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });
 		}
 
@@ -72,22 +79,22 @@ namespace BattleRoyalClient
 			switch (msg.Type)
 			{
 				case TypesGameObject.Player:
-					model.GameObjects.AddOrUpdate(msg.ID,AddGamer(msg), (k,v) => UpdateGamer(v, msg));
+					model.GameObjects.AddOrUpdate(msg.ID,AddGamer(msg), (k,v) => UpdateGameObject(v, msg));
 					if (msg.ID == model.Chararcter.ID)
 					{
 						model.Chararcter.CharacterChange();
 					}
 					break;
 				case TypesGameObject.Box:
-					model.GameObjects.AddOrUpdate(msg.ID, AddBox(msg), (k, v) => UpdateBox(v, msg));
+					model.GameObjects.AddOrUpdate(msg.ID, AddBox(msg), (k, v) => UpdateGameObject(v, msg));
 					break;
 				case TypesGameObject.Stone:
-					model.GameObjects.AddOrUpdate(msg.ID, AddStone(msg), (k, v) => UpdateStone(v, msg));
+					model.GameObjects.AddOrUpdate(msg.ID, AddStone(msg), (k, v) => UpdateGameObject(v, msg));
 					break;
 			}
 		}
 
-		private IGameObject AddStone(GameObjectState msg)
+		private GameObject AddStone(GameObjectState msg)
 		{
 			Stone stone = new Stone();
 			foreach (IMessage message in msg.StatesComponents)
@@ -100,25 +107,12 @@ namespace BattleRoyalClient
 						break;
 				}
 			}
-			return stone;
-		}
-		private IGameObject UpdateStone(IGameObject gameObject, GameObjectState newData)
-		{
-			Stone stone = (Stone)gameObject;
-			foreach (IMessage message in newData.StatesComponents)
-			{
-				switch (message.TypeMessage)
-				{
-					case TypesProgramMessage.BodyState:
-						BodyState state = (message as BodyState);
-						stone.Shape = state.Shape;
-						break;
-				}
-			}
+			//stone.Model3D = new Model3D(view.models, stone);
+			CreateModel3d(stone);
 			return stone;
 		}
 
-		private IGameObject AddGamer(GameObjectState msg)
+		private GameObject AddGamer(GameObjectState msg)
 		{
 			Gamer gamer = new Gamer();
 			foreach (IMessage message in msg.StatesComponents)
@@ -129,30 +123,15 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
 						gamer.Shape = state.Shape;
-						gamer.OldLocation = gamer.Location;
 						break;
 				}
 			}
-			return gamer;
-		}
-		private IGameObject UpdateGamer(IGameObject gameObject, GameObjectState newData)
-		{
-			Gamer gamer = (Gamer)gameObject;
-			foreach (IMessage message in newData.StatesComponents)
-			{
-				switch (message.TypeMessage)
-				{
-					case TypesProgramMessage.BodyState:
-						BodyState state = (message as BodyState);
-						gamer.Shape = state.Shape;
-						gamer.OldLocation = gamer.Location;
-						break;
-				}
-			}
+			//gamer.Model3D = new Model3D(view.models, gamer);
+			CreateModel3d(gamer);
 			return gamer;
 		}
 
-		private IGameObject AddBox(GameObjectState msg)
+		private GameObject AddBox(GameObjectState msg)
 		{
 			Box box = new Box();
 			foreach (IMessage message in msg.StatesComponents)
@@ -165,24 +144,42 @@ namespace BattleRoyalClient
 						break;
 				}
 			}
+			CreateModel3d(box);
+			//box.Model3D = new Model3D(view.models, box);
 			return box;
 		}
-		private IGameObject UpdateBox(IGameObject gameObject, GameObjectState newData)
+		private GameObject UpdateGameObject(GameObject gameObject, GameObjectState newData)
 		{
-			Box box = (Box)gameObject;
 			foreach (IMessage message in newData.StatesComponents)
 			{
 				switch (message.TypeMessage)
 				{
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
-						box.Shape = state.Shape;
+						gameObject.Shape = state.Shape;
 						break;
 				}
 			}
-			return box;
+			UpdateModel3d(gameObject);
+			return gameObject;
 		}
 
+		private void CreateModel3d(GameObject gameObject)
+		{
+			//перенести обработку в View
+			view.Dispatcher.Invoke(() =>
+			{
+				gameObject.Model3D = new Model3D(view.models, gameObject);
+			});
+		}
+
+		private void UpdateModel3d(GameObject gameObject)
+		{
+			view.Dispatcher.Invoke(() =>
+			{
+				gameObject.Model3D.UpdatePosition();
+			});
+		}
 
 		private void Client_EventEndSession()
 		{

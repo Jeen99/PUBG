@@ -68,14 +68,14 @@ namespace BattleRoyalClient
 			}		
 		}
 
-		public List<IGameObject> VisibleObjects
+		public List<GameObject> VisibleObjects
 		{
 			get
 			{
-				List<IGameObject> gameObjects = new List<IGameObject>();
+				List<GameObject> gameObjects = new List<GameObject>();
 				foreach (var item in parent.GameObjects)
 				{
-					IGameObject gameObject = item.Value;
+					GameObject gameObject = item.Value;
 					if(x.Left <= gameObject.Location.X && gameObject.Location.X <= x.Right 
 						&& y.Left <= gameObject.Location.Y && gameObject.Location.Y <= y.Right)
 					{

@@ -23,7 +23,7 @@ namespace BattleRoyalClient
 	/// <summary>
 	/// Логика взаимодействия для Battle.xaml
 	/// </summary>
-	public partial class Battle : Window
+	public partial class Battle : Window//, IBattleView
 	{
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
@@ -34,18 +34,13 @@ namespace BattleRoyalClient
 		public Battle(ulong id, BaseClient client, string nickName, string password)
 		{
 			InitializeComponent();
-			battleContoller = new GameActionController(id, client, nickName, password, this);
+			//battleContoller = new GameActionController(id, client, nickName, password, this);
 			battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
 			background = new Bitmap(sizeBattleScreen.Width, sizeBattleScreen.Height);
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
 			client.SendMessage(new LoadedBattleForm());
-		}
-
-		private void Battle_KeyDown(object sender, KeyEventArgs e)
-		{
-			throw new NotImplementedException();
 		}
 
 		private void Model_BattleChangeModel()
@@ -56,8 +51,8 @@ namespace BattleRoyalClient
 				//создаем новый фон
 				CreateBackground(gr);
 				PointF startAxises = battleContoller.Model.Chararcter.StartAxises;
-				List<IGameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
-				foreach (IGameObject gameObject in visibleObjects)
+				List<GameObject> visibleObjects = battleContoller.Model.Chararcter.VisibleObjects;
+				foreach (GameObject gameObject in visibleObjects)
 				{
 					Painter.Draw(gameObject, gr, startAxises);
 				}			

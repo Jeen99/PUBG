@@ -11,8 +11,9 @@ namespace CSInteraction.Common
 	{
 		Player,
 		Stone,
-		Three,
+		Weapon,
 		Box,
-		Weapon
+		Bush,
+		Tree
 	}
 }
