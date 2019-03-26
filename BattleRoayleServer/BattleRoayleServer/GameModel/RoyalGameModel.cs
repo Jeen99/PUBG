@@ -15,7 +15,7 @@ using Box2DX.Dynamics;
 namespace BattleRoayleServer
 {
     public class RoyalGameModel : IGameModel
-    {
+	{
 		/// <summary>
 		///ширина одной стороны игровой карты 
 		/// </summary>
@@ -23,10 +23,7 @@ namespace BattleRoayleServer
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
         public ConcurrentDictionary<ulong,GameObject> GameObjects { get; private set; }
-		/// <summary>
-		/// Объекты которые нужно удалить с карты
-		/// </summary>
-		public List<SolidBody> NeedDelete { get; } = new List<SolidBody>();
+		
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
@@ -160,7 +157,27 @@ namespace BattleRoayleServer
 
 			frame = Field.CreateBody(bDefRight);
 			frame.CreateShape(pDefRight);
-		}		
+		}
 
-    }
+		public void AddGameObject(GameObject gameObject)
+		{
+			GameObjects.AddOrUpdate(gameObject.ID, gameObject, (k, v) => { return v; });
+			//посылваем сообщение об добавлении нового объекта
+			//отправляем просто состояние объекта(не вижу смысла создавать специальное сообщение для этого)
+			HappenedEvents.Enqueue(gameObject.State);
+		}
+
+		public void RemoveGameObject(GameObject gameObject)
+		{
+			GameObject deletedObject;
+			GameObjects.TryRemove(gameObject.ID, out deletedObject);
+		}
+
+		public void Dispose()
+		{
+			GameObjects.Clear();
+			Field.Dispose();
+			HappenedEvents.Clear();
+		}
+	}
 }

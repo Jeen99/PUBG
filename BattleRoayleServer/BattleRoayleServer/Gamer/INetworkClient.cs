@@ -12,5 +12,7 @@ namespace BattleRoayleServer
         ServerClient Gamer { get; }
 		string Password { get; }
 		event GamerIsLoaded Event_GamerIsLoaded;
+		event NetworkClientEndWork EventNetworkClientEndWork;
+		void Dispose();
 	}
 }

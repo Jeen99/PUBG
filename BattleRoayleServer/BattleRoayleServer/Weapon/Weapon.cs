@@ -15,6 +15,7 @@ namespace BattleRoayleServer
 
 		}
 		public GameObject Holder { get; set; }
+
 		public virtual TypesWeapon TypeWeapon { get; }
 	}
 }

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Delegates.cs" />
+    <Compile Include="Common\VectorMethod.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Collision\RoomContactListener.cs" />
     <Compile Include="Components\Collision\SolidBody.cs" />
@@ -57,7 +58,9 @@
     <Compile Include="Components\Healthy.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
+    <Compile Include="Components\PlayerDied.cs" />
     <Compile Include="GameObject\Box.cs" />
+    <Compile Include="GameObject\LootBox.cs" />
     <Compile Include="GameObject\Stone.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />

@@ -38,7 +38,8 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			throw new NotImplementedException();
+			inventory = null;
+			currentWeapon = null;
 		}
 
 		public override void UpdateComponent(IMessage msg)

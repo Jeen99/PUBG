@@ -24,7 +24,8 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			throw new NotImplementedException();
+			magazin = null;
+			return;
 		}
 
 		public override void UpdateComponent(IMessage msg)
@@ -52,7 +53,7 @@ namespace BattleRoayleServer
 					var segment = new Segment();
 					Vec2 position = BodyHolder.Body.GetPosition();
 					segment.P1 = position;
-					var sweepVector = RotateVector(msg.Angle, bullet);
+					var sweepVector = VectorMethod.RotateVector(msg.Angle, bullet.Distance);
 					segment.P2 = new Vec2
 					{
 						X = position.X + sweepVector.X,
@@ -68,18 +69,5 @@ namespace BattleRoayleServer
 				}
 			}
 		}
-
-		private Vec2 RotateVector(float angle, IBullet bullet)
-		{
-			//в радианах, на вход угол в градусах
-			//угол расчитывается против часовой стрелки
-			double RadAngle = angle * (System.Math.PI / 180);
-			return new Vec2()
-			{
-				X = (float)(bullet.Distance * System.Math.Sin(RadAngle)- 0 * System.Math.Cos(RadAngle)),
-				Y = (float)(0 * System.Math.Sin(RadAngle) + bullet.Distance * System.Math.Cos(RadAngle))
-			};
-		}
-
 	}
 }

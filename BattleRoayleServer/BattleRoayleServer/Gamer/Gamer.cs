@@ -15,6 +15,8 @@ namespace BattleRoayleServer
 		private const float friction = 0.3f;
 		private const float density = 0.5f;
 
+		public event PlayerDeleted EventPlayerDeleted;
+
 		public Gamer(PointF location, IGameModel context) : base(context)
 		{
 
@@ -36,6 +38,8 @@ namespace BattleRoayleServer
 			var healthy = new Healthy(this);
 			components.AddOrUpdate(healthy.GetType(), healthy, (k, v) => { return v; });
 
+			var playerDied = new PlayerDied(this);
+			components.AddOrUpdate(playerDied.GetType(), playerDied, (k, v) => { return v; });
 		}
 
 		/// <summary>
@@ -59,6 +63,12 @@ namespace BattleRoayleServer
 		public void PerformAction(IMessage action)
 		{
 			SendMessage(action);
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+			EventPlayerDeleted?.Invoke(this);
 		}
 	}
 }

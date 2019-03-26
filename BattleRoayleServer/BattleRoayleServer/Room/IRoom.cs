@@ -19,5 +19,8 @@ namespace BattleRoayleServer
         /// Освобождает все ресурыс комнаты
         /// </summary>
         void Dispose();
-    }
+
+		event RoomEndWork EventRoomEndWork;
+
+	}
 }

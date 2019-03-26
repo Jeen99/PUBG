@@ -9,7 +9,6 @@ using System.Collections.Concurrent;
 namespace BattleRoayleServer
 {
 	
-
 	public class Gun : Weapon
 	{
 		private const float restetution = 0;

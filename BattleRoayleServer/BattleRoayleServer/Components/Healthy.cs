@@ -16,11 +16,6 @@ namespace BattleRoayleServer
 
 		public float HP { get; private set; }
 
-		public override void Dispose()
-		{
-			throw new NotImplementedException();
-		}
-
 		public override void UpdateComponent(IMessage msg)
 		{
 			switch (msg.TypeMessage)
@@ -42,7 +37,7 @@ namespace BattleRoayleServer
 			HP -= msg.Damage;
 			if (HP < 0)
 			{
-				Parent.SendMessage(new HappenedDeath());
+				Parent.Dispose();
 			}
 			Parent.Model.HappenedEvents.Enqueue(new ChangedValueHP(HP));
 		}

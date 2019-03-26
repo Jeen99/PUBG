@@ -19,6 +19,8 @@ namespace BattleRoayleServer
 		/// </summary>
 		IList<IPlayer> Players { get; }
 
+		event RoomLogicEndWork EventRoomLogicEndWork;
+
 		ObservableQueue<IMessage> HappenedEvents { get; }
 
 		/// <summary>

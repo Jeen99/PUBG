@@ -30,7 +30,10 @@ namespace BattleRoayleServer
 		/// </summary>
 		private Queue<IMessage> messageQueue;
 		public ulong ID { get; private set; }
+
 		protected ConcurrentDictionary<Type, Component> components;
+		public ConcurrentDictionary<Type, Component> Components { get => components; }
+
 
 		public GameObject(IGameModel model)
 		{
@@ -100,8 +103,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Тип игрового объекта
 		/// </summary>
-		public abstract TypesGameObject Type { get;
-		}
+		public abstract TypesGameObject Type { get;}
 
 		/// <summary>
 		/// Добавляет сообщение в очередь обработки сообщений
@@ -111,19 +113,28 @@ namespace BattleRoayleServer
 			messageQueue.Enqueue(msg);
         }
 
-        /// <summary>
-        /// Освобождает все ресурысы объекта
-        /// </summary>
-        public virtual void Dispose()
-        {
-            throw new System.NotImplementedException();
+		/// <summary>
+		/// Освобождает все ресурысы объекта
+		/// </summary>
+		public virtual void Dispose()
+		{
+			foreach (var item in components)
+			{
+				item.Value.Dispose();
+			}
+			components.Clear();
+			messageQueue.Clear();
+			Destroyed = true;
+			Model.HappenedEvents.Enqueue(new GameObjectDestroy(ID));
+			Model = null;
+
         }
 
         /// <summary>
         /// Возвращает true, если объект уничтожен
         /// </summary>
         public bool Destroyed { get; protected set; }
-
+		
 		public Component GetComponent(Type type)
 		{
 			Component component = null;

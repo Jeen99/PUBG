@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class GameObjectDelete : IMessage
+	public class DeleteInMap : IMessage
 	{
 		public ulong ID { get; private set; }
-		public TypesProgramMessage TypeMessage { get; }  = TypesProgramMessage.GameObjectDelete;
+		public TypesProgramMessage TypeMessage { get; }  = TypesProgramMessage.DeleteInMap;
 
-		public GameObjectDelete(ulong iD)
+		public DeleteInMap(ulong iD)
 		{
 			ID = iD;
 		}

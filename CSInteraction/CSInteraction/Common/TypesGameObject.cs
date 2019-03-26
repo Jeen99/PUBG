@@ -13,6 +13,7 @@ namespace CSInteraction.Common
 		Stone,
 		Three,
 		Box,
-		Weapon
+		Weapon,
+		LootBox
 	}
 }

@@ -55,6 +55,7 @@ namespace BattleRoayleServer
 			}
 
 		}
+
 		private void CreateTransparentCircleBody(float restetution, float friction, float density,
 			ushort categoryBits, ushort maskBits)
 		{
@@ -161,8 +162,9 @@ namespace BattleRoayleServer
 		}
 		private void Handler_TimeQuantPassed()
 		{
-
+			
 		}
+
 		public void BodyMove()
 		{
 			Vec2 position = Body.GetPosition();
@@ -172,7 +174,9 @@ namespace BattleRoayleServer
 		
 		public override void Dispose()
 		{
-			throw new NotImplementedException();
+			CoveredObjects.Clear();
+			//удаляем объект с карты
+			Body.GetWorld().DestroyBody(Body);
 		}
 		public override IMessage State
 		{
@@ -201,8 +205,9 @@ namespace BattleRoayleServer
 
 		public void BodyDelete()
 		{
-			Parent.Model.NeedDelete.Add(this);
-			Parent.Model.HappenedEvents.Enqueue(new GameObjectDelete(this.Parent.ID));
+			//удаляем объект с карты
+			Body.GetWorld().DestroyBody(Body);
+			Parent.Model.HappenedEvents.Enqueue(new DeleteInMap(Parent.ID));
 		}
 	}
 

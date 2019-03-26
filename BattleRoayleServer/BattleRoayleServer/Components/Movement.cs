@@ -29,6 +29,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
+			body = null;
 			return;
 		}
 

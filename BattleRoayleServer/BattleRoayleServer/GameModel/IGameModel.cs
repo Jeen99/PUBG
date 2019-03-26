@@ -18,7 +18,8 @@ namespace BattleRoayleServer
 		ConcurrentDictionary<ulong, GameObject> GameObjects { get; }
         World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
-		List<SolidBody> NeedDelete { get; }
-
+		void AddGameObject(GameObject gameObject);
+		void RemoveGameObject(GameObject gameObject);
+		void Dispose();
 	}
 }

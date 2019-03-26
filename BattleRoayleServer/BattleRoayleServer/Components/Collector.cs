@@ -4,6 +4,11 @@ using System.Linq;
 using System.Text;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
+using Box2DX.Collision;
+using Box2DX.Common;
+using Box2DX.Dynamics;
+using System.Drawing;
+
 
 namespace BattleRoayleServer
 {
@@ -68,12 +73,35 @@ namespace BattleRoayleServer
 			}
 		}
 
-		//необходимо реализовать state
 		public override void Dispose()
 		{
-			throw new NotImplementedException();
+			int CountObjects = 0;
+			//освобожаем все объекты от держателей
+			for (int i = 0; i < modifiers.Length; i++)
+			{
+				if (modifiers[i] != null)
+				{
+					modifiers[i].Holder = null;
+					CountObjects++;
+				}
+			}
+
+			for (int i = 0; i < weapons.Length; i++)
+			{
+				if (weapons[i] != null)
+				{
+					weapons[i].Holder = null;
+					var body = weapons[i].GetComponent(typeof(SolidBody));
+					CountObjects++;
+				}			
+			}
+			//создаем коробку с лутом
+			var position = (Parent.GetComponent(typeof(SolidBody)) as SolidBody).Body.GetPosition();
+			LootBox lootBox = new LootBox(Parent.Model,this, new PointF(position.X, position.Y));
+			Parent.Model.AddGameObject(lootBox);
 		}
 
+			
 		public override void UpdateComponent(IMessage msg)
 		{
 			switch (msg.TypeMessage)
@@ -93,8 +121,39 @@ namespace BattleRoayleServer
 					case TypesGameObject.Weapon:
 						PickUpWeapon(item);
 						break;
+					case TypesGameObject.LootBox:
+						PickUpLootBox(item);
+						break;
 				}
 			}
+		}
+
+		private void PickUpLootBox(SolidBody lootBoxBody)
+		{
+			//получаем коллекцию
+			Collector collector = (lootBoxBody.Parent.GetComponent(typeof(Collector)) as Collector);
+			//добавляем предметы, которых у нас еще нет
+			for (int i = 0; i < collector.modifiers.Length; i++)
+			{
+				if (this.modifiers[i] == null)
+				{
+					this.modifiers[i] = collector.modifiers[i];
+					//должно быть еще сообщение о добавлении нового модификатора
+				}
+			}
+
+			for (int i = 0; i < collector.weapons.Length; i++)
+			{
+				if (this.weapons[i] == null)
+				{
+					this.weapons[i] = collector.weapons[i];
+					var msg = new AddWeapon(Parent.ID, this.weapons[i].TypeWeapon);
+					Parent.SendMessage(msg);
+					Parent.Model.HappenedEvents.Enqueue(msg);
+				}
+			}
+			//удаляем объект
+			lootBoxBody.Parent.Dispose();
 		}
 
 		private void PickUpWeapon(SolidBody weaponBody)
@@ -116,6 +175,12 @@ namespace BattleRoayleServer
 					break;
 			}
 		}
+
+		public void SetNewParent(LootBox lootBox)
+		{
+			Parent = lootBox;
+		}
+
 
 		private void TrySaveWeapon(int index, Weapon weapon, SolidBody weaponBody)
 		{
