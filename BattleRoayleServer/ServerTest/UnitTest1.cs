@@ -75,9 +75,6 @@ namespace ServerTest
 			firstGamer.Update();
 			CurrentWeapon currentWeapon = (CurrentWeapon)firstGamer.GetComponent(typeof(CurrentWeapon));
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
-			//удаляем объект с карты
-			Room.NeedDelete[0].Body.GetWorld().DestroyBody(Room.NeedDelete[0].Body);
-			Room.NeedDelete.Clear();
 			//делаем выстрел
 			firstGamer.SendMessage(new MakeShot(2));
 			firstGamer.Update();

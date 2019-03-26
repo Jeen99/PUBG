@@ -15,10 +15,10 @@ namespace BattleRoayleServer
         {
 			GameLogic = new RoyalRoomLogic(gamers.Count);
 			NetworkLogic = new RoomNetwork(gamers, GameLogic);
-			GameLogic.EventRoomLogicEndWork += GameLogic_EventRoomLogicEndWork;
+			GameLogic.EventRoomLogicEndWork += GameLogic_EventRoomLogicEndWork1; ;
         }
 
-		private void GameLogic_EventRoomLogicEndWork()
+		private void GameLogic_EventRoomLogicEndWork1(IRoomLogic roomLogic)
 		{
 			EventRoomEndWork?.Invoke(this);
 		}

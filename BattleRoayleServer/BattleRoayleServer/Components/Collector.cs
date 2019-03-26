@@ -19,19 +19,7 @@ namespace BattleRoayleServer
 
 		public Weapon GetWeapon(TypesWeapon typeWeapon)
 		{
-			switch (typeWeapon)
-			{
-				case TypesWeapon.Gun:
-					return weapons[0];
-				case TypesWeapon.AssaultRifle:
-					return weapons[2];
-				case TypesWeapon.Grenade:
-					return weapons[3];
-				case TypesWeapon.ShotGun:
-					return weapons[1];
-				default:
-					return null;
-			}
+			return weapons[(int)typeWeapon];
 		}
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
@@ -95,6 +83,7 @@ namespace BattleRoayleServer
 					CountObjects++;
 				}			
 			}
+
 			//создаем коробку с лутом
 			var position = (Parent.GetComponent(typeof(SolidBody)) as SolidBody).Body.GetPosition();
 			LootBox lootBox = new LootBox(Parent.Model,this, new PointF(position.X, position.Y));
@@ -159,34 +148,10 @@ namespace BattleRoayleServer
 		private void PickUpWeapon(SolidBody weaponBody)
 		{
 			Weapon weapon = (Weapon)weaponBody.Parent;
-			switch (weapon.TypeWeapon)
+
+			if (weapons[(int)weapon.TypeWeapon] == null)
 			{
-				case TypesWeapon.Gun:
-					TrySaveWeapon(0, weapon, weaponBody);
-					break;
-				case TypesWeapon.ShotGun:
-					TrySaveWeapon(1, weapon, weaponBody);
-					break;
-				case TypesWeapon.AssaultRifle:
-					TrySaveWeapon(2, weapon, weaponBody);
-					break;
-				case TypesWeapon.Grenade:
-					TrySaveWeapon(3, weapon, weaponBody);
-					break;
-			}
-		}
-
-		public void SetNewParent(LootBox lootBox)
-		{
-			Parent = lootBox;
-		}
-
-
-		private void TrySaveWeapon(int index, Weapon weapon, SolidBody weaponBody)
-		{
-			if (weapons[index] == null)
-			{
-				weapons[index] = (Weapon)weapon;
+				weapons[(int)weapon.TypeWeapon] = (Weapon)weapon;
 				weaponBody.BodyDelete();
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.SendMessage(msg);
@@ -194,5 +159,9 @@ namespace BattleRoayleServer
 			}
 		}
 
+		public void SetNewParent(LootBox lootBox)
+		{
+			Parent = lootBox;
+		}
 	}
 }
