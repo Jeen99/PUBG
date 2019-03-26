@@ -5,103 +5,171 @@ using System.Linq;
 using System.Text;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
+using Box2DX.Common;
+using Box2DX.Collision;
+using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
-	public class SolidBody : Component, IFieldObject
+	public class SolidBody : Component
 	{
-		protected IGameModel gameModel;
+		private RectangleF shape;
+		//на данный момент временное поле
+		public RectangleF Shape { get { return shape; } }
 
-		public SolidBody(GameObject parent, IGameModel gameModel,RectangleF shape, TypesSolid typesSolid)
+		public Body Body { get; private set; }
+		public List<SolidBody> CoveredObjects { get; } = new List<SolidBody>();
+	
+
+		public SolidBody(GameObject parent,  RectangleF shape, float restetution, float friction,
+			float density, TypesBody typesBody, TypesSolid typesSolid,
+			ushort categoryBits, ushort maskBits)
 			: base(parent)
 		{
 			TypeSolid = typesSolid;
-			this.gameModel = gameModel;
 			this.shape = shape;
-			gameModel.Field.Put(this);
-			CoveredCells = new List<CellField>();
+			switch (TypeSolid)
+			{
+				case TypesSolid.Solid:
+					switch (typesBody)
+					{
+						case TypesBody.Circle:
+							CreateCircleBody(restetution, friction, density, categoryBits, maskBits);
+							break;
+						case TypesBody.Rectangle:
+							CreateRectangleBody(restetution, friction, density, categoryBits, maskBits);
+							break;
+					}
+					break;
+				case TypesSolid.Transparent:
+					switch (typesBody)
+					{
+						case TypesBody.Circle:
+							CreateTransparentCircleBody(restetution, friction, density, categoryBits, maskBits);
+							break;
+						case TypesBody.Rectangle:
+							CreateTransparentRectangleBody(restetution, friction, density, categoryBits, maskBits);
+							break;
+					}
+					break;
+			}
+
 		}
-		
+		private void CreateTransparentCircleBody(float restetution, float friction, float density,
+			ushort categoryBits, ushort maskBits)
+		{
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.X, shape.Y);
+			bDef.Angle = 0;
+			bDef.FixedRotation = true;
+
+			CircleDef pDef = new CircleDef();
+			pDef.Restitution = restetution;
+			pDef.Friction = friction;
+			pDef.Density = density;
+			pDef.Radius = shape.Width / 2;
+			pDef.IsSensor = true;
+			pDef.Filter.CategoryBits = categoryBits;
+			pDef.Filter.MaskBits = maskBits;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.CreateShape(pDef);
+			Body.SetMassFromShapes();
+			Body.SetUserData(this);
+		}
+
+		private void CreateTransparentRectangleBody(float restetution, float friction, float density,
+			ushort categoryBits, ushort maskBits)
+		{
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.Right, shape.Bottom);
+			bDef.Angle = 0;
+
+			PolygonDef pDef = new PolygonDef();
+			pDef.Restitution = restetution;
+			pDef.Friction = friction;
+			pDef.Density = density;
+			pDef.SetAsBox(shape.Width / 2, shape.Height / 2);
+			pDef.Filter.CategoryBits = categoryBits;
+			pDef.Filter.MaskBits = maskBits;
+			pDef.IsSensor = true;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.CreateShape(pDef);
+			Body.SetMassFromShapes();
+			Body.SetUserData(this);
+		}
+
+		private void CreateCircleBody(float restetution, float friction, float density,
+			ushort categoryBits, ushort maskBits)
+		{
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.X, shape.Y);
+			bDef.Angle = 0;
+			bDef.FixedRotation = true;
+
+			CircleDef pDef = new CircleDef();
+			pDef.Restitution = restetution;
+			pDef.Friction = friction;
+			pDef.Density = density;
+			pDef.Radius = shape.Width / 2;
+			pDef.Filter.CategoryBits = categoryBits;
+			pDef.Filter.MaskBits = maskBits;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.CreateShape(pDef);
+			Body.SetMassFromShapes();
+			Body.SetUserData(this);
+
+		}
+
+		private void CreateRectangleBody(float restetution, float friction, float density,
+			ushort categoryBits, ushort maskBits)
+		{
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.Right, shape.Bottom);
+			bDef.Angle = 0;
+
+			PolygonDef pDef = new PolygonDef();
+			pDef.Restitution = restetution;
+			pDef.Friction = friction;
+			pDef.Density = density;
+			pDef.SetAsBox(shape.Width / 2, shape.Height / 2);
+			pDef.Filter.CategoryBits = categoryBits;
+			pDef.Filter.MaskBits = maskBits;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.CreateShape(pDef);
+			Body.SetMassFromShapes();
+			Body.SetUserData(this);
+		}
+
 		public TypesSolid TypeSolid { get; private set; }
 
-		/// <summary>
-		/// Расположение объекта на игровой карте
-		/// </summary>
-		private RectangleF shape;
-		public RectangleF Shape { get { return shape; }}
-
-		public IList<CellField> CoveredCells { get; set; }
-
-		public override void ProcessMsg(IComponentMsg msg)
+		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg != null)
 			{
-				switch (msg.Type)
+				switch (msg.TypeMessage)
 				{
-					//данный компонент не обрабатывает никакие внешние сообщения на данных момент
+					case TypesProgramMessage.TimeQuantPassed:
+						Handler_TimeQuantPassed();
+						break;
 				}
 			}
-			
-		}
 
-		public void SendMessage(IComponentMsg msg)
+		}
+		private void Handler_TimeQuantPassed()
 		{
-			Parent.SendMessage(msg);
-		}
 
-		/// <summary>
-		/// Перемещает объект на переданное расстояние, под заданным углом
-		/// </summary>
-		public virtual void AppendCoords(float dX, float dY)
+		}
+		public void BodyMove()
 		{
-			//изменяем координаты
-			//проверка на граничные значения X
-			if (shape.X + dX < 0)
-				shape.X = 0;
-			else 
-				if (shape.X + dX > gameModel.Field.LengthOfSide)
-				shape.X = gameModel.Field.LengthOfSide;
-			else
-				shape.X = shape.X + dX;
-			//проверка на граничные значения Y
-			if (shape.Y + dY < 0)
-				shape.Y = 0;
-			else 
-				if (shape.Y + dY > gameModel.Field.LengthOfSide)
-					shape.Y = gameModel.Field.LengthOfSide;
-			else
-				shape.Y = shape.Y + dY;
-
-			gameModel.Field.Move(this);
-			//проверяем на столкновение 
-			//в каждой клетке, на которой находится игрок
-			foreach (CellField cell in CoveredCells)
-			{
-				foreach (IFieldObject fieldObject in cell.OnThisCell)
-				{
-					//проверка на возможность столкновения
-					if (this.TypeSolid == TypesSolid.Solid && fieldObject.TypeSolid == TypesSolid.Solid
-						&& !Equals(fieldObject, this))
-					{
-						if (fieldObject.Shape.IntersectsWith(this.Shape))
-						{
-							//убираем перемещение
-							shape.X -= dX;
-							shape.Y -= dY;
-							//возвращаем объект нормлаьно
-							gameModel.Field.Move(this);
-							//произошло столкновение отпраляем участникам сообщение об этом
-							this.SendMessage(new CollisionObjects(fieldObject));
-							fieldObject.SendMessage(new CollisionObjects(this));
-							break;
-						}
-					}
-				}
-			}
-			gameModel.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
-
+			Vec2 position = Body.GetPosition();
+			shape.Location = new PointF(position.X, position.Y);
+			Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
 		}
-
+		
 		public override void Dispose()
 		{
 			throw new NotImplementedException();
@@ -110,14 +178,51 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				return new BodyState(Shape);
+				return new BodyState(shape);
 			}
 		}
+
+		//возвращает коллекцию объектов, которые можно поднять
+		public List<SolidBody> GetPickUpObjects()
+		{
+			List<SolidBody> pickUpObjects = new List<SolidBody>();
+			  
+			foreach (var gameObject in CoveredObjects)
+			{
+				switch (gameObject.Parent.Type)
+				{
+					case TypesGameObject.Weapon:
+						pickUpObjects.Add(gameObject);
+						break;
+				}
+			}
+			return pickUpObjects;
+		}
+
+		public void BodyDelete()
+		{
+			Parent.Model.NeedDelete.Add(this);
+			Parent.Model.HappenedEvents.Enqueue(new GameObjectDelete(this.Parent.ID));
+		}
+	}
+
+	public enum CollideCategory
+	{
+		Player = 0x0001,
+		Loot = 0x0002,
+		Box = 0x0003,
+		Stone = 0x0004
 	}
 
 	public enum TypesSolid
 	{
 		Solid,
 		Transparent
+	}
+
+	public enum TypesBody
+	{
+		Rectangle, 
+		Circle
 	}
 }

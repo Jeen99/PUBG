@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -9,24 +11,123 @@ namespace BattleRoayleServer
 	{
 		private Modifier[] modifiers;
 		private Weapon[] weapons;
+
+		public Weapon GetWeapon(TypesWeapon typeWeapon)
+		{
+			switch (typeWeapon)
+			{
+				case TypesWeapon.Gun:
+					return weapons[0];
+				case TypesWeapon.AssaultRifle:
+					return weapons[2];
+				case TypesWeapon.Grenade:
+					return weapons[3];
+				case TypesWeapon.ShotGun:
+					return weapons[1];
+				default:
+					return null;
+			}
+		}
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
 		private SolidBody body;
 
-		public Collector(GameObject parent) : base(parent)
+		public Collector(GameObject parent, SolidBody body) : base(parent)
 		{
-
+			modifiers = new Modifier[5];
+			weapons = new Weapon[4];
+			this.body = body;
 		}
 
+		public override IMessage State
+		{
+			get
+			{
+				//создаем массив состояний модификаций
+				List<IMessage> ModifiersState = new List<IMessage>();
+				for (int i = 0; i < modifiers.Length; i++)
+				{
+					if (modifiers[i] != null)
+					{
+						ModifiersState.Add(modifiers[i].State);
+					}
+				}
+
+				//создаем массив состояний оружия
+				List<IMessage> WeaponsState = new List<IMessage>();
+				for (int i = 0; i < weapons.Length; i++)
+				{
+					if (weapons[i] != null)
+					{
+						WeaponsState.Add(weapons[i].State);
+					}
+				}
+				return new CollectorState(ModifiersState, WeaponsState);
+
+			}
+		}
+
+		//необходимо реализовать state
 		public override void Dispose()
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void ProcessMsg(IComponentMsg msg)
+		public override void UpdateComponent(IMessage msg)
 		{
-			throw new NotImplementedException();
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.TryPickUp:
+					Handler_TryPickUp();
+					break;
+			}
 		}
+		private void Handler_TryPickUp()
+		{
+			var listObjects = body.GetPickUpObjects();
+			foreach (var item in listObjects)
+			{
+				switch (item.Parent.Type)
+				{
+					case TypesGameObject.Weapon:
+						PickUpWeapon(item);
+						break;
+				}
+			}
+		}
+
+		private void PickUpWeapon(SolidBody weaponBody)
+		{
+			Weapon weapon = (Weapon)weaponBody.Parent;
+			switch (weapon.TypeWeapon)
+			{
+				case TypesWeapon.Gun:
+					TrySaveWeapon(0, weapon, weaponBody);
+					break;
+				case TypesWeapon.ShotGun:
+					TrySaveWeapon(1, weapon, weaponBody);
+					break;
+				case TypesWeapon.AssaultRifle:
+					TrySaveWeapon(2, weapon, weaponBody);
+					break;
+				case TypesWeapon.Grenade:
+					TrySaveWeapon(3, weapon, weaponBody);
+					break;
+			}
+		}
+
+		private void TrySaveWeapon(int index, Weapon weapon, SolidBody weaponBody)
+		{
+			if (weapons[index] == null)
+			{
+				weapons[index] = (Weapon)weapon;
+				weaponBody.BodyDelete();
+				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
+				Parent.SendMessage(msg);
+				Parent.Model.HappenedEvents.Enqueue(msg);
+			}
+		}
+
 	}
 }

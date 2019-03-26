@@ -49,19 +49,37 @@
     <Compile Include="Common\Directions.cs" />
     <Compile Include="Common\ObservableQueue.cs" />
     <Compile Include="Common\TypesGameObject.cs" />
+    <Compile Include="Common\TypesWeapon.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
-    <Compile Include="ProgramMessage\Battle\GameObjectState.cs" />
+    <Compile Include="ProgramMessage\Battle\ChangedCurrentWeapon.cs" />
+    <Compile Include="ProgramMessage\Battle\ChangedValueHP.cs" />
+    <Compile Include="ProgramMessage\Battle\ChoiceWeapon.cs" />
+    <Compile Include="ProgramMessage\Battle\EndReloadWeapon.cs" />
+    <Compile Include="ProgramMessage\Battle\GameObjectDelete.cs" />
+    <Compile Include="ProgramMessage\ServerMsg\GotDamage.cs" />
+    <Compile Include="ProgramMessage\Battle\MakedShot.cs" />
+    <Compile Include="ProgramMessage\ServerMsg\HappenedDeath.cs" />
+    <Compile Include="ProgramMessage\State\CollectorState.cs" />
+    <Compile Include="ProgramMessage\State\CurrentWeaponState.cs" />
+    <Compile Include="ProgramMessage\State\GameObjectState.cs" />
     <Compile Include="ProgramMessage\Battle\GoTo.cs" />
+    <Compile Include="ProgramMessage\Battle\AddWeapon.cs" />
+    <Compile Include="ProgramMessage\Battle\MakeReloadWeapon.cs" />
+    <Compile Include="ProgramMessage\Battle\MakeShot.cs" />
     <Compile Include="ProgramMessage\Battle\PlayerMoved.cs" />
-    <Compile Include="ProgramMessage\Battle\RoomState.cs" />
-    <Compile Include="ProgramMessage\Battle\StopMove.cs" />
-    <Compile Include="ProgramMessage\Battle\BodyState.cs" />
+    <Compile Include="ProgramMessage\State\HealthyState.cs" />
+    <Compile Include="ProgramMessage\State\MagazinState.cs" />
+    <Compile Include="ProgramMessage\State\RoomState.cs" />
+    <Compile Include="ProgramMessage\Battle\StartReloadWeapon.cs" />
+    <Compile Include="ProgramMessage\State\BodyState.cs" />
+    <Compile Include="ProgramMessage\Battle\TryPickUp.cs" />
     <Compile Include="ProgramMessage\Queue\DeleteOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\FailedExitOfQueue.cs" />
     <Compile Include="ProgramMessage\Queue\LoadedQueueForm.cs" />
     <Compile Include="ProgramMessage\Queue\SuccessExitOfQueue.cs" />
     <Compile Include="ProgramMessage\Room\AddInBattle.cs" />
     <Compile Include="ProgramMessage\Room\LoadedBattleForm.cs" />
+    <Compile Include="ProgramMessage\ServerMsg\TimeQuantPassed.cs" />
     <Compile Include="ProgramMessage\SignUpInAccount\Authorization.cs" />
     <Compile Include="Common\InsideMessage.cs" />
     <Compile Include="ProgramMessage\Queue\ChangeCountPlayersInQueue.cs" />
@@ -80,5 +98,6 @@
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

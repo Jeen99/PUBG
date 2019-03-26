@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
-	public enum TypesComponentMsg
+	public interface IBullet
 	{
-		StartMoveGamer,
-		EndMoveGamer,
-		TimeQuantPassed,
-		ObjectPickUp,
-		CollisionObjects
+		float Distance { get; }
+		float Damage { get; }
 	}
 }

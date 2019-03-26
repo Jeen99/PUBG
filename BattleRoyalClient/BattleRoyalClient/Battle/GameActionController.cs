@@ -47,7 +47,9 @@ namespace BattleRoyalClient
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
 		{
-			model.GameObjects[moved.PlayerID].Location = moved.NewLocation;
+			var gamer = (Gamer)model.GameObjects[moved.PlayerID];
+			gamer.OldLocation = gamer.Location;
+			gamer.Location = moved.NewLocation;
 			if (moved.PlayerID == model.Chararcter.ID) model.Chararcter.CharacterChange();
 			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });
 		}
@@ -127,6 +129,7 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
 						gamer.Shape = state.Shape;
+						gamer.OldLocation = gamer.Location;
 						break;
 				}
 			}
@@ -142,6 +145,7 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
 						gamer.Shape = state.Shape;
+						gamer.OldLocation = gamer.Location;
 						break;
 				}
 			}

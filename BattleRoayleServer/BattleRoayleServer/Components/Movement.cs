@@ -3,16 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
+using Box2DX.Common;
 
 namespace BattleRoayleServer
 {
 	public class Movement : Component
 	{
 		private Direction currentDirection;
-		/// <summary>
-		/// Если true игрок двигается в настоящее время
-		/// </summary>
-		private bool active;
+	
 		/// <summary>
 		/// Скорость игрока
 		/// </summary>
@@ -33,87 +32,57 @@ namespace BattleRoayleServer
 			return;
 		}
 
-		public override void ProcessMsg(IComponentMsg msg)
+		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg != null)
 			{
-				switch (msg.Type)
+				switch (msg.TypeMessage)
 				{
-					case TypesComponentMsg.StartMoveGamer:
-						Handler_StartMoveGamer(msg as StartMoveGamer);
+					case  TypesProgramMessage.GoTo:
+						Handler_StartMoveGamer(msg as GoTo);
 						break;
-					case TypesComponentMsg.EndMoveGamer:
-						Handler_EndMoveGamer();
+					case TypesProgramMessage.TimeQuantPassed:
+						Handler_TimeQuantPassed();
 						break;
-					case TypesComponentMsg.TimeQuantPassed:
-						Handler_TimeQuantPassed(msg as TimeQuantPassed);
-						break;
-						/*case TypesComponentMsg.CollisionObjects:
-							Handler_CollisionObjects((CollisionObjects)msg);
-							break;*/
 				}
 			}
 
 		}
 
-		/*private void Handler_CollisionObjects(CollisionObjects msg)
+		private void Handler_TimeQuantPassed()
 		{
-		
-		}*/
 
-		private void Handler_EndMoveGamer()
-		{
-			//прекращаем движение
-			active = false;
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_StartMoveGamer(GoTo msg)
 		{
-			if (active)
+			currentDirection = msg.DirectionMove;
+			float dX = 0;
+			float dY = 0;
+
+			// смещение по горизонтали
+			switch (currentDirection.Horisontal)
 			{
-				// если не задано направление, то останавливаем движение
-				if (currentDirection.Horisontal == DirectionHorisontal.None &&
-					currentDirection.Vertical == DirectionVertical.None)
-				{
-					active = false;
-					return;
-				}
+				case DirectionHorisontal.Left:
+					dX -= speed;
+					break;
 
-				float dX = 0;
-				float dY = 0;
-				float delta = (float)(speed * msg.QuantTime / 1000);
-
-				// смещение по горизонтали
-				switch(currentDirection.Horisontal)
-				{
-					case DirectionHorisontal.Left:
-						dX -= delta;
-						break;
-
-					case DirectionHorisontal.Right:
-						dX = delta;
-						break;
-				}
-				// смещение по вертикали
-				switch (currentDirection.Vertical)
-				{
-					case DirectionVertical.Up:
-						dY -= delta;
-						break;
-
-					case DirectionVertical.Down:
-						dY = delta;
-						break;
-				}
-
-				body.AppendCoords(dX, dY);	
+				case DirectionHorisontal.Right:
+					dX = speed;
+					break;
 			}
-		}
+			// смещение по вертикали
+			switch (currentDirection.Vertical)
+			{
+				case DirectionVertical.Up:
+					dY -= speed;
+					break;
 
-		private void Handler_StartMoveGamer(StartMoveGamer msg)
-		{
-			currentDirection = msg.Direction;
-			active = true;
+				case DirectionVertical.Down:
+					dY = speed;
+					break;
+			}
+			body.Body.SetLinearVelocity(new Vec2(dX, dY));
 		}
 	}
 }

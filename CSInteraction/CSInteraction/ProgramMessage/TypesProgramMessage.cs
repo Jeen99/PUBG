@@ -28,6 +28,25 @@ namespace CSInteraction.ProgramMessage
 		BodyState,
 		GameObjectState,
 		RoomState,
-		LoadedBattleForm
+		LoadedBattleForm,
+		GameObjectDelete,
+		TryPickUp,
+		AddWeapon,
+		StartReloadWeapon,
+		EndRelaodWeapon,
+		MakeReloadWeapon,
+		ChoiceWeapon,
+		TimeQuantPassed,
+		ChangedCurrentWeapon,
+		MakeShot,
+		GotDamage,
+		MakedShot,
+		ChangedValueHP,
+		HappenedDeath,
+		CurrentWeaponState,
+		MagazinState,
+		HealthyState,
+		CollectorState
+
 	}
 }

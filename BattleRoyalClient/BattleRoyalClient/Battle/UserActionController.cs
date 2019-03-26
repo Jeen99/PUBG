@@ -31,7 +31,6 @@ namespace BattleRoyalClient
 				case Key.Right:
 					direction.Horisontal = DirectionHorisontal.Right;
 					break;
-
 				case Key.Up:
 					direction.Vertical = DirectionVertical.Up;
 					break;

@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Timers;
 using CSInteraction.ProgramMessage;
 using CSInteraction.Common;
+using Box2DX.Common;
+using Box2DX.Collision;
+using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
@@ -19,7 +22,7 @@ namespace BattleRoayleServer
         public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(50)
+			timerNewIteration = new Timer(70)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
@@ -87,16 +90,39 @@ namespace BattleRoayleServer
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
 			quantTimer.Tick();
+			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
+
 			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
-			foreach (var gameObject in roomContext.GameObjects)
+			for (Body list = roomContext.Field.GetBodyList(); list != null; list = list.GetNext())
 			{
-				if (!gameObject.Value.Destroyed)
+				if (list.GetUserData() != null)
 				{
-					gameObject.Value.Process(msg);
+					SolidBody solidBody = (SolidBody)list.GetUserData();
+					if (!solidBody.Parent.Destroyed)
+					{
+						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
+						{
+							solidBody.BodyMove();
+						}
+						//запускаем  обработку всех событий на этом объекте
+						solidBody.Parent.Update(msg);
+					}
+					else
+					{
+						GameObject deleted;
+						roomContext.GameObjects.TryRemove(solidBody.Parent.ID,out deleted);
+					} 
 				}
-				else roomContext.RemoveGameObject(gameObject.Value);
 			}
-        }
+			//удаляем игровые объекты с карты
+			foreach (var item in roomContext.NeedDelete)
+			{
+				roomContext.Field.DestroyBody(item.Body);
+			}
+			roomContext.NeedDelete.Clear();
+
+
+		}
 
         public void EndGame()
         {

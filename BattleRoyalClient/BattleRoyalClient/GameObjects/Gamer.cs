@@ -17,6 +17,7 @@ namespace BattleRoyalClient
 			set { shape = value; }
 		}
 		public PointF Location { get => shape.Location; set => shape.Location = value; }
+		public PointF OldLocation { get; set; }
 		public TypesGameObject Type { get; } = TypesGameObject.Player;
 
 		public Gamer(RectangleF shape) 

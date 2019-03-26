@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Collections.Specialized;
+using System.Collections.Concurrent;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
 
@@ -23,25 +23,28 @@ namespace BattleRoayleServer
 				return retID;
 			}
 		}
+
+		public IGameModel Model { get; private set; }
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
-		private Queue<IComponentMsg> messageQueue;
+		private Queue<IMessage> messageQueue;
 		public ulong ID { get; private set; }
-		public IList<Component> Components { get; protected set; }
+		protected ConcurrentDictionary<Type, Component> components;
 
-		public GameObject()
+		public GameObject(IGameModel model)
 		{
 			//иницализация всех полей
 			ID = GetID();
-			messageQueue = new Queue<IComponentMsg>();
+			messageQueue = new Queue<IMessage>();
+			Model = model;
 			//коллекцию компонентов каждый объект реализует сам
 		}
 
 		/// <summary>
-		/// Вызывается на каждое новое добавленный новый элемент колекции
+		/// Обновляет состоняие объекта исходя на основе сообщений пришедших данному объекту
 		/// </summary>
-		public virtual void Process(TimeQuantPassed quantPassed)
+		public virtual void Update(TimeQuantPassed quantPassed = null)
 		{
 			if (Destroyed) return;
 			else
@@ -49,14 +52,17 @@ namespace BattleRoayleServer
 				lock (sinchWorkWithComponent)
 				{
 					//добавляем сообщение о прохождении кванта в конец очереди
-					messageQueue.Enqueue(quantPassed);
+					if (quantPassed != null)
+					{
+						messageQueue.Enqueue(quantPassed);
+					}
 					//рассылваем сообщение всем объектам
 					while (messageQueue.Count > 0)
 					{
-						IComponentMsg msg = messageQueue.Dequeue();
-						foreach (Component component in Components)
+						IMessage msg = messageQueue.Dequeue();
+						foreach (var component in components)
 						{
-							component.ProcessMsg(msg);
+							component.Value.UpdateComponent(msg);
 						}
 					}
 				}
@@ -70,24 +76,23 @@ namespace BattleRoayleServer
 		/// </summary>
 		public IMessage State {
 			get
-			{
-				
+			{	
 				lock (sinchWorkWithComponent)
 				{				
 					var states = new List<IMessage>();
 					if (Destroyed) return null;
 					else
 					{
-						foreach (var component in Components)
+						foreach (var component in components)
 						{
-							var state = component.State;
+							var state = component.Value.State;
 							if (state != null)
 							{
 								states.Add(state);
 							}
 						}
 						return new GameObjectState(ID, Type, states);
-					};
+					}
 				}
 			}
 		}
@@ -101,7 +106,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Добавляет сообщение в очередь обработки сообщений
 		/// </summary>
-		public void SendMessage(IComponentMsg msg)
+		public void SendMessage(IMessage msg)
         {
 			messageQueue.Enqueue(msg);
         }
@@ -118,6 +123,12 @@ namespace BattleRoayleServer
         /// Возвращает true, если объект уничтожен
         /// </summary>
         public bool Destroyed { get; protected set; }
-       
+
+		public Component GetComponent(Type type)
+		{
+			Component component = null;
+			components.TryGetValue(type, out component);
+			return component;
+		}
 	}
 }

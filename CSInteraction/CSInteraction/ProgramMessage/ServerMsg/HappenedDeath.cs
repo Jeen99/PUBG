@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace CSInteraction.ProgramMessage
 {
-	[Serializable]
-	public class StopMove : IMessage
+	public class HappenedDeath : IMessage
 	{
-		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.StopMove;
+		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.HappenedDeath;
+
 	}
 }
