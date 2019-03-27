@@ -103,13 +103,11 @@ namespace BattleRoayleServer
 					SolidBody solidBody = (SolidBody)list.GetUserData();
 					if (!solidBody.Parent.Destroyed)
 					{
-						//передвигаем все нестатические объекты
 						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
 						{
-							solidBody.BodyMove();
+							//запускаем  обработку всех событий на этом объекте
+							solidBody.Parent.Update(msg);
 						}
-						//запускаем  обработку всех событий на этом объекте
-						solidBody.Parent.Update(msg);
 					}
 					else
 					{
