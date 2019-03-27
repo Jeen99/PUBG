@@ -6,12 +6,12 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public abstract class Component
-    {
+	public abstract class Component : IComponent
+	{
         /// <summary>
         /// ссылка на хранилище всех данных об игре
         /// </summary>
-		public GameObject Parent { get; private set; }
+		public GameObject Parent { get; protected set; }
 
 		protected Component(GameObject parent)
 		{
@@ -29,7 +29,10 @@ namespace BattleRoayleServer
         /// <param name="msg"></param>
         public abstract void UpdateComponent(IMessage msg);
 
-		public abstract void Dispose();
+		public virtual void Dispose()
+		{
+			return;
+		}
         
     }
 }

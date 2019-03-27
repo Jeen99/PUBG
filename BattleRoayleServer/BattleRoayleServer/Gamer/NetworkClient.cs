@@ -11,15 +11,18 @@ namespace BattleRoayleServer
 	{
 		private IPlayer gamerRoomLogic;
 		public event GamerIsLoaded Event_GamerIsLoaded;
+		public event NetworkClientEndWork EventNetworkClientEndWork;
+
 		public string Nick { get; private set; }
 
 		public ServerClient Gamer { get; private set; }
 
 		public string Password { get; private set; }
 
-		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password, byte id)
+		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password)
 		{
 			this.gamerRoomLogic = gamerRoomLogic;
+			this.gamerRoomLogic.EventPlayerDeleted += GamerRoomLogic_EventPlayerDeleted;
 			Nick = nick;
 			Gamer = gamer;
 			Gamer.Controler = this;
@@ -27,6 +30,11 @@ namespace BattleRoayleServer
 			//посылаем сообщение о том, что игрок добавлен в игровую комнату
 			gamer.SendMessage(new AddInBattle(gamerRoomLogic.ID));
 
+		}
+
+		private void GamerRoomLogic_EventPlayerDeleted(IPlayer player)
+		{
+			EventNetworkClientEndWork?.Invoke(this);
 		}
 
 		public void HanlderNewMessage()
@@ -60,7 +68,9 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
-			//ничего не делаем;
+			//отправляем игроку сообщение о переходе в окно аккаунта
+			//переходим в окно аккаунта
+			new AccountController(Gamer, Nick, Password);
 		}
 	}
 }

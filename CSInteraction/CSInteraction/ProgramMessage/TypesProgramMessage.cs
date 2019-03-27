@@ -23,13 +23,12 @@ namespace CSInteraction.ProgramMessage
 		AddInBattle,
 		LoadedQueueForm,
 		GoTo,
-		StopMove,
 		PlayerMoved,
 		BodyState,
 		GameObjectState,
 		RoomState,
 		LoadedBattleForm,
-		GameObjectDelete,
+		DeleteInMap,
 		TryPickUp,
 		AddWeapon,
 		StartReloadWeapon,
@@ -42,11 +41,11 @@ namespace CSInteraction.ProgramMessage
 		GotDamage,
 		MakedShot,
 		ChangedValueHP,
-		HappenedDeath,
 		CurrentWeaponState,
 		MagazinState,
 		HealthyState,
-		CollectorState
+		CollectorState,
+		GameObjectDestroy
 
 	}
 }

@@ -21,11 +21,10 @@ namespace BattleRoayleServer
 
         public Stone(IGameModel roomContext, PointF location, Size size):base(roomContext)
 		{
-			components = new ConcurrentDictionary<Type, Component>();
 			var body = new SolidBody(this, new RectangleF(location, size), restetution,
 				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Box,
 				(ushort)CollideCategory.Player);
-			components.AddOrUpdate(body.GetType(), body, (k, v) => { return v; });
+			Components.Add(body);
 		}
 	}
 }

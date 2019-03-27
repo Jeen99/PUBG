@@ -19,7 +19,10 @@ namespace BattleRoayleServer
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
 
-        public RoyalRoomLogic(int GamersInRoom)
+		public event RoomLogicEndWork EventRoomLogicEndWork;
+
+
+		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
 			timerNewIteration = new Timer(70)
@@ -100,6 +103,7 @@ namespace BattleRoayleServer
 					SolidBody solidBody = (SolidBody)list.GetUserData();
 					if (!solidBody.Parent.Destroyed)
 					{
+						//передвигаем все нестатические объекты
 						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
 						{
 							solidBody.BodyMove();
@@ -109,19 +113,21 @@ namespace BattleRoayleServer
 					}
 					else
 					{
-						GameObject deleted;
-						roomContext.GameObjects.TryRemove(solidBody.Parent.ID,out deleted);
+						
+						roomContext.GameObjects.Remove(solidBody.Parent.ID);
+						if (solidBody.Parent is Gamer)
+						{
+							roomContext.Players.Remove((IPlayer)solidBody.Parent);
+							if (roomContext.Players.Count <= 0)
+							{
+								timerNewIteration.Stop();
+								EventRoomLogicEndWork?.Invoke(this);
+							}
+						}
 					} 
 				}
 			}
-			//удаляем игровые объекты с карты
-			foreach (var item in roomContext.NeedDelete)
-			{
-				roomContext.Field.DestroyBody(item.Body);
-			}
-			roomContext.NeedDelete.Clear();
-
-
+			
 		}
 
         public void EndGame()
@@ -141,8 +147,9 @@ namespace BattleRoayleServer
 
         public void Dispose()
         {
-			timerNewIteration.Close();
+			timerNewIteration.Dispose();
 			//осовобождение ресурсво модели
+			roomContext.Dispose();
 		}
 
 	}

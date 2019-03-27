@@ -23,9 +23,10 @@ namespace BattleRoayleServer
 			IRoom room = new RoyalRoom(gamers);
 			rooms.Add(room);
 			room.StartRoom();
+			room.EventRoomEndWork += DeliteRoom;
         }
 
-        public void DeliteRoom(IRoom room)
+		public void DeliteRoom(IRoom room)
         {		
 			if(rooms.Remove(room))
 			{

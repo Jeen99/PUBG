@@ -126,7 +126,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			throw new NotImplementedException();
+			reloadMagazin.Dispose();
 		}
 
 		public override void UpdateComponent(IMessage msg)

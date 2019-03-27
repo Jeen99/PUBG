@@ -15,18 +15,15 @@ using Box2DX.Dynamics;
 namespace BattleRoayleServer
 {
     public class RoyalGameModel : IGameModel
-    {
+	{
 		/// <summary>
 		///ширина одной стороны игровой карты 
 		/// </summary>
 		private const float lengthOfSide = 500;
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
-        public ConcurrentDictionary<ulong,GameObject> GameObjects { get; private set; }
-		/// <summary>
-		/// Объекты которые нужно удалить с карты
-		/// </summary>
-		public List<SolidBody> NeedDelete { get; } = new List<SolidBody>();
+        public Dictionary<ulong,GameObject> GameObjects { get; private set; }
+		
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
@@ -44,17 +41,17 @@ namespace BattleRoayleServer
 		{
 			//скрипт создания игровых объектов
 			Stone stone = new Stone(this, new PointF(10, 10), new Size(14,14));
-			GameObjects.AddOrUpdate(stone.ID, stone,(k,v)=> { return v; });
+			GameObjects.Add(stone.ID, stone);
 			stone = new Stone(this, new PointF(30, 28), new Size(12, 12));
-			GameObjects.AddOrUpdate(stone.ID, stone, (k, v) => { return v; });
+			GameObjects.Add(stone.ID, stone);
 			stone = new Stone(this, new PointF(78, 30), new Size(15, 15));
-			GameObjects.AddOrUpdate(stone.ID, stone, (k, v) => { return v; });
+			GameObjects.Add(stone.ID, stone);
 			Box box = new Box(this, new PointF(40, 100), new Size(12, 12));
-			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
+			GameObjects.Add(box.ID, box);
 			box = new Box(this, new PointF(150, 10), new Size(12, 12));
-			GameObjects.AddOrUpdate(box.ID, box, (k, v) => { return v; });
+			GameObjects.Add(box.ID, box);
 			Gun gun = new Gun(new PointF(50,70),this);
-			GameObjects.AddOrUpdate(gun.ID, gun, (k, v) => { return v; });
+			GameObjects.Add(gun.ID, gun);
 		}
 
 		/// <summary>
@@ -67,7 +64,7 @@ namespace BattleRoayleServer
 				//создаем игрока
 				Gamer gamer = new Gamer(CreatePlayerLocation(i), this);
 				Players.Add(gamer);
-				GameObjects.AddOrUpdate(gamer.ID,gamer, (k, v) => { return v; });
+				GameObjects.Add(gamer.ID,gamer);
 			}
 		}
 		private PointF CreatePlayerLocation(int index)
@@ -86,7 +83,7 @@ namespace BattleRoayleServer
 		{
 			//инициализируем полей
 			Players = new List<IPlayer>();
-			GameObjects = new ConcurrentDictionary<ulong, GameObject>();
+			GameObjects = new Dictionary<ulong, GameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -160,7 +157,26 @@ namespace BattleRoayleServer
 
 			frame = Field.CreateBody(bDefRight);
 			frame.CreateShape(pDefRight);
-		}		
+		}
 
-    }
+		public void AddGameObject(GameObject gameObject)
+		{
+			GameObjects.Add(gameObject.ID, gameObject);
+			//посылваем сообщение об добавлении нового объекта
+			//отправляем просто состояние объекта(не вижу смысла создавать специальное сообщение для этого)
+			HappenedEvents.Enqueue(gameObject.State);
+		}
+
+		public void RemoveGameObject(GameObject gameObject)
+		{
+			GameObjects.Remove(gameObject.ID);
+		}
+
+		public void Dispose()
+		{
+			GameObjects.Clear();
+			Field.Dispose();
+			HappenedEvents.Clear();
+		}
+	}
 }
