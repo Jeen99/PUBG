@@ -150,7 +150,7 @@ namespace CSInteraction.Server
             }
             catch (Exception)
             {
-                EventEndSession(this);
+                EventEndSession?.Invoke(this);
                 return 0;
             }
         }
@@ -162,7 +162,7 @@ namespace CSInteraction.Server
             ThreadOfHandlerMsg = null;
             Client.Close();
             //уведомляем о завершении соединения
-            EventEndSession(this);
+            EventEndSession?.Invoke(this);
         }
 
         //обрабатывает программные сообщения

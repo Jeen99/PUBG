@@ -18,7 +18,7 @@ namespace BattleRoayleServer
         private IGameModel roomContext;
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
-
+		private const int minValueGamerInBattle = 0;
 		public event RoomLogicEndWork EventRoomLogicEndWork;
 
 
@@ -110,33 +110,36 @@ namespace BattleRoayleServer
 						}
 					}
 					else
-					{
-						
+					{				
 						roomContext.GameObjects.Remove(solidBody.Parent.ID);
 						if (solidBody.Parent is Gamer)
 						{
-							roomContext.Players.Remove((IPlayer)solidBody.Parent);
-							if (roomContext.Players.Count <= 0)
-							{
-								timerNewIteration.Stop();
-								EventRoomLogicEndWork?.Invoke(this);
-							}
+							RemovePlayer((IPlayer)solidBody.Parent);
 						}
 					} 
 				}
+			}			
+		}
+		/// <summary>
+		/// Проверяет на условия завершения игры и в случае,
+		/// если игра завершена уведолмяет об этом подписчиков
+		/// </summary>
+		private void CheckEndGamer()
+		{
+			if (roomContext.Players.Count <= minValueGamerInBattle)
+			{
+				timerNewIteration.Stop();
+				EventRoomLogicEndWork?.Invoke(this);
 			}
-			
 		}
 
-        public void EndGame()
+        public void RemovePlayer(IPlayer player)
         {
-			timerNewIteration.Stop();
+			if (roomContext.Players.Remove(player))
+			{
+				CheckEndGamer();
+			}
 		}
-
-        public void RemovePlayer()
-        {
-            throw new NotImplementedException();
-        }
 
         public void Start()
         {
