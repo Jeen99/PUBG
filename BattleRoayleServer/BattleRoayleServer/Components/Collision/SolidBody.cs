@@ -83,7 +83,7 @@ namespace BattleRoayleServer
 			ushort categoryBits, ushort maskBits)
 		{
 			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Right, shape.Bottom);
+			bDef.Position.Set(shape.Left, shape.Top);
 			bDef.Angle = 0;
 
 			PolygonDef pDef = new PolygonDef();
@@ -128,7 +128,7 @@ namespace BattleRoayleServer
 			ushort categoryBits, ushort maskBits)
 		{
 			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Right, shape.Bottom);
+			bDef.Position.Set(shape.Left, shape.Top);
 			bDef.Angle = 0;
 
 			PolygonDef pDef = new PolygonDef();
