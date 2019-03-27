@@ -76,11 +76,11 @@ namespace BattleRoayleServer
 			switch (currentDirection.Vertical)
 			{
 				case DirectionVertical.Up:
-					dY -= speed;
+					dY = speed;
 					break;
 
 				case DirectionVertical.Down:
-					dY = speed;
+					dY -= speed;
 					break;
 			}
 			body.Body.SetLinearVelocity(new Vec2(dX, dY));
