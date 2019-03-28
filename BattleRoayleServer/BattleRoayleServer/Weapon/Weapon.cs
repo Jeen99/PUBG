@@ -8,13 +8,13 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public abstract class Weapon : GameObject
+	public abstract class Weapon : IGameObject
 	{
 		public Weapon(IGameModel model) : base(model)
 		{
 
 		}
-		public GameObject Holder { get; set; }
+		public IGameObject Holder { get; set; }
 
 		public virtual TypesWeapon TypeWeapon { get; }
 	}

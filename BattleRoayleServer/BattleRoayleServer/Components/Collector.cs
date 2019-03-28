@@ -26,7 +26,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private SolidBody body;
 
-		public Collector(GameObject parent, SolidBody body) : base(parent)
+		public Collector(IGameObject parent, SolidBody body) : base(parent)
 		{
 			modifiers = new Modifier[5];
 			weapons = new Weapon[4];

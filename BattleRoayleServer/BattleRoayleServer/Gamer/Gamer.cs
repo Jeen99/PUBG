@@ -9,7 +9,7 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public class Gamer : GameObject, IPlayer
+	public class Gamer : IGameObject, IPlayer
 	{
 		private const float restetution = 0.2f;
 		private const float friction = 0.3f;

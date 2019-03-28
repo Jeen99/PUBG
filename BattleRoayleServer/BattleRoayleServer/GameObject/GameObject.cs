@@ -8,7 +8,7 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public abstract class GameObject
+	public abstract class GameObject : IGameObject
 	{
 		//получение id - не должно переопределясться
 		private object sinchGetId = new object();

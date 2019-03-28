@@ -22,7 +22,7 @@ namespace BattleRoayleServer
 
 		public TypesWeapon TypeMagazin { get; private set; }
 
-		public Magazin(GameObject parent, TypesWeapon typeWeapon, float duration_BetweenShots,
+		public Magazin(IGameObject parent, TypesWeapon typeWeapon, float duration_BetweenShots,
 			float duration_Magazin) : base(parent)
 		{
 			TypeMagazin = typeWeapon;

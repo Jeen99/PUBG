@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	public class LootBox : GameObject
+	public class LootBox : IGameObject
 	{
 
 		private const float restetution = 0;

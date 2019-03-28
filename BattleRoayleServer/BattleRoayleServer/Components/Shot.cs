@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 
 		private Magazin magazin;
 
-		public Shot(GameObject parent, Magazin magazin) : base(parent)
+		public Shot(IGameObject parent, Magazin magazin) : base(parent)
 		{
 			this.magazin = magazin;
 		}

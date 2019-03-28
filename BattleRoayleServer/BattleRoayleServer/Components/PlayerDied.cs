@@ -9,7 +9,7 @@ namespace BattleRoayleServer
 {
 	public class PlayerDied : Component
 	{
-		public PlayerDied(GameObject parent) : base(parent)
+		public PlayerDied(IGameObject parent) : base(parent)
 		{
 		}
 

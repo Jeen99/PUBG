@@ -11,9 +11,9 @@ namespace BattleRoayleServer
         /// <summary>
         /// ссылка на хранилище всех данных об игре
         /// </summary>
-		public GameObject Parent { get; protected set; }
+		public IGameObject Parent { get; protected set; }
 
-		protected Component(GameObject parent)
+		protected Component(IGameObject parent)
 		{
 			Parent = parent;
 		}

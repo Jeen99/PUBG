@@ -15,11 +15,11 @@ namespace BattleRoayleServer
     public interface IGameModel
     {
         IList<IPlayer> Players { get;}
-		Dictionary<ulong, GameObject> GameObjects { get; }
+		Dictionary<ulong, IGameObject> GameObjects { get; }
         World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
-		void AddGameObject(GameObject gameObject);
-		void RemoveGameObject(GameObject gameObject);
+		void AddGameObject(IGameObject gameObject);
+		void RemoveGameObject(IGameObject gameObject);
 		void Dispose();
 	}
 }

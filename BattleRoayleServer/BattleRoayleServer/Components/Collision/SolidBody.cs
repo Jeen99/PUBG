@@ -21,7 +21,7 @@ namespace BattleRoayleServer
 		public List<SolidBody> CoveredObjects { get; } = new List<SolidBody>();
 	
 
-		public SolidBody(GameObject parent,  RectangleF shape, float restetution, float friction,
+		public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
 			float density, TypesBody typesBody, TypesSolid typesSolid,
 			ushort categoryBits, ushort maskBits)
 			: base(parent)

@@ -21,7 +21,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private SolidBody body;
 
-		public Movement(GameObject parent, SolidBody body, float speed) : base(parent)
+		public Movement(IGameObject parent, SolidBody body, float speed) : base(parent)
 		{
 			this.speed = speed;
 			this.body = body;

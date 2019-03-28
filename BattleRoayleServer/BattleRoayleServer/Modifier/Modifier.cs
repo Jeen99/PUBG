@@ -6,11 +6,11 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public abstract class Modifier : GameObject
+	public abstract class Modifier : IGameObject
 	{
 		public Modifier(IGameModel model) : base(model)
 		{
 		}
-		public GameObject Holder { get; set; }
+		public IGameObject Holder { get; set; }
     }
 }

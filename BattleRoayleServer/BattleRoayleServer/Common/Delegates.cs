@@ -34,7 +34,7 @@ namespace BattleRoayleServer
 	/// <param name=""></param>
 	public delegate void NetworkClientEndWork(INetworkClient networkClient);
 
-	public delegate void GameObjectDeleted(GameObject gameObject);
+	public delegate void GameObjectDeleted(IGameObject gameObject);
 
 	public delegate void NetorkClientDisconnect(INetworkClient client);
 

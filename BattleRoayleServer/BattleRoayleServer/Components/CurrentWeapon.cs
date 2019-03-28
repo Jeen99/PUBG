@@ -15,7 +15,7 @@ namespace BattleRoayleServer
 
 		public Weapon GetCurrentWeapon { get => currentWeapon; }
 
-		public CurrentWeapon(GameObject parent, Collector collector) : base(parent)
+		public CurrentWeapon(IGameObject parent, Collector collector) : base(parent)
 		{
 			inventory = collector;
 			currentWeapon = null;

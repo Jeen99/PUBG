@@ -9,7 +9,7 @@ using System.Collections.Concurrent;
 
 namespace BattleRoayleServer
 {
-	class Stone : GameObject
+	class Stone : IGameObject
 	{
 		private const float restetution = 0.2f;
 		private const float friction = 0.1f;

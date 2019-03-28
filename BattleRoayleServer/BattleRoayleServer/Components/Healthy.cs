@@ -9,7 +9,7 @@ namespace BattleRoayleServer
 {
 	public class Healthy : Component
 	{
-		public Healthy(GameObject parent) : base(parent)
+		public Healthy(IGameObject parent) : base(parent)
 		{
 			HP = 100;
 		}

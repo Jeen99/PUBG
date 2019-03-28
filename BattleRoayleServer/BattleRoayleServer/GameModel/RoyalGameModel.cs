@@ -22,7 +22,7 @@ namespace BattleRoayleServer
 		private const float lengthOfSide = 500;
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
-        public Dictionary<ulong,GameObject> GameObjects { get; private set; }
+        public Dictionary<ulong,IGameObject> GameObjects { get; private set; }
 		
         public World Field { get; private set; }
 		/// <summary>
@@ -83,7 +83,7 @@ namespace BattleRoayleServer
 		{
 			//инициализируем полей
 			Players = new List<IPlayer>();
-			GameObjects = new Dictionary<ulong, GameObject>();
+			GameObjects = new Dictionary<ulong, IGameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -159,7 +159,7 @@ namespace BattleRoayleServer
 			frame.CreateShape(pDefRight);
 		}
 
-		public void AddGameObject(GameObject gameObject)
+		public void AddGameObject(IGameObject gameObject)
 		{
 			GameObjects.Add(gameObject.ID, gameObject);
 			//посылваем сообщение об добавлении нового объекта
@@ -167,7 +167,7 @@ namespace BattleRoayleServer
 			HappenedEvents.Enqueue(gameObject.State);
 		}
 
-		public void RemoveGameObject(GameObject gameObject)
+		public void RemoveGameObject(IGameObject gameObject)
 		{
 			GameObjects.Remove(gameObject.ID);
 		}
