@@ -25,6 +25,12 @@ namespace BattleRoyalClient
 		{
 			this.gameObject = gameObject;
 
+			double x = gameObject.Location.X;
+			double y = gameObject.Location.Y;
+			double z = (double)gameObject.Type;
+
+			this.Position = new Vector3D(x, y, z);
+
 			double angle = gameObject.Angle;
 
 			float axis_x = 0;
@@ -74,15 +80,6 @@ namespace BattleRoyalClient
 			translateTransform.OffsetZ = v3.Z;
 		}
 
-
-		private void SetPosition(GameObject gameObject)
-		{
-			double x = gameObject.Location.X;
-			double y = gameObject.Location.Y;
-			double z = (double)gameObject.Type;
-
-			this.Position = new Vector3D(x, y, z);
-		}
 
 		public void UpdatePosition()
 		{
