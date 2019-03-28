@@ -9,27 +9,34 @@ namespace BattleRoayleServer
 {
 	public class NetworkClient : INetworkClient, IController
 	{
-		private IPlayer gamerRoomLogic;
+		public IPlayer Player { get; private set; }
 		public event GamerIsLoaded Event_GamerIsLoaded;
 		public event NetworkClientEndWork EventNetworkClientEndWork;
+		public event NetorkClientDisconnect EventNetorkClientDisconnect;
 
 		public string Nick { get; private set; }
 
-		public ServerClient Gamer { get; private set; }
+		public ServerClient Client { get; private set; }
 
 		public string Password { get; private set; }
 
 		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password)
 		{
-			this.gamerRoomLogic = gamerRoomLogic;
-			this.gamerRoomLogic.EventPlayerDeleted += GamerRoomLogic_EventPlayerDeleted;
+			this.Player = gamerRoomLogic;
+			this.Player.EventPlayerDeleted += GamerRoomLogic_EventPlayerDeleted;
 			Nick = nick;
-			Gamer = gamer;
-			Gamer.Controler = this;
+			Client = gamer;
+			Client.Controler = this;
+			Client.EventEndSession += Client_EventEndSession;
 			Password = password;
 			//посылаем сообщение о том, что игрок добавлен в игровую комнату
 			gamer.SendMessage(new AddInBattle(gamerRoomLogic.ID));
 
+		}
+		//игрок вышел из игры до завершения игры
+		private void Client_EventEndSession(ServerClient Client)
+		{
+			EventNetorkClientDisconnect?.Invoke(this);
 		}
 
 		private void GamerRoomLogic_EventPlayerDeleted(IPlayer player)
@@ -39,14 +46,14 @@ namespace BattleRoayleServer
 
 		public void HanlderNewMessage()
 		{
-			IMessage msg = Gamer.ReceivedMsg.Dequeue();
+			IMessage msg = Client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.LoadedBattleForm:
 					Handler_LoadedBattleForm();
 					break;
 				default:
-					gamerRoomLogic.PerformAction(msg);
+					Player.PerformAction(msg);
 					break;
 			}
 					
@@ -68,9 +75,10 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
+			Client.EventEndSession -= Client_EventEndSession;
 			//отправляем игроку сообщение о переходе в окно аккаунта
 			//переходим в окно аккаунта
-			new AccountController(Gamer, Nick, Password);
+			new AccountController(Client, Nick, Password);
 		}
 	}
 }

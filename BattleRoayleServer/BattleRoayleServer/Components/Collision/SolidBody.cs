@@ -83,7 +83,7 @@ namespace BattleRoayleServer
 			ushort categoryBits, ushort maskBits)
 		{
 			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Right, shape.Bottom);
+			bDef.Position.Set(shape.Left, shape.Top);
 			bDef.Angle = 0;
 
 			PolygonDef pDef = new PolygonDef();
@@ -128,7 +128,7 @@ namespace BattleRoayleServer
 			ushort categoryBits, ushort maskBits)
 		{
 			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Right, shape.Bottom);
+			bDef.Position.Set(shape.Left, shape.Top);
 			bDef.Angle = 0;
 
 			PolygonDef pDef = new PolygonDef();
@@ -162,14 +162,18 @@ namespace BattleRoayleServer
 		}
 		private void Handler_TimeQuantPassed()
 		{
-			
+			Vec2 position = Body.GetPosition();
+			if (position.X != 0 && position.Y != 0)
+			{
+				shape.Location = new PointF(position.X, position.Y);
+				Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
+			}
 		}
 
 		public void BodyMove()
 		{
-			Vec2 position = Body.GetPosition();
-			shape.Location = new PointF(position.X, position.Y);
-			Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
+			
+			
 		}
 		
 		public override void Dispose()

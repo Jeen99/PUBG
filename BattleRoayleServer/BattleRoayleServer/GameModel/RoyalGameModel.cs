@@ -100,7 +100,7 @@ namespace BattleRoayleServer
 			CreatePlayers(gamersInRoom);
 
 		}
-		public void CreateFrame()
+		private void CreateFrame()
 		{
 			//bottom
 			BodyDef bDefBottom = new BodyDef();

@@ -32,6 +32,7 @@ namespace BattleRoayleServer
 			{
 				room.Dispose();
 			}
+			//добавить запись в лог
         }
     }
 }

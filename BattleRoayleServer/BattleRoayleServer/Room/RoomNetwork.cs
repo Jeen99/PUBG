@@ -9,6 +9,7 @@ namespace BattleRoayleServer
 {
     public class RoomNetwork:INetwork
     {
+		private object AccessSinchClients = new object();
         /// <summary>
         /// Ссылка на игровую логику
         /// </summary>
@@ -43,9 +44,12 @@ namespace BattleRoayleServer
 		private void HandlerTotalSinch(object sender, ElapsedEventArgs e)
 		{
 			IMessage stateRoom = roomLogic.RoomState;
-			foreach (INetworkClient client in Clients)
+			lock (AccessSinchClients)
 			{
-				client.Gamer.SendMessage(stateRoom);
+				foreach (INetworkClient client in Clients)
+				{
+					client.Client.SendMessage(stateRoom);
+				}
 			}
 		}
 
@@ -58,7 +62,7 @@ namespace BattleRoayleServer
 			IMessage message = roomLogic.HappenedEvents.Dequeue();
 			foreach (INetworkClient client in Clients)
 			{
-				client.Gamer.SendMessage(message);
+				client.Client.SendMessage(message);
 			}
 		}
 
@@ -70,7 +74,14 @@ namespace BattleRoayleServer
 
         public void Dispose()
         {
-			timerTotalSinch.Dispose();
+			lock (AccessSinchClients)
+			{
+				timerTotalSinch.Dispose();
+				foreach (var player in Clients)
+				{
+					player.Dispose();
+				}
+			}
         }
 
 		/// <summary>
@@ -78,19 +89,35 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void CreateClients(IList<QueueGamer> gamers)
 		{
-			for(int i = 0; i < roomLogic.Players.Count; i++)
+			lock (AccessSinchClients)
 			{
-				var client = new NetworkClient(roomLogic.Players[i], gamers[i].Client,
-				   gamers[i].NickName, gamers[i].Password);
-				client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
-				client.EventNetworkClientEndWork += Client_EventNetworkClientEndWork;
-				Clients.Add(client);
+				for (int i = 0; i < roomLogic.Players.Count; i++)
+				{
+					var client = new NetworkClient(roomLogic.Players[i], gamers[i].Client,
+					   gamers[i].NickName, gamers[i].Password);
+					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
+					client.EventNetworkClientEndWork += Client_EventNetworkClientEndWork;
+					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
+					Clients.Add(client);
+				}
 			}
+		}
+
+		private void Client_EventNetorkClientDisconnect(INetworkClient client)
+		{
+			lock (AccessSinchClients)
+			{
+				Clients.Remove(client);			
+			}
+			roomLogic.RemovePlayer(client.Player);
 		}
 
 		private void Client_EventNetworkClientEndWork(INetworkClient networkClient)
 		{
-			Clients.Remove(networkClient);
+			lock (AccessSinchClients)
+			{
+				Clients.Remove(networkClient);
+			}
 			networkClient.Dispose();
 		}
 
@@ -99,7 +126,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
 		{
-			client.Gamer.SendMessage(roomLogic.GetInitializeData());
+			client.Client.SendMessage(roomLogic.GetInitializeData());
 		}
 
 		public void Stop()

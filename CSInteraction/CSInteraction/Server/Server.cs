@@ -68,7 +68,7 @@ namespace CSInteraction.Server
             private void HandlerEndSessionClient(ServerClient client)
             {
                 ConnectedClients.Remove(client);
-                client = null;
+				client.EventEndSession -= HandlerEndSessionClient;
             }
         }
     

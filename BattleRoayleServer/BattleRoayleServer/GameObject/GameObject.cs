@@ -14,6 +14,9 @@ namespace BattleRoayleServer
 		private object sinchGetId = new object();
 		private object sinchWorkWithComponent = new object();
 		private static ulong counterID = 0;
+
+		public event GameObjectDeleted EventGameObjectDeleted;
+
 		private ulong GetID()
 		{
 			lock (sinchGetId)
@@ -114,13 +117,14 @@ namespace BattleRoayleServer
 		/// </summary>
 		public virtual void Dispose()
 		{
+			Destroyed = true;
+			EventGameObjectDeleted?.Invoke(this);
 			foreach (IComponent item in Components)
 			{
 				item.Dispose();
 			}
 			Components.Clear();
 			messageQueue.Clear();
-			Destroyed = true;
 			Model.HappenedEvents.Enqueue(new GameObjectDestroy(ID));
 			Model = null;
 

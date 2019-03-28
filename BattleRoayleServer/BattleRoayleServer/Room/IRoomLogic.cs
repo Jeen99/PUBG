@@ -27,22 +27,19 @@ namespace BattleRoayleServer
 		/// Запускает игровую комнату
 		/// </summary>
 		void Start();
-        /// <summary>
-        /// Закрывает игровую комнату, освобождает все ресурсы
-        /// </summary>
-        void EndGame();
+       
         /// <summary>
         /// Добавляет игрока в игровую комнату
         /// </summary>
         void AddPlayer();
-        /// <summary>
-        /// Удаляет игрока из игровой комнаты
-        /// </summary>
-        void RemovePlayer();
-        /// <summary>
-        /// Особождает ресурсы игровой комнаты
-        /// </summary>
-        void Dispose();
+		/// <summary>
+		/// Удаляет игрока из игровой комнаты
+		/// </summary>
+		void RemovePlayer(IPlayer player);
+		/// <summary>
+		/// Особождает ресурсы игровой комнаты
+		/// </summary>
+		void Dispose();
 		/// <summary>
 		/// Возвращает информацию обо всех объектов в игровой комнате
 		/// </summary>

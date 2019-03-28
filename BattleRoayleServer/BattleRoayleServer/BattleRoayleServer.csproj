@@ -57,7 +57,7 @@
     <Compile Include="Components\Collision\SolidBody.cs" />
     <Compile Include="Components\CurrentWeapon.cs" />
     <Compile Include="Components\Healthy.cs" />
-    <Compile Include="Components\IComponent.cs" />
+    <Compile Include="Components\AbstractComponent\IComponent.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="Components\PlayerDied.cs" />
@@ -71,7 +71,7 @@
     <Compile Include="HandlerException\ILogger.cs" />
     <Compile Include="Modifier\Modifier.cs" />
     <Compile Include="Components\Shot.cs" />
-    <Compile Include="Components\Component.cs" />
+    <Compile Include="Components\AbstractComponent\Component.cs" />
     <Compile Include="Controlers\AccountController.cs" />
     <Compile Include="Controlers\AuthorizationController.cs" />
     <Compile Include="DataBase\AchievementsOfBattle.cs" />
