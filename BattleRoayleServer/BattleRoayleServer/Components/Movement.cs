@@ -8,7 +8,7 @@ using Box2DX.Common;
 
 namespace BattleRoayleServer
 {
-	public class Movement : Component
+	public class Movement : Component, IMovement
 	{
 		private Direction currentDirection;
 	
@@ -19,9 +19,9 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
-		private SolidBody body;
+		private ISolidBody body;
 
-		public Movement(IGameObject parent, SolidBody body, float speed) : base(parent)
+		public Movement(IGameObject parent, ISolidBody body, float speed) : base(parent)
 		{
 			this.speed = speed;
 			this.body = body;

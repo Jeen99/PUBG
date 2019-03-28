@@ -8,14 +8,14 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public class CurrentWeapon : Component
+	public class CurrentWeapon : Component, ICurrentWeapon
 	{
-		private Collector inventory;
+		private ICollector inventory;
 		private Weapon currentWeapon;
 
 		public Weapon GetCurrentWeapon { get => currentWeapon; }
 
-		public CurrentWeapon(IGameObject parent, Collector collector) : base(parent)
+		public CurrentWeapon(IGameObject parent, ICollector collector) : base(parent)
 		{
 			inventory = collector;
 			currentWeapon = null;

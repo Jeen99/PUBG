@@ -10,7 +10,7 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	 class Box:IGameObject
+	 class Box:GameObject
 	{
 		private const float restetution = 0.2f;
 		private const float friction = 0.1f;

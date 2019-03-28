@@ -12,20 +12,25 @@ using Box2DX.Dynamics;
 namespace BattleRoayleServer
 {
 	//отвечает за выстрел
-	public class Shot:Component
+	public class Shot : Component, IShot
 	{
+		private IMagazin magazin;
 
-		private Magazin magazin;
-
-		public Shot(IGameObject parent, Magazin magazin) : base(parent)
+		public Shot(IWeapon parent) : base(parent)
 		{
-			this.magazin = magazin;
+			
+			this.magazin = parent?.Components?.GetComponent<Magazin>();
+			if (magazin == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента Shot", "Не получена сслыка на компонент Magazin");
+				throw new Exception("Ошибка создания компонента Shot");
+			}
+			
 		}
 
 		public override void Dispose()
 		{
 			magazin = null;
-			return;
 		}
 
 		public override void UpdateComponent(IMessage msg)
@@ -40,33 +45,54 @@ namespace BattleRoayleServer
 
 		private void Handler_MakeShot(MakeShot msg)
 		{
-			SolidBody BodyHolder = (SolidBody)(Parent as Weapon).Holder.Components.GetComponent<SolidBody>();
-			if (BodyHolder != null)
+			try
 			{
-				//получаем патрон
-				IBullet bullet = magazin.GetBullet();
-				if (bullet != null)
+				ISolidBody BodyHolder = (Parent as IWeapon).Holder?.Components?.GetComponent<SolidBody>();
+				if (BodyHolder != null)
 				{
-					//отправляем сообщение о совершении выстрела
-					Parent.Model.HappenedEvents.Enqueue(new MakedShot((Parent as Weapon).Holder.ID));
-					//совершаем выстрел
-					var segment = new Segment();
-					Vec2 position = BodyHolder.Body.GetPosition();
-					segment.P1 = position;
-					var sweepVector = VectorMethod.RotateVector(msg.Angle, bullet.Distance);
-					segment.P2 = new Vec2
+					//получаем патрон
+					IBullet bullet = magazin.GetBullet();
+
+					if (bullet != null)
 					{
-						X = position.X + sweepVector.X,
-						Y = position.Y + sweepVector.Y
-					};
-					//получаем только первый встетившийся на пути пули объект
-					Shape[] hits = new Shape[2];
-					BodyHolder.Body.GetWorld().Raycast(segment, hits, 2, true, null);
-					//отправляем ему сообщение о нанесении урона
-					SolidBody attacked = (SolidBody)hits[1].GetBody().GetUserData();
-					var damageMsg = new GotDamage(bullet.Damage);
-					attacked.Parent.SendMessage(damageMsg);
+								
+						Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
+						if (position == null)
+						{
+							Log.AddNewRecord("Ошибка получения позиции игрока");
+							return;
+						}
+					
+						var segment = new Segment();
+						//начальная точка выстрела
+						segment.P1 = position;
+
+						var sweepVector = VectorMethod.RotateVector(msg.Angle, bullet.Distance);
+						//конечная точка выстрела
+						segment.P2 = new Vec2
+						{
+							X = position.X + sweepVector.X,
+							Y = position.Y + sweepVector.Y
+						};
+						//получаем только первый встетившийся на пути пули объект
+						Shape[] hits = new Shape[2];
+
+						BodyHolder?.Body?.GetWorld().Raycast(segment, hits, 2, true, null);
+								
+						//отправляем сообщение о совершении выстрела
+						Parent.Model.HappenedEvents.Enqueue(new MakedShot((Parent as IWeapon).Holder.ID));
+
+						var damageMsg = new GotDamage(bullet.Damage);
+						//отправляем ему сообщение о нанесении урона	
+						ISolidBody attacked = (ISolidBody)hits[1]?.GetBody().GetUserData();
+
+						attacked .Parent?.SendMessage(damageMsg);
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
 			}
 		}
 	}

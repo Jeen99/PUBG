@@ -7,7 +7,7 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public class Healthy : Component
+	public class Healthy : Component, IHealthy
 	{
 		public Healthy(IGameObject parent) : base(parent)
 		{

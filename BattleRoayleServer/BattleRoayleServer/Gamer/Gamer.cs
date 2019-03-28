@@ -9,7 +9,7 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public class Gamer : IGameObject, IPlayer
+	public class Gamer : GameObject, IPlayer
 	{
 		private const float restetution = 0.2f;
 		private const float friction = 0.3f;
@@ -28,7 +28,7 @@ namespace BattleRoayleServer
 			var movement = new Movement(this, body, 40f);
 			Components.Add(movement);
 
-			var collector = new Collector(this, body);
+			var collector = new Collector(this);
 			Components.Add(collector);
 
 			var currentWeapon = new CurrentWeapon(this, collector);
@@ -44,7 +44,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Для упрощения доступа к расположения игрока на карте
 		/// </summary>
-		private SolidBody body;
+		private ISolidBody body;
 
 		public override TypesGameObject Type { get; } = TypesGameObject.Player;
 

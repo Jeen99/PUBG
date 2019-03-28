@@ -7,10 +7,9 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-	static class Handler_StandartExceptions
+	static class Log
 	{
 		private static ILogger logger = new ConsoleLogger();
-
 
 		/// <summary>
 		/// Обрабатывает ошибки потери соединения с клиентом
@@ -28,6 +27,16 @@ namespace BattleRoayleServer
 		public static void Handler_ErrorHandlingClientMsg(string typeControler, string TypeMsg)
 		{
 			logger.AddInLog($"{typeControler} не может обработать {TypeMsg}");
+		}
+
+		public static void AddNewRecord(string record)
+		{
+			logger.AddInLog("Ошибка в: " + DateTime.Now, record);
+		}
+
+		public static void AddNewRecord(string header, string description)
+		{
+			logger.AddInLog("Ошибка в: " + DateTime.Now + " " + header, description);
 		}
 	}
 }

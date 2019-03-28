@@ -16,6 +16,11 @@ namespace BattleRoayleServer
 		protected Component(IGameObject parent)
 		{
 			Parent = parent;
+			if (Parent == null)
+			{
+				Log.AddNewRecord("В конструктор компонента не была передана ссылка на родителя");
+				throw new Exception("В конструктор компонента не была передана ссылка на родителя");
+			}
 		}
 
         public virtual IMessage State

@@ -8,12 +8,12 @@ using System.Timers;
 
 namespace BattleRoayleServer
 {
-	public class Magazin:Component
+	public class Magazin : Component, IMagazin
 	{
 		/// <summary>
 		/// Когда true - осуществляется перезарядка магазина
 		/// </summary>
-		private bool reload;
+		public bool Reload { get; protected set; }
 		private float durationReload_BetweenShots;
 		private float durationReload_Magazin;
 		private int bulletsInMagazin;
@@ -22,7 +22,7 @@ namespace BattleRoayleServer
 
 		public TypesWeapon TypeMagazin { get; private set; }
 
-		public Magazin(IGameObject parent, TypesWeapon typeWeapon, float duration_BetweenShots,
+		public Magazin(IWeapon parent, TypesWeapon typeWeapon, float duration_BetweenShots,
 			float duration_Magazin) : base(parent)
 		{
 			TypeMagazin = typeWeapon;
@@ -36,7 +36,7 @@ namespace BattleRoayleServer
 			{
 				AutoReset = false		
 			};
-			reload = false;
+			Reload = false;
 		}
 
 		public override IMessage State
@@ -49,37 +49,35 @@ namespace BattleRoayleServer
 
 		private void Handler_ReloadBetweenShots(object sender, ElapsedEventArgs e)
 		{
-			reload = false;
+			Reload = false;
 			bulletsInMagazin--;
 		}
 
 		private void Handler_ReloadMagazin(object sender, ElapsedEventArgs e)
 		{
-			reload = false;
+			Reload = false;
 			CreateNewMagazin();
-			if (Parent != null)
-			{
-				Parent.Model.HappenedEvents.Enqueue(new EndReloadWeapon(Parent.ID));
-			}
+			
+			Parent?.Model?.HappenedEvents?.Enqueue(new EndReloadWeapon(Parent.ID));
+			
 		}
 
 		private void Create_ReloadMagazin()
 		{
-			reload = true;
+			Reload = true;
 			reloadMagazin.Interval = (durationReload_Magazin);
 			reloadMagazin.Elapsed -= Handler_ReloadBetweenShots;
 			reloadMagazin.Elapsed -= Handler_ReloadMagazin;
 			reloadMagazin.Elapsed += Handler_ReloadMagazin;
 			reloadMagazin.Start();
-			if (Parent != null)
-			{
-				Parent.Model.HappenedEvents.Enqueue(new StartReloadWeapon(Parent.ID));
-			}
+			
+			Parent?.Model?.HappenedEvents?.Enqueue(new StartReloadWeapon(Parent.ID));
+			
 		}
 
 		private void Create_ReloadBetweenShots()
 		{
-			reload = true;
+			Reload = true;
 			reloadMagazin.Interval = (durationReload_BetweenShots);
 			reloadMagazin.Elapsed -= Handler_ReloadBetweenShots;
 			reloadMagazin.Elapsed -= Handler_ReloadMagazin;
@@ -89,7 +87,7 @@ namespace BattleRoayleServer
 
 		public IBullet GetBullet()
 		{
-			if (!reload)
+			if (!Reload)
 			{
 				if (bulletsInMagazin > 1)
 					Create_ReloadBetweenShots();

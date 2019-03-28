@@ -51,8 +51,16 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\StubMagazin.cs" />
+    <Compile Include="Common\StubPlayer.cs" />
+    <Compile Include="Common\StubSolidBody.cs" />
+    <Compile Include="Common\StubWeapon.cs" />
+    <Compile Include="ComponentsTest\MagazinTest.cs" />
+    <Compile Include="ComponentsTest\ShotTest.cs" />
+    <Compile Include="DictionaryComponentsTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

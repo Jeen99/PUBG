@@ -12,7 +12,7 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	public class Collector : Component
+	public class Collector : Component, ICollector
 	{
 		private Modifier[] modifiers;
 		private Weapon[] weapons;
@@ -24,13 +24,18 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
-		private SolidBody body;
+		private ISolidBody body;
 
-		public Collector(IGameObject parent, SolidBody body) : base(parent)
+		public Collector(IGameObject parent) : base(parent)
 		{
 			modifiers = new Modifier[5];
 			weapons = new Weapon[4];
-			this.body = body;
+			this.body = parent?.Components?.GetComponent<SolidBody>();
+			if (body == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента Сollector", "Не получена сслыка на компонент SolidBody");
+				throw new Exception("Ошибка создания компонента Сollector");
+			}
 		}
 
 		public override IMessage State
@@ -117,35 +122,36 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void PickUpLootBox(SolidBody lootBoxBody)
+		private void PickUpLootBox(ISolidBody lootBoxBody)
 		{
-			//получаем коллекцию
-			Collector collector = (lootBoxBody.Parent.Components.GetComponent<Collector>());
-			//добавляем предметы, которых у нас еще нет
-			for (int i = 0; i < collector.modifiers.Length; i++)
-			{
-				if (this.modifiers[i] == null)
+				//получаем коллекцию
+				Collector collector = (lootBoxBody.Parent.Components.GetComponent<Collector>());
+			
+				//добавляем предметы, которых у нас еще нет
+				for (int i = 0; i < collector.modifiers.Length; i++)
 				{
-					this.modifiers[i] = collector.modifiers[i];
-					//должно быть еще сообщение о добавлении нового модификатора
+					if (this.modifiers[i] == null)
+					{
+						this.modifiers[i] = collector.modifiers[i];
+						//должно быть еще сообщение о добавлении нового модификатора
+					}
 				}
-			}
 
-			for (int i = 0; i < collector.weapons.Length; i++)
-			{
-				if (this.weapons[i] == null)
+				for (int i = 0; i < collector.weapons.Length; i++)
 				{
-					this.weapons[i] = collector.weapons[i];
-					var msg = new AddWeapon(Parent.ID, this.weapons[i].TypeWeapon);
-					Parent.SendMessage(msg);
-					Parent.Model.HappenedEvents.Enqueue(msg);
+					if (this.weapons[i] == null)
+					{
+						this.weapons[i] = collector.weapons[i];
+						var msg = new AddWeapon(Parent.ID, this.weapons[i].TypeWeapon);
+						Parent.SendMessage(msg);
+						Parent.Model.HappenedEvents.Enqueue(msg);
+					}
 				}
-			}
-			//удаляем объект
-			lootBoxBody.Parent.Dispose();
+				//удаляем объект
+				lootBoxBody.Parent.Dispose();
 		}
 
-		private void PickUpWeapon(SolidBody weaponBody)
+		private void PickUpWeapon(ISolidBody weaponBody)
 		{
 			Weapon weapon = (Weapon)weaponBody.Parent;
 

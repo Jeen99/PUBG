@@ -6,7 +6,7 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public abstract class Modifier : IGameObject
+	public abstract class Modifier : GameObject
 	{
 		public Modifier(IGameModel model) : base(model)
 		{

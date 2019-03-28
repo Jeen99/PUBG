@@ -20,7 +20,7 @@ namespace BattleRoayleServer
             this.client = client;
 			client.Controler = this;
 			//привязываем обработчик только один раз
-			client.EventEndSession += Handler_StandartExceptions.Handler_LostConnectServerClient;
+			client.EventEndSession += Log.Handler_LostConnectServerClient;
         }
 
         public IController GetNewControler(ServerClient client)
@@ -38,7 +38,7 @@ namespace BattleRoayleServer
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
-					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
+					Log.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
 					break;
 			}
 		}

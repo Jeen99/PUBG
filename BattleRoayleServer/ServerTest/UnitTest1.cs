@@ -18,7 +18,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-		    SolidBody solid = (SolidBody)gamer.Components.GetComponent<SolidBody>();
+		    ISolidBody solid = (ISolidBody)gamer.Components.GetComponent<ISolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			Assert.AreEqual(solid.CoveredObjects.Count, 1);
 		}
@@ -28,12 +28,10 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-			SolidBody solid = (SolidBody)gamer.Components.GetComponent<SolidBody>();
+			ISolidBody solid = (ISolidBody)gamer.Components.GetComponent<ISolidBody>();
 			solid.Body.SetLinearVelocity(new Vec2(30F, 0));
 			Room.Field.Step(1, 6, 3);
-			solid.BodyMove();
 			Room.Field.Step(1/60, 6, 3);
-			solid.BodyMove();
 			Assert.AreEqual(solid.CoveredObjects.Count, 0);
 		}
 
@@ -42,28 +40,12 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel(1);
 			Gamer gamer = (Gamer)Room.Players[0];
-			SolidBody solid = (SolidBody)gamer.Components.GetComponent<SolidBody>();
+			ISolidBody solid = (ISolidBody)gamer.Components.GetComponent<ISolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			solid.Parent.Model.Field.DestroyBody(solid.Body);
 			Assert.AreEqual(solid.CoveredObjects.Count, 0);
 		}
 
-		[TestMethod]
-		public void TestMagazin_WorkMagazin()
-		{
-			Magazin magazin = new Magazin(null, TypesWeapon.Gun, 500, 3000);
-			//делаем 8 выстрелов
-			for (int i = 0; i < 8; i++)
-			{
-				Assert.IsNotNull(magazin.GetBullet());
-				Assert.IsNull(magazin.GetBullet());
-				Thread.Sleep(550);
-			}
-			//перезаряжаем 
-			Assert.IsNull(magazin.GetBullet());
-			Thread.Sleep(3050);
-			Assert.IsNotNull(magazin.GetBullet());
-		}
 		[TestMethod]
 		public void TestShot_Shot()
 		{
@@ -73,7 +55,7 @@ namespace ServerTest
 			//поднимаем оружие
 			firstGamer.SendMessage(new TryPickUp());
 			firstGamer.Update();
-			CurrentWeapon currentWeapon = (CurrentWeapon)firstGamer.Components.GetComponent<CurrentWeapon>();
+			ICurrentWeapon currentWeapon = (ICurrentWeapon)firstGamer.Components.GetComponent<ICurrentWeapon>();
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//делаем выстрел
 			firstGamer.SendMessage(new MakeShot(2));
@@ -81,7 +63,7 @@ namespace ServerTest
 			//проверяем
 			Gamer secondGamer = (Gamer)Room.Players[1];
 			secondGamer.Update();
-			Healthy healtySecondGamer = (Healthy)secondGamer.Components.GetComponent<Healthy>();
+			IHealthy healtySecondGamer = (IHealthy)secondGamer.Components.GetComponent<IHealthy>();
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			//делаем 2 выстрел

@@ -11,14 +11,14 @@ using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
-	public class SolidBody : Component
+	public class SolidBody : Component, ISolidBody
 	{
 		private RectangleF shape;
 		//на данный момент временное поле
 		public RectangleF Shape { get { return shape; } }
 
 		public Body Body { get; private set; }
-		public List<SolidBody> CoveredObjects { get; } = new List<SolidBody>();
+		public List<ISolidBody> CoveredObjects { get; } = new List<ISolidBody>();
 	
 
 		public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
@@ -30,7 +30,7 @@ namespace BattleRoayleServer
 			this.shape = shape;
 			switch (TypeSolid)
 			{
-				case TypesSolid.Solid:
+				case TypesSolid.Solid: 
 					switch (typesBody)
 					{
 						case TypesBody.Circle:
@@ -169,12 +169,6 @@ namespace BattleRoayleServer
 				Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
 			}
 		}
-
-		public void BodyMove()
-		{
-			
-			
-		}
 		
 		public override void Dispose()
 		{
@@ -191,9 +185,9 @@ namespace BattleRoayleServer
 		}
 
 		//возвращает коллекцию объектов, которые можно поднять
-		public List<SolidBody> GetPickUpObjects()
+		public List<ISolidBody> GetPickUpObjects()
 		{
-			List<SolidBody> pickUpObjects = new List<SolidBody>();
+			List<ISolidBody> pickUpObjects = new List<ISolidBody>();
 			  
 			foreach (var gameObject in CoveredObjects)
 			{

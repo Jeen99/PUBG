@@ -100,7 +100,7 @@ namespace BattleRoayleServer
 			{
 				if (list.GetUserData() != null)
 				{
-					SolidBody solidBody = (SolidBody)list.GetUserData();
+					ISolidBody solidBody = (ISolidBody)list.GetUserData();
 					if (!solidBody.Parent.Destroyed)
 					{
 						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
