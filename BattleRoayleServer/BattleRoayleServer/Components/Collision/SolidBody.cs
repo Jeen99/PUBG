@@ -19,7 +19,29 @@ namespace BattleRoayleServer
 
 		public Body Body { get; private set; }
 		public List<ISolidBody> CoveredObjects { get; } = new List<ISolidBody>();
-	
+
+		//только для тестов
+		public SolidBody(IGameObject parent):base(parent)
+		{
+			shape = new RectangleF(60,70, 5,5);
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.X, shape.Y);
+			bDef.Angle = 0;
+			bDef.FixedRotation = true;
+
+			CircleDef pDef = new CircleDef();
+			pDef.Restitution = 0;
+			pDef.Friction = 0;
+			pDef.Density = 0.5f;
+			pDef.Radius = shape.Width / 2;
+			pDef.Filter.CategoryBits = 0;
+			pDef.Filter.MaskBits = 0;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.CreateShape(pDef);
+			Body.SetMassFromShapes();
+			Body.SetUserData(this);
+		}
 
 		public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
 			float density, TypesBody typesBody, TypesSolid typesSolid,
@@ -194,8 +216,10 @@ namespace BattleRoayleServer
 				switch (gameObject.Parent.Type)
 				{
 					case TypesGameObject.Weapon:
+					case TypesGameObject.LootBox:
 						pickUpObjects.Add(gameObject);
 						break;
+					
 				}
 			}
 			return pickUpObjects;

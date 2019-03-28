@@ -4,7 +4,7 @@ namespace BattleRoayleServer
 {
 	public interface ICollector:IComponent
 	{
-		Weapon GetWeapon(TypesWeapon typeWeapon);
+		IWeapon GetWeapon(TypesWeapon typeWeapon);
 		void SetNewParent(LootBox lootBox);
 	}
 }

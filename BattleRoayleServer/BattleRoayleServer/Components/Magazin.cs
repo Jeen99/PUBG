@@ -129,12 +129,17 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
-			switch (msg.TypeMessage)
+			if (msg == null)
 			{
-				case TypesProgramMessage.MakeReloadWeapon:
-					Create_ReloadMagazin();
-					break;
+				Log.AddNewRecord("Получено null сообщение в компоненте Magazin");
+				return;
 			}
+				switch (msg.TypeMessage)
+				{
+					case TypesProgramMessage.MakeReloadWeapon:
+						Create_ReloadMagazin();
+						break;
+				}
 		}
 	}
 }

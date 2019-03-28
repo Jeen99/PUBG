@@ -15,11 +15,15 @@ namespace BattleRoayleServer
 	public class Collector : Component, ICollector
 	{
 		private Modifier[] modifiers;
-		private Weapon[] weapons;
+		private IWeapon[] weapons;
 
-		public Weapon GetWeapon(TypesWeapon typeWeapon)
+		public IWeapon GetWeapon(TypesWeapon typeWeapon)
 		{
-			return weapons[(int)typeWeapon];
+			try
+			{
+				return weapons[(int)typeWeapon];
+			}
+			catch (Exception) { return null; }
 		}
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
@@ -37,6 +41,13 @@ namespace BattleRoayleServer
 				throw new Exception("Ошибка создания компонента Сollector");
 			}
 		}
+		//только для тестов
+		public Collector(IGameObject parent, IWeapon[] weapons) : base(parent)
+		{
+			modifiers = new Modifier[5];
+			this.weapons = weapons;
+			this.body = new SolidBody(parent);
+		}
 
 		public override IMessage State
 		{
@@ -48,7 +59,7 @@ namespace BattleRoayleServer
 				{
 					if (modifiers[i] != null)
 					{
-						ModifiersState.Add(modifiers[i].State);
+						ModifiersState.Add(modifiers[i]?.State);
 					}
 				}
 
@@ -58,7 +69,7 @@ namespace BattleRoayleServer
 				{
 					if (weapons[i] != null)
 					{
-						WeaponsState.Add(weapons[i].State);
+						WeaponsState.Add(weapons[i]?.State);
 					}
 				}
 				return new CollectorState(ModifiersState, WeaponsState);
@@ -84,15 +95,15 @@ namespace BattleRoayleServer
 				if (weapons[i] != null)
 				{
 					weapons[i].Holder = null;
-					var body = weapons[i].Components.GetComponent<SolidBody>();
+					var body = weapons[i]?.Components?.GetComponent<SolidBody>();
 					CountObjects++;
 				}			
 			}
 
 			//создаем коробку с лутом
-			var position = Parent.Components.GetComponent<SolidBody>().Body.GetPosition();
+			Vec2 position = (Vec2)Parent?.Components?.GetComponent<SolidBody>().Body.GetPosition();
 			LootBox lootBox = new LootBox(Parent.Model,this, new PointF(position.X, position.Y));
-			Parent.Model.AddGameObject(lootBox);
+			Parent?.Model?.AddGameObject(lootBox);
 		}
 
 			
@@ -125,26 +136,26 @@ namespace BattleRoayleServer
 		private void PickUpLootBox(ISolidBody lootBoxBody)
 		{
 				//получаем коллекцию
-				Collector collector = (lootBoxBody.Parent.Components.GetComponent<Collector>());
+				Collector collector = (lootBoxBody.Parent?.Components?.GetComponent<Collector>());
 			
 				//добавляем предметы, которых у нас еще нет
-				for (int i = 0; i < collector.modifiers.Length; i++)
+				for (int i = 0; i < collector.modifiers.Length && i < modifiers.Length; i++)
 				{
-					if (this.modifiers[i] == null)
+				if (this.modifiers[i] == null && collector.modifiers[i] != null)
 					{
 						this.modifiers[i] = collector.modifiers[i];
 						//должно быть еще сообщение о добавлении нового модификатора
 					}
 				}
 
-				for (int i = 0; i < collector.weapons.Length; i++)
+				for (int i = 0; i < collector.weapons.Length && i < weapons.Length; i++)
 				{
-					if (this.weapons[i] == null)
+					if (this.weapons[i] == null && collector.weapons[i] != null)
 					{
 						this.weapons[i] = collector.weapons[i];
 						var msg = new AddWeapon(Parent.ID, this.weapons[i].TypeWeapon);
 						Parent.SendMessage(msg);
-						Parent.Model.HappenedEvents.Enqueue(msg);
+						Parent?.Model?.HappenedEvents.Enqueue(msg);
 					}
 				}
 				//удаляем объект
@@ -153,7 +164,7 @@ namespace BattleRoayleServer
 
 		private void PickUpWeapon(ISolidBody weaponBody)
 		{
-			Weapon weapon = (Weapon)weaponBody.Parent;
+			IWeapon weapon = (Weapon)weaponBody.Parent;
 
 			if (weapons[(int)weapon.TypeWeapon] == null)
 			{
@@ -161,7 +172,7 @@ namespace BattleRoayleServer
 				weaponBody.BodyDelete();
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.SendMessage(msg);
-				Parent.Model.HappenedEvents.Enqueue(msg);
+				Parent?.Model?.HappenedEvents?.Enqueue(msg);
 			}
 		}
 

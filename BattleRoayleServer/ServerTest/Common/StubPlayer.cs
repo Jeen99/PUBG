@@ -17,7 +17,7 @@ namespace ServerTest
 
 		public ulong ID { get; } = 1;
 
-		public IGameModel Model { get; } = null;
+		public IGameModel Model { get; } = new RoyalGameModel();
 
 		public IMessage State { get; } = null;
 

@@ -25,13 +25,13 @@ namespace BattleRoayleServer
 				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
 			Components.Add(body);
 
-			var movement = new Movement(this, body, 40f);
+			var movement = new Movement(this, 40f);
 			Components.Add(movement);
 
 			var collector = new Collector(this);
 			Components.Add(collector);
 
-			var currentWeapon = new CurrentWeapon(this, collector);
+			var currentWeapon = new CurrentWeapon(this);
 			Components.Add(currentWeapon);
 
 			var healthy = new Healthy(this);

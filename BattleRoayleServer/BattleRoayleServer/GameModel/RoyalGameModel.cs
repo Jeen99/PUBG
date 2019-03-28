@@ -100,6 +100,24 @@ namespace BattleRoayleServer
 			CreatePlayers(gamersInRoom);
 
 		}
+
+		//только для тестов
+		public RoyalGameModel()
+		{
+			//инициализируем полей
+			Players = new List<IPlayer>();
+			GameObjects = new Dictionary<ulong, IGameObject>();
+			HappenedEvents = new ObservableQueue<IMessage>();
+
+			AABB frameField = new AABB();
+			frameField.LowerBound.Set(0, 0);
+			frameField.UpperBound.Set(lengthOfSide, lengthOfSide);
+			Field = new World(frameField, new Vec2(0, 0), false);
+			var solver = new RoomContactListener();
+			Field.SetContactListener(solver);
+			CreateFrame();
+		}
+
 		private void CreateFrame()
 		{
 			//bottom

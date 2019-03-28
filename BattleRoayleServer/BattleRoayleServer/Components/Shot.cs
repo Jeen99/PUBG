@@ -35,12 +35,19 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
+			if (msg == null)
+			{
+				Log.AddNewRecord("Получено null сообщение в компоненте Shot");
+				return;
+			}
+
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.MakeShot:
 					Handler_MakeShot(msg as MakeShot);
 					break;
 			}
+			
 		}
 
 		private void Handler_MakeShot(MakeShot msg)

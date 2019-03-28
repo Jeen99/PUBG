@@ -12,7 +12,7 @@ namespace ServerTest
 		public void Test_GetComponentAnotherInterface()
 		{
 			DictionaryComponent  dictionary = new DictionaryComponent();
-			IComponent magazin = new Magazin(null, TypesWeapon.Gun, 500, 1000);
+			IComponent magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 1000);
 			dictionary.Add(magazin);
 			IMagazin thisMagazin = dictionary.GetComponent<Magazin>();
 			Assert.AreEqual(magazin, thisMagazin);
