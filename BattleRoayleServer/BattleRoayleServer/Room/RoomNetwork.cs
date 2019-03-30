@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Timers;
 using CSInteraction.ProgramMessage;
+using System.Collections.Specialized;
 
 namespace BattleRoayleServer
 {
@@ -56,7 +57,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Определяет тип сообщения и запускает соответствующий обработчик
 		/// </summary>
-		private void HandlerGameEvent(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			//пока отправляем всем клиентам
 			IMessage message = roomLogic.HappenedEvents.Dequeue();

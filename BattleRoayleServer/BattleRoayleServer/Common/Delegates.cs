@@ -38,4 +38,9 @@ namespace BattleRoayleServer
 
 	public delegate void NetorkClientDisconnect(INetworkClient client);
 
+	/// <summary>
+	/// Делегат для создания события уведомляющего, что в комнате осталось минимальное количество игроков
+	/// </summary>
+	public delegate void RoaylGameModelEndWork();
+
 }

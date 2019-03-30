@@ -7,7 +7,7 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-	class QueueController : IController
+	public class QueueController : IController
 	{
 		private ServerClient client;
 		/// <summary>

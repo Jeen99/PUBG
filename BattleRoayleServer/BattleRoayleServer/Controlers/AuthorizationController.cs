@@ -7,7 +7,7 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-    class AuthorizationController:IController
+    public class AuthorizationController:IController
     {
         private ServerClient client;
         public AuthorizationController()

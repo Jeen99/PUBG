@@ -111,27 +111,30 @@ namespace CSInteraction.Server
         //начинает обработку сообщений поступающих от клиента
         private void StartReadMessage()
         {
-            NetworkStream StreamOfClient = Client.GetStream();
-            while (Client.Connected && ThreadOfHandlerMsg.ThreadState == ThreadState.Running)
-            {
-                byte[] TitleMsg = new byte[5];
-                //если пришло сообщение от сервера
-                if (ReadData(TitleMsg, 5, StreamOfClient) > 0)
-                {
-                    //определяем тип сообщения
-                    switch ((InsideTypesMessage)TitleMsg[0])
-                    {
-                        case InsideTypesMessage.ProgramMessage:
-                            //вызываем функцию для обработки сообщения от пользователя
-                            HandlerProgramMessage(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(TitleMsg, 1)), StreamOfClient);
-                            break;
-                        case InsideTypesMessage.EndSession:
-                            //вызов функции обрабатывающей завершения соединения
-                            HandlerEndSession();
-                            break;
-                    }
-                }
-            }
+			if (Client.Connected)
+			{
+				NetworkStream StreamOfClient = Client.GetStream();
+				while (Client.Connected && ThreadOfHandlerMsg.ThreadState == ThreadState.Running)
+				{
+					byte[] TitleMsg = new byte[5];
+					//если пришло сообщение от сервера
+					if (ReadData(TitleMsg, 5, StreamOfClient) > 0)
+					{
+						//определяем тип сообщения
+						switch ((InsideTypesMessage)TitleMsg[0])
+						{
+							case InsideTypesMessage.ProgramMessage:
+								//вызываем функцию для обработки сообщения от пользователя
+								HandlerProgramMessage(IPAddress.NetworkToHostOrder(BitConverter.ToInt32(TitleMsg, 1)), StreamOfClient);
+								break;
+							case InsideTypesMessage.EndSession:
+								//вызов функции обрабатывающей завершения соединения
+								HandlerEndSession();
+								break;
+						}
+					}
+				}
+			}
         }
 
         //считывает некоторое количество байт из потока и записывает их в массив байт

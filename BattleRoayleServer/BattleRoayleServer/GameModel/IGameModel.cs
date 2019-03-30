@@ -21,8 +21,12 @@ namespace BattleRoayleServer
 		ObservableQueue<IMessage> HappenedEvents { get; }
 		List<IGameObject> Loot { get; }
 		List<IGameObject> GetPickUpObjects(RectangleF shapePlayer);
+
+		event RoaylGameModelEndWork EventRoaylGameModelEndWork;
+
 		void AddGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
 		void Dispose();
+		void RemovePlayer(IPlayer player);
 	}
 }

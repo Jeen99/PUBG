@@ -34,23 +34,7 @@ namespace ServerTest.ComponentsTest
 			Assert.IsNotNull(solidBody.State);
 		}
 
-		/*[TestMethod]
-		public void Test_GetPickUpObjects()
-		{
-			var Room = new RoyalGameModel();
-			var gun = new Gun(new PointF(50, 70), Room);
-			Room.GameObjects.Add(gun.ID, gun);
-			var box = new Box(Room, new PointF(50, 70), new SizeF(10, 10));
-			Room.GameObjects.Add(box.ID, box);
-			var player1 = new Gamer(new PointF(50, 70), Room);
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
-
-			ISolidBody solid = (ISolidBody)player1.Components.GetComponent<SolidBody>();
-			Room.Field.Step(1 / 60, 6, 3);
-			Assert.AreEqual(solid.GetPickUpObjects().Count, 1);
-		}*/
-
+		
 		[TestMethod]
 		public void Test_BodyDelete()
 		{
