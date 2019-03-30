@@ -12,8 +12,6 @@ namespace BattleRoyalClient
 	class BattleModel : IBattleModel
 	{
 		public event ChangeModel BattleChangeModel;
-		public string Passwrod { get; private set; }
-		public string NickName { get; private set; }
 
 		//пока задаем прямо в коде
 		public Size SizeMap { get; } = new Size(500, 500);
@@ -29,10 +27,8 @@ namespace BattleRoyalClient
 			BattleChangeModel?.Invoke();
 		}
 	
-		public BattleModel(ulong id, string passwrod, string nickName)
+		public BattleModel(ulong id)
 		{
-			Passwrod = passwrod;
-			NickName = nickName;
 			Chararcter = new PlayerChararcter(id, this);
 		}
 	}

@@ -21,11 +21,11 @@ namespace BattleRoyalClient
 		private bool OnClick = false;
 		private Account view;
 
-		public AccountController(BaseClient client, string login, string password, Account view)
+		public AccountController(BaseClient client, Account view)
 		{
 			this.client = client;
 			this.view = view;
-			model = new AccountModel(login, password);
+			model = new AccountModel();
 			client.EventEndSession += Client_EventEndSession;
 			client.EventNewMessage += Client_EventNewMessage;
 			this.client.SendMessage(new LoadedAccountForm());
@@ -60,7 +60,7 @@ namespace BattleRoyalClient
 			{
 				client.EventEndSession -= this.Client_EventEndSession;
 				client.EventNewMessage -= this.Client_EventNewMessage;
-				Queue formQueue = new Queue(client, model.NickName, model.Password);
+				Queue formQueue = new Queue(client);
 				formQueue.Show();
 				view.Transition = true;
 				view.Close();

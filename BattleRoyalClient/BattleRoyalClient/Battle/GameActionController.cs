@@ -22,10 +22,10 @@ namespace BattleRoyalClient
 		private BaseClient client;
 		private BattleView3d view;
 
-		public GameActionController(ulong id, BaseClient client, string nickName, string password, BattleView3d view)
+		public GameActionController(ulong id, BaseClient client, BattleView3d view)
 		{
 			this.client = client;
-			model = new BattleModel(id, nickName, password);
+			model = new BattleModel(id);
 			this.view = view;
 			client.EventEndSession += Client_EventEndSession;
 			client.EventNewMessage += Client_EventNewMessage;

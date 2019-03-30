@@ -87,7 +87,7 @@ namespace BattleRoyalClient
 			{
 				client.EventNewMessage -= this.Client_EventNewMessage;
 				client.EventEndSession -= this.Client_EventEndSession;
-				Account account = new Account(client, model.NickName, model.Password);
+				Account account = new Account(client);
 				account.Show();
 				view.Transition = true;
 				view.Close();

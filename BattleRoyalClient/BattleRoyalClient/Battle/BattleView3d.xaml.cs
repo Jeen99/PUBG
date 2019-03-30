@@ -29,13 +29,13 @@ namespace BattleRoyalClient
 
 		private DispatcherTimer timer;      // для обновления экрана
 
-		public BattleView3d(ulong id, BaseClient client, string nickName, string password)
+		public BattleView3d(ulong id, BaseClient client)
 		{
 			this.InitializeComponent();
 			this.LayoutUpdated += MainWindow_LayoutUpdated;		// обработчик перериовки
 			
 			// УБРАТЬ НЕНУЖНЫЕ ПОЛЯ!!!!
-			battleContoller = new GameActionController(id, client, nickName, password, this);
+			battleContoller = new GameActionController(id, client, this);
 			//battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
 

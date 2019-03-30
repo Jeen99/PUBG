@@ -25,10 +25,10 @@ namespace BattleRoyalClient
 		/// Если true, то происходит переход из формы в форму и приложение закрывать не надо
 		/// </summary>
 		public bool Transition { get; set; }
-		public Queue(BaseClient client, string nickName, string password)
+		public Queue(BaseClient client)
         {
             InitializeComponent();
-			contoller = new QueueContoller(client, nickName, password, this);
+			contoller = new QueueContoller(client, this);
 			contoller.Model.QueueModelChange += Model_QueueModelChange;
 			SignOut.Click += contoller.Handler_SignOutOfQueue;
 			this.Closed += Queue_Closed;
