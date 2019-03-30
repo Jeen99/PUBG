@@ -10,13 +10,13 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	 class Box:GameObject
+	public class Box:GameObject
 	{
 		private const float restetution = 0.2f;
 		private const float friction = 0.1f;
 		private const float density = 0;
 
-		public Box(IGameModel context, PointF location, Size size) : base(context)
+		public Box(IGameModel context, PointF location, SizeF size) : base(context)
 		{
 		
 			var body = new SolidBody(this, new RectangleF(location, size), restetution,

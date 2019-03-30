@@ -21,8 +21,10 @@ namespace ServerTest
 			var gun = new Gun(new PointF(50, 70), Room);
 			Room.GameObjects.Add(gun.ID, gun);
 			var player1 = new Gamer(new PointF(50, 70), Room);
+			Room.GameObjects.Add(player1.ID, player1);
+			Room.Players.Add(player1);
 
-		    ISolidBody solid = (ISolidBody)player1.Components.GetComponent<SolidBody>();
+			ISolidBody solid = (ISolidBody)player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			Assert.AreEqual(solid.CoveredObjects.Count, 1);
 		}
@@ -34,6 +36,8 @@ namespace ServerTest
 			var gun = new Gun(new PointF(50, 70), Room);
 			Room.GameObjects.Add(gun.ID, gun);
 			var player1 = new Gamer(new PointF(50, 70), Room);
+			Room.GameObjects.Add(player1.ID, player1);
+			Room.Players.Add(player1);
 
 			ISolidBody solid = player1.Components.GetComponent<SolidBody>();
 			solid.Body.SetLinearVelocity(new Vec2(30F, 0));
@@ -49,6 +53,8 @@ namespace ServerTest
 			var gun = new Gun(new PointF(50, 70), Room);
 			Room.GameObjects.Add(gun.ID, gun);
 			var player1 = new Gamer(new PointF(50, 70), Room);
+			Room.GameObjects.Add(player1.ID, player1);
+			Room.Players.Add(player1);
 
 			ISolidBody solid = player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);

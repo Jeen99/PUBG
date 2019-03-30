@@ -109,6 +109,12 @@ namespace BattleRoayleServer
 			
 		public override void UpdateComponent(IMessage msg)
 		{
+			if (msg == null)
+			{
+				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
+				return;
+			}
+
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.TryPickUp:

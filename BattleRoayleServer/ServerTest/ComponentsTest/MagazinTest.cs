@@ -39,7 +39,7 @@ namespace ServerTest.ComponentsTest
 			{
 				Assert.IsNotNull(magazin.GetBullet());
 				Assert.IsNull(magazin.GetBullet());
-				Thread.Sleep(70);
+				Thread.Sleep(75);
 			}
 			//перезаряжаем 
 			Assert.IsNull(magazin.GetBullet());

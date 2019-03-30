@@ -84,6 +84,7 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
+			HappenedEvents = new ObservableQueue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -93,7 +94,6 @@ namespace BattleRoayleServer
 			Field.SetContactListener(solver);
 			CreateFrame();
 
-			HappenedEvents = new ObservableQueue<IMessage>();
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			CreateStaticGameObject();

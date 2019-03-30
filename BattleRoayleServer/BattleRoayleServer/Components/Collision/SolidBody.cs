@@ -50,6 +50,7 @@ namespace BattleRoayleServer
 		{
 			TypeSolid = typesSolid;
 			this.shape = shape;
+
 			switch (TypeSolid)
 			{
 				case TypesSolid.Solid: 
@@ -171,24 +172,28 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
-			if (msg != null)
+			if (msg == null)
 			{
-				switch (msg.TypeMessage)
-				{
-					case TypesProgramMessage.TimeQuantPassed:
-						Handler_TimeQuantPassed();
-						break;
-				}
+				Log.AddNewRecord("Получено null сообщение в компоненте SolidBody");
+				return;
 			}
+
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed();
+					break;
+			}
+			
 
 		}
 		private void Handler_TimeQuantPassed()
 		{
 			Vec2 position = Body.GetPosition();
-			if (position.X != 0 && position.Y != 0)
+			if (position.X != shape.X && position.Y != shape.Y)
 			{
 				shape.Location = new PointF(position.X, position.Y);
-				Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
+				Parent.Model?.HappenedEvents?.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
 			}
 		}
 		
@@ -229,7 +234,7 @@ namespace BattleRoayleServer
 		{
 			//удаляем объект с карты
 			Body.GetWorld().DestroyBody(Body);
-			Parent.Model.HappenedEvents.Enqueue(new DeleteInMap(Parent.ID));
+			Parent.Model?.HappenedEvents?.Enqueue(new DeleteInMap(Parent.ID));
 		}
 	}
 
