@@ -16,7 +16,7 @@ namespace BattleRoayleServer
 		private const float friction = 0.1f;
 		private const float density = 0;
 
-		public Box(IGameModel context, PointF location, SizeF size) : base(context)
+		public Box(IModelForComponents context, PointF location, SizeF size) : base(context)
 		{
 		
 			var body = new SolidBody(this, new RectangleF(location, size), restetution,

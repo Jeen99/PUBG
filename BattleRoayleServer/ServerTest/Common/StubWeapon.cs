@@ -21,7 +21,7 @@ namespace ServerTest
 
 		public ulong ID { get; } = 1;
 
-		public IGameModel Model { get; } = null;
+		public IModelForComponents Model { get; } = null;
 
 		public IMessage State { get; } = null;
 

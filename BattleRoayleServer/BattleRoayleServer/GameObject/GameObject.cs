@@ -27,7 +27,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public IGameModel Model { get; private set; }
+		public IModelForComponents Model { get; private set; }
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
@@ -37,7 +37,7 @@ namespace BattleRoayleServer
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
 
-		public GameObject(IGameModel model)
+		public GameObject(IModelForComponents model)
 		{
 			//иницализация всех полей
 			ID = GetID();
@@ -125,7 +125,7 @@ namespace BattleRoayleServer
 			}
 			Components.Clear();
 			messageQueue.Clear();
-			Model.HappenedEvents.Enqueue(new GameObjectDestroy(ID));
+			Model.AddEvent(new GameObjectDestroy(ID));
 			Model = null;
 
         }

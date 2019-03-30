@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 
 		public event PlayerDeleted EventPlayerDeleted;
 
-		public Gamer(PointF location, IGameModel context) : base(context)
+		public Gamer(IModelForComponents context, PointF location) : base(context)
 		{
 
 			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,

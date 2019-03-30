@@ -20,7 +20,7 @@ namespace ServerTest
 			var Room = new RoyalGameModel();
 			var box = new Box(Room, new PointF(55, 70), new SizeF(10,10));
 			Room.GameObjects.Add(box.ID, box);
-			var player1 = new Gamer(new PointF(50, 70), Room);
+			var player1 = new Gamer(Room, new PointF(50, 70));
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
@@ -35,7 +35,7 @@ namespace ServerTest
 			var Room = new RoyalGameModel();
 			var box = new Box(Room, new PointF(55, 70), new SizeF(10, 10));
 			Room.GameObjects.Add(box.ID, box);
-			var player1 = new Gamer(new PointF(50, 70), Room);
+			var player1 = new Gamer(Room, new PointF(50, 70));
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
@@ -52,7 +52,7 @@ namespace ServerTest
 			var Room = new RoyalGameModel();
 			var box = new Box(Room, new PointF(55, 70), new SizeF(10, 10));
 			Room.GameObjects.Add(box.ID, box);
-			var player1 = new Gamer(new PointF(50, 70), Room);
+			var player1 = new Gamer(Room, new PointF(50, 70));
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 

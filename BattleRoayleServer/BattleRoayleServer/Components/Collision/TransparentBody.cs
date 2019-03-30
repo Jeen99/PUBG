@@ -38,7 +38,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			Parent.Model.Loot.Remove(Parent);
+			Parent.Model.RemoveLoot(Parent);
 		}
 	}
 }

@@ -101,7 +101,7 @@ namespace BattleRoayleServer
 			currentWeapon = inventory.GetWeapon(type);
 			currentWeapon.Holder = Parent;
 			//отправляем сообщение об этом
-			Parent?.Model?.HappenedEvents?.Enqueue(new ChangedCurrentWeapon(type));
+			Parent?.Model?.AddEvent(new ChangedCurrentWeapon(type));
 		}
 	}
 }

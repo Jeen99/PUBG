@@ -39,11 +39,11 @@ namespace ServerTest.ComponentsTest
 		{
 			//создаем коллекцию объектов для теста
 			var Room = new RoyalGameModel();
-			var gun = new Gun(new PointF(50, 70), Room);
+			var gun = new Gun(Room, new PointF(50, 70));
 			Room.GameObjects.Add(gun.ID, gun);
-			var player1 = new Gamer(new PointF(50, 70), Room);
+			var player1 = new Gamer(Room, new PointF(50, 70));
 			Room.GameObjects.Add(player1.ID, player1);
-			var player2 = new Gamer(new PointF(50, 85), Room);
+			var player2 = new Gamer(Room, new PointF(50, 85));
 			Room.GameObjects.Add(player2.ID, player2);
 
 			Room.Field.Step(1f / 60f, 6, 3);

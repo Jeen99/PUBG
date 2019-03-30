@@ -15,7 +15,7 @@ namespace BattleRoayleServer
 		private const float friction = 0.3f;
 		private const float density = 0;
 
-		public Gun(PointF location, IGameModel context) : base(context)
+		public Gun( IModelForComponents context, PointF location) : base(context)
 		{
 			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, new SizeF(8,8)));
 			Components.Add(body);
@@ -28,7 +28,7 @@ namespace BattleRoayleServer
 
 			TypeWeapon = TypesWeapon.Gun;
 
-			context.Loot.Add(this);
+			context.AddLoot(this);
 		}
 		
 		public override TypesGameObject Type { get; } = TypesGameObject.Weapon;

@@ -9,7 +9,7 @@ using CSInteraction.ProgramMessage;
 
 namespace ServerTest
 {
-	class StubPlayer : IWeapon
+	class StubPlayer : IGameObject
 	{
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
@@ -17,14 +17,13 @@ namespace ServerTest
 
 		public ulong ID { get; } = 1;
 
-		public IGameModel Model { get; } = new RoyalGameModel();
+		public IModelForComponents Model { get; } = new RoyalGameModel();
 
 		public IMessage State { get; } = null;
 
 		public TypesGameObject Type { get; } = TypesGameObject.Player;
 
 		public TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
-		public IGameObject Holder { get; set; }
 
 		public TypesWeapon TypeWeapon { get; } = TypesWeapon.Gun;
 

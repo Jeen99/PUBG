@@ -47,7 +47,7 @@ namespace BattleRoayleServer
 			{
 				Parent.Dispose();
 			}
-			Parent.Model?.HappenedEvents?.Enqueue(new ChangedValueHP(HP));
+			Parent.Model?.AddEvent(new ChangedValueHP(HP));
 		}
 	}
 }

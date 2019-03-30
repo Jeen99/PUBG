@@ -161,7 +161,7 @@ namespace BattleRoayleServer
 						this.weapons[i] = collector.weapons[i];
 						var msg = new AddWeapon(Parent.ID, this.weapons[i].TypeWeapon);
 						Parent.SendMessage(msg);
-						Parent?.Model?.HappenedEvents.Enqueue(msg);
+						Parent?.Model.AddEvent(msg);
 					}
 				}
 				//удаляем объект
@@ -177,7 +177,7 @@ namespace BattleRoayleServer
 				weapon.Components.GetComponent<TransparentBody>().Dispose();
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.SendMessage(msg);
-				Parent?.Model?.HappenedEvents?.Enqueue(msg);
+				Parent?.Model?.AddEvent(msg);
 			}
 		}
 

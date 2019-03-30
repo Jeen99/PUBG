@@ -14,7 +14,7 @@ using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
-    public class RoyalGameModel : IGameModel
+    public class RoyalGameModel : IGameModel, IModelForComponents
 	{
 		/// <summary>
 		///ширина одной стороны игровой карты 
@@ -30,6 +30,7 @@ namespace BattleRoayleServer
 		/// Коллекция для объектов, которые не участвуют в физическом взаимодействии
 		/// </summary>
 		public List<IGameObject> Loot { get; private set; }
+
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
@@ -56,7 +57,7 @@ namespace BattleRoayleServer
 			GameObjects.Add(box.ID, box);
 			box = new Box(this, new PointF(150, 10), new Size(12, 12));
 			GameObjects.Add(box.ID, box);
-			Gun gun = new Gun(new PointF(50,70),this);
+			Gun gun = new Gun(this, new PointF(50, 70));
 			GameObjects.Add(gun.ID, gun);
 		}
 
@@ -68,7 +69,7 @@ namespace BattleRoayleServer
 			for (int i = 0; i < gamersInRoom; i++)
 			{
 				//создаем игрока
-				Gamer gamer = new Gamer(CreatePlayerLocation(i), this);
+				Gamer gamer = new Gamer(this, CreatePlayerLocation(i));
 				Players.Add(gamer);
 				GameObjects.Add(gamer.ID,gamer);
 			}
@@ -93,6 +94,7 @@ namespace BattleRoayleServer
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
 			HappenedEvents = new ObservableQueue<IMessage>();
+			Loot = new List<IGameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -223,6 +225,21 @@ namespace BattleRoayleServer
 
 			}
 			return pickUpObjects;
+		}
+
+		public void AddLoot(IGameObject gameObject)
+		{
+			Loot.Add(gameObject);
+		}
+
+		public void AddEvent(IMessage message)
+		{
+			HappenedEvents.Enqueue(message);
+		}
+
+		public void RemoveLoot(IGameObject gameObject)
+		{
+			Loot.Remove(gameObject);
 		}
 	}
 }

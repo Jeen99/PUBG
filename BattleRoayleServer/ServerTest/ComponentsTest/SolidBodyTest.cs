@@ -69,7 +69,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_UpdateComponent_TimeQuantPassed()
 		{
 			var Room = new RoyalGameModel();
-			var player1 = new Gamer(new PointF(50, 70), Room);
+			var player1 = new Gamer(Room, new PointF(50, 70));
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 

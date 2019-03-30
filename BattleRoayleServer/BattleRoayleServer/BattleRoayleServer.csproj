@@ -69,6 +69,7 @@
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="Components\PlayerDied.cs" />
+    <Compile Include="GameModel\IModelForComponents.cs" />
     <Compile Include="GameObject\Box.cs" />
     <Compile Include="GameObject\IGameObject.cs" />
     <Compile Include="GameObject\LootBox.cs" />

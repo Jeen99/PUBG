@@ -8,7 +8,7 @@ namespace BattleRoayleServer
 		DictionaryComponent Components { get; }
 		bool Destroyed { get; }
 		ulong ID { get; }
-		IGameModel Model { get; }
+		IModelForComponents Model { get; }
 		IMessage State { get; }
 		TypesGameObject Type { get; }
 		TypesBehaveObjects TypesBehave { get; }

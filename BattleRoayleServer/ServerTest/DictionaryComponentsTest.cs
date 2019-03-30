@@ -9,7 +9,7 @@ namespace ServerTest
 	public class DictionaryComponentsTest
 	{
 		[TestMethod]
-		public void Test_GetComponentAnotherInterface()
+		public void Test_GetComponent()
 		{
 			DictionaryComponent  dictionary = new DictionaryComponent();
 			IComponent magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 1000);

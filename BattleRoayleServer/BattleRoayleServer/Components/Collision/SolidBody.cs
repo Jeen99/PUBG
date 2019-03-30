@@ -60,51 +60,6 @@ namespace BattleRoayleServer
 			
 		}
 
-		/*private void CreateTransparentCircleBody(float restetution, float friction, float density,
-			ushort categoryBits, ushort maskBits)
-		{
-			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.X, shape.Y);
-			bDef.Angle = 0;
-			bDef.FixedRotation = true;
-
-			CircleDef pDef = new CircleDef();
-			pDef.Restitution = restetution;
-			pDef.Friction = friction;
-			pDef.Density = density;
-			pDef.Radius = shape.Width / 2;
-			pDef.IsSensor = true;
-			pDef.Filter.CategoryBits = categoryBits;
-			pDef.Filter.MaskBits = maskBits;
-
-			Body = Parent.Model.Field.CreateBody(bDef);
-			Body.CreateShape(pDef);
-			Body.SetMassFromShapes();
-			Body.SetUserData(this);
-		}*/
-
-		/*private void CreateTransparentRectangleBody(float restetution, float friction, float density,
-			ushort categoryBits, ushort maskBits)
-		{
-			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Left, shape.Top);
-			bDef.Angle = 0;
-
-			PolygonDef pDef = new PolygonDef();
-			pDef.Restitution = restetution;
-			pDef.Friction = friction;
-			pDef.Density = density;
-			pDef.SetAsBox(shape.Width / 2, shape.Height / 2);
-			pDef.Filter.CategoryBits = categoryBits;
-			pDef.Filter.MaskBits = maskBits;
-			pDef.IsSensor = true;
-
-			Body = Parent.Model.Field.CreateBody(bDef);
-			Body.CreateShape(pDef);
-			Body.SetMassFromShapes();
-			Body.SetUserData(this);
-		}*/
-
 		private void CreateCircleBody(float restetution, float friction, float density,
 			ushort categoryBits, ushort maskBits)
 		{
@@ -173,7 +128,7 @@ namespace BattleRoayleServer
 			if (position.X != shape.X && position.Y != shape.Y)
 			{
 				shape.Location = new PointF(position.X, position.Y);
-				Parent.Model?.HappenedEvents?.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
+				Parent.Model?.AddEvent(new PlayerMoved(Parent.ID, shape.Location));
 			}
 		}
 		
@@ -196,7 +151,7 @@ namespace BattleRoayleServer
 		{
 			//удаляем объект с карты
 			Body.GetWorld().DestroyBody(Body);
-			Parent.Model?.HappenedEvents?.Enqueue(new DeleteInMap(Parent.ID));
+			Parent.Model?.AddEvent(new DeleteInMap(Parent.ID));
 		}
 	}
 
