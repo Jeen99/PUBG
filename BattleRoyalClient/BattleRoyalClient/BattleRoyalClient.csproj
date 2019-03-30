@@ -64,9 +64,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Authorization\AuthorizationData.cs" />
-    <Compile Include="Battle\Battle.xaml.cs">
-      <DependentUpon>Battle.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Battle\BattleModel.cs" />
     <Compile Include="Battle\BattleView3d.xaml.cs">
       <DependentUpon>BattleView3d.xaml</DependentUpon>
@@ -75,14 +72,12 @@
     <Compile Include="Battle\IBattleModel.cs" />
     <Compile Include="Battle\IBattleView.cs" />
     <Compile Include="Battle\Model3D.cs" />
-    <Compile Include="Common\Diapason.cs" />
     <Compile Include="ConvertPosition.cs" />
     <Compile Include="GameObjects\Box.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
     <Compile Include="GameObjects\Stone.cs" />
     <Compile Include="Battle\PlayerChararcter.cs" />
-    <Compile Include="Painter.cs" />
     <Compile Include="Properties\Recources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -115,10 +110,6 @@
     <Compile Include="Authorization\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
-    <Page Include="Battle\Battle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Battle\BattleView3d.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -132,7 +123,6 @@
     <Compile Include="Authorization\AuhtorizationController.cs" />
     <Compile Include="Authorization\AuthorizationModel.cs" />
     <Compile Include="Authorization\IAuthorizationModel.cs" />
-    <Compile Include="Common\Delegats.cs" />
     <Compile Include="Account\IAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -39,6 +39,8 @@ namespace BattleRoyalClient
 			//battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
 
+			battleContoller.Model.Chararcter.changeHP += Chararcter_changeHP;
+
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
@@ -50,6 +52,11 @@ namespace BattleRoyalClient
 			timer.Tick += Repaint;
 			timer.Interval = new TimeSpan(1_000_000 / 60);      // ~60fps update
 			timer.Start();
+		}
+
+		private void Chararcter_changeHP(float hp)
+		{
+			this.HP.Value = hp;
 		}
 
 		private void BattleView3d_MouseWheel(object sender, MouseWheelEventArgs e)
@@ -73,8 +80,8 @@ namespace BattleRoyalClient
 			var cameraPos = camera.Position;
 			var character = battleContoller.Model.Chararcter;
 
-			cameraPos.X = character.StartAxises.X;
-			cameraPos.Y = character.StartAxises.Y;
+			cameraPos.X = character.Location.X;
+			cameraPos.Y = character.Location.Y;
 
 			this.camera.Position = cameraPos;
 		}

@@ -13,4 +13,9 @@ namespace BattleRoyalClient
 		PlayerChararcter Chararcter { get; }
 		Size SizeMap { get; }
 	}
+
+	/// <summary>
+	/// Делегат события изменения модели
+	/// </summary>
+	public delegate void ChangeModel();
 }

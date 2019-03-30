@@ -34,6 +34,7 @@ namespace BattleRoyalClient
 		private void Client_EventNewMessage()
 		{
 			IMessage msg = client.ReceivedMsg.Dequeue();
+			System.Diagnostics.Debug.WriteLine(msg.TypeMessage);
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.RoomState:
@@ -43,20 +44,26 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.PlayerMoved:
 					Handler_PlayerMoved(msg as PlayerMoved);
 					break;
+				case TypesProgramMessage.HealthyState:
+					Handler_HealthyCharacter(msg as HealthyState);
+					break;
 			}
+		}
+
+		private void Handler_HealthyCharacter(HealthyState changedValueHP)
+		{
+			var HP = model.Chararcter.HP;
+			HP = changedValueHP.HP;
 		}
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
 		{
-			var gamer = model.GameObjects[moved.PlayerID];
-			var shapeGamer = model.GameObjects[moved.PlayerID].Shape;
+			var gamer = model.Chararcter.character;
+			var shapeGamer = gamer.Shape;
 			shapeGamer.X = moved.NewLocation.X;
 			shapeGamer.Y = moved.NewLocation.Y;
 
 			gamer.Shape = shapeGamer;
-
-			if (moved.PlayerID == model.Chararcter.ID)
-				model.Chararcter.CharacterChange();
 
 			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });
 		}
@@ -80,10 +87,6 @@ namespace BattleRoyalClient
 			{
 				case TypesGameObject.Player:
 					model.GameObjects.AddOrUpdate(msg.ID,AddGamer(msg), (k,v) => UpdateGameObject(v, msg));
-					if (msg.ID == model.Chararcter.ID)
-					{
-						model.Chararcter.CharacterChange();
-					}
 					break;
 				case TypesGameObject.Box:
 					model.GameObjects.AddOrUpdate(msg.ID, AddBox(msg), (k, v) => UpdateGameObject(v, msg));
@@ -115,9 +118,9 @@ namespace BattleRoyalClient
 		private GameObject AddGamer(GameObjectState msg)
 		{
 			Gamer gamer = new Gamer();
+
 			foreach (IMessage message in msg.StatesComponents)
 			{
-				
 				switch (message.TypeMessage)
 				{
 					case TypesProgramMessage.BodyState:
@@ -126,6 +129,10 @@ namespace BattleRoyalClient
 						break;
 				}
 			}
+
+			if (msg.ID == model.Chararcter.ID)
+				model.Chararcter.Create(gamer);
+
 			//gamer.Model3D = new Model3D(view.models, gamer);
 			CreateModel3d(gamer);
 			return gamer;
