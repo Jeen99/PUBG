@@ -20,7 +20,7 @@ namespace BattleRoayleServer
 		{
 		
 			var body = new SolidBody(this, new RectangleF(location, size), restetution,
-				friction, density, TypesBody.Rectangle, TypesSolid.Solid, (ushort)CollideCategory.Box,
+				friction, density, TypesBody.Rectangle, (ushort)CollideCategory.Box,
 				(ushort)CollideCategory.Player);
 			Components.Add(body);
 		}

@@ -10,8 +10,6 @@ namespace BattleRoayleServer
 		Body Body { get; }
 		List<ISolidBody> CoveredObjects { get; }
 		RectangleF Shape { get; }
-		TypesSolid TypeSolid { get; }
 		void BodyDelete();
-		List<ISolidBody> GetPickUpObjects();
 	}
 }

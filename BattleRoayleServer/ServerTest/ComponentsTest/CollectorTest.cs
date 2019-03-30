@@ -56,10 +56,12 @@ namespace ServerTest.ComponentsTest
 			var Room = new RoyalGameModel();
 			var gun = new Gun(new PointF(50, 70), Room);
 			Room.GameObjects.Add(gun.ID, gun);
+
 			var player1 = new Gamer(new PointF(50, 70), Room);
 			Room.GameObjects.Add(player1.ID, player1);
+			Room.Players.Add(player1);
 
-			Room.Field.Step(1 / 60, 6, 3);
+			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие
 			player1.SendMessage(new TryPickUp());
@@ -74,13 +76,16 @@ namespace ServerTest.ComponentsTest
 		{
 			var Room = new RoyalGameModel();
 			var weapons = new Weapon[4];
-			weapons[0] = new Gun(new PointF(50, 50), Room);
+
+			weapons[0] = new Gun(new PointF(50, 70), Room);
 			var lootBox = new LootBox(Room, new Collector(new StubPlayer(), weapons), new PointF(50, 70));
 			Room.GameObjects.Add(lootBox.ID, lootBox);
+
 			var player1 = new Gamer(new PointF(50, 70), Room);
 			Room.GameObjects.Add(player1.ID, player1);
+			Room.Players.Add(player1);
 
-			Room.Field.Step(1 / 60, 6, 3);
+			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие
 			player1.SendMessage(new TryPickUp());

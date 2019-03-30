@@ -18,8 +18,8 @@ namespace ServerTest
 		public void TestRoomContactListener_Add()
 		{
 			var Room = new RoyalGameModel();
-			var gun = new Gun(new PointF(50, 70), Room);
-			Room.GameObjects.Add(gun.ID, gun);
+			var box = new Box(Room, new PointF(55, 70), new SizeF(10,10));
+			Room.GameObjects.Add(box.ID, box);
 			var player1 = new Gamer(new PointF(50, 70), Room);
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
@@ -33,8 +33,8 @@ namespace ServerTest
 		public void TestRoomContactListener_Remove()
 		{
 			var Room = new RoyalGameModel();
-			var gun = new Gun(new PointF(50, 70), Room);
-			Room.GameObjects.Add(gun.ID, gun);
+			var box = new Box(Room, new PointF(55, 70), new SizeF(10, 10));
+			Room.GameObjects.Add(box.ID, box);
 			var player1 = new Gamer(new PointF(50, 70), Room);
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
@@ -50,8 +50,8 @@ namespace ServerTest
 		public void TestRoomContactListener_RemoveObject()
 		{
 			var Room = new RoyalGameModel();
-			var gun = new Gun(new PointF(50, 70), Room);
-			Room.GameObjects.Add(gun.ID, gun);
+			var box = new Box(Room, new PointF(55, 70), new SizeF(10, 10));
+			Room.GameObjects.Add(box.ID, box);
 			var player1 = new Gamer(new PointF(50, 70), Room);
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);

@@ -14,7 +14,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_CreateSolidBody1()
 		{
 			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Circle, TypesSolid.Solid, 0, 0);
+				TypesBody.Circle, 0, 0);
 			Assert.IsNotNull(solidBody.Body);
 		}
 
@@ -22,23 +22,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_CreateSolidBody2()
 		{
 			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Rectangle, TypesSolid.Solid, 0, 0);
-			Assert.IsNotNull(solidBody.Body);
-		}
-
-		[TestMethod]
-		public void Test_CreateSolidBody3()
-		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Circle, TypesSolid.Transparent, 0, 0);
-			Assert.IsNotNull(solidBody.Body);
-		}
-
-		[TestMethod]
-		public void Test_CreateSolidBody4()
-		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Rectangle, TypesSolid.Transparent, 0, 0);
+				TypesBody.Rectangle, 0, 0);
 			Assert.IsNotNull(solidBody.Body);
 		}
 
@@ -46,11 +30,11 @@ namespace ServerTest.ComponentsTest
 		public void Test_SolidBodyState()
 		{
 			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Rectangle, TypesSolid.Transparent, 0, 0);
+				TypesBody.Rectangle, 0, 0);
 			Assert.IsNotNull(solidBody.State);
 		}
 
-		[TestMethod]
+		/*[TestMethod]
 		public void Test_GetPickUpObjects()
 		{
 			var Room = new RoyalGameModel();
@@ -65,7 +49,7 @@ namespace ServerTest.ComponentsTest
 			ISolidBody solid = (ISolidBody)player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			Assert.AreEqual(solid.GetPickUpObjects().Count, 1);
-		}
+		}*/
 
 		[TestMethod]
 		public void Test_BodyDelete()
@@ -73,7 +57,7 @@ namespace ServerTest.ComponentsTest
 			var player = new StubPlayer();
 			int count = player.Model.Field.GetBodyCount();
 			ISolidBody solidBody = new SolidBody(player, new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Circle, TypesSolid.Solid, 0, 0);
+				TypesBody.Circle, 0, 0);
 			player.Components.Add(solidBody);
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count+1);
 			solidBody.BodyDelete();

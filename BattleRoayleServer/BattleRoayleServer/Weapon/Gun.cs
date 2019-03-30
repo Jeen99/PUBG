@@ -17,9 +17,7 @@ namespace BattleRoayleServer
 
 		public Gun(PointF location, IGameModel context) : base(context)
 		{
-			ISolidBody body = new SolidBody(this, new System.Drawing.RectangleF(location, new SizeF(8,8)),
-				restetution, friction, density, TypesBody.Circle, TypesSolid.Transparent, (ushort)CollideCategory.Loot,
-				(ushort)CollideCategory.Player);
+			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, new SizeF(8,8)));
 			Components.Add(body);
 
 			var magazin = new Magazin(this, TypesWeapon.Gun, 500, 3000);
@@ -29,6 +27,8 @@ namespace BattleRoayleServer
 			Components.Add(shot);
 
 			TypeWeapon = TypesWeapon.Gun;
+
+			context.Loot.Add(this);
 		}
 		
 		public override TypesGameObject Type { get; } = TypesGameObject.Weapon;

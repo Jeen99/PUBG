@@ -22,8 +22,14 @@ namespace BattleRoayleServer
 		private const float lengthOfSide = 500;
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
+		/// <summary>
+		/// Коллекция всех игровых объектов в игре
+		/// </summary>
         public Dictionary<ulong,IGameObject> GameObjects { get; private set; }
-		
+		/// <summary>
+		/// Коллекция для объектов, которые не участвуют в физическом взаимодействии
+		/// </summary>
+		public List<IGameObject> Loot { get; private set; }
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
@@ -67,6 +73,7 @@ namespace BattleRoayleServer
 				GameObjects.Add(gamer.ID,gamer);
 			}
 		}
+
 		private PointF CreatePlayerLocation(int index)
 		{
 			switch (index)
@@ -79,6 +86,7 @@ namespace BattleRoayleServer
 					return new PointF(0, 0);
 			}
 		}
+
 		public RoyalGameModel(int gamersInRoom)
 		{
 			//инициализируем полей
@@ -108,6 +116,7 @@ namespace BattleRoayleServer
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
 			HappenedEvents = new ObservableQueue<IMessage>();
+			Loot = new List<IGameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0, 0);
@@ -195,6 +204,25 @@ namespace BattleRoayleServer
 			GameObjects.Clear();
 			Field.Dispose();
 			HappenedEvents.Clear();
+		}
+
+		//возвращает коллекцию объектов, которые можно поднять
+		public List<IGameObject> GetPickUpObjects(RectangleF shapePlayer)
+		{
+			List<IGameObject> pickUpObjects = new List<IGameObject>();
+
+			foreach (var gameObject in Loot)
+			{
+
+				var shapeLoot = gameObject.Components.GetComponent<TransparentBody>().Shape;
+				if (shapeLoot.IntersectsWith(shapePlayer))
+				{
+					pickUpObjects.Add(gameObject);
+				}
+				break;
+
+			}
+			return pickUpObjects;
 		}
 	}
 }

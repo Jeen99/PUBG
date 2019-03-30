@@ -46,7 +46,7 @@ namespace ServerTest.ComponentsTest
 			var player2 = new Gamer(new PointF(50, 85), Room);
 			Room.GameObjects.Add(player2.ID, player2);
 
-			Room.Field.Step(1 / 60, 6, 3);
+			Room.Field.Step(1f / 60f, 6, 3);
 			//поднимаем оружие
 			player1.SendMessage(new TryPickUp());
 			player1.Update();

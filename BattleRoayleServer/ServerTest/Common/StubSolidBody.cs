@@ -27,7 +27,6 @@ namespace ServerTest
 
 		public System.Drawing.RectangleF Shape { get; } = new RectangleF();
 
-		public TypesSolid TypeSolid { get;  } = TypesSolid.Transparent;
 
 		public void BodyDelete()
 		{

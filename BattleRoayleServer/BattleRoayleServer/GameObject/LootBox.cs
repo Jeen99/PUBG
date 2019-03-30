@@ -18,12 +18,12 @@ namespace BattleRoayleServer
 
 		public LootBox(IGameModel model, ICollector collector, PointF location) : base(model)
 		{
-			ISolidBody body = new SolidBody(this, new System.Drawing.RectangleF(location, new SizeF(8, 8)),
-				restetution, friction, density, TypesBody.Circle, TypesSolid.Transparent, (ushort)CollideCategory.Loot,
-				(ushort)CollideCategory.Player);
+			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, new SizeF(8, 8)));
 			Components.Add(body);
 			collector.SetNewParent(this);
 			Components.Add(collector);
+
+			model.Loot.Add(this);
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

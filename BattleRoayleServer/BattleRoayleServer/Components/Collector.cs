@@ -124,13 +124,13 @@ namespace BattleRoayleServer
 		}
 		private void Handler_TryPickUp()
 		{
-			var listObjects = body.GetPickUpObjects();
+			var listObjects = Parent.Model.GetPickUpObjects(body.Shape);
 			foreach (var item in listObjects)
 			{
-				switch (item.Parent.Type)
+				switch (item.Type)
 				{
 					case TypesGameObject.Weapon:
-						PickUpWeapon(item);
+						PickUpWeapon(item as Weapon);
 						break;
 					case TypesGameObject.LootBox:
 						PickUpLootBox(item);
@@ -139,10 +139,10 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void PickUpLootBox(ISolidBody lootBoxBody)
+		private void PickUpLootBox(IGameObject lootBox)
 		{
 				//получаем коллекцию
-				Collector collector = (lootBoxBody.Parent?.Components?.GetComponent<Collector>());
+				Collector collector = lootBox.Components?.GetComponent<Collector>();
 			
 				//добавляем предметы, которых у нас еще нет
 				for (int i = 0; i < collector.modifiers.Length && i < modifiers.Length; i++)
@@ -165,17 +165,16 @@ namespace BattleRoayleServer
 					}
 				}
 				//удаляем объект
-				lootBoxBody.Parent.Dispose();
+				lootBox.Dispose();
 		}
 
-		private void PickUpWeapon(ISolidBody weaponBody)
+		private void PickUpWeapon(IWeapon weapon)
 		{
-			IWeapon weapon = (Weapon)weaponBody.Parent;
 
 			if (weapons[(int)weapon.TypeWeapon] == null)
 			{
 				weapons[(int)weapon.TypeWeapon] = (Weapon)weapon;
-				weaponBody.BodyDelete();
+				weapon.Components.GetComponent<TransparentBody>().Dispose();
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.SendMessage(msg);
 				Parent?.Model?.HappenedEvents?.Enqueue(msg);

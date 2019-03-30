@@ -44,16 +44,10 @@ namespace BattleRoayleServer
 		}
 
 		public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
-			float density, TypesBody typesBody, TypesSolid typesSolid,
-			ushort categoryBits, ushort maskBits)
-			: base(parent)
+			float density, TypesBody typesBody,ushort categoryBits, ushort maskBits): base(parent)
 		{
-			TypeSolid = typesSolid;
 			this.shape = shape;
 
-			switch (TypeSolid)
-			{
-				case TypesSolid.Solid: 
 					switch (typesBody)
 					{
 						case TypesBody.Circle:
@@ -63,23 +57,10 @@ namespace BattleRoayleServer
 							CreateRectangleBody(restetution, friction, density, categoryBits, maskBits);
 							break;
 					}
-					break;
-				case TypesSolid.Transparent:
-					switch (typesBody)
-					{
-						case TypesBody.Circle:
-							CreateTransparentCircleBody(restetution, friction, density, categoryBits, maskBits);
-							break;
-						case TypesBody.Rectangle:
-							CreateTransparentRectangleBody(restetution, friction, density, categoryBits, maskBits);
-							break;
-					}
-					break;
-			}
-
+			
 		}
 
-		private void CreateTransparentCircleBody(float restetution, float friction, float density,
+		/*private void CreateTransparentCircleBody(float restetution, float friction, float density,
 			ushort categoryBits, ushort maskBits)
 		{
 			BodyDef bDef = new BodyDef();
@@ -100,9 +81,9 @@ namespace BattleRoayleServer
 			Body.CreateShape(pDef);
 			Body.SetMassFromShapes();
 			Body.SetUserData(this);
-		}
+		}*/
 
-		private void CreateTransparentRectangleBody(float restetution, float friction, float density,
+		/*private void CreateTransparentRectangleBody(float restetution, float friction, float density,
 			ushort categoryBits, ushort maskBits)
 		{
 			BodyDef bDef = new BodyDef();
@@ -122,7 +103,7 @@ namespace BattleRoayleServer
 			Body.CreateShape(pDef);
 			Body.SetMassFromShapes();
 			Body.SetUserData(this);
-		}
+		}*/
 
 		private void CreateCircleBody(float restetution, float friction, float density,
 			ushort categoryBits, ushort maskBits)
@@ -168,7 +149,6 @@ namespace BattleRoayleServer
 			Body.SetUserData(this);
 		}
 
-		public TypesSolid TypeSolid { get; private set; }
 
 		public override void UpdateComponent(IMessage msg)
 		{
@@ -211,25 +191,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		//возвращает коллекцию объектов, которые можно поднять
-		public List<ISolidBody> GetPickUpObjects()
-		{
-			List<ISolidBody> pickUpObjects = new List<ISolidBody>();
-			  
-			foreach (var gameObject in CoveredObjects)
-			{
-				switch (gameObject.Parent.Type)
-				{
-					case TypesGameObject.Weapon:
-					case TypesGameObject.LootBox:
-						pickUpObjects.Add(gameObject);
-						break;
-					
-				}
-			}
-			return pickUpObjects;
-		}
-
+		
 		public void BodyDelete()
 		{
 			//удаляем объект с карты
@@ -244,12 +206,6 @@ namespace BattleRoayleServer
 		Loot = 0x0002,
 		Box = 0x0003,
 		Stone = 0x0004
-	}
-
-	public enum TypesSolid
-	{
-		Solid,
-		Transparent
 	}
 
 	public enum TypesBody
