@@ -63,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Authorization\AuthorizationData.cs" />
     <Compile Include="Battle\Battle.xaml.cs">
       <DependentUpon>Battle.xaml</DependentUpon>
     </Compile>
