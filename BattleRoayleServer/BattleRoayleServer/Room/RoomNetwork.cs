@@ -127,7 +127,8 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
 		{
-			client.Client.SendMessage(roomLogic.GetInitializeData());
+			var msg = roomLogic.GetInitializeData();
+			client.Client.SendMessage(msg);
 		}
 
 		public void Stop()

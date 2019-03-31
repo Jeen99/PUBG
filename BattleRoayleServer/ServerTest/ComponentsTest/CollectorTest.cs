@@ -65,7 +65,7 @@ namespace ServerTest.ComponentsTest
 
 			//поднимаем оружие
 			player1.SendMessage(new TryPickUp());
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			var collector = player1.Components.GetComponent<Collector>();
 			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
 			
@@ -89,7 +89,7 @@ namespace ServerTest.ComponentsTest
 
 			//поднимаем оружие
 			player1.SendMessage(new TryPickUp());
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			var collector = player1.Components.GetComponent<Collector>();
 			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
 

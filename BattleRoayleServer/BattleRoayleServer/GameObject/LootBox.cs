@@ -12,10 +12,6 @@ namespace BattleRoayleServer
 	public class LootBox : GameObject
 	{
 
-		private const float restetution = 0;
-		private const float friction = 0.3f;
-		private const float density = 0;
-
 		public LootBox(IModelForComponents model, ICollector collector, PointF location) : base(model)
 		{
 			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, new SizeF(8, 8)));

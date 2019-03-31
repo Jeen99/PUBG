@@ -12,8 +12,8 @@ namespace BattleRoayleServer
 {
 	public class Box:GameObject
 	{
-		private const float restetution = 0.2f;
-		private const float friction = 0.1f;
+		private const float restetution = 0;
+		private const float friction = 0;
 		private const float density = 0;
 
 		public Box(IModelForComponents context, PointF location, SizeF size) : base(context)

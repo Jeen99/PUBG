@@ -78,7 +78,7 @@ namespace ServerTest
 			(model as IGameModel).Players.Add(player1);
 			Assert.AreEqual(model.GetPickUpObjects(player1.Components.GetComponent<SolidBody>().Shape).Count, 1);
 			player1.SendMessage(new TryPickUp());
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			Assert.AreEqual(model.GetPickUpObjects(player1.Components.GetComponent<SolidBody>().Shape).Count, 0);
 		}
 

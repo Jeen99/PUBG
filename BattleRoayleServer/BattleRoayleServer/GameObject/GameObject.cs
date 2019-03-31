@@ -5,6 +5,7 @@ using System.Text;
 using System.Collections.Concurrent;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
+using System.Diagnostics;
 
 namespace BattleRoayleServer
 {
@@ -62,6 +63,7 @@ namespace BattleRoayleServer
 						messageQueue.Enqueue(quantPassed);
 					}
 					//рассылваем сообщение всем объектам
+					
 					while (messageQueue.Count > 0)
 					{
 						IMessage msg = messageQueue.Dequeue();
@@ -109,7 +111,14 @@ namespace BattleRoayleServer
 		/// </summary>
 		public void SendMessage(IMessage msg)
         {
-			messageQueue.Enqueue(msg);
+			if (msg != null)
+			{
+				messageQueue.Enqueue(msg);
+			}
+			else
+			{
+				Log.AddNewRecord($"Объекту {ID} отправлено null сообщение");
+			}
         }
 
 		/// <summary>

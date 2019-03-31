@@ -11,10 +11,7 @@ namespace BattleRoayleServer
 	
 	public class Gun : Weapon
 	{
-		private const float restetution = 0;
-		private const float friction = 0.3f;
-		private const float density = 0;
-
+		
 		public Gun( IModelForComponents context, PointF location) : base(context)
 		{
 			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, new SizeF(8,8)));

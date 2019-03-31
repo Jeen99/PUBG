@@ -31,12 +31,12 @@ namespace BattleRoayleServer
 
 		public static void AddNewRecord(string record)
 		{
-			logger.AddInLog("Ошибка в: " + DateTime.Now, record);
+			logger.AddInLog("Событие в: " + DateTime.Now, record);
 		}
 
 		public static void AddNewRecord(string header, string description)
 		{
-			logger.AddInLog("Ошибка в: " + DateTime.Now + " " + header, description);
+			logger.AddInLog("Событие в: " + DateTime.Now + " " + header, description);
 		}
 	}
 }

@@ -49,30 +49,30 @@ namespace ServerTest.ComponentsTest
 			Room.Field.Step(1f / 60f, 6, 3);
 			//поднимаем оружие
 			player1.SendMessage(new TryPickUp());
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			ICurrentWeapon currentWeapon = player1.Components.GetComponent<CurrentWeapon>();
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//делаем выстрел
 			player1.SendMessage(new MakeShot(2));
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			//проверяем
-			player2.Update();
+			player2.Update(new TimeQuantPassed(1));
 			IHealthy healtySecondGamer = player2.Components.GetComponent<Healthy>();
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			//делаем 2 выстрел
 			player1.SendMessage(new MakeShot(0));
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			//выстрел не должен произойти
-			player2.Update();
+			player2.Update(new TimeQuantPassed(1));
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			Thread.Sleep(550);
 			//делаем 3 выстрел
 			player1.SendMessage(new MakeShot(0));
-			player1.Update();
+			player1.Update(new TimeQuantPassed(1));
 			//выстрел должен произойти
-			player2.Update();
+			player2.Update(new TimeQuantPassed(1));
 			Assert.AreEqual(healtySecondGamer.HP, 84);
 		}
 

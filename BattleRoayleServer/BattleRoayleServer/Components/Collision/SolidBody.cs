@@ -116,16 +116,16 @@ namespace BattleRoayleServer
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed();
+					Handler_TimeQuantPassed(msg as TimeQuantPassed);					
 					break;
 			}
 			
 
 		}
-		private void Handler_TimeQuantPassed()
+		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			Vec2 position = Body.GetPosition();
-			if (position.X != shape.X && position.Y != shape.Y)
+			if (position.X != shape.X || position.Y != shape.Y)
 			{
 				shape.Location = new PointF(position.X, position.Y);
 				Parent.Model?.AddEvent(new PlayerMoved(Parent.ID, shape.Location));
