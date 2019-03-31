@@ -76,6 +76,7 @@
     <Compile Include="GameObjects\Box.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
+    <Compile Include="GameObjects\IModelObject.cs" />
     <Compile Include="GameObjects\Stone.cs" />
     <Compile Include="Battle\PlayerChararcter.cs" />
     <Compile Include="Properties\Recources.Designer.cs">

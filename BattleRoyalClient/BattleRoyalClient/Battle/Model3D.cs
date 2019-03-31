@@ -19,27 +19,29 @@ namespace BattleRoyalClient
 		private TranslateTransform3D translateTransform; // Матрица перемещения
 		private RotateTransform3D rotationTransform; // Матрица вращения
 
-		private GameObject gameObject; // ссылка на игровой объект
+		private IModelObject modelObject;
 
-		public Model3D(Model3DGroup models, GameObject gameObject)
+		private static readonly string pathResources = "pack://application:,,,/Resources/";
+
+		public Model3D(Model3DGroup models, IModelObject modelObject)
 		{
-			this.gameObject = gameObject;
+			this.modelObject = modelObject;
 
-			double x = gameObject.Location.X;
-			double y = gameObject.Location.Y;
-			double z = (double)gameObject.Type;
+			double x = modelObject.Location3D.X;
+			double y = modelObject.Location3D.Y;
+			double z = modelObject.Location3D.Z;
 
 			this.Position = new Vector3D(x, y, z);
 
-			double angle = gameObject.Angle;
+			double angle = modelObject.Angle;
 
 			float axis_x = 0;
 			float axis_y = 0;
 			float axis_z = 1;
 
-			this.Size = gameObject.Size;
+			this.Size = modelObject.Size;
 
-			string path = "pack://application:,,,/Resources/" + gameObject.Type.ToString() + ".png";
+			string pathImage = pathResources + modelObject.Type.ToString() + ".png";
 			//string path = gameObject.Type.ToString();
 
 			MeshGeometry3D mesh = new MeshGeometry3D();
@@ -60,7 +62,7 @@ namespace BattleRoyalClient
 			mesh.TextureCoordinates.Add(new Point(1, 0));
 			mesh.TextureCoordinates.Add(new Point(0, 0));
 			// Натягиваем текстуру
-			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(path)));
+			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(pathImage)));
 			Material material = new DiffuseMaterial(brush);
 			GeometryModel3D geometryModel = new GeometryModel3D(mesh, material);
 			models.Children.Add(geometryModel);
@@ -80,16 +82,14 @@ namespace BattleRoyalClient
 			translateTransform.OffsetZ = v3.Z;
 		}
 
-
 		public void UpdatePosition()
 		{
-			double x = gameObject.Location.X;
-			double y = gameObject.Location.Y;
-			double z = (double)gameObject.Type;
+			//translateTransform.Transform(modelObject.Location);
+			var pos = modelObject.Location3D;
 
-			translateTransform.OffsetX = x;
-			translateTransform.OffsetY = y;
-			translateTransform.OffsetZ = z;
+			translateTransform.OffsetX = pos.X;
+			translateTransform.OffsetY = pos.Y;
+			translateTransform.OffsetZ = pos.Z;
 		}
 
 		public Vector3D GetPosition()

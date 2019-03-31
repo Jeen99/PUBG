@@ -1,9 +1,10 @@
 ﻿using System.Drawing;
+using System.Windows.Media.Media3D;
 using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
-	abstract class GameObject
+	abstract class GameObject : IModelObject
 	{
 		public abstract TypesGameObject Type { get; protected set; }
 
@@ -18,12 +19,27 @@ namespace BattleRoyalClient
 
 		public PointF Location
 		{
-			get { return Shape.Location; }
+			get
+			{
+				return Shape.Location;
+			}
+		}
+
+		public Point3D Location3D
+		{
+			get
+			{
+				var x = Shape.X;
+				var y = Shape.Y;
+				var z = (double)Type;
+
+				return new Point3D(x, y, z);
+			}
 			protected set
 			{
-				//var rect = Shape;
-				//rect.Location = Location;
-				shape.Location = value;
+				var x = (float)value.X;
+				var y = (float)value.Y;
+				shape.Location = new PointF(x, y);
 			}
 		}
 		public SizeF Size
