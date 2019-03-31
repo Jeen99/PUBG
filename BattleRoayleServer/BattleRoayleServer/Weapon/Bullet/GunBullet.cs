@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
-	class GunBullet : IBullet
+	public class GunBullet : IBullet
 	{
 		public float Distance { get; } = 20;
 

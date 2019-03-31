@@ -11,26 +11,43 @@ using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
-	public class SolidBody : Component
+	public class SolidBody : Component, ISolidBody
 	{
 		private RectangleF shape;
 		//на данный момент временное поле
 		public RectangleF Shape { get { return shape; } }
 
 		public Body Body { get; private set; }
-		public List<SolidBody> CoveredObjects { get; } = new List<SolidBody>();
-	
+		public List<ISolidBody> CoveredObjects { get; } = new List<ISolidBody>();
 
-		public SolidBody(GameObject parent,  RectangleF shape, float restetution, float friction,
-			float density, TypesBody typesBody, TypesSolid typesSolid,
-			ushort categoryBits, ushort maskBits)
-			: base(parent)
+		//только для тестов
+		public SolidBody(IGameObject parent):base(parent)
 		{
-			TypeSolid = typesSolid;
+			shape = new RectangleF(60,70, 5,5);
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.X, shape.Y);
+			bDef.Angle = 0;
+			bDef.FixedRotation = true;
+
+			CircleDef pDef = new CircleDef();
+			pDef.Restitution = 0;
+			pDef.Friction = 0;
+			pDef.Density = 0.5f;
+			pDef.Radius = shape.Width / 2;
+			pDef.Filter.CategoryBits = 0;
+			pDef.Filter.MaskBits = 0;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.CreateShape(pDef);
+			Body.SetMassFromShapes();
+			Body.SetUserData(this);
+		}
+
+		public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
+			float density, TypesBody typesBody,ushort categoryBits, ushort maskBits): base(parent)
+		{
 			this.shape = shape;
-			switch (TypeSolid)
-			{
-				case TypesSolid.Solid:
+
 					switch (typesBody)
 					{
 						case TypesBody.Circle:
@@ -40,65 +57,7 @@ namespace BattleRoayleServer
 							CreateRectangleBody(restetution, friction, density, categoryBits, maskBits);
 							break;
 					}
-					break;
-				case TypesSolid.Transparent:
-					switch (typesBody)
-					{
-						case TypesBody.Circle:
-							CreateTransparentCircleBody(restetution, friction, density, categoryBits, maskBits);
-							break;
-						case TypesBody.Rectangle:
-							CreateTransparentRectangleBody(restetution, friction, density, categoryBits, maskBits);
-							break;
-					}
-					break;
-			}
-
-		}
-
-		private void CreateTransparentCircleBody(float restetution, float friction, float density,
-			ushort categoryBits, ushort maskBits)
-		{
-			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.X, shape.Y);
-			bDef.Angle = 0;
-			bDef.FixedRotation = true;
-
-			CircleDef pDef = new CircleDef();
-			pDef.Restitution = restetution;
-			pDef.Friction = friction;
-			pDef.Density = density;
-			pDef.Radius = shape.Width / 2;
-			pDef.IsSensor = true;
-			pDef.Filter.CategoryBits = categoryBits;
-			pDef.Filter.MaskBits = maskBits;
-
-			Body = Parent.Model.Field.CreateBody(bDef);
-			Body.CreateShape(pDef);
-			Body.SetMassFromShapes();
-			Body.SetUserData(this);
-		}
-
-		private void CreateTransparentRectangleBody(float restetution, float friction, float density,
-			ushort categoryBits, ushort maskBits)
-		{
-			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Left, shape.Top);
-			bDef.Angle = 0;
-
-			PolygonDef pDef = new PolygonDef();
-			pDef.Restitution = restetution;
-			pDef.Friction = friction;
-			pDef.Density = density;
-			pDef.SetAsBox(shape.Width / 2, shape.Height / 2);
-			pDef.Filter.CategoryBits = categoryBits;
-			pDef.Filter.MaskBits = maskBits;
-			pDef.IsSensor = true;
-
-			Body = Parent.Model.Field.CreateBody(bDef);
-			Body.CreateShape(pDef);
-			Body.SetMassFromShapes();
-			Body.SetUserData(this);
+			
 		}
 
 		private void CreateCircleBody(float restetution, float friction, float density,
@@ -145,35 +104,32 @@ namespace BattleRoayleServer
 			Body.SetUserData(this);
 		}
 
-		public TypesSolid TypeSolid { get; private set; }
 
 		public override void UpdateComponent(IMessage msg)
 		{
-			if (msg != null)
+			if (msg == null)
 			{
-				switch (msg.TypeMessage)
-				{
-					case TypesProgramMessage.TimeQuantPassed:
-						Handler_TimeQuantPassed();
-						break;
-				}
+				Log.AddNewRecord("Получено null сообщение в компоненте SolidBody");
+				return;
 			}
 
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg as TimeQuantPassed);					
+					break;
+			}
+			
+
 		}
-		private void Handler_TimeQuantPassed()
+		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			Vec2 position = Body.GetPosition();
-			if (position.X != 0 && position.Y != 0)
+			if (position.X != shape.X || position.Y != shape.Y)
 			{
 				shape.Location = new PointF(position.X, position.Y);
-				Parent.Model.HappenedEvents.Enqueue(new PlayerMoved(Parent.ID, shape.Location));
+				Parent.Model?.AddEvent(new PlayerMoved(Parent.ID, shape.Location));
 			}
-		}
-
-		public void BodyMove()
-		{
-			
-			
 		}
 		
 		public override void Dispose()
@@ -190,28 +146,12 @@ namespace BattleRoayleServer
 			}
 		}
 
-		//возвращает коллекцию объектов, которые можно поднять
-		public List<SolidBody> GetPickUpObjects()
-		{
-			List<SolidBody> pickUpObjects = new List<SolidBody>();
-			  
-			foreach (var gameObject in CoveredObjects)
-			{
-				switch (gameObject.Parent.Type)
-				{
-					case TypesGameObject.Weapon:
-						pickUpObjects.Add(gameObject);
-						break;
-				}
-			}
-			return pickUpObjects;
-		}
-
+		
 		public void BodyDelete()
 		{
 			//удаляем объект с карты
 			Body.GetWorld().DestroyBody(Body);
-			Parent.Model.HappenedEvents.Enqueue(new DeleteInMap(Parent.ID));
+			Parent.Model?.AddEvent(new DeleteInMap(Parent.ID));
 		}
 	}
 
@@ -221,12 +161,6 @@ namespace BattleRoayleServer
 		Loot = 0x0002,
 		Box = 0x0003,
 		Stone = 0x0004
-	}
-
-	public enum TypesSolid
-	{
-		Solid,
-		Transparent
 	}
 
 	public enum TypesBody

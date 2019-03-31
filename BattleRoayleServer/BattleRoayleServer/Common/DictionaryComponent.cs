@@ -19,7 +19,14 @@ namespace BattleRoayleServer
 
 		public T GetComponent<T>()
 		{
-			return (T)Components[typeof(T)];
+			try
+			{
+				return (T)Components[typeof(T)];
+			}
+			catch (Exception)
+			{
+				return default(T);
+			}
 		}
 
 		public IComponent GetComponent(Type type)

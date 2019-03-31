@@ -53,21 +53,31 @@
     <Compile Include="Common\DictionaryComponent.cs" />
     <Compile Include="Common\VectorMethod.cs" />
     <Compile Include="Components\Collector.cs" />
+    <Compile Include="Components\Collision\TransparentBody.cs" />
+    <Compile Include="Components\Interfeces\IMovement.cs" />
+    <Compile Include="Components\Interfeces\IHealthy.cs" />
+    <Compile Include="Components\Interfeces\ICurrentWeapon.cs" />
+    <Compile Include="Components\Interfeces\ICollector.cs" />
+    <Compile Include="Components\Interfeces\ISolidBody.cs" />
     <Compile Include="Components\Collision\RoomContactListener.cs" />
     <Compile Include="Components\Collision\SolidBody.cs" />
     <Compile Include="Components\CurrentWeapon.cs" />
     <Compile Include="Components\Healthy.cs" />
     <Compile Include="Components\AbstractComponent\IComponent.cs" />
+    <Compile Include="Components\Interfeces\IMagazin.cs" />
+    <Compile Include="Components\Interfeces\IShot.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="Components\PlayerDied.cs" />
+    <Compile Include="GameModel\IModelForComponents.cs" />
     <Compile Include="GameObject\Box.cs" />
+    <Compile Include="GameObject\IGameObject.cs" />
     <Compile Include="GameObject\LootBox.cs" />
     <Compile Include="GameObject\Stone.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />
     <Compile Include="HandlerException\ConsoleLogger.cs" />
-    <Compile Include="HandlerException\Handler_StandartExceptions.cs" />
+    <Compile Include="HandlerException\Log.cs" />
     <Compile Include="HandlerException\ILogger.cs" />
     <Compile Include="Modifier\Modifier.cs" />
     <Compile Include="Components\Shot.cs" />
@@ -99,6 +109,7 @@
     <Compile Include="Weapon\Bullet\GunBullet.cs" />
     <Compile Include="Weapon\Bullet\IBullet.cs" />
     <Compile Include="Weapon\Gun.cs" />
+    <Compile Include="Weapon\IWeapon.cs" />
     <Compile Include="Weapon\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>

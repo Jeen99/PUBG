@@ -8,7 +8,7 @@ using Box2DX.Common;
 
 namespace BattleRoayleServer
 {
-	public class Movement : Component
+	public class Movement : Component, IMovement
 	{
 		private Direction currentDirection;
 	
@@ -19,25 +19,33 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Ссылка на тело перемещаемого игрока
 		/// </summary>
-		private SolidBody body;
+		private ISolidBody body;
 
-		public Movement(GameObject parent, SolidBody body, float speed) : base(parent)
+		public Movement(IGameObject parent, float speed) : base(parent)
 		{
 			this.speed = speed;
-			this.body = body;
+			this.body = parent?.Components?.GetComponent<SolidBody>();
+			if (body == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента Movement", "Не получена сслыка на компонент SoldiBody");
+				throw new Exception("Ошибка создания компонента Movement");
+			}
 		}
 
 		public override void Dispose()
 		{
 			body = null;
-			return;
 		}
 
 		public override void UpdateComponent(IMessage msg)
 		{
-			if (msg != null)
+			if (msg == null)
 			{
-				switch (msg.TypeMessage)
+				Log.AddNewRecord("Получено null сообщение в компоненте Movement");
+				return;
+			}
+
+			switch (msg.TypeMessage)
 				{
 					case  TypesProgramMessage.GoTo:
 						Handler_StartMoveGamer(msg as GoTo);
@@ -46,8 +54,7 @@ namespace BattleRoayleServer
 						Handler_TimeQuantPassed();
 						break;
 				}
-			}
-
+		
 		}
 
 		private void Handler_TimeQuantPassed()
@@ -83,7 +90,7 @@ namespace BattleRoayleServer
 					dY -= speed;
 					break;
 			}
-			body.Body.SetLinearVelocity(new Vec2(dX, dY));
+			body.Body?.SetLinearVelocity(new Vec2(dX, dY));
 		}
 	}
 }

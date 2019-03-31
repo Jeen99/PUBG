@@ -51,10 +51,26 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="Common\StubMagazin.cs" />
+    <Compile Include="Common\StubPlayer.cs" />
+    <Compile Include="Common\StubSolidBody.cs" />
+    <Compile Include="Common\StubWeapon.cs" />
+    <Compile Include="Common\StubCollector.cs" />
+    <Compile Include="ComponentsTest\CollectorTest.cs" />
+    <Compile Include="ComponentsTest\CurrentWeaponTest.cs" />
+    <Compile Include="ComponentsTest\HealthyTest.cs" />
+    <Compile Include="ComponentsTest\MagazinTest.cs" />
+    <Compile Include="ComponentsTest\MovementTest.cs" />
+    <Compile Include="ComponentsTest\ShotTest.cs" />
+    <Compile Include="ComponentsTest\SolidBodyTest.cs" />
+    <Compile Include="DictionaryComponentsTest.cs" />
+    <Compile Include="RoomContactListenerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoyalGameModelTest.cs" />
+    <Compile Include="RoyalRomeTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

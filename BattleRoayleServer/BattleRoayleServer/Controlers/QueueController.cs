@@ -7,7 +7,7 @@ using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-	class QueueController : IController
+	public class QueueController : IController
 	{
 		private ServerClient client;
 		/// <summary>
@@ -47,7 +47,7 @@ namespace BattleRoayleServer
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
-					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(),
+					Log.Handler_ErrorHandlingClientMsg(this.ToString(),
 						msg.TypeMessage.ToString());
 					break;
 			}

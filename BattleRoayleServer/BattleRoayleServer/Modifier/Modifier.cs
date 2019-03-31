@@ -8,9 +8,9 @@ namespace BattleRoayleServer
 {
 	public abstract class Modifier : GameObject
 	{
-		public Modifier(IGameModel model) : base(model)
+		public Modifier(IModelForComponents model) : base(model)
 		{
 		}
-		public GameObject Holder { get; set; }
+		public IGameObject Holder { get; set; }
     }
 }
