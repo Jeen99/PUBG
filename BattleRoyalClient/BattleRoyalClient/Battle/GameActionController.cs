@@ -48,14 +48,14 @@ namespace BattleRoyalClient
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
 		{
-			var gamer = model.GameObjects[moved.PlayerID];
-			var shapeGamer = model.GameObjects[moved.PlayerID].Shape;
+			var gamer = model.GameObjects[moved.ID];
+			var shapeGamer = model.GameObjects[moved.ID].Shape;
 			shapeGamer.X = moved.NewLocation.X;
 			shapeGamer.Y = moved.NewLocation.Y;
 
 			gamer.Shape = shapeGamer;
 
-			if (moved.PlayerID == model.Chararcter.ID)
+			if (moved.ID == model.Chararcter.ID)
 				model.Chararcter.CharacterChange();
 
 			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });

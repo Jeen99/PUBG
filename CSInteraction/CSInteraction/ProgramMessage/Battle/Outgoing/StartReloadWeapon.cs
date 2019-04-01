@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class EndReloadWeapon : IMessage
+	public class StartReloadWeapon:IMessage, IOutgoing
 	{
 		public ulong ID { get; private set; }
 
-		public EndReloadWeapon(ulong iD)
+		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.StartReloadWeapon;
+
+		public StartReloadWeapon(ulong iD)
 		{
 			ID = iD;
 		}
-
-		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.EndRelaodWeapon;
 	}
 }

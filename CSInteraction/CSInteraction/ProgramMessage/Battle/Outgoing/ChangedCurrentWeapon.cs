@@ -8,15 +8,20 @@ using CSInteraction.Common;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class ChangedCurrentWeapon : IMessage
+	public class ChangedCurrentWeapon : IMessage, IOutgoing
 	{
+		public ChangedCurrentWeapon(ulong iD, TypesWeapon newCurrentWeapon)
+		{
+			ID = iD;
+			NewCurrentWeapon = newCurrentWeapon;
+		}
+
+		public ulong ID { get; private set; }
+
 		public TypesWeapon NewCurrentWeapon { get; private set; }
 
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.ChangedCurrentWeapon;
 
-		public ChangedCurrentWeapon(TypesWeapon newCurrentWeapon)
-		{
-			NewCurrentWeapon = newCurrentWeapon;
-		}
+		
 	}
 }

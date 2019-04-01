@@ -7,15 +7,20 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class ChangedValueHP:IMessage
+	public class ChangedValueHP:IMessage, IOutgoing
 	{
+		public ChangedValueHP(ulong iD, float newValueHP)
+		{
+			ID = iD;
+			NewValueHP = newValueHP;
+		}
+
+		public ulong ID { get; private set; }
+
 		public float NewValueHP { get; private set; }
 
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.ChangedValueHP;
 
-		public ChangedValueHP(float newValueHp)
-		{
-			NewValueHP = newValueHp;
-		}
+		
 	}
 }

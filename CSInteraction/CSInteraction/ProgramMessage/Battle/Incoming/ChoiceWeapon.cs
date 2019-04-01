@@ -11,6 +11,7 @@ namespace CSInteraction.ProgramMessage
 	public class ChoiceWeapon : IMessage
 	{
 		public TypesWeapon ChooseWeapon { get; private set; }
+
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.ChoiceWeapon;
 
 		public ChoiceWeapon(TypesWeapon chooseWeapon)

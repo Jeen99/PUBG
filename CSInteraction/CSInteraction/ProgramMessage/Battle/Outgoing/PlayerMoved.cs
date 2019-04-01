@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class PlayerMoved : IMessage
+	public class PlayerMoved : IMessage, IOutgoing
 	{
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.PlayerMoved;
-		public ulong PlayerID{ get; private set; }
+		public ulong ID{ get; private set; }
 		public PointF NewLocation { get; private set; }
 
-		public PlayerMoved(ulong playerID, PointF newLocation)
+		public PlayerMoved(ulong iD, PointF newLocation)
 		{
-			PlayerID = playerID;
+			ID = iD;
 			NewLocation = newLocation;
 		}
 	}

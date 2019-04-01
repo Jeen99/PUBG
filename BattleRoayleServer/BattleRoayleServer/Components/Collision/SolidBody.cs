@@ -153,6 +153,11 @@ namespace BattleRoayleServer
 			Body.GetWorld().DestroyBody(Body);
 			Parent.Model?.AddEvent(new DeleteInMap(Parent.ID));
 		}
+
+		public override void Setup()
+		{
+			
+		}
 	}
 
 	public enum CollideCategory
