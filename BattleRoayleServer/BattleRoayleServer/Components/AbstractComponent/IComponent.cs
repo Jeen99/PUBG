@@ -9,5 +9,6 @@ namespace BattleRoayleServer
 
 		void Dispose();
 		void UpdateComponent(IMessage msg);
+		void Setup();
 	}
 }

@@ -33,6 +33,8 @@ namespace BattleRoayleServer
 		{
 			return;
 		}
-        
-    }
+
+		public abstract void Setup();
+
+	}
 }
