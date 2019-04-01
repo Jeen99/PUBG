@@ -23,4 +23,6 @@ namespace BattleRoyalClient
 		public DateTime GameTime { get; set;  }
 		public event ChangeModel AutorizationModelChange;
 	}
+
+	public delegate void ChangeModel();
 }

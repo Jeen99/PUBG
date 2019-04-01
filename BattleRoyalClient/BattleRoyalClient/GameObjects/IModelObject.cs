@@ -4,7 +4,7 @@ using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
-	interface IModelObject
+	public interface IModelObject
 	{
 		double Angle { get; }
 		PointF Location { get; }
@@ -12,5 +12,6 @@ namespace BattleRoyalClient
 		RectangleF Shape { get; set; }
 		SizeF Size { get; }
 		TypesGameObject Type { get; }
+		ulong ID { get; }
 	}
 }

@@ -54,18 +54,24 @@ namespace BattleRoyalClient
 		{
 			var HP = model.Chararcter.HP;
 			HP = changedValueHP.HP;
+			model.Chararcter.OnChangeHP();
 		}
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
 		{
-			var gamer = model.Chararcter.character;
-			var shapeGamer = gamer.Shape;
-			shapeGamer.X = moved.NewLocation.X;
-			shapeGamer.Y = moved.NewLocation.Y;
+			IModelObject modelObject;
+			if (!model.GameObjects.TryGetValue(moved.PlayerID, out modelObject))
+				return;
 
-			gamer.Shape = shapeGamer;
+			var gamer = modelObject as Gamer;
+			gamer.Update(moved.NewLocation);
 
-			view.Dispatcher.Invoke(() => { model.CreateChangeModel(); });
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gamer); });
+
+			if (gamer.ID == model.Chararcter.ID)
+			{
+				view.Dispatcher.Invoke(() => { model.Chararcter.OnChangePosition(); });
+			}
 		}
 
 		private void Handler_RoomState(RoomState msg)
@@ -99,6 +105,9 @@ namespace BattleRoyalClient
 
 		private GameObject AddStone(GameObjectState msg)
 		{
+			if (model.GameObjects.Keys.Contains(msg.ID))
+				return (GameObject)model.GameObjects[msg.ID];
+
 			Stone stone = new Stone();
 			foreach (IMessage message in msg.StatesComponents)
 			{
@@ -107,16 +116,19 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
 						stone.Shape = state.Shape;
+						stone.ID = msg.ID;
 						break;
 				}
 			}
-			//stone.Model3D = new Model3D(view.models, stone);
-			CreateModel3d(stone);
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(stone); });
 			return stone;
 		}
 
 		private GameObject AddGamer(GameObjectState msg)
 		{
+			if (model.GameObjects.Keys.Contains(msg.ID))
+				return (GameObject)model.GameObjects[msg.ID];
+
 			Gamer gamer = new Gamer();
 
 			foreach (IMessage message in msg.StatesComponents)
@@ -126,20 +138,25 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
 						gamer.Shape = state.Shape;
+						gamer.ID = msg.ID;
 						break;
 				}
 			}
 
 			if (msg.ID == model.Chararcter.ID)
+			{
 				model.Chararcter.Create(gamer);
-
-			//gamer.Model3D = new Model3D(view.models, gamer);
-			CreateModel3d(gamer);
+				view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeHP(); });
+			}
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gamer); });
 			return gamer;
 		}
 
 		private GameObject AddBox(GameObjectState msg)
 		{
+			if (model.GameObjects.Keys.Contains(msg.ID))
+				return (GameObject)model.GameObjects[msg.ID];
+
 			Box box = new Box();
 			foreach (IMessage message in msg.StatesComponents)
 			{
@@ -148,14 +165,14 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.BodyState:
 						BodyState state = (message as BodyState);
 						box.Shape = state.Shape;
+						box.ID = msg.ID;
 						break;
 				}
 			}
-			CreateModel3d(box);
-			//box.Model3D = new Model3D(view.models, box);
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(box); });
 			return box;
 		}
-		private GameObject UpdateGameObject(GameObject gameObject, GameObjectState newData)
+		private IModelObject UpdateGameObject(IModelObject gameObject, GameObjectState newData)
 		{
 			foreach (IMessage message in newData.StatesComponents)
 			{
@@ -167,26 +184,10 @@ namespace BattleRoyalClient
 						break;
 				}
 			}
-			UpdateModel3d(gameObject);
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gameObject); });
 			return gameObject;
 		}
 
-		private void CreateModel3d(GameObject gameObject)
-		{
-			//перенести обработку в View
-			view.Dispatcher.Invoke(() =>
-			{
-				gameObject.Model3D = new Model3D(view.models, gameObject);
-			});
-		}
-
-		private void UpdateModel3d(GameObject gameObject)
-		{
-			view.Dispatcher.Invoke(() =>
-			{
-				gameObject.Model3D.UpdatePosition();
-			});
-		}
 
 		private void Client_EventEndSession()
 		{

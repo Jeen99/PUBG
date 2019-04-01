@@ -8,8 +8,6 @@ namespace BattleRoyalClient
 	{
 		public abstract TypesGameObject Type { get; protected set; }
 
-		public Model3D Model3D { get; set; } // вынести из класса
-
 		private RectangleF shape;
 		public RectangleF Shape
 		{
@@ -52,6 +50,8 @@ namespace BattleRoyalClient
 		}
 
 		public double Angle { get; protected set; }
+
+		public ulong ID { get; set; }
 
 		public GameObject()
 		{

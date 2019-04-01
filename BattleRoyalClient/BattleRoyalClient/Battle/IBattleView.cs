@@ -9,6 +9,6 @@ namespace BattleRoyalClient
 	interface IBattleView
 	{
 		bool Transition { get; set; }
-		void Update();
+		//void UpdateVisual(IModelObject model, ulong ID);
 	}
 }
