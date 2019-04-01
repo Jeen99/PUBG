@@ -14,22 +14,32 @@ using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
-    public class RoyalGameModel : IGameModel
+    public class RoyalGameModel : IGameModel, IModelForComponents
 	{
+
+		private const int minValueGamerInBattle = 0;
 		/// <summary>
 		///ширина одной стороны игровой карты 
 		/// </summary>
 		private const float lengthOfSide = 500;
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
-        public Dictionary<ulong,GameObject> GameObjects { get; private set; }
-		
+		/// <summary>
+		/// Коллекция всех игровых объектов в игре
+		/// </summary>
+        public Dictionary<ulong,IGameObject> GameObjects { get; private set; }
+		/// <summary>
+		/// Коллекция для объектов, которые не участвуют в физическом взаимодействии
+		/// </summary>
+		public List<IGameObject> Loot { get; private set; }
+
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
 		/// </summary>
 		public ObservableQueue<IMessage> HappenedEvents { get; private set; }
-		
+
+		public event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами
 		/// </summary>
@@ -41,17 +51,33 @@ namespace BattleRoayleServer
 		{
 			//скрипт создания игровых объектов
 			Stone stone = new Stone(this, new PointF(10, 10), new Size(14,14));
+			stone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(stone.ID, stone);
+
 			stone = new Stone(this, new PointF(30, 28), new Size(12, 12));
+			stone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(stone.ID, stone);
+
 			stone = new Stone(this, new PointF(78, 30), new Size(15, 15));
 			GameObjects.Add(stone.ID, stone);
+			stone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
+
 			Box box = new Box(this, new PointF(40, 100), new Size(12, 12));
 			GameObjects.Add(box.ID, box);
+			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
+
 			box = new Box(this, new PointF(150, 10), new Size(12, 12));
+			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(box.ID, box);
-			Gun gun = new Gun(new PointF(50,70),this);
+
+			Gun gun = new Gun(this, new PointF(50, 70));
+			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(gun.ID, gun);
+		}
+
+		private void Model_EventGameObjectDeleted(IGameObject gameObject)
+		{
+			GameObjects.Remove(gameObject.ID);
 		}
 
 		/// <summary>
@@ -62,11 +88,26 @@ namespace BattleRoayleServer
 			for (int i = 0; i < gamersInRoom; i++)
 			{
 				//создаем игрока
-				Gamer gamer = new Gamer(CreatePlayerLocation(i), this);
+				Gamer gamer = new Gamer(this, CreatePlayerLocation(i));
 				Players.Add(gamer);
 				GameObjects.Add(gamer.ID,gamer);
+				gamer.EventGameObjectDeleted += Model_EventGameObjectDeleted;
+				gamer.EventPlayerDeleted += RemovePlayer;
 			}
 		}
+
+		public void RemovePlayer(IPlayer player)
+		{
+			if (Players.Remove(player))
+			{
+				if (Players.Count <= minValueGamerInBattle)
+				{
+					EventRoaylGameModelEndWork?.Invoke();
+				}
+			}
+		}
+		
+
 		private PointF CreatePlayerLocation(int index)
 		{
 			switch (index)
@@ -79,11 +120,14 @@ namespace BattleRoayleServer
 					return new PointF(0, 0);
 			}
 		}
+
 		public RoyalGameModel(int gamersInRoom)
 		{
 			//инициализируем полей
 			Players = new List<IPlayer>();
-			GameObjects = new Dictionary<ulong, GameObject>();
+			GameObjects = new Dictionary<ulong, IGameObject>();
+			HappenedEvents = new ObservableQueue<IMessage>();
+			Loot = new List<IGameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -93,13 +137,31 @@ namespace BattleRoayleServer
 			Field.SetContactListener(solver);
 			CreateFrame();
 
-			HappenedEvents = new ObservableQueue<IMessage>();
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			CreateStaticGameObject();
 			CreatePlayers(gamersInRoom);
 
 		}
+
+		//только для тестов
+		public RoyalGameModel()
+		{
+			//инициализируем полей
+			Players = new List<IPlayer>();
+			GameObjects = new Dictionary<ulong, IGameObject>();
+			HappenedEvents = new ObservableQueue<IMessage>();
+			Loot = new List<IGameObject>();
+
+			AABB frameField = new AABB();
+			frameField.LowerBound.Set(0, 0);
+			frameField.UpperBound.Set(lengthOfSide, lengthOfSide);
+			Field = new World(frameField, new Vec2(0, 0), false);
+			var solver = new RoomContactListener();
+			Field.SetContactListener(solver);
+			CreateFrame();
+		}
+
 		private void CreateFrame()
 		{
 			//bottom
@@ -159,7 +221,7 @@ namespace BattleRoayleServer
 			frame.CreateShape(pDefRight);
 		}
 
-		public void AddGameObject(GameObject gameObject)
+		public void AddGameObject(IGameObject gameObject)
 		{
 			GameObjects.Add(gameObject.ID, gameObject);
 			//посылваем сообщение об добавлении нового объекта
@@ -167,7 +229,7 @@ namespace BattleRoayleServer
 			HappenedEvents.Enqueue(gameObject.State);
 		}
 
-		public void RemoveGameObject(GameObject gameObject)
+		public void RemoveGameObject(IGameObject gameObject)
 		{
 			GameObjects.Remove(gameObject.ID);
 		}
@@ -177,6 +239,43 @@ namespace BattleRoayleServer
 			GameObjects.Clear();
 			Field.Dispose();
 			HappenedEvents.Clear();
+			Loot.Clear();
 		}
+
+		//возвращает коллекцию объектов, которые можно поднять
+		public List<IGameObject> GetPickUpObjects(RectangleF shapePlayer)
+		{
+			List<IGameObject> pickUpObjects = new List<IGameObject>();
+
+			foreach (var gameObject in Loot)
+			{
+
+				var shapeLoot = gameObject.Components.GetComponent<TransparentBody>().Shape;
+				if (shapeLoot.IntersectsWith(shapePlayer))
+				{
+					pickUpObjects.Add(gameObject);
+				}
+				break;
+
+			}
+			return pickUpObjects;
+		}
+
+		public void AddLoot(IGameObject gameObject)
+		{
+			Loot.Add(gameObject);
+		}
+
+		public void AddEvent(IMessage message)
+		{
+			HappenedEvents.Enqueue(message);
+		}
+
+		public void RemoveLoot(IGameObject gameObject)
+		{
+			Loot.Remove(gameObject);
+		}
+
+		
 	}
 }

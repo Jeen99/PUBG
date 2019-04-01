@@ -8,16 +8,21 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public class CurrentWeapon : Component
+	public class CurrentWeapon : Component, ICurrentWeapon
 	{
-		private Collector inventory;
-		private Weapon currentWeapon;
+		private ICollector inventory;
+		private IWeapon currentWeapon;
 
-		public Weapon GetCurrentWeapon { get => currentWeapon; }
+		public IWeapon GetCurrentWeapon { get => currentWeapon; }
 
-		public CurrentWeapon(GameObject parent, Collector collector) : base(parent)
+		public CurrentWeapon(IGameObject parent) : base(parent)
 		{
-			inventory = collector;
+			this.inventory = parent?.Components?.GetComponent<Collector>();
+			if (inventory == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента CurrentWeapon", "Не получена сслыка на компонент Collector");
+				throw new Exception("Ошибка создания компонента CurrentWeapon");
+			}
 			currentWeapon = null;
 		}
 
@@ -44,6 +49,13 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
+
+			if (msg == null)
+			{
+				Log.AddNewRecord("Получено null сообщение в компоненте CurrentWeapon");
+				return;
+			}
+
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.ChoiceWeapon:
@@ -89,7 +101,7 @@ namespace BattleRoayleServer
 			currentWeapon = inventory.GetWeapon(type);
 			currentWeapon.Holder = Parent;
 			//отправляем сообщение об этом
-			Parent.Model.HappenedEvents.Enqueue(new ChangedCurrentWeapon(type));
+			Parent?.Model?.AddEvent(new ChangedCurrentWeapon(type));
 		}
 	}
 }

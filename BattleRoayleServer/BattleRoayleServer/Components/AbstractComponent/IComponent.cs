@@ -4,7 +4,7 @@ namespace BattleRoayleServer
 {
 	public interface IComponent
 	{
-		GameObject Parent { get; }
+		IGameObject Parent { get; }
 		IMessage State { get; }
 
 		void Dispose();

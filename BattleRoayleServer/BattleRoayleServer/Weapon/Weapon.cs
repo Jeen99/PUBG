@@ -3,19 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Drawing;
 using CSInteraction.Common;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public abstract class Weapon : GameObject
+	public abstract class Weapon : GameObject, IWeapon
 	{
-		public Weapon(IGameModel model) : base(model)
+		public Weapon(IModelForComponents model) : base(model)
 		{
 
 		}
-		public GameObject Holder { get; set; }
 
-		public virtual TypesWeapon TypeWeapon { get; }
+		public IGameObject Holder { get; set; }
+
+		public TypesWeapon TypeWeapon { get; protected set; }
+		
 	}
 }

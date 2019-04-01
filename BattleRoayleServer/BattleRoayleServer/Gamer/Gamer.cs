@@ -11,27 +11,27 @@ namespace BattleRoayleServer
 {
 	public class Gamer : GameObject, IPlayer
 	{
-		private const float restetution = 0.2f;
+		private const float restetution = 0;
 		private const float friction = 0.3f;
 		private const float density = 0.5f;
 
 		public event PlayerDeleted EventPlayerDeleted;
 
-		public Gamer(PointF location, IGameModel context) : base(context)
+		public Gamer(IModelForComponents context, PointF location) : base(context)
 		{
 
 			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
-				friction, density, TypesBody.Circle, TypesSolid.Solid, (ushort)CollideCategory.Player,
+				friction, density, TypesBody.Circle, (ushort)CollideCategory.Player,
 				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
 			Components.Add(body);
 
-			var movement = new Movement(this, body, 40f);
+			var movement = new Movement(this, 40f);
 			Components.Add(movement);
 
-			var collector = new Collector(this, body);
+			var collector = new Collector(this);
 			Components.Add(collector);
 
-			var currentWeapon = new CurrentWeapon(this, collector);
+			var currentWeapon = new CurrentWeapon(this);
 			Components.Add(currentWeapon);
 
 			var healthy = new Healthy(this);
@@ -44,7 +44,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Для упрощения доступа к расположения игрока на карте
 		/// </summary>
-		private SolidBody body;
+		private ISolidBody body;
 
 		public override TypesGameObject Type { get; } = TypesGameObject.Player;
 

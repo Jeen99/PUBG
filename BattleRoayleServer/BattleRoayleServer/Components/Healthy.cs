@@ -7,9 +7,9 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public class Healthy : Component
+	public class Healthy : Component, IHealthy
 	{
-		public Healthy(GameObject parent) : base(parent)
+		public Healthy(IGameObject parent) : base(parent)
 		{
 			HP = 100;
 		}
@@ -18,13 +18,20 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
+			if (msg == null)
+			{
+				Log.AddNewRecord("Получено null сообщение в компоненте Healthy");
+				return;
+			}
+
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.GotDamage:
-					Handler_UpdateComponent(msg as GotDamage);
+					Handler_GotDamage(msg as GotDamage);
 					break;
 			}
 		}
+
 		public override IMessage State
 		{
 			get
@@ -32,14 +39,15 @@ namespace BattleRoayleServer
 				return new HealthyState(HP);
 			}
 		}
-		private void Handler_UpdateComponent(GotDamage msg)
+
+		private void Handler_GotDamage(GotDamage msg)
 		{
 			HP -= msg.Damage;
 			if (HP < 0)
 			{
 				Parent.Dispose();
 			}
-			Parent.Model.HappenedEvents.Enqueue(new ChangedValueHP(HP));
+			Parent.Model?.AddEvent(new ChangedValueHP(HP));
 		}
 	}
 }

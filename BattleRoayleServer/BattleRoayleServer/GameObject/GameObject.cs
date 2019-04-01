@@ -5,10 +5,11 @@ using System.Text;
 using System.Collections.Concurrent;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
+using System.Diagnostics;
 
 namespace BattleRoayleServer
 {
-	public abstract class GameObject
+	public abstract class GameObject : IGameObject
 	{
 		//получение id - не должно переопределясться
 		private object sinchGetId = new object();
@@ -27,7 +28,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public IGameModel Model { get; private set; }
+		public IModelForComponents Model { get; private set; }
 		/// <summary>
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
@@ -37,7 +38,7 @@ namespace BattleRoayleServer
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
 
-		public GameObject(IGameModel model)
+		public GameObject(IModelForComponents model)
 		{
 			//иницализация всех полей
 			ID = GetID();
@@ -62,6 +63,7 @@ namespace BattleRoayleServer
 						messageQueue.Enqueue(quantPassed);
 					}
 					//рассылваем сообщение всем объектам
+					
 					while (messageQueue.Count > 0)
 					{
 						IMessage msg = messageQueue.Dequeue();
@@ -109,7 +111,14 @@ namespace BattleRoayleServer
 		/// </summary>
 		public void SendMessage(IMessage msg)
         {
-			messageQueue.Enqueue(msg);
+			if (msg != null)
+			{
+				messageQueue.Enqueue(msg);
+			}
+			else
+			{
+				Log.AddNewRecord($"Объекту {ID} отправлено null сообщение");
+			}
         }
 
 		/// <summary>
@@ -125,7 +134,7 @@ namespace BattleRoayleServer
 			}
 			Components.Clear();
 			messageQueue.Clear();
-			Model.HappenedEvents.Enqueue(new GameObjectDestroy(ID));
+			Model.AddEvent(new GameObjectDestroy(ID));
 			Model = null;
 
         }

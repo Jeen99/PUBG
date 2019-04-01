@@ -33,7 +33,7 @@ namespace BattleRoayleServer
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
-					Handler_StandartExceptions.Handler_ErrorHandlingClientMsg(this.ToString(), 
+					Log.Handler_ErrorHandlingClientMsg(this.ToString(), 
 						msg.TypeMessage.ToString());
 					break;
 			}

@@ -10,29 +10,30 @@ namespace BattleRoayleServer
 {
     public class Rooms
     {
-        ObservableCollection<IRoom> rooms;
+        public ObservableCollection<IRoom> CollectionRooms { get; private set; }
 
         public Rooms()
         {
-            rooms = new ObservableCollection<IRoom>();
+			CollectionRooms = new ObservableCollection<IRoom>();
         }
 
 		//выполнеят действия по созданию комнаты
         public void AddRoom(List<QueueGamer> gamers)
         {
 			IRoom room = new RoyalRoom(gamers);
-			rooms.Add(room);
+			CollectionRooms.Add(room);
 			room.StartRoom();
 			room.EventRoomEndWork += DeliteRoom;
         }
 
 		public void DeliteRoom(IRoom room)
         {		
-			if(rooms.Remove(room))
+			if(CollectionRooms.Remove(room))
 			{
 				room.Dispose();
+				Log.AddNewRecord("Произошло завершение работы игровой комнаты");
 			}
-			//добавить запись в лог
+			
         }
     }
 }
