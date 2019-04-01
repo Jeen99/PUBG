@@ -35,5 +35,10 @@ namespace ServerTest
 		{
 
 		}
+
+		public void Setup()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

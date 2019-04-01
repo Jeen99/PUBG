@@ -43,6 +43,11 @@ namespace ServerTest
 			return new List<ISolidBody>();
 		}
 
+		public void Setup()
+		{
+			throw new NotImplementedException();
+		}
+
 		public void UpdateComponent(IMessage msg)
 		{
 			

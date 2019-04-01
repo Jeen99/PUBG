@@ -40,5 +40,10 @@ namespace BattleRoayleServer
 		{
 			Parent.Model.RemoveLoot(Parent);
 		}
+
+		public override void Setup()
+		{
+			
+		}
 	}
 }

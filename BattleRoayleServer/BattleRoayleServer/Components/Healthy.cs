@@ -49,5 +49,10 @@ namespace BattleRoayleServer
 			}
 			Parent.Model?.AddEvent(new ChangedValueHP(HP));
 		}
+
+		public override void Setup()
+		{
+
+		}
 	}
 }

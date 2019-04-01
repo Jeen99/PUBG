@@ -120,8 +120,8 @@ namespace BattleRoayleServer
 					break;
 			}
 			
-
 		}
+
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			Vec2 position = Body.GetPosition();
@@ -152,6 +152,11 @@ namespace BattleRoayleServer
 			//удаляем объект с карты
 			Body.GetWorld().DestroyBody(Body);
 			Parent.Model?.AddEvent(new DeleteInMap(Parent.ID));
+		}
+
+		public override void Setup()
+		{
+	
 		}
 	}
 

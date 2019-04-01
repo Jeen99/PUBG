@@ -33,6 +33,7 @@ namespace BattleRoayleServer
 		/// Очередь для хранения сообщений для этого игрового объекта
 		/// </summary>
 		private Queue<IMessage> messageQueue;
+
 		public ulong ID { get; private set; }
 
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
@@ -139,10 +140,18 @@ namespace BattleRoayleServer
 
         }
 
-        /// <summary>
-        /// Возвращает true, если объект уничтожен
-        /// </summary>
-        public bool Destroyed { get; protected set; }
+		public virtual void Setup()
+		{
+			foreach (IComponent item in Components)
+			{
+				item.Setup();
+			}
+		}
+
+		/// <summary>
+		/// Возвращает true, если объект уничтожен
+		/// </summary>
+		public bool Destroyed { get; protected set; }
 		
 	}
 }

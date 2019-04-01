@@ -12,22 +12,24 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_CreateCurrentWeapon()
 		{
-			var weapon = new StubPlayer();
-			weapon.Components.Add(new SolidBody(weapon));
-			weapon.Components.Add(new Collector(weapon));
-			ICurrentWeapon currentWeapon = new CurrentWeapon(weapon);
+			var player = new StubPlayer();
+			player.Components.Add(new SolidBody(player));
+			player.Components.Add(new Collector(player));
+			player.Setup();
+			ICurrentWeapon currentWeapon = new CurrentWeapon(player);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_ErrorCreateCurrentWeapon1()
+		public void Test_ErrorSetupCurrentWeapon1()
 		{
 			ICurrentWeapon currentWeapon = new CurrentWeapon(new StubWeapon());
+			currentWeapon.Setup();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_ErrorCreateCurrentWeapon2()
+		public void Test_ErrorCreateCurrentWeapon()
 		{
 			ICurrentWeapon currentWeapon = new CurrentWeapon(null);
 		}

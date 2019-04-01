@@ -21,6 +21,8 @@ namespace ServerTest
 			IGameModel model = new RoyalGameModel();
 			int count = model.GameObjects.Count;
 			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
+			stone.Setup();
+
 			model.AddGameObject(stone);
 			Assert.AreEqual(count + 1, model.GameObjects.Count);
 		}
@@ -30,6 +32,8 @@ namespace ServerTest
 			IGameModel model = new RoyalGameModel();
 			int count = model.GameObjects.Count;
 			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
+			stone.Setup();
+
 			model.AddGameObject(stone);
 			Assert.AreEqual(count + 1, model.GameObjects.Count);
 			model.RemoveGameObject(stone);
@@ -42,6 +46,8 @@ namespace ServerTest
 			IModelForComponents model = new RoyalGameModel();
 			int count = (model as IGameModel).Loot.Count;
 			var gun = new Gun(model, new PointF(30, 20));
+			gun.Setup();
+
 			Assert.AreEqual(count + 1, (model as IGameModel).Loot.Count);
 		}
 
@@ -51,6 +57,8 @@ namespace ServerTest
 			IModelForComponents model = new RoyalGameModel();
 			int count = (model as IGameModel).Loot.Count;
 			var gun = new Gun(model, new PointF(30, 20));
+			gun.Setup();
+
 			Assert.AreEqual(count + 1, (model as IGameModel).Loot.Count);
 			model.RemoveLoot(gun);
 			Assert.AreEqual(count, (model as IGameModel).Loot.Count);
@@ -69,12 +77,19 @@ namespace ServerTest
 		public void Test_GetPickUpObjects()
 		{
 			IModelForComponents model = new RoyalGameModel();
+
 			var gun = new Gun(model, new PointF(50, 70));
+			gun.Setup();
 			model.AddGameObject(gun);
+
 			var box = new Box(model, new PointF(50, 70), new SizeF(10, 10));
+			box.Setup();
 			model.AddGameObject(box);
+
 			var player1 = new Gamer(model, new PointF(50, 70));
+			player1.Setup();
 			model.AddGameObject(player1);
+
 			(model as IGameModel).Players.Add(player1);
 			Assert.AreEqual(model.GetPickUpObjects(player1.Components.GetComponent<SolidBody>().Shape).Count, 1);
 			player1.SendMessage(new TryPickUp());

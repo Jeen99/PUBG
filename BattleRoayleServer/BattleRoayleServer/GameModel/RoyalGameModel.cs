@@ -142,6 +142,12 @@ namespace BattleRoayleServer
 			CreateStaticGameObject();
 			CreatePlayers(gamersInRoom);
 
+			//настраиваем игровые объекты
+			foreach (var key in GameObjects.Keys)
+			{
+				GameObjects[key].Setup();
+			}
+
 		}
 
 		//только для тестов

@@ -14,14 +14,15 @@ namespace ServerTest.ComponentsTest
 	{
 		[TestMethod]
 		[ExpectedException(typeof(Exception))] 
-		public void Test_ErrorCreateShot1()
+		public void Test_ErrorSetupShot()
 		{
 			Shot shot = new Shot(new StubWeapon());
+			shot.Setup();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_ErrorCreateShot2()
+		public void Test_ErrorCreateShot()
 		{
 			Shot shot = new Shot(null);
 		}
@@ -39,11 +40,17 @@ namespace ServerTest.ComponentsTest
 		{
 			//создаем коллекцию объектов для теста
 			var Room = new RoyalGameModel();
+
 			var gun = new Gun(Room, new PointF(50, 70));
+			gun.Setup();
 			Room.GameObjects.Add(gun.ID, gun);
+
 			var player1 = new Gamer(Room, new PointF(50, 70));
+			player1.Setup();
 			Room.GameObjects.Add(player1.ID, player1);
+
 			var player2 = new Gamer(Room, new PointF(50, 85));
+			player2.Setup();
 			Room.GameObjects.Add(player2.ID, player2);
 
 			Room.Field.Step(1f / 60f, 6, 3);

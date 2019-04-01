@@ -19,18 +19,23 @@ namespace BattleRoayleServer
 		public Shot(IWeapon parent) : base(parent)
 		{
 			
-			this.magazin = parent?.Components?.GetComponent<Magazin>();
-			if (magazin == null)
-			{
-				Log.AddNewRecord("Ошибка создания компонента Shot", "Не получена сслыка на компонент Magazin");
-				throw new Exception("Ошибка создания компонента Shot");
-			}
+			
 			
 		}
 
 		public override void Dispose()
 		{
 			magazin = null;
+		}
+
+		public override void Setup()
+		{
+			this.magazin = Parent.Components?.GetComponent<Magazin>();
+			if (magazin == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента Shot", "Не получена сслыка на компонент Magazin");
+				throw new Exception("Ошибка создания компонента Shot");
+			}
 		}
 
 		public override void UpdateComponent(IMessage msg)
