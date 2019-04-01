@@ -38,6 +38,9 @@ namespace BattleRoayleServer
 		{
 			return;
 		}
-        
-    }
+		/// <summary>
+		/// Метод для настройки связей между компонентами
+		/// </summary>
+		public abstract void Setup();
+	}
 }
