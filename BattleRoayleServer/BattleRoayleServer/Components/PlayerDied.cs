@@ -24,5 +24,10 @@ namespace BattleRoayleServer
 			//сохраняем статистику игрока
 			BDAccounts.AddToStatistic(new AchievementsOfBattle());
 		}
+
+		public override void Setup()
+		{
+			
+		}
 	}
 }

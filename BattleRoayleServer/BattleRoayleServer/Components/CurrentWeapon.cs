@@ -17,12 +17,6 @@ namespace BattleRoayleServer
 
 		public CurrentWeapon(IGameObject parent) : base(parent)
 		{
-			this.inventory = parent?.Components?.GetComponent<Collector>();
-			if (inventory == null)
-			{
-				Log.AddNewRecord("Ошибка создания компонента CurrentWeapon", "Не получена сслыка на компонент Collector");
-				throw new Exception("Ошибка создания компонента CurrentWeapon");
-			}
 			currentWeapon = null;
 		}
 
@@ -101,7 +95,17 @@ namespace BattleRoayleServer
 			currentWeapon = inventory.GetWeapon(type);
 			currentWeapon.Holder = Parent;
 			//отправляем сообщение об этом
-			Parent?.Model?.AddEvent(new ChangedCurrentWeapon(type));
+			Parent?.Model?.AddEvent(new ChangedCurrentWeapon(Parent.ID,type));
+		}
+
+		public override void Setup()
+		{
+			this.inventory = Parent.Components?.GetComponent<Collector>();
+			if (inventory == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента CurrentWeapon", "Не получена сслыка на компонент Collector");
+				throw new Exception("Ошибка создания компонента CurrentWeapon");
+			}
 		}
 	}
 }

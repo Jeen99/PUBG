@@ -24,12 +24,6 @@ namespace BattleRoayleServer
 		public Movement(IGameObject parent, float speed) : base(parent)
 		{
 			this.speed = speed;
-			this.body = parent?.Components?.GetComponent<SolidBody>();
-			if (body == null)
-			{
-				Log.AddNewRecord("Ошибка создания компонента Movement", "Не получена сслыка на компонент SoldiBody");
-				throw new Exception("Ошибка создания компонента Movement");
-			}
 		}
 
 		public override void Dispose()
@@ -83,14 +77,24 @@ namespace BattleRoayleServer
 			switch (currentDirection.Vertical)
 			{
 				case DirectionVertical.Up:
-					dY -= speed;
+					dY = speed;
 					break;
 
 				case DirectionVertical.Down:
-					dY = speed;
+					dY -= speed;
 					break;
 			}
 			body.Body?.SetLinearVelocity(new Vec2(dX, dY));
+		}
+
+		public override void Setup()
+		{
+			this.body = Parent.Components?.GetComponent<SolidBody>();
+			if (body == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента Movement", "Не получена сслыка на компонент SoldiBody");
+				throw new Exception("Ошибка создания компонента Movement");
+			}
 		}
 	}
 }

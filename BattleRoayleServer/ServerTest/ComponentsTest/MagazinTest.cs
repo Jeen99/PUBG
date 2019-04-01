@@ -34,6 +34,8 @@ namespace ServerTest.ComponentsTest
 		public void Test_GetBullet()
 		{
 			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300);
+			magazin.Setup();
+
 			//делаем 8 выстрелов
 			for (int i = 0; i < 8; i++)
 			{
@@ -51,6 +53,8 @@ namespace ServerTest.ComponentsTest
 		public void Test_UpdateComponent_MakeReload()
 		{
 			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300);
+			magazin.Setup();
+
 			magazin.UpdateComponent(new MakeReloadWeapon());
 			Assert.IsNull(magazin.GetBullet());
 			Thread.Sleep(330);

@@ -13,6 +13,7 @@ namespace ServerTest
 		{
 			DictionaryComponent  dictionary = new DictionaryComponent();
 			IComponent magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 1000);
+			magazin.Setup();
 			dictionary.Add(magazin);
 			IMagazin thisMagazin = dictionary.GetComponent<Magazin>();
 			Assert.AreEqual(magazin, thisMagazin);

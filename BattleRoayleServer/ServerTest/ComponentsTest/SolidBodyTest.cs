@@ -43,6 +43,7 @@ namespace ServerTest.ComponentsTest
 			ISolidBody solidBody = new SolidBody(player, new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
 				TypesBody.Circle, 0, 0);
 			player.Components.Add(solidBody);
+			player.Setup();
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count+1);
 			solidBody.BodyDelete();
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count);
@@ -54,6 +55,7 @@ namespace ServerTest.ComponentsTest
 		{
 			var Room = new RoyalGameModel();
 			var player1 = new Gamer(Room, new PointF(50, 70));
+			player1.Setup();
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 

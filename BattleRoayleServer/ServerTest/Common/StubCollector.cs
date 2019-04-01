@@ -37,5 +37,10 @@ namespace ServerTest
 		public void UpdateComponent(IMessage msg)
 		{
 		}
+
+		public void Setup()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

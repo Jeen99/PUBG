@@ -15,6 +15,7 @@ namespace ServerTest.ComponentsTest
 		{
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
+			player.Setup();
 			IMovement movement = new Movement(player, 8);
 		}
 
@@ -31,11 +32,16 @@ namespace ServerTest.ComponentsTest
 			var player = new StubPlayer();
 			var body = new SolidBody(player);
 			player.Components.Add(body);
+			player.Setup();
+
 			float speed = 8;
 			IMovement movement = new Movement(player, speed);
+			movement.Setup();
 			movement.UpdateComponent(new GoTo(new Direction(DirectionHorisontal.Left, DirectionVertical.Down)));
+			
+
 			var vector = body.Body.GetLinearVelocity();
-			if (vector.X != -speed || vector.Y != speed)
+			if (vector.X != -speed || vector.Y != -speed)
 			{
 				Assert.IsNotNull(null);
 			}

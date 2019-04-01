@@ -120,8 +120,8 @@ namespace BattleRoayleServer
 					break;
 			}
 			
-
 		}
+
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			Vec2 position = Body.GetPosition();
@@ -156,7 +156,7 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
-			
+
 		}
 	}
 

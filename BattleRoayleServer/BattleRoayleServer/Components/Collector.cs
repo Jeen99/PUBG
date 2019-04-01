@@ -34,12 +34,7 @@ namespace BattleRoayleServer
 		{
 			modifiers = new Modifier[5];
 			weapons = new Weapon[4];
-			this.body = parent?.Components?.GetComponent<SolidBody>();
-			if (body == null)
-			{
-				Log.AddNewRecord("Ошибка создания компонента Сollector", "Не получена сслыка на компонент SolidBody");
-				throw new Exception("Ошибка создания компонента Сollector");
-			}
+			
 		}
 		//только для тестов
 		public Collector(IGameObject parent, IWeapon[] weapons) : base(parent)
@@ -184,6 +179,16 @@ namespace BattleRoayleServer
 		public void SetNewParent(LootBox lootBox)
 		{
 			Parent = lootBox;
+		}
+
+		public override void Setup()
+		{
+			this.body = Parent.Components?.GetComponent<SolidBody>();
+			if (body == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента Сollector", "Не получена сслыка на компонент SolidBody");
+				throw new Exception("Ошибка создания компонента Сollector");
+			}
 		}
 	}
 }
