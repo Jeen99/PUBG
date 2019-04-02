@@ -41,7 +41,7 @@ namespace BattleRoyalClient
 
 			this.Size = modelObject.Size;
 
-			string pathImage = pathResources + modelObject.Type.ToString() + ".png";
+			string pathImage = pathResources + modelObject.TextureName + ".png";
 			//string path = gameObject.Type.ToString();
 
 			MeshGeometry3D mesh = new MeshGeometry3D();

@@ -53,6 +53,11 @@ namespace BattleRoyalClient
 
 		public ulong ID { get; set; }
 
+		public virtual string TextureName
+		{
+			get { return Type.ToString(); }
+		}
+
 		public GameObject()
 		{
 			shape = new RectangleF();

@@ -11,7 +11,7 @@ namespace BattleRoyalClient
 		Point3D Location3D { get; }
 		RectangleF Shape { get; set; }
 		SizeF Size { get; }
-		TypesGameObject Type { get; }
+		string TextureName { get; }
 		ulong ID { get; }
 	}
 }
