@@ -22,5 +22,6 @@
                 </ModelVisual3D.Content>
             </ModelVisual3D>
         </Viewport3D>
+        <ProgressBar  x:Name="HP" Margin="40,0,0,15" VerticalAlignment="Bottom" MinWidth="100" MinHeight="10" HorizontalAlignment="Left"/>
     </Grid>
 </Window>

@@ -9,122 +9,53 @@ namespace BattleRoyalClient
 {
 	class PlayerChararcter
 	{
-
-		private Gamer character;
-		private PointF LastLocation;
-		public ulong ID { get; private set; }
+		public Gamer character;
 		private BattleModel parent;
 
-		private Size halfVisibleArea = new Size(75,50);
+		public PointF Location { get { return character.Location; } }
 
-		public PlayerChararcter(ulong iD, BattleModel parent)
+		public event ChangeHPCharacter changeHP;
+		public event ChangePositionHandler changePosition;
+
+		public ulong ID { get; private set; }
+
+		private float _HP;
+		public float HP
 		{
-			ID = iD;
+			get
+			{
+				return _HP;
+			}
+			set
+			{
+				_HP = value;
+			}
+		}
+
+		public void OnChangeHP()
+		{
+			changeHP?.Invoke(HP);
+		}
+
+		public void OnChangePosition()
+		{
+			changePosition?.Invoke(character.Location);
+		}
+
+		public PlayerChararcter(ulong ID, BattleModel parent)
+		{
+			this.ID = ID;
 			this.parent = parent;
-			x = new Diapason();
-			y = new Diapason();
+			this.character = new Gamer();
+			HP = 100f;
 		}
 
-		/// <summary>
-		/// Координаты видимые пользоватем по оси X
-		/// </summary>
-		private Diapason x;
-		public Diapason X
+		public void Create(Gamer gamer)
 		{
-			get { return x; }
+			character = gamer;
 		}
 
-		/// <summary>
-		/// Координаты видимые пользоватем по оси Y
-		/// </summary>
-		private Diapason y;
-		public Diapason Y
-		{
-			get { return y; }
-		}
-
-		public void CharacterChange()
-		{
-			if (character == null)
-			{
-				character = (Gamer)parent.GameObjects[ID];
-			}
-
-			if (character.Location != LastLocation)
-			{
-				LastLocation = character.Location;
-				x.Left = LastLocation.X - halfVisibleArea.Width;
-				x.Right = LastLocation.X + halfVisibleArea.Width;
-				y.Left = LastLocation.Y - halfVisibleArea.Height;
-				y.Right = LastLocation.Y + halfVisibleArea.Height;
-			}
-		}
-
-
-		public PointF StartAxises
-		{
-			get {
-				return new PointF(x.Left,y.Left);
-			}		
-		}
-
-		public List<GameObject> VisibleObjects
-		{
-			get
-			{
-				List<GameObject> gameObjects = new List<GameObject>();
-				foreach (var item in parent.GameObjects)
-				{
-					GameObject gameObject = item.Value;
-					if(x.Left <= gameObject.Location.X && gameObject.Location.X <= x.Right 
-						&& y.Left <= gameObject.Location.Y && gameObject.Location.Y <= y.Right)
-					{
-						gameObjects.Add(gameObject);
-					}
-				}
-				return gameObjects;
-			}
-		}
-
-		//возрващает расстояние на вышла камера за границы карты
-		public OverflowMap GetOverflow
-		{
-			get
-			{
-				float left;
-				if (x.Left < 0) left = -x.Left;
-				else left = 0;
-
-				float right;
-				if (x.Right > parent.SizeMap.Width) right = x.Right - parent.SizeMap.Width;
-				else right = 0;
-
-				float bottom;
-				if (y.Left < 0) bottom = -y.Left;
-				else bottom = 0;
-
-				float top;
-				if (y.Right > parent.SizeMap.Height) top = y.Right - parent.SizeMap.Height;
-				else top = 0;
-
-				return new OverflowMap(top, bottom, left, right);
-			}
-		}
-	}
-
-	struct OverflowMap
-	{
-		public float Top { get; }
-		public float Bottom { get; }
-		public float Left { get; }
-		public float Right { get; }
-
-		public OverflowMap(float top, float bottom, float left, float right) : this()
-		{
-			Top = top;
-			Bottom = bottom;
-			Left = left;
-			Right = right;
-		}
+		public delegate void ChangeHPCharacter(float hp);
+		public delegate void ChangePositionHandler(PointF location);
 	}
 }

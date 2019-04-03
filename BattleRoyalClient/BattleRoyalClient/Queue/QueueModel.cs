@@ -14,10 +14,8 @@ namespace BattleRoyalClient
 
 		public event ChangeModel QueueModelChange;
 
-		public QueueModel(string nickName, string password)
+		public QueueModel()
 		{
-			NickName = nickName;
-			Password = password;
 			PlaysersInQueue = 0;
 		}
 

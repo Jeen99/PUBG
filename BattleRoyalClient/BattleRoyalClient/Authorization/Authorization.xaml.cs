@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BattleRoyalClient.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,26 +30,45 @@ namespace BattleRoyalClient
 			InitializeComponent();
 			controller = new AuthorizationController(this);
 			controller.Model.AutorizationModelChange += Model_AutorizationModelChange;
-			SignIn.Click += controller.SignIn;
-			Login.TextChanged += Login_TextChanged;
-			Password.TextChanged += Password_TextChanged;
+			SignIn.Click += SignIn_Click;
 			this.Closed += Autorization_Closed;
+
+			string login;
+			string pass;
+
+			if (AuthorizationData.LoadAuthorizationData(out login, out pass))
+			{
+				this.Login.Text = login;
+				this.Password.Text = pass;
+				CheckSaveAccountData.IsChecked = true;
+			}
+		}
+
+		private void CheckSaveAccountData_Checked(object sender, RoutedEventArgs e)
+		{
+			if (CheckSaveAccountData.IsChecked == true)
+			{
+				AuthorizationData.SaveAuthorizationData(this.Login.Text, this.Password.Text);
+			}
+			else
+			{
+				AuthorizationData.DeleteAuthorizationData();
+			}
+		}
+
+		private void SignIn_Click(object sender, RoutedEventArgs e)
+		{
+			controller.NickName = this.Login.Text;
+			controller.Password = this.Password.Text;
+			CheckSaveAccountData_Checked(sender, e);
+
+			controller.SignIn();
 		}
 
 		private void Autorization_Closed(object sender, EventArgs e)
 		{
 			if(!Transition)
-			Environment.Exit(0);
-		}
-
-		private void Password_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			controller.Password = Password.Text;
-		}
-
-		private void Login_TextChanged(object sender, TextChangedEventArgs e)
-		{
-			controller.NickName = Login.Text;
+				Environment.Exit(0);
 		}
 
 		private void Model_AutorizationModelChange()

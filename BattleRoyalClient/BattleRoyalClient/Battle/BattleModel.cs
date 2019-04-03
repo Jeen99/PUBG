@@ -11,28 +11,30 @@ namespace BattleRoyalClient
 {
 	class BattleModel : IBattleModel
 	{
-		public event ChangeModel BattleChangeModel;
-		public string Passwrod { get; private set; }
-		public string NickName { get; private set; }
+		public event BattleModelChangedHandler BattleModelChanged;
+		public event GameObjectChangedHandler GameObjectChanged;
 
 		//пока задаем прямо в коде
 		public Size SizeMap { get; } = new Size(500, 500);
 
 		public PlayerChararcter Chararcter { get; private set; }
 		
-		public ConcurrentDictionary<ulong, GameObject> GameObjects { get; } 
-			= new ConcurrentDictionary<ulong, GameObject>();
+		public ConcurrentDictionary<ulong, IModelObject> GameObjects { get; } 
+			= new ConcurrentDictionary<ulong, IModelObject>();
 
 		
 		public void CreateChangeModel()
 		{
-			BattleChangeModel?.Invoke();
+			BattleModelChanged?.Invoke();
 		}
-	
-		public BattleModel(ulong id, string passwrod, string nickName)
+
+		public void OnChangeGameObject(IModelObject model)
 		{
-			Passwrod = passwrod;
-			NickName = nickName;
+			GameObjectChanged?.Invoke(model, model.ID);
+		}
+
+		public BattleModel(ulong id)
+		{
 			Chararcter = new PlayerChararcter(id, this);
 		}
 	}

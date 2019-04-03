@@ -19,11 +19,11 @@ namespace BattleRoyalClient
 			get { return model; }
 		}
 
-		public QueueContoller(BaseClient client, string nickName, string password, Queue view)
+		public QueueContoller(BaseClient client, Queue view)
 		{
 			this.client = client;
 			this.view = view;
-			model = new QueueModel(nickName, password);
+			model = new QueueModel();
 			client.EventEndSession += Client_EventEndSession;
 			client.EventNewMessage += Client_EventNewMessage;
 			client.SendMessage(new LoadedQueueForm());
@@ -58,7 +58,7 @@ namespace BattleRoyalClient
 			{
 				client.EventEndSession -= this.Client_EventEndSession;
 				client.EventNewMessage -= this.Client_EventNewMessage;
-				BattleView3d battleForm = new BattleView3d(msg.ID, client, model.NickName, model.Password);
+				BattleView3d battleForm = new BattleView3d(msg.ID, client);
 				battleForm.Show();
 				view.Transition = true;
 				view.Close();
@@ -71,7 +71,7 @@ namespace BattleRoyalClient
 			{
 				client.EventEndSession -= this.Client_EventEndSession;
 				client.EventNewMessage -= this.Client_EventNewMessage;
-				Account formAccount = new Account(client, model.NickName, model.Password);
+				Account formAccount = new Account(client);
 				formAccount.Show();
 				view.Transition = true;
 				view.Close();

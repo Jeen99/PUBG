@@ -22,7 +22,7 @@ namespace BattleRoyalClient
 				return model;
 			}
 		}
-		public void SignIn(object sender, EventArgs e)
+		public void SignIn()
 		{
 			if(!PerfomConnect)
 			{
@@ -35,7 +35,6 @@ namespace BattleRoyalClient
 				}
 				if (client.ConnectToServer())
 				{
-					
 					client.SendMessage(new CSInteraction.ProgramMessage.Authorization(model.NickName, model.Password));
 				}
 				else
@@ -53,6 +52,8 @@ namespace BattleRoyalClient
 		private void Client_EventEndSession()
 		{
 			//попробуем создать новый клиент
+			if (client != null)
+				client.Close();
 			client = null;
 		}
 
@@ -86,7 +87,7 @@ namespace BattleRoyalClient
 			{
 				client.EventNewMessage -= this.Client_EventNewMessage;
 				client.EventEndSession -= this.Client_EventEndSession;
-				Account account = new Account(client, model.NickName, model.Password);
+				Account account = new Account(client);
 				account.Show();
 				view.Transition = true;
 				view.Close();
@@ -107,8 +108,8 @@ namespace BattleRoyalClient
 
 		public string NickName
 		{
-			get{ return model.NickName;}
-			set{model.NickName = value;}
+			get { return model.NickName; }
+			set { model.NickName = value; }
 		}
 
 		public string Password

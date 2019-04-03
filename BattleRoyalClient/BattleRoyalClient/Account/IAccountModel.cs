@@ -8,8 +8,6 @@ namespace BattleRoyalClient
 {
 	interface IAccountModel
 	{
-		string NickName { get; }
-		string Password { get; }
 		long Kills { get; }
 		long Deaths { get; }
 		long Battles { get; }

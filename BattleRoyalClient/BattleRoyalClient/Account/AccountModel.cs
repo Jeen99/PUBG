@@ -13,18 +13,16 @@ namespace BattleRoyalClient
 			AutorizationModelChange();
 		}
 
-		public AccountModel(string nickName, string password)
+		public AccountModel()
 		{
-			NickName = nickName;
-			Password = password;
 		}
 
-		public string NickName { get; set; }
-		public string Password { get; set; }
 		public long Kills { get; set; }
 		public long Deaths { get; set;  }
 		public long Battles { get; set; }
 		public DateTime GameTime { get; set;  }
 		public event ChangeModel AutorizationModelChange;
 	}
+
+	public delegate void ChangeModel();
 }

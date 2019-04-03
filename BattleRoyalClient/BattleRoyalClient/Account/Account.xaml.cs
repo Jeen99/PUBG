@@ -26,10 +26,10 @@ namespace BattleRoyalClient
 		/// </summary>
 		public bool Transition { get; set; }
 
-		public Account(BaseClient client, string login, string password)
+		public Account(BaseClient client)
 		{
 			InitializeComponent();
-			controller = new AccountController(client, login, password, this);
+			controller = new AccountController(client, this);
 			InQueue.Click += controller.InQueue;
 			controller.Model.AutorizationModelChange += Model_AutorizationModelChange;
 			this.Closed += Account_Closed;
@@ -45,7 +45,6 @@ namespace BattleRoyalClient
 
 		private void Model_AutorizationModelChange()
 		{
-			NickName.Text = controller.Model.NickName;
 			Kills.Text = controller.Model.Kills.ToString();
 			Deaths.Text = controller.Model.Deaths.ToString();
 			Battles.Text = controller.Model.Battles.ToString();
