@@ -17,6 +17,8 @@ namespace BattleRoayleServer
 		private Modifier[] modifiers;
 		private IWeapon[] weapons;
 
+		private static readonly ulong  CountOfModifier = 5u;
+
 		public IWeapon GetWeapon(TypesWeapon typeWeapon)
 		{
 			try
@@ -32,8 +34,9 @@ namespace BattleRoayleServer
 
 		public Collector(IGameObject parent) : base(parent)
 		{
-			modifiers = new Modifier[5];
-			weapons = new Weapon[4];
+			modifiers = new Modifier[CountOfModifier];
+			weapons = new Weapon[sizeof(TypesWeapon)];
+
 			this.body = parent?.Components?.GetComponent<SolidBody>();
 			if (body == null)
 			{
@@ -44,7 +47,7 @@ namespace BattleRoayleServer
 		//только для тестов
 		public Collector(IGameObject parent, IWeapon[] weapons) : base(parent)
 		{
-			modifiers = new Modifier[5];
+			modifiers = new Modifier[CountOfModifier];
 			this.weapons = weapons;
 			this.body = new SolidBody(parent);
 		}
