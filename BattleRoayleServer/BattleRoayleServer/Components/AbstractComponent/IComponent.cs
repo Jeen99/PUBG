@@ -8,6 +8,7 @@ namespace BattleRoayleServer
 		IMessage State { get; }
 
 		void Dispose();
+		void Setup();
 		void UpdateComponent(IMessage msg);
 	}
 }

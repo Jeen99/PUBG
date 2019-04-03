@@ -41,6 +41,11 @@ namespace ServerTest
 			
 		}
 
+		public void Setup()
+		{
+			throw new NotImplementedException();
+		}
+
 		public void Update(TimeQuantPassed quantPassed = null)
 		{
 

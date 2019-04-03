@@ -141,5 +141,10 @@ namespace BattleRoayleServer
 						break;
 				}
 		}
+
+		public override void Setup()
+		{
+			
+		}
 	}
 }

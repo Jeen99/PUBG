@@ -12,6 +12,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_UpdateComponent_GotDamaged()
 		{
 			IHealthy healthy = new Healthy(new StubPlayer());
+			healthy.Setup();
 			healthy.UpdateComponent(new GotDamage(8));
 			Assert.AreEqual(healthy.HP, 92);
 		}

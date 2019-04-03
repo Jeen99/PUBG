@@ -7,9 +7,9 @@ namespace BattleRoayleServer
 {
     public interface INetwork
     {
-        IList<INetworkClient> Clients { get; }
-
-        void Start();
+		Dictionary<ulong, INetworkClient> Clients { get; }
+		
+		void Start();
 		void Stop();
         void Dispose();
     }

@@ -9,6 +9,7 @@ using Box2DX.Common;
 using Box2DX.Collision;
 using Box2DX.Dynamics;
 
+
 namespace BattleRoayleServer
 {
 	public class SolidBody : Component, ISolidBody
@@ -120,8 +121,8 @@ namespace BattleRoayleServer
 					break;
 			}
 			
-
 		}
+
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			Vec2 position = Body.GetPosition();
@@ -153,14 +154,18 @@ namespace BattleRoayleServer
 			Body.GetWorld().DestroyBody(Body);
 			Parent.Model?.AddEvent(new DeleteInMap(Parent.ID));
 		}
+
+		public override void Setup()
+		{
+
+		}
 	}
 
 	public enum CollideCategory
 	{
 		Player = 0x0001,
-		Loot = 0x0002,
-		Box = 0x0003,
-		Stone = 0x0004
+		Stone = 0x0002,
+		Box = 0x0004
 	}
 
 	public enum TypesBody

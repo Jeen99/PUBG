@@ -39,6 +39,14 @@ namespace ServerTest
 			return;
 		}
 
+		public void Setup()
+		{
+			foreach (IComponent item in Components)
+			{
+				item.Setup();
+			}
+		}
+
 		public void Update(TimeQuantPassed quantPassed = null)
 		{
 			return;

@@ -15,6 +15,7 @@ namespace BattleRoayleServer
 
 		event GameObjectDeleted EventGameObjectDeleted;
 
+		void Setup();
 		void Dispose();
 		void SendMessage(IMessage msg);
 		void Update(TimeQuantPassed quantPassed = null);

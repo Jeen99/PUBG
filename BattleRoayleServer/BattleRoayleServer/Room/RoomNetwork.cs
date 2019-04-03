@@ -5,6 +5,9 @@ using System.Text;
 using System.Timers;
 using CSInteraction.ProgramMessage;
 using System.Collections.Specialized;
+using System.Diagnostics;
+using System.Drawing;
+using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
@@ -18,7 +21,8 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Список игроков подлюченных к данной комнате
 		/// </summary>
-		public IList<INetworkClient> Clients { get; private set; }
+		public Dictionary<ulong, INetworkClient> Clients { get; private set; }
+		
 		/// <summary>
 		/// Вызывается для отправки окружения клиентов в данный момент времени
 		/// </summary>
@@ -27,7 +31,7 @@ namespace BattleRoayleServer
         public RoomNetwork(IList<QueueGamer> gamers, IRoomLogic roomLogic)
         {
 			//создаем список игроков на основе списка gamers и rooomLogic(ID), создаем таймер 
-			Clients = new List<INetworkClient>();			
+			Clients = new Dictionary<ulong, INetworkClient>();			
 			this.roomLogic = roomLogic;
 			CreateClients(gamers);
 			roomLogic.HappenedEvents.CollectionChanged += HandlerGameEvent;
@@ -46,12 +50,44 @@ namespace BattleRoayleServer
 		{
 			IMessage stateRoom = roomLogic.RoomState;
 			lock (AccessSinchClients)
-			{
-				foreach (INetworkClient client in Clients)
+			{			
+				foreach (var id in Clients.Keys)
 				{
-					client.Client.SendMessage(stateRoom);
+					//отсеиваем лишние данные и отправляем оставшееся
+					Clients[id].Client.SendMessage(Filter_StateRoom(id, (RoomState)stateRoom));
 				}
 			}
+		}
+
+		private IMessage Filter_StateRoom(ulong ID, RoomState stateRoom)
+		{
+			List<IMessage> filterStates = new List<IMessage>();
+			foreach (GameObjectState stateObject in stateRoom.GameObjectsStates)
+			{
+				if (stateObject.ID == ID)
+				{
+					filterStates.Add(stateObject);
+				}
+				else
+				{
+					//только данные визуальных компонентов
+					List<IMessage> filterStatesComponents = new List<IMessage>();
+					foreach (IMessage stateComponent in stateObject.StatesComponents)
+					{
+						switch (stateComponent.TypeMessage)
+						{
+							case TypesProgramMessage.BodyState:
+							case TypesProgramMessage.CurrentWeaponState:
+								filterStatesComponents.Add(stateComponent);
+								break;
+						}
+					}
+
+					filterStates.Add(new GameObjectState(stateObject.ID, stateObject.Type, filterStatesComponents));
+				}
+			}
+
+			return new RoomState(filterStates);
 		}
 
 		/// <summary>
@@ -59,15 +95,63 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			//пока отправляем всем клиентам
+			//возможно стоит отправлять в отдельном потоке
 			IMessage message = roomLogic.HappenedEvents.Dequeue();
-			foreach (INetworkClient client in Clients)
+
+				switch (message.TypeMessage)
+				{
+					//сообщения, которые отправляются только игроку создавшему это событие
+					case TypesProgramMessage.AddWeapon:
+					case TypesProgramMessage.ChangedValueHP:
+					case TypesProgramMessage.StartReloadWeapon:
+					case TypesProgramMessage.EndRelaodWeapon:
+						Handler_PrivateMsg((IOutgoing)message);
+						break;
+					//сообщения которые отправляеются всем
+					case TypesProgramMessage.DeleteInMap:
+					case TypesProgramMessage.GameObjectDestroy:
+					case TypesProgramMessage.ChangedCurrentWeapon:
+					Handler_BroadcastMsg(message);
+						break;
+					//все остальные события
+					default:
+						Handler_DefaulteMsg((IOutgoing)message);
+						break;
+
+				}
+			
+
+		}
+
+		private void Handler_BroadcastMsg(IMessage msg)
+		{
+			foreach (var id in Clients.Keys)
 			{
-				client.Client.SendMessage(message);
+				Clients[id].Client.SendMessage(msg);
 			}
 		}
 
-        public void Start()
+		private void Handler_PrivateMsg(IOutgoing msg)
+		{
+			Clients[msg.ID].Client.SendMessage((IMessage)msg);
+		}
+
+		private void Handler_DefaulteMsg(IOutgoing msg)
+		{
+			RectangleF area = Clients[msg.ID].VisibleArea;
+			foreach(var id in Clients.Keys)
+			{
+				//если область видимости одного игрока находит на другого отправляем ему сообщение
+				if (area.IntersectsWith(Clients[id].VisibleArea))
+				{
+					Clients[msg.ID].Client.SendMessage((IMessage)msg);
+				}
+			}
+		}
+
+		
+
+		public void Start()
         {
 			//запускаем таймер
 			timerTotalSinch.Start();
@@ -78,9 +162,10 @@ namespace BattleRoayleServer
 			lock (AccessSinchClients)
 			{
 				timerTotalSinch.Dispose();
-				foreach (var player in Clients)
+
+				foreach (var id in Clients.Keys)
 				{
-					player.Dispose();
+					Clients[id].Dispose();
 				}
 			}
         }
@@ -99,7 +184,7 @@ namespace BattleRoayleServer
 					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
 					client.EventNetworkClientEndWork += Client_EventNetworkClientEndWork;
 					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
-					Clients.Add(client);
+					Clients.Add(client.Player.ID, client);
 				}
 			}
 		}
@@ -108,18 +193,18 @@ namespace BattleRoayleServer
 		{
 			lock (AccessSinchClients)
 			{
-				Clients.Remove(client);			
+				Clients.Remove(client.Player.ID);	
 			}
 			roomLogic.RemovePlayer(client.Player);
 		}
 
-		private void Client_EventNetworkClientEndWork(INetworkClient networkClient)
+		private void Client_EventNetworkClientEndWork(INetworkClient client)
 		{
 			lock (AccessSinchClients)
 			{
-				Clients.Remove(networkClient);
+				Clients.Remove(client.Player.ID);
 			}
-			networkClient.Dispose();
+			client.Dispose();
 		}
 
 		/// <summary>
@@ -127,8 +212,8 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
 		{
-			var msg = roomLogic.GetInitializeData();
-			client.Client.SendMessage(msg);
+			RoomState msg = (RoomState)roomLogic.GetInitializeData();
+			client.Client.SendMessage(Filter_StateRoom(client.Player.ID, msg));
 		}
 
 		public void Stop()

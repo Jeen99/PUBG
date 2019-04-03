@@ -8,7 +8,7 @@ using CSInteraction.Common;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class AddWeapon : IMessage
+	public class AddWeapon : IMessage, IOutgoing
 	{
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.AddWeapon;
 		public ulong ID { get; private set; }

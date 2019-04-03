@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using CSInteraction.ProgramMessage;
@@ -20,10 +21,29 @@ namespace BattleRoayleServer
 
 		public string Password { get; private set; }
 
+		private const int widthVisibleArea = 100;
+		private const int heightVisibleArea = 100;
+		private RectangleF visibleArea;
+
+		public RectangleF VisibleArea
+		{
+			get
+			{
+				//определяем положение, чтобы игрок был примерно в центре видимой области
+				var location = new PointF(Player.Location.X - widthVisibleArea/2, Player.Location.Y - heightVisibleArea / 2);
+				if (location.X != visibleArea.X || location.Y != visibleArea.Y)
+				{
+					visibleArea.Location = location;
+				}
+				return visibleArea;
+			}
+		}
+
 		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password)
 		{
 			this.Player = gamerRoomLogic;
 			this.Player.EventPlayerDeleted += GamerRoomLogic_EventPlayerDeleted;
+			visibleArea = new RectangleF(0,0, widthVisibleArea, heightVisibleArea);
 			Nick = nick;
 			Client = gamer;
 			Client.Controler = this;

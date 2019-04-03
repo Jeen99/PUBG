@@ -47,7 +47,12 @@ namespace BattleRoayleServer
 			{
 				Parent.Dispose();
 			}
-			Parent.Model?.AddEvent(new ChangedValueHP(HP));
+			Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
+		}
+
+		public override void Setup()
+		{
+
 		}
 	}
 }

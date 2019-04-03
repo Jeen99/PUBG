@@ -17,17 +17,17 @@ namespace ServerTest.ComponentsTest
 			player.Components.Add(new SolidBody(player));
 			ICollector collector = new Collector(player);
 		}
-
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_ErrorCreateCollector1()
+		public void Test_ErrorSetupCollector()
 		{
-			ICollector collector = new Collector(new StubPlayer());
+			Collector collector = new Collector(null);
+			collector.Setup();
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
-		public void Test_ErrorCreateCollector12()
+		public void Test_ErrorCreateCollector()
 		{
 			ICollector collector = new Collector(null);
 		}
@@ -38,6 +38,7 @@ namespace ServerTest.ComponentsTest
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
 			ICollector collector = new Collector(player);
+			player.Setup();
 			Assert.IsNull(collector.GetWeapon(TypesWeapon.Gun));
 		}
 
@@ -47,6 +48,7 @@ namespace ServerTest.ComponentsTest
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
 			ICollector collector = new Collector(player);
+			player.Setup();
 			Assert.IsNotNull(collector.State);
 		}
 
@@ -54,10 +56,13 @@ namespace ServerTest.ComponentsTest
 		public void Test_PickUpWeapon()
 		{
 			var Room = new RoyalGameModel();
+
 			var gun = new Gun(Room, new PointF(50, 70));
+			gun.Setup();
 			Room.GameObjects.Add(gun.ID, gun);
 
 			var player1 = new Gamer(Room, new PointF(50, 70));
+			player1.Setup();
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
@@ -78,10 +83,12 @@ namespace ServerTest.ComponentsTest
 			var weapons = new Weapon[4];
 
 			weapons[0] = new Gun(Room, new PointF(50, 70));
+
 			var lootBox = new LootBox(Room, new Collector(new StubPlayer(), weapons), new PointF(50, 70));
-			Room.GameObjects.Add(lootBox.ID, lootBox);
+			Room.AddGameObject(lootBox);
 
 			var player1 = new Gamer(Room, new PointF(50, 70));
+			player1.Setup();
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
