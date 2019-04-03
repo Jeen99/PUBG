@@ -176,9 +176,11 @@ namespace BattleRoayleServer
 			bDefBottom.Angle = 0;
 
 			PolygonDef pDefBottom = new PolygonDef();
-			pDefBottom.Restitution = 0.3f;
-			pDefBottom.Friction = 0.2f;
+			pDefBottom.Restitution = 0f;
+			pDefBottom.Friction = 0;
 			pDefBottom.Density = 0;
+			pDefBottom.Filter.CategoryBits = (ushort)CollideCategory.Box;
+			pDefBottom.Filter.MaskBits = (ushort)CollideCategory.Player;
 			pDefBottom.SetAsBox(lengthOfSide, 1);
 
 			var frame  = Field.CreateBody(bDefBottom);
@@ -190,9 +192,11 @@ namespace BattleRoayleServer
 			bDefLeft.Angle = 0;
 
 			PolygonDef pDefLeft = new PolygonDef();
-			pDefLeft.Restitution = 0.3f;
-			pDefLeft.Friction = 0.2f;
+			pDefLeft.Restitution = 0;
+			pDefLeft.Friction = 0;
 			pDefLeft.Density = 0;
+			pDefLeft.Filter.CategoryBits = (ushort)CollideCategory.Box;
+			pDefLeft.Filter.MaskBits = (ushort)CollideCategory.Player;
 			pDefLeft.SetAsBox(1, lengthOfSide);
 
 			frame = Field.CreateBody(bDefLeft);
@@ -204,9 +208,11 @@ namespace BattleRoayleServer
 			bDefTop.Angle = 0;
 
 			PolygonDef pDefTop = new PolygonDef();
-			pDefTop.Restitution = 0.3f;
-			pDefTop.Friction = 0.2f;
+			pDefTop.Restitution = 0;
+			pDefTop.Friction = 0;
 			pDefTop.Density = 0;
+			pDefTop.Filter.CategoryBits = (ushort)CollideCategory.Box;
+			pDefTop.Filter.MaskBits = (ushort)CollideCategory.Player;
 			pDefTop.SetAsBox(lengthOfSide, 1);
 
 			frame = Field.CreateBody(bDefTop);
@@ -218,9 +224,11 @@ namespace BattleRoayleServer
 			bDefRight.Angle = 0;
 
 			PolygonDef pDefRight = new PolygonDef();
-			pDefRight.Restitution = 0.3f;
-			pDefRight.Friction = 0.2f;
+			pDefRight.Restitution = 0;
+			pDefRight.Friction = 0;
 			pDefRight.Density = 0;
+			pDefRight.Filter.CategoryBits = (ushort)CollideCategory.Box;
+			pDefRight.Filter.MaskBits = (ushort)CollideCategory.Player;
 			pDefRight.SetAsBox(1, lengthOfSide);
 
 			frame = Field.CreateBody(bDefRight);

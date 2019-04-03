@@ -22,7 +22,7 @@ namespace BattleRoayleServer
         public Stone(IModelForComponents roomContext, PointF location, Size size):base(roomContext)
 		{
 			var body = new SolidBody(this, new RectangleF(location, size), restetution,
-				friction, density, TypesBody.Circle, (ushort)CollideCategory.Box,
+				friction, density, TypesBody.Circle, (ushort)CollideCategory.Stone,
 				(ushort)CollideCategory.Player);
 			Components.Add(body);
 		}

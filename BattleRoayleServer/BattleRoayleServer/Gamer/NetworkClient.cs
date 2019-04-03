@@ -29,7 +29,8 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				var location = Player.Location;
+				//определяем положение, чтобы игрок был примерно в центре видимой области
+				var location = new PointF(Player.Location.X - widthVisibleArea/2, Player.Location.Y - heightVisibleArea / 2);
 				if (location.X != visibleArea.X || location.Y != visibleArea.Y)
 				{
 					visibleArea.Location = location;

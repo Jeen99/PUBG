@@ -16,7 +16,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Количество игроков необходимых для создания комнаты
 		/// </summary>
-		private const int _GamersInRoom = 1;
+		private const int _gamersInRoom = 2;
 		/// <summary>
 		/// true = идет процесс создания комнаты
 		/// </summary>
@@ -43,7 +43,7 @@ namespace BattleRoayleServer
 				}
 			}
 			//проверяем количество игроков в очереди
-			if (queueOfGamer.Count >= _GamersInRoom && !CreatingRoom)
+			if (queueOfGamer.Count >= _gamersInRoom && !CreatingRoom)
 			{
 				//создаем новую комнату в отдельном потоке
 				Task.Run(() => CreateNewRoom());
@@ -55,13 +55,13 @@ namespace BattleRoayleServer
 		private void CreateNewRoom()
 		{
 			CreatingRoom = true;
-			List<QueueGamer> gamers = new List<QueueGamer>(_GamersInRoom);
-			for (int i = 0; i < _GamersInRoom; i++)
+			List<QueueGamer> gamers = new List<QueueGamer>(_gamersInRoom);
+			for (int i = 0; i < _gamersInRoom; i++)
 			{
 				queueOfGamer[i].AddInRoom = true;
 				gamers.Add(queueOfGamer[i]);							
 			}
-			for (int i = 0; i < _GamersInRoom; i++)
+			for (int i = 0; i < _gamersInRoom; i++)
 			{
 				queueOfGamer[0].Client.Controler.Dispose();
 				queueOfGamer.RemoveAt(0);				

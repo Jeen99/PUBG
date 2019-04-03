@@ -12,7 +12,7 @@ namespace BattleRoayleServer
 	public class Gamer : GameObject, IPlayer
 	{
 		private const float restetution = 0;
-		private const float friction = 0.3f;
+		private const float friction = 0;
 		private const float density = 0.5f;
 
 		public event PlayerDeleted EventPlayerDeleted;
@@ -22,7 +22,7 @@ namespace BattleRoayleServer
 
 			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
 				friction, density, TypesBody.Circle, (ushort)CollideCategory.Player,
-				(ushort)CollideCategory.Box | (ushort)CollideCategory.Loot | (ushort)CollideCategory.Stone);
+				(ushort)CollideCategory.Box | (ushort)CollideCategory.Stone);
 			Components.Add(body);
 
 			var movement = new Movement(this, 40f);
