@@ -21,7 +21,7 @@ namespace BattleRoyalClient
 
 		private IModelObject modelObject;
 
-		private static readonly string pathResources = "pack://application:,,,/Resources/";
+		private static readonly string pathResources = "Resources/";
 
 		public Model3D(Model3DGroup models, IModelObject modelObject)
 		{
@@ -62,7 +62,7 @@ namespace BattleRoyalClient
 			mesh.TextureCoordinates.Add(new Point(1, 0));
 			mesh.TextureCoordinates.Add(new Point(0, 0));
 			// Натягиваем текстуру
-			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(pathImage)));
+			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(pathImage, UriKind.Relative)));
 			Material material = new DiffuseMaterial(brush);
 			GeometryModel3D geometryModel = new GeometryModel3D(mesh, material);
 			models.Children.Add(geometryModel);
