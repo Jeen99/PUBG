@@ -18,6 +18,8 @@ namespace BattleRoyalClient
 		public SizeF Size { get; set; } // Размер квадрата
 		private TranslateTransform3D translateTransform; // Матрица перемещения
 		private RotateTransform3D rotationTransform; // Матрица вращения
+		private Model3DGroup models;
+		private GeometryModel3D geometryModel;
 
 		private IModelObject modelObject;
 
@@ -26,6 +28,7 @@ namespace BattleRoyalClient
 		public Model3D(Model3DGroup models, IModelObject modelObject)
 		{
 			this.modelObject = modelObject;
+			this.models = models;
 
 			double x = modelObject.Location3D.X;
 			double y = modelObject.Location3D.Y;
@@ -64,8 +67,10 @@ namespace BattleRoyalClient
 			// Натягиваем текстуру
 			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(pathImage, UriKind.Relative)));
 			Material material = new DiffuseMaterial(brush);
-			GeometryModel3D geometryModel = new GeometryModel3D(mesh, material);
+
+			geometryModel = new GeometryModel3D(mesh, material);
 			models.Children.Add(geometryModel);
+
 			translateTransform = new TranslateTransform3D(Position.X, Position.Y, Position.Z);
 			rotationTransform = new RotateTransform3D(new AxisAngleRotation3D(new Vector3D(axis_x, axis_y, axis_z), angle), 0.5, 0.5, 0.5);
 
@@ -109,6 +114,11 @@ namespace BattleRoyalClient
 		public SizeF GetSize()
 		{
 			return Size;
+		}
+
+		public void Remove()
+		{
+			models.Children.Remove(geometryModel);
 		}
 	}
 }

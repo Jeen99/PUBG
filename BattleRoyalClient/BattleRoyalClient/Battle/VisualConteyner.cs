@@ -41,7 +41,11 @@ namespace BattleRoyalClient.Battle
 		public bool DeleteModel3d(ulong ID)
 		{
 			Model3D model;
-			return visuals.TryRemove(ID, out model);
+			var state = visuals.TryRemove(ID, out model);
+			if (state)
+				model.Remove();
+			
+			return state;
 		}
 	}
 }
