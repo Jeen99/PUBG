@@ -38,7 +38,7 @@ namespace BattleRoyalClient
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.RoomState:
-					Handler_RoomState((RoomState)msg);
+					Handler_RoomState(msg as RoomState);
 					view.Dispatcher.Invoke(()=> { model.CreateChangeModel(); });			
 					break;
 				case TypesProgramMessage.PlayerMoved:
@@ -47,7 +47,17 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.HealthyState:
 					Handler_HealthyCharacter(msg as HealthyState);
 					break;
+				case TypesProgramMessage.DeleteInMap:
+					Handler_DeleteInMap(msg as DeleteInMap);
+					break;
 			}
+		}
+
+		private void Handler_DeleteInMap(DeleteInMap deleteInMap)
+		{
+			IModelObject modelObject;
+			if (model.GameObjects.TryRemove(deleteInMap.ID, out modelObject))
+				view.Dispatcher.Invoke(() => { model.OnChangeGameObject(modelObject, StateObject.DELETE); });
 		}
 
 		private void Handler_HealthyCharacter(HealthyState changedValueHP)
@@ -100,7 +110,32 @@ namespace BattleRoyalClient
 				case TypesGameObject.Stone:
 					model.GameObjects.AddOrUpdate(msg.ID, AddStone(msg), (k, v) => UpdateGameObject(v, msg));
 					break;
+				case TypesGameObject.Weapon:
+					model.GameObjects.AddOrUpdate(msg.ID, AddWeapon(msg), (k, v) => UpdateGameObject(v, msg));
+					break;
 			}
+		}
+
+		private GameObject AddWeapon(GameObjectState msg)
+		{
+			if (model.GameObjects.Keys.Contains(msg.ID))
+				return (GameObject)model.GameObjects[msg.ID];
+
+			Weapon stone = new Weapon();
+			foreach (IMessage message in msg.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						BodyState state = (message as BodyState);
+						stone.Shape = state.Shape;
+						stone.ID = msg.ID;
+						break;
+					//case TypesProgramMessage.
+				}
+			}
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(stone); });
+			return stone;
 		}
 
 		private GameObject AddStone(GameObjectState msg)

@@ -37,6 +37,24 @@ namespace BattleRoyalClient
 				case Key.Down:
 					direction.Vertical = DirectionVertical.Down;
 					break;
+				case Key.F:
+					client.SendMessage(new TryPickUp());
+					break;
+				case Key.Oem1:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.Gun));
+					break;
+				case Key.Oem2:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.ShotGun));
+					break;
+				case Key.Oem3:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.AssaultRifle));
+					break;
+				case Key.Oem4:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.Grenade));
+					break;
+				case Key.R:
+					client.SendMessage(new MakeReloadWeapon());
+					break;
 				case Key.Escape:
 					client.Close();
 					break;

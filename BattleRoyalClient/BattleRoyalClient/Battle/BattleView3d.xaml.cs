@@ -28,6 +28,7 @@ namespace BattleRoyalClient
 
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
+		private BaseClient client;
 
 		private DispatcherTimer timer;      // для обновления экрана
 
@@ -36,6 +37,8 @@ namespace BattleRoyalClient
 		public BattleView3d(ulong id, BaseClient client)
 		{
 			this.InitializeComponent();
+
+			this.client = client;
 			//this.LayoutUpdated += MainWindow_LayoutUpdated;     // обработчик перериовки
 
 			this.visual = new VisualConteyner(this.models);
@@ -55,11 +58,28 @@ namespace BattleRoyalClient
 			this.MouseWheel += BattleView3d_MouseWheel;
 			client.SendMessage(new LoadedBattleForm());
 
+			this.MouseDown += BattleView3d_MouseDown;
+
 			// таймер перерисовки
 			//timer = new DispatcherTimer();
 			//timer.Tick += Repaint;
 			//timer.Interval = new TimeSpan(1_000_000 / 60);      // ~60fps update
 			//timer.Start();
+		}
+
+		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			var p2 = new Point(this.Width / 2, this.Height / 2);
+			var p1 = e.GetPosition(null);
+			
+
+			float angle = (float)(Math.Atan2(p1.Y - p2.Y, p1.X - p2.X) / Math.PI * 180);
+			//Debug.WriteLine($"Angle: {A}");
+			//A = (A < 0) ? A + 360 : A;   //Без этого диапазон от 0...180 и -1...-180
+			angle += 180;
+
+			System.Diagnostics.Debug.WriteLine("Angle: " + angle);
+			client.SendMessage(new MakeShot(angle));
 		}
 
 		private void Chararcter_changePosition(System.Drawing.PointF location)
@@ -71,9 +91,17 @@ namespace BattleRoyalClient
 			camera.Position = cameraPosition;
 		}
 
-		private void Model_GameObjectChanged(IModelObject model, ulong ID)
+		private void Model_GameObjectChanged(IModelObject model, StateObject state)
 		{
-			visual.AddOrUpdate(model, ID);
+			switch (state)
+			{
+				case StateObject.CHANGE:
+					visual.AddOrUpdate(model, model.ID);
+					break;
+				case StateObject.DELETE:
+					visual.DeleteModel3d(model.ID);
+					break;
+			}
 		}
 
 		private void Chararcter_changeHP(float hp)

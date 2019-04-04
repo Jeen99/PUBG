@@ -15,13 +15,15 @@ namespace BattleRoyalClient
 		PlayerChararcter Chararcter { get; }
 		Size SizeMap { get; }
 
-		//void AddOrUpdateGameObject(IModelObject model, ulong ID);
-		//void UpdateGameObject(IModelObject model, ulong ID);
+		void CreateChangeModel();
+		void OnChangeGameObject(IModelObject model, StateObject state = StateObject.CHANGE);
+
 	}
 
+	enum StateObject { CHANGE, DELETE };
 	/// <summary>
 	/// Делегат события изменения модели
 	/// </summary>
 	delegate void BattleModelChangedHandler();
-	delegate void GameObjectChangedHandler(IModelObject model, ulong ID);
+	delegate void GameObjectChangedHandler(IModelObject model, StateObject state);
 }
