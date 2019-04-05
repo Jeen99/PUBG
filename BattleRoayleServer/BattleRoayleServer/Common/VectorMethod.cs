@@ -18,8 +18,8 @@ namespace BattleRoayleServer
 			double RadAngle = angle * (System.Math.PI / 180);
 			return new Vec2()
 			{
-				X = (float)(distance * System.Math.Sin(RadAngle) - 0 * System.Math.Cos(RadAngle)),
-				Y = (float)(0 * System.Math.Sin(RadAngle) + distance * System.Math.Cos(RadAngle))
+				X = (float)(distance * System.Math.Cos(RadAngle)),
+				Y = (float)(-distance * System.Math.Sin(RadAngle))
 			};
 		}
 	}

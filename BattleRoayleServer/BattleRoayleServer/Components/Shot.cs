@@ -60,47 +60,44 @@ namespace BattleRoayleServer
 			try
 			{
 				ISolidBody BodyHolder = (Parent as IWeapon).Holder?.Components?.GetComponent<SolidBody>();
-				if (BodyHolder != null)
+				if (BodyHolder == null)
+					return;
+				//получаем патрон
+				IBullet bullet = magazin.GetBullet();
+				if (bullet == null)
+					return;
+								
+				Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
+				if (position == null)
 				{
-					//получаем патрон
-					IBullet bullet = magazin.GetBullet();
-
-					if (bullet != null)
-					{
-								
-						Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
-						if (position == null)
-						{
-							Log.AddNewRecord("Ошибка получения позиции игрока");
-							return;
-						}
-					
-						var segment = new Segment();
-						//начальная точка выстрела
-						segment.P1 = position;
-
-						var sweepVector = VectorMethod.RotateVector(msg.Angle, bullet.Distance);
-						//конечная точка выстрела
-						segment.P2 = new Vec2
-						{
-							X = position.X + sweepVector.X,
-							Y = position.Y + sweepVector.Y
-						};
-						//получаем только первый встетившийся на пути пули объект
-						Shape[] hits = new Shape[2];
-
-						BodyHolder?.Body?.GetWorld().Raycast(segment, hits, 2, true, null);
-								
-						//отправляем сообщение о совершении выстрела
-						Parent.Model.AddEvent(new MakedShot((Parent as IWeapon).Holder.ID));
-
-						var damageMsg = new GotDamage(bullet.Damage);
-						//отправляем ему сообщение о нанесении урона	
-						ISolidBody attacked = (ISolidBody)hits[1]?.GetBody().GetUserData();
-
-						attacked .Parent?.SendMessage(damageMsg);
-					}
+					Log.AddNewRecord("Ошибка получения позиции игрока");
+					return;
 				}
+					
+				var segment = new Segment();
+				//начальная точка выстрела
+				segment.P1 = position;
+
+				var sweepVector = VectorMethod.RotateVector(msg.Angle, bullet.Distance);
+				//конечная точка выстрела
+				segment.P2 = new Vec2
+				{
+					X = position.X + sweepVector.X,
+					Y = position.Y + sweepVector.Y
+				};
+				//получаем только первый встетившийся на пути пули объект
+				Shape[] objectsForDamage = new Shape[2];
+
+				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, 2, true, null);
+
+				//отправляем сообщение о совершении выстрела
+				Parent.Model.AddEvent(new MakedShot( (Parent as IWeapon).Holder.ID) );
+
+				var damageMsg = new GotDamage(bullet.Damage);
+				//отправляем ему сообщение о нанесении урона	
+				ISolidBody attacked = (ISolidBody)objectsForDamage[1]?.GetBody().GetUserData();
+
+				attacked?.Parent?.SendMessage(damageMsg);
 			}
 			catch (Exception e)
 			{
