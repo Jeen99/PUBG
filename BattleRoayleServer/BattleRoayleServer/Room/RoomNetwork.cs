@@ -144,7 +144,7 @@ namespace BattleRoayleServer
 				//если область видимости одного игрока находит на другого отправляем ему сообщение
 				if (area.IntersectsWith(Clients[id].VisibleArea))
 				{
-					Clients[msg.ID].Client.SendMessage((IMessage)msg);
+					Clients[id].Client.SendMessage((IMessage)msg);
 				}
 			}
 		}
