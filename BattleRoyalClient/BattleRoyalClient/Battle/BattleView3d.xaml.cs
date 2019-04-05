@@ -69,14 +69,11 @@ namespace BattleRoyalClient
 
 		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			var p2 = new Point(this.Width / 2, this.Height / 2);
 			var p1 = e.GetPosition(null);
+			var p2 = new Point(viewport.ActualWidth / 2, viewport.ActualHeight / 2);
 			
-
 			float angle = (float)(Math.Atan2(p1.Y - p2.Y, p1.X - p2.X) / Math.PI * 180);
-			//Debug.WriteLine($"Angle: {A}");
-			//A = (A < 0) ? A + 360 : A;   //Без этого диапазон от 0...180 и -1...-180
-			angle += 180;
+			angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
 
 			System.Diagnostics.Debug.WriteLine("Angle: " + angle);
 			client.SendMessage(new MakeShot(angle));

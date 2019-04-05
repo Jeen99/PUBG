@@ -44,8 +44,8 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.PlayerMoved:
 					Handler_PlayerMoved(msg as PlayerMoved);
 					break;
-				case TypesProgramMessage.HealthyState:
-					Handler_HealthyCharacter(msg as HealthyState);
+				case TypesProgramMessage.ChangedValueHP:
+					Handler_HealthyCharacter(msg as ChangedValueHP);
 					break;
 				case TypesProgramMessage.DeleteInMap:
 					Handler_DeleteInMap(msg as DeleteInMap);
@@ -60,11 +60,10 @@ namespace BattleRoyalClient
 				view.Dispatcher.Invoke(() => { model.OnChangeGameObject(modelObject, StateObject.DELETE); });
 		}
 
-		private void Handler_HealthyCharacter(HealthyState changedValueHP)
+		private void Handler_HealthyCharacter(ChangedValueHP changedValueHP)
 		{
-			var HP = model.Chararcter.HP;
-			HP = changedValueHP.HP;
-			model.Chararcter.OnChangeHP();
+			model.Chararcter.HP = changedValueHP.NewValueHP;
+			view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeHP(); });
 		}
 
 		private void Handler_PlayerMoved(PlayerMoved moved)
@@ -182,6 +181,7 @@ namespace BattleRoyalClient
 			{
 				model.Chararcter.Create(gamer);
 				view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeHP(); });
+				view.Dispatcher.Invoke(() => { model.Chararcter.OnChangePosition(); });
 			}
 			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gamer); });
 			return gamer;

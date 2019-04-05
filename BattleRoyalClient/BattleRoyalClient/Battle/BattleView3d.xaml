@@ -9,7 +9,7 @@
     <Grid>
         <Viewport3D x:Name="viewport" ClipToBounds="True">
             <Viewport3D.Camera>
-                <PerspectiveCamera x:Name="camera" FarPlaneDistance="1000" NearPlaneDistance="0.1" Position="0, 0, 10" LookDirection="0, 0, -1" UpDirection="0, 1, 0"/>
+                <PerspectiveCamera x:Name="camera" FarPlaneDistance="1000" NearPlaneDistance="0.1" Position="0, 0, 200" LookDirection="0, 0, -1" UpDirection="0, 1, 0"/>
             </Viewport3D.Camera>
             <ModelVisual3D>
                 <ModelVisual3D.Content>

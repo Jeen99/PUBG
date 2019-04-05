@@ -58,12 +58,14 @@ namespace BattleRoyalClient
 			});
 			// Указываем индексы для квадрата
 			mesh.TriangleIndices = new Int32Collection(new List<int> { 0, 1, 2, 0, 2, 3 });
-			mesh.TextureCoordinates = new PointCollection();
-			// Устанавливаем текстурные координаты чтоб потом могли натянуть текстуру
-			mesh.TextureCoordinates.Add(new Point(0, 1));
-			mesh.TextureCoordinates.Add(new Point(1, 1));
-			mesh.TextureCoordinates.Add(new Point(1, 0));
-			mesh.TextureCoordinates.Add(new Point(0, 0));
+			mesh.TextureCoordinates = new PointCollection
+			{
+				// Устанавливаем текстурные координаты чтоб потом могли натянуть текстуру
+				new Point(0, 1),
+				new Point(1, 1),
+				new Point(1, 0),
+				new Point(0, 0)
+			};
 			// Натягиваем текстуру
 			ImageBrush brush = new ImageBrush(new BitmapImage(new Uri(pathImage, UriKind.Relative)));
 			Material material = new DiffuseMaterial(brush);
