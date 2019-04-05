@@ -62,7 +62,7 @@
     <Compile Include="ProgramMessage\Battle\Outgoing\GameObjectDestroy.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\IOutgoing.cs" />
     <Compile Include="ProgramMessage\ServerMsg\GotDamage.cs" />
-    <Compile Include="ProgramMessage\Battle\Incoming\MakedShot.cs" />
+    <Compile Include="ProgramMessage\Battle\Outgoing\MakedShot.cs" />
     <Compile Include="ProgramMessage\State\CollectorState.cs" />
     <Compile Include="ProgramMessage\State\CurrentWeaponState.cs" />
     <Compile Include="ProgramMessage\State\GameObjectState.cs" />

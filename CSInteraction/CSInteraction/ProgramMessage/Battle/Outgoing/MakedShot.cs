@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class MakedShot : IMessage
+	public class MakedShot : IMessage, IOutgoing
 	{
 		public ulong ID { get; set; }
 
