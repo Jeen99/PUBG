@@ -70,8 +70,10 @@ namespace BattleRoayleServer
 					IMessage msg = gameObject.Value.State;
 					if (msg != null) states.Add(msg);	
 			}
-			//объединеям состоянии объекотв состонием игровой модели и отпраляем их игроку
-			return new RoomState((List<IMessage>)states.Concat(roomContext.State));
+
+			states.Add(roomContext.State);
+			
+			return new RoomState(states);
 		}
 
 		/// <summary>
@@ -100,6 +102,8 @@ namespace BattleRoayleServer
         //вызывается при срабатывании таймера
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
+			if (roomContext.Sleep) return;
+
 			quantTimer.Tick();
 			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
 

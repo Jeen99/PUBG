@@ -14,7 +14,8 @@ namespace BattleRoayleServer
 		//получение id - не должно переопределясться
 		private object sinchGetId = new object();
 		private object sinchWorkWithComponent = new object();
-		private static ulong counterID = 0;
+		//0 - зарезервированно за картой
+		private static ulong counterID = 1;
 
 		public event GameObjectDeleted EventGameObjectDeleted;
 

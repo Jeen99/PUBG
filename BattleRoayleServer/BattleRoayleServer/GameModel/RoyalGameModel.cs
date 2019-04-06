@@ -39,7 +39,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		public ObservableQueue<IMessage> HappenedEvents { get; private set; }
 
-		public List<IMessage> State
+		public GameObjectState State
 		{
 			get
 			{
@@ -47,9 +47,11 @@ namespace BattleRoayleServer
 				//отправляем характеристики карты
 				listState.Add(new FieldState(new SizeF(lengthOfSide, lengthOfSide)));
 
-				return listState;
+				return new GameObjectState(0, TypesGameObject.Field, listState);
 			}
 		}
+
+		public bool Sleep { get; private set; } = false;
 
 		public event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 		/// <summary>
@@ -112,14 +114,14 @@ namespace BattleRoayleServer
 		{
 			if (Players.Remove(player))
 			{
-				if (Players.Count <= minValueGamerInBattle)
+				if (Players.Count <= minValueGamerInBattle && !Sleep)
 				{
-					EventRoaylGameModelEndWork?.Invoke();
+					Sleep = true;
+				   EventRoaylGameModelEndWork?.Invoke();
 				}
 			}
 		}
 		
-
 		private PointF CreatePlayerLocation(int index)
 		{
 			switch (index)
@@ -262,6 +264,13 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
+			//выполняем все необходимые действия при уничтожении для всех оставшихся игроков
+			for(; Players.Count!=0;)
+			{
+				(Players[0] as GameObject).Dispose();
+			}
+
+			Players.Clear();
 			GameObjects.Clear();
 			Field.Dispose();
 			HappenedEvents.Clear();
@@ -301,7 +310,6 @@ namespace BattleRoayleServer
 		{
 			Loot.Remove(gameObject);
 		}
-
 		
 	}
 }

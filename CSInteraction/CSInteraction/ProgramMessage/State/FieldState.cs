@@ -7,6 +7,7 @@ using System.Drawing;
 
 namespace CSInteraction.ProgramMessage
 {
+	[Serializable]
 	public class FieldState : IMessage
 	{
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.FieldState;

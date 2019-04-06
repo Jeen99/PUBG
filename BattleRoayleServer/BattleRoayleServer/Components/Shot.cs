@@ -18,9 +18,7 @@ namespace BattleRoayleServer
 
 		public Shot(IWeapon parent) : base(parent)
 		{
-			
-			
-			
+					
 		}
 
 		public override void Dispose()
@@ -51,8 +49,7 @@ namespace BattleRoayleServer
 				case TypesProgramMessage.MakeShot:
 					Handler_MakeShot(msg as MakeShot);
 					break;
-			}
-			
+			}		
 		}
 
 		private void Handler_MakeShot(MakeShot msg)

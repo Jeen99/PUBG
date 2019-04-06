@@ -10,12 +10,14 @@ namespace CSInteraction.Common
 	public enum TypesGameObject
 	{
 		// используются в отрисовке. Чем больше значение, тем выше наодится объект.
+		Field,
 		Player,
 		Stone,
 		Weapon,
 		LootBox,
 		Box,
 		Bush,
-		Tree
+		Tree,
+
 	}
 }

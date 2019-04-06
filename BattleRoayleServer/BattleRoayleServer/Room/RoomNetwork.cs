@@ -133,11 +133,16 @@ namespace BattleRoayleServer
 
 		private void Handler_PrivateMsg(IOutgoing msg)
 		{
-			Clients[msg.ID].Client.SendMessage((IMessage)msg);
+			if (Clients.ContainsKey(msg.ID))
+			{
+				Clients[msg.ID].Client.SendMessage((IMessage)msg);
+			}
 		}
 
 		private void Handler_DefaulteMsg(IOutgoing msg)
 		{
+			if (!Clients.ContainsKey(msg.ID)) return;
+
 			RectangleF area = Clients[msg.ID].VisibleArea;
 			foreach(var id in Clients.Keys)
 			{

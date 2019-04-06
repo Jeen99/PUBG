@@ -65,6 +65,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
+			Model.AddEvent(new EndGame(ID));
 			base.Dispose();
 			EventPlayerDeleted?.Invoke(this);
 		}
