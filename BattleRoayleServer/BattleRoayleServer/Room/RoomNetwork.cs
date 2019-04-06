@@ -109,7 +109,6 @@ namespace BattleRoayleServer
 						break;
 					//сообщения которые отправляеются всем
 					case TypesProgramMessage.DeleteInMap:
-					case TypesProgramMessage.GameObjectDestroy:
 					case TypesProgramMessage.ChangedCurrentWeapon:
 					case TypesProgramMessage.GameObjectState:
 					Handler_BroadcastMsg(message);

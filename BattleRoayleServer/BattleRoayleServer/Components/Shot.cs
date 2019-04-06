@@ -91,7 +91,7 @@ namespace BattleRoayleServer
 				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, 2, true, null);
 
 				//отправляем сообщение о совершении выстрела
-				Parent.Model.AddEvent(new MakedShot( (Parent as IWeapon).Holder.ID) );
+				Parent.Model.AddEvent(new MakedShot( (Parent as IWeapon).Holder.ID, bullet.Distance) );
 
 				var damageMsg = new GotDamage(bullet.Damage);
 				//отправляем ему сообщение о нанесении урона	

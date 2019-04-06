@@ -13,9 +13,12 @@ namespace CSInteraction.ProgramMessage
 
 		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.MakedShot;
 
-		public MakedShot(ulong iD)
+		public float Distance { get; private set; }
+
+		public MakedShot(ulong iD, float distance)
 		{
 			ID = iD;
+			Distance = distance;
 		}
 	}
 }
