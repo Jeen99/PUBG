@@ -45,7 +45,6 @@ namespace ServerTest.ComponentsTest
 			player.Components.Add(solidBody);
 			player.Setup();
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count+1);
-			solidBody.BodyDelete();
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count);
 
 		}

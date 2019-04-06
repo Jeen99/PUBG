@@ -51,13 +51,20 @@ namespace BattleRoayleServer
 		{
 			List<T> list = new List<T>();
 
-			foreach (var key in Components.Keys)
+			try
 			{
-				var component = Components[key];
-				if (component is T)
+				foreach (var key in Components.Keys)
 				{
-					list.Add((T)component);
+					var component = Components[key];
+					if (component is T)
+					{
+						list.Add((T)component);
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
 			}
 
 			return list.ToArray();  // возможно не подходит, нужно руками делать
@@ -85,18 +92,25 @@ namespace BattleRoayleServer
 
 		public void UpdateComponents(IMessage msg)
 		{
-			foreach (var item in Components.Keys)
+			try
 			{
-				Components[item].UpdateComponent(msg);
+				foreach (var item in Components.Keys)
+				{
+					Components[item].UpdateComponent(msg);
+				}
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
 			}
 		}
 
 		public IEnumerator GetEnumerator()
-		{
-			foreach (var item in Components.Keys)
-			{
-				yield return Components[item];
-			}
+		{ 
+				foreach (var item in Components.Keys)
+				{
+					yield return Components[item];
+				}		
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()

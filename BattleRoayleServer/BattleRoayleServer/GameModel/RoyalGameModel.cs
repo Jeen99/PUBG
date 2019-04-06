@@ -17,7 +17,7 @@ namespace BattleRoayleServer
     public class RoyalGameModel : IGameModel, IModelForComponents
 	{
 
-		private const int minValueGamerInBattle = 0;
+		private const int minValueGamerInBattle = 1;
 		/// <summary>
 		///ширина одной стороны игровой карты 
 		/// </summary>

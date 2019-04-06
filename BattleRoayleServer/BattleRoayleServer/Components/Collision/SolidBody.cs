@@ -147,14 +147,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		
-		public void BodyDelete()
-		{
-			//удаляем объект с карты
-			Body.GetWorld().DestroyBody(Body);
-			Parent.Model?.AddEvent(new DeleteInMap(Parent.ID));
-		}
-
 		public override void Setup()
 		{
 

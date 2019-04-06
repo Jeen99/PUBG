@@ -58,7 +58,7 @@ namespace BattleRoayleServer
 			Reload = false;
 			CreateNewMagazin();
 			
-			Parent?.Model?.AddEvent(new EndReloadWeapon(Parent.ID));
+			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as IWeapon).Holder.ID));
 			
 		}
 
@@ -71,7 +71,7 @@ namespace BattleRoayleServer
 			reloadMagazin.Elapsed += Handler_ReloadMagazin;
 			reloadMagazin.Start();
 			
-			Parent?.Model?.AddEvent(new StartReloadWeapon(Parent.ID));
+			Parent?.Model?.AddEvent(new StartReloadWeapon((Parent as IWeapon).Holder.ID));
 			
 		}
 

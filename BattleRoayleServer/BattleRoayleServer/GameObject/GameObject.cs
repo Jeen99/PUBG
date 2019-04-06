@@ -135,7 +135,7 @@ namespace BattleRoayleServer
 			}
 			Components.Clear();
 			messageQueue.Clear();
-			Model.AddEvent(new GameObjectDestroy(ID));
+			Model.AddEvent(new DeleteInMap(ID));
 			Model = null;
 
         }

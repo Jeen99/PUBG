@@ -111,6 +111,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.DeleteInMap:
 					case TypesProgramMessage.GameObjectDestroy:
 					case TypesProgramMessage.ChangedCurrentWeapon:
+					case TypesProgramMessage.GameObjectState:
 					Handler_BroadcastMsg(message);
 						break;
 					//все остальные события
@@ -148,8 +149,6 @@ namespace BattleRoayleServer
 				}
 			}
 		}
-
-		
 
 		public void Start()
         {
