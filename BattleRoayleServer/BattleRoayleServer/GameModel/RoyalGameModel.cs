@@ -39,6 +39,18 @@ namespace BattleRoayleServer
 		/// </summary>
 		public ObservableQueue<IMessage> HappenedEvents { get; private set; }
 
+		public List<IMessage> State
+		{
+			get
+			{
+				List<IMessage> listState = new List<IMessage>();
+				//отправляем характеристики карты
+				listState.Add(new FieldState(new SizeF(lengthOfSide, lengthOfSide)));
+
+				return listState;
+			}
+		}
+
 		public event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами

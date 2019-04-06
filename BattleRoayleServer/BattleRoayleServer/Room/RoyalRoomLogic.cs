@@ -70,7 +70,8 @@ namespace BattleRoayleServer
 					IMessage msg = gameObject.Value.State;
 					if (msg != null) states.Add(msg);	
 			}
-			return new RoomState(states);
+			//объединеям состоянии объекотв состонием игровой модели и отпраляем их игроку
+			return new RoomState((List<IMessage>)states.Concat(roomContext.State));
 		}
 
 		/// <summary>

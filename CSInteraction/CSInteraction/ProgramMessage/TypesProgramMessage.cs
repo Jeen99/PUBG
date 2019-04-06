@@ -45,7 +45,8 @@ namespace CSInteraction.ProgramMessage
 		MagazinState,
 		HealthyState,
 		CollectorState,
-		GameObjectDestroy
+		FieldState,
+		EndGame
 
 	}
 }
