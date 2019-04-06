@@ -105,6 +105,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.ChangedValueHP:
 					case TypesProgramMessage.StartReloadWeapon:
 					case TypesProgramMessage.EndRelaodWeapon:
+					case TypesProgramMessage.EndGame:
 						Handler_PrivateMsg((IOutgoing)message);
 						break;
 					//сообщения которые отправляеются всем
