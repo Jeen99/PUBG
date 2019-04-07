@@ -5,7 +5,6 @@ using System.Text;
 using CSInteraction.Common;
 using System.Drawing;
 using System.Collections.Concurrent;
-using System.Drawing;
 
 namespace BattleRoayleServer
 {
@@ -15,12 +14,13 @@ namespace BattleRoayleServer
 		private readonly int TimeBetweenShot = 500;
 		private readonly int TimeReload = 3000;
 		private readonly int bulletsInMagazin = 8;
+		private readonly SizeF sizeGun = new SizeF(5, 5);
 
 		public Gun( IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.Gun;
 
-			var body = new TransparentBody(this, new RectangleF(location, new SizeF(8,8)));
+			var body = new TransparentBody(this, new RectangleF(location, sizeGun));
 			Components.Add(body);
 
 			var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);
@@ -28,8 +28,6 @@ namespace BattleRoayleServer
 
 			var shot = new Shot(this);
 			Components.Add(shot);
-
-			
 
 			model.AddLoot(this);
 		}

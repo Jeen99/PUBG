@@ -23,7 +23,7 @@ namespace CSInteraction.ProgramMessage
 		AddInBattle,
 		LoadedQueueForm,
 		GoTo,
-		PlayerMoved,
+		ObjectMoved,
 		BodyState,
 		GameObjectState,
 		RoomState,
@@ -48,7 +48,8 @@ namespace CSInteraction.ProgramMessage
 		FieldState,
 		EndGame,
 		ChangedTimeTillReduction,
-		BodyZoneState
+		BodyZoneState,
+		ThrowGrenade
 
 	}
 }

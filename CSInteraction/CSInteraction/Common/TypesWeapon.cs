@@ -12,6 +12,6 @@ namespace CSInteraction.Common
 		Gun,
 		ShotGun,
 		AssaultRifle,
-		Grenade
+		GrenadeCollection
 	}
 }

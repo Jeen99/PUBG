@@ -69,7 +69,7 @@ namespace ServerTest
 		{
 			IModelForComponents model = new RoyalGameModel();
 			int count = (model as IGameModel).HappenedEvents.Count;
-			model.AddEvent(new PlayerMoved(10, new PointF(10,50)));
+			model.AddEvent(new ObjectMoved(10, new PointF(10,50)));
 			Assert.AreEqual(count + 1, (model as IGameModel).HappenedEvents.Count);
 		}
 

@@ -13,12 +13,13 @@ namespace BattleRoayleServer
 		private readonly int TimeBetweenShot = 500;
 		private readonly int TimeReload = 4000;
 		private readonly int bulletsInMagazin = 6;
+		private readonly SizeF sizeAssaultRifle = new SizeF(8, 8);
 
 		public AssaultRifle(IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.AssaultRifle;
 
-			var body = new TransparentBody(this, new RectangleF(location, new SizeF(8, 8)));
+			var body = new TransparentBody(this, new RectangleF(location, sizeAssaultRifle));
 			Components.Add(body);
 
 			var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);

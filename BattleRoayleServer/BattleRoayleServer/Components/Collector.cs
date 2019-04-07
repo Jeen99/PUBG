@@ -184,6 +184,9 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
+			//временная проверка
+			if (Parent is LootBox) return;
+
 			this.body = Parent.Components?.GetComponent<SolidBody>();
 			if (body == null)
 			{

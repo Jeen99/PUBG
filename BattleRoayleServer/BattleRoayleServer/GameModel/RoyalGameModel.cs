@@ -256,6 +256,7 @@ namespace BattleRoayleServer
 		public void AddGameObject(IGameObject gameObject)
 		{
 			GameObjects.Add(gameObject.ID, gameObject);
+			gameObject.Setup();
 			//посылваем сообщение об добавлении нового объекта
 			//отправляем просто состояние объекта(не вижу смысла создавать специальное сообщение для этого)
 			HappenedEvents.Enqueue(gameObject.State);

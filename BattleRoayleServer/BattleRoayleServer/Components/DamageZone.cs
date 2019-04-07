@@ -23,6 +23,11 @@ namespace BattleRoayleServer
 		public override void Setup()
 		{
 			bodyZone = Parent.Components.GetComponent<BodyZone>();
+			if (bodyZone == null)
+			{
+				Log.AddNewRecord("Ошибка создания компонента DamageZone", "Не получена сслыка на компонент BodyZone");
+				throw new Exception("Ошибка создания компонента DamageZone");
+			}
 		}
 
 		public override void UpdateComponent(IMessage msg)

@@ -50,7 +50,7 @@ namespace BattleRoyalClient
 					client.SendMessage(new ChoiceWeapon(TypesWeapon.AssaultRifle));
 					break;
 				case Key.Oem4:
-					client.SendMessage(new ChoiceWeapon(TypesWeapon.Grenade));
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.GrenadeCollection));
 					break;
 				case Key.R:
 					client.SendMessage(new MakeReloadWeapon());

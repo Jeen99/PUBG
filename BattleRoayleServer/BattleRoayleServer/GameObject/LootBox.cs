@@ -11,10 +11,11 @@ namespace BattleRoayleServer
 {
 	public class LootBox : GameObject
 	{
+		private readonly SizeF sizeLootBox = new SizeF(8, 8);
 
 		public LootBox(IModelForComponents model, ICollector collector, PointF location) : base(model)
 		{
-			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, new SizeF(8, 8)));
+			var body = new TransparentBody(this, new System.Drawing.RectangleF(location, sizeLootBox));
 			Components.Add(body);
 			collector.SetNewParent(this);
 			Components.Add(collector);

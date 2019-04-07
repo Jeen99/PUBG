@@ -11,30 +11,19 @@ namespace ServerTest.ComponentsTest
 	public class SolidBodyTest
 	{
 		[TestMethod]
-		public void Test_CreateSolidBody1()
+		public void Test_CreateSolidBody()
 		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Circle, 0, 0);
-			Assert.IsNotNull(solidBody.Body);
-		}
-
-		[TestMethod]
-		public void Test_CreateSolidBody2()
-		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Rectangle, 0, 0);
+			ISolidBody solidBody = new SolidBody(new StubPlayer());
 			Assert.IsNotNull(solidBody.Body);
 		}
 
 		[TestMethod]
 		public void Test_SolidBodyState()
 		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer(), new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Rectangle, 0, 0);
+			ISolidBody solidBody = new SolidBody(new StubPlayer());
 			Assert.IsNotNull(solidBody.State);
 		}
-
-		
+	
 		/*[TestMethod]
 		public void Test_BodyDelete()
 		{

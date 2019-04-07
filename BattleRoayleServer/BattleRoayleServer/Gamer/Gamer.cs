@@ -6,6 +6,7 @@ using System.Text;
 using System.Collections.Concurrent;
 using CSInteraction.ProgramMessage;
 using CSInteraction.Common;
+using Box2DX.Collision;
 
 namespace BattleRoayleServer
 {
@@ -14,15 +15,24 @@ namespace BattleRoayleServer
 		private readonly float restetution = 0;
 		private readonly float friction = 0;
 		private readonly float density = 0.5f;
+		private readonly SizeF GamerSize = new SizeF(10,10);
 
 		public event PlayerDeleted EventPlayerDeleted;
 
 		public Gamer(IModelForComponents context, PointF location) : base(context)
 		{
+			#region CreateShape
+			ShapeDef CircleDef = new CircleDef();
+			(CircleDef as CircleDef).Radius = GamerSize.Width / 2;
+			CircleDef.Restitution = restetution;
+			CircleDef.Friction = friction;
+			CircleDef.Density = density;
+			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
+			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone 
+				| (ushort)CollideCategory.Grenade;
+			#endregion
 
-			body = new SolidBody(this, new RectangleF(location, new Size(10, 10)), restetution,
-				friction, density, TypesBody.Circle, (ushort)CollideCategory.Player,
-				(ushort)CollideCategory.Box | (ushort)CollideCategory.Stone);
+			body = new SolidBody(this, new RectangleF(location, GamerSize), new ShapeDef[] { CircleDef });
 			Components.Add(body);
 
 			var movement = new Movement(this, 40f);

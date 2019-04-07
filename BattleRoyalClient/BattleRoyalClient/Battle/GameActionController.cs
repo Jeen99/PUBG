@@ -41,8 +41,8 @@ namespace BattleRoyalClient
 					Handler_RoomState(msg as RoomState);
 					view.Dispatcher.Invoke(()=> { model.CreateChangeModel(); });			
 					break;
-				case TypesProgramMessage.PlayerMoved:
-					Handler_PlayerMoved(msg as PlayerMoved);
+				case TypesProgramMessage.ObjectMoved:
+					Handler_PlayerMoved(msg as ObjectMoved);
 					break;
 				case TypesProgramMessage.ChangedValueHP:
 					Handler_HealthyCharacter(msg as ChangedValueHP);
@@ -66,7 +66,7 @@ namespace BattleRoyalClient
 			view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeHP(); });
 		}
 
-		private void Handler_PlayerMoved(PlayerMoved moved)
+		private void Handler_PlayerMoved(ObjectMoved moved)
 		{
 			IModelObject modelObject;
 			if (!model.GameObjects.TryGetValue(moved.ID, out modelObject))

@@ -56,6 +56,7 @@
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Collision\TransparentBody.cs" />
     <Compile Include="Components\DamageZone.cs" />
+    <Compile Include="Components\Explosion.cs" />
     <Compile Include="Components\Interfeces\IBodyZone.cs" />
     <Compile Include="Components\Interfeces\IMovement.cs" />
     <Compile Include="Components\Interfeces\IHealthy.cs" />
@@ -72,9 +73,11 @@
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
     <Compile Include="Components\PlayerDied.cs" />
+    <Compile Include="Components\Throw.cs" />
     <Compile Include="GameModel\IModelForComponents.cs" />
     <Compile Include="GameObject\Box.cs" />
     <Compile Include="GameObject\DeathZone.cs" />
+    <Compile Include="GameObject\Grenade.cs" />
     <Compile Include="GameObject\IGameObject.cs" />
     <Compile Include="GameObject\LootBox.cs" />
     <Compile Include="GameObject\Stone.cs" />
@@ -112,9 +115,11 @@
     <Compile Include="Room\RoyalRoomLogic.cs" />
     <Compile Include="Weapon\AssaultRifle.cs" />
     <Compile Include="Weapon\Bullet\AssaultRifleBullet.cs" />
+    <Compile Include="Weapon\Bullet\GrenadeBullet.cs" />
     <Compile Include="Weapon\Bullet\GunBullet.cs" />
     <Compile Include="Weapon\Bullet\IBullet.cs" />
     <Compile Include="Weapon\Bullet\ShotGunBullet.cs" />
+    <Compile Include="Weapon\GrenadeCollection.cs" />
     <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Weapon\IWeapon.cs" />
     <Compile Include="Weapon\ShotGun.cs" />

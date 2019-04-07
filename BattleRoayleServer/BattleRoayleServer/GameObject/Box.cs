@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CSInteraction.Common;
 using System.Collections.Concurrent;
 using CSInteraction.ProgramMessage;
+using Box2DX.Collision;
 
 namespace BattleRoayleServer
 {
@@ -18,10 +19,17 @@ namespace BattleRoayleServer
 
 		public Box(IModelForComponents context, PointF location, SizeF size) : base(context)
 		{
-		
-			var body = new SolidBody(this, new RectangleF(location, size), restetution,
-				friction, density, TypesBody.Rectangle, (ushort)CollideCategory.Box,
-				(ushort)CollideCategory.Player);
+			#region CreateShape
+			ShapeDef RectangleDef = new PolygonDef();
+			(RectangleDef as PolygonDef).SetAsBox(size.Width / 2, size.Height / 2);
+			RectangleDef.Restitution = restetution;
+			RectangleDef.Friction = friction;
+			RectangleDef.Density = density;
+			RectangleDef.Filter.CategoryBits = (ushort)CollideCategory.Box;
+			RectangleDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+			#endregion
+
+			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { RectangleDef });
 			Components.Add(body);
 		}
 

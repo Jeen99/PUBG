@@ -44,36 +44,20 @@ namespace BattleRoayleServer
 			Body.SetUserData(this);
 		}
 
-		public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
+		/*public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
 			float density, TypesBody typesBody,ushort categoryBits, ushort maskBits): base(parent)
 		{
 			this.shape = shape;
 
-					switch (typesBody)
-					{
-						case TypesBody.Circle:
-							CreateCircleBody(restetution, friction, density, categoryBits, maskBits);
-							break;
-						case TypesBody.Rectangle:
-							CreateRectangleBody(restetution, friction, density, categoryBits, maskBits);
-							break;
-					}
-			
-		}
-
-		private void CreateCircleBody(float restetution, float friction, float density,
-			ushort categoryBits, ushort maskBits)
-		{
 			BodyDef bDef = new BodyDef();
 			bDef.Position.Set(shape.X, shape.Y);
 			bDef.Angle = 0;
 			bDef.FixedRotation = true;
 
-			CircleDef pDef = new CircleDef();
+			ShapeDef pDef = CreateShape(typesBody);
 			pDef.Restitution = restetution;
 			pDef.Friction = friction;
 			pDef.Density = density;
-			pDef.Radius = shape.Width / 2;
 			pDef.Filter.CategoryBits = categoryBits;
 			pDef.Filter.MaskBits = maskBits;
 
@@ -81,31 +65,74 @@ namespace BattleRoayleServer
 			Body.CreateShape(pDef);
 			Body.SetMassFromShapes();
 			Body.SetUserData(this);
+		}*/
 
-		}
-
-		private void CreateRectangleBody(float restetution, float friction, float density,
-			ushort categoryBits, ushort maskBits)
+		public SolidBody(IGameObject parent, RectangleF shape, ShapeDef[] shapesForBox2D) : base(parent)
 		{
-			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.Left, shape.Top);
-			bDef.Angle = 0;
+			this.shape = shape;
 
-			PolygonDef pDef = new PolygonDef();
-			pDef.Restitution = restetution;
-			pDef.Friction = friction;
-			pDef.Density = density;
-			pDef.SetAsBox(shape.Width / 2, shape.Height / 2);
-			pDef.Filter.CategoryBits = categoryBits;
-			pDef.Filter.MaskBits = maskBits;
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.X, shape.Y);
+			bDef.Angle = 0;
+			bDef.FixedRotation = true;
 
 			Body = Parent.Model.Field.CreateBody(bDef);
-			Body.CreateShape(pDef);
-			Body.SetMassFromShapes();
 			Body.SetUserData(this);
+
+
+			for (int i = 0; i < shapesForBox2D.Length; i++)
+			{
+				Body.CreateShape(shapesForBox2D[i]);
+			}
+
+			Body.SetMassFromShapes();
 		}
 
+		public SolidBody(IGameObject parent, RectangleF shape, ShapeDef[] shapesForBox2D, 
+			float linerDamping, Vec2 startVelocity) : base(parent)
+		{
+			if (shapesForBox2D == null || shapesForBox2D.Length == 0)
+				throw new Exception("Невозможно создать тело без описания хотя бы одной его формы");
 
+			this.shape = shape;
+
+			BodyDef bDef = new BodyDef();
+			bDef.Position.Set(shape.X, shape.Y);
+			bDef.Angle = 0;
+			bDef.LinearDamping = linerDamping;
+			bDef.FixedRotation = true;
+
+			Body = Parent.Model.Field.CreateBody(bDef);
+			Body.SetLinearVelocity(startVelocity);
+			Body.SetUserData(this);
+
+
+			for (int i = 0; i < shapesForBox2D.Length; i++)
+			{
+				Body.CreateShape(shapesForBox2D[i]);
+			}
+					
+			Body.SetMassFromShapes();			
+		}
+
+		/*private ShapeDef CreateShape(TypesBody typesBody)
+		{
+			ShapeDef pDef;
+
+			switch (typesBody)
+			{
+				case TypesBody.Circle:
+					pDef = new CircleDef();
+					(pDef as CircleDef).Radius = shape.Width / 2;
+					return pDef;
+				case TypesBody.Rectangle:
+					pDef = new PolygonDef();
+					(pDef as PolygonDef).SetAsBox(shape.Width / 2, shape.Height / 2);
+					return pDef;
+			}
+			throw new Exception("Ошибка создания формы!");
+		}*/
+		
 		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg == null)
@@ -129,7 +156,7 @@ namespace BattleRoayleServer
 			if (position.X != shape.X || position.Y != shape.Y)
 			{
 				shape.Location = new PointF(position.X, position.Y);
-				Parent.Model?.AddEvent(new PlayerMoved(Parent.ID, shape.Location));
+				Parent.Model?.AddEvent(new ObjectMoved(Parent.ID, shape.Location));
 			}
 		}
 		
@@ -157,7 +184,8 @@ namespace BattleRoayleServer
 	{
 		Player = 0x0001,
 		Stone = 0x0002,
-		Box = 0x0004
+		Box = 0x0004,
+		Grenade = 0x0008
 	}
 
 	public enum TypesBody
@@ -165,4 +193,6 @@ namespace BattleRoayleServer
 		Rectangle, 
 		Circle
 	}
+
+	
 }

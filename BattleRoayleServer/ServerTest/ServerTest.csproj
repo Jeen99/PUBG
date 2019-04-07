@@ -67,6 +67,7 @@
     <Compile Include="ComponentsTest\ShotTest.cs" />
     <Compile Include="ComponentsTest\SolidBodyTest.cs" />
     <Compile Include="ComponentsTest\BodyZoneTest.cs" />
+    <Compile Include="ComponentsTest\ThrowTest.cs" />
     <Compile Include="DictionaryComponentsTest.cs" />
     <Compile Include="RoomContactListenerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

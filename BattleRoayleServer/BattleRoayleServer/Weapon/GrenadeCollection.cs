@@ -8,27 +8,25 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	public class ShotGun : Weapon
+	public class GrenadeCollection:Weapon
 	{
-		private readonly int TimeBetweenShot = 800;
-		private readonly int TimeReload = 5000;
-		private readonly int bulletsInMagazin = 3;
-		private readonly SizeF sizeShotGun = new SizeF(5, 5);
+		private readonly int TimeBetweenShot = 50;
+		private readonly int TimeReload = 10000;
+		private readonly int bulletsInMagazin = 4;
+		private readonly float strengthThrowGrenade = 30;
 
-		public ShotGun(IModelForComponents model, PointF location) : base(model)
+		public GrenadeCollection(IModelForComponents model, PointF location) : base(model)
 		{
-			TypeWeapon = TypesWeapon.ShotGun;
+			TypeWeapon = TypesWeapon.GrenadeCollection;
 
-			var body = new TransparentBody(this, new RectangleF(location, sizeShotGun));
+			var body = new TransparentBody(this, new RectangleF(location, new SizeF(8, 8)));
 			Components.Add(body);
 
 			var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);
 			Components.Add(magazin);
 
-			var shot = new Shot(this);
-			Components.Add(shot);
-
-			model.AddLoot(this);
+			var throwGrenade = new Throw(this, strengthThrowGrenade);
+			Components.Add(throwGrenade);
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
