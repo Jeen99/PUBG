@@ -12,7 +12,7 @@ namespace ServerTest
 		public void Test_GetComponent()
 		{
 			DictionaryComponent  dictionary = new DictionaryComponent();
-			IComponent magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 1000);
+			IComponent magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 1000, 8);
 			magazin.Setup();
 			dictionary.Add(magazin);
 			IMagazin thisMagazin = dictionary.GetComponent<Magazin>();

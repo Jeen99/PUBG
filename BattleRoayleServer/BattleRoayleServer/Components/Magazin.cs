@@ -16,21 +16,26 @@ namespace BattleRoayleServer
 		public bool Reload { get; protected set; }
 		private float durationReload_BetweenShots;
 		private float durationReload_Magazin;
-		private int bulletsInMagazin;
+		private readonly int bulletsInMagazin;
+		private int bulletsInMagazinNow;
 
 		private Timer reloadMagazin;
 
 		public TypesWeapon TypeMagazin { get; private set; }
 
 		public Magazin(IWeapon parent, TypesWeapon typeWeapon, float duration_BetweenShots,
-			float duration_Magazin) : base(parent)
+			float duration_Magazin,int bulletsInMagazin) : base(parent)
 		{
 			TypeMagazin = typeWeapon;
+
+			this.bulletsInMagazin = bulletsInMagazin;
 
 			durationReload_BetweenShots = duration_BetweenShots;
 			durationReload_Magazin = duration_Magazin;
 
-			CreateNewMagazin();
+			//cоздаем новый магазин
+			bulletsInMagazinNow = bulletsInMagazin;
+
 			//создаем таймер
 			reloadMagazin = new Timer()
 			{
@@ -43,20 +48,21 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				return new MagazinState(bulletsInMagazin);
+				return new MagazinState(bulletsInMagazinNow);
 			}
 		}
 
 		private void Handler_ReloadBetweenShots(object sender, ElapsedEventArgs e)
 		{
 			Reload = false;
-			bulletsInMagazin--;
+			bulletsInMagazinNow--;
 		}
 
 		private void Handler_ReloadMagazin(object sender, ElapsedEventArgs e)
 		{
 			Reload = false;
-			CreateNewMagazin();
+			//cоздаем новый магазин
+			bulletsInMagazinNow = bulletsInMagazin;
 			
 			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as IWeapon).Holder.ID));
 			
@@ -89,7 +95,7 @@ namespace BattleRoayleServer
 		{
 			if (!Reload)
 			{
-				if (bulletsInMagazin > 1)
+				if (bulletsInMagazinNow > 1)
 					Create_ReloadBetweenShots();
 				else
 					Create_ReloadMagazin();
@@ -109,16 +115,6 @@ namespace BattleRoayleServer
 				case TypesWeapon.Gun:
 					return new GunBullet();
 				default: return null;
-			}
-		}
-
-		private void CreateNewMagazin()
-		{
-			switch (TypeMagazin)
-			{
-				case TypesWeapon.Gun:
-					bulletsInMagazin = 8;
-					break;
 			}
 		}
 

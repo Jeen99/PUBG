@@ -13,27 +13,27 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_CreateMagazin()
 		{
-			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 3000);
+			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 3000, 8);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorCreateMagazin()
 		{
-			IMagazin magazin = new Magazin(null, TypesWeapon.Gun, 500, 3000);
+			IMagazin magazin = new Magazin(null, TypesWeapon.Gun, 500, 3000, 8);
 		}
 
 		[TestMethod]
 		public void Test_StateMagazin()
 		{
-			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 3000);
+			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 3000, 8);
 			Assert.IsNotNull(magazin.State);
 		}
 
 		[TestMethod]
 		public void Test_GetBullet()
 		{
-			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300);
+			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();
 
 			//делаем 8 выстрелов
@@ -52,7 +52,7 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_UpdateComponent_MakeReload()
 		{
-			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300);
+			IMagazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();
 
 			magazin.UpdateComponent(new MakeReloadWeapon());

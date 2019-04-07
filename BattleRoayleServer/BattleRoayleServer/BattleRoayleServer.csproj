@@ -110,10 +110,14 @@
     <Compile Include="HighestLevelServer\Rooms.cs" />
     <Compile Include="GameModel\RoyalGameModel.cs" />
     <Compile Include="Room\RoyalRoomLogic.cs" />
+    <Compile Include="Weapon\AssaultRifle.cs" />
+    <Compile Include="Weapon\Bullet\AssaultRifleBullet.cs" />
     <Compile Include="Weapon\Bullet\GunBullet.cs" />
     <Compile Include="Weapon\Bullet\IBullet.cs" />
+    <Compile Include="Weapon\Bullet\ShotGunBullet.cs" />
     <Compile Include="Weapon\Gun.cs" />
     <Compile Include="Weapon\IWeapon.cs" />
+    <Compile Include="Weapon\ShotGun.cs" />
     <Compile Include="Weapon\Weapon.cs" />
   </ItemGroup>
   <ItemGroup>

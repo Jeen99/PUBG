@@ -31,7 +31,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_CreateShot()
 		{
 			var weapon = new StubWeapon();
-			weapon.Components.Add(new Magazin(weapon, TypesWeapon.Gun, 500, 3000));
+			weapon.Components.Add(new Magazin(weapon, TypesWeapon.Gun, 500, 3000,8));
 			Shot shot = new Shot(weapon);
 		}
 

@@ -11,9 +11,9 @@ namespace BattleRoayleServer
 {
 	public class Gamer : GameObject, IPlayer
 	{
-		private const float restetution = 0;
-		private const float friction = 0;
-		private const float density = 0.5f;
+		private readonly float restetution = 0;
+		private readonly float friction = 0;
+		private readonly float density = 0.5f;
 
 		public event PlayerDeleted EventPlayerDeleted;
 
