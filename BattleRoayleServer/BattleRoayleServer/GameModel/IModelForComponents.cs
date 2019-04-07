@@ -8,6 +8,7 @@ namespace BattleRoayleServer
 	public interface IModelForComponents
 	{
 		World Field { get; }
+		IList<IPlayer> Players { get; }
 		void AddGameObject(IGameObject gameObject);
 		List<IGameObject> GetPickUpObjects(RectangleF shapePlayer);
 		void RemoveGameObject(IGameObject gameObject);

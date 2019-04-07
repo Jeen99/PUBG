@@ -73,7 +73,7 @@ namespace BattleRoayleServer
 					Handler_LoadedBattleForm();
 					break;
 				default:
-					Player.PerformAction(msg);
+					Player.SendMessage(msg);
 					break;
 			}
 					

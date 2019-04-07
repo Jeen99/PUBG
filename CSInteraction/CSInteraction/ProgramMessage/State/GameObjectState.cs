@@ -8,7 +8,7 @@ using CSInteraction.Common;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class GameObjectState : IMessage
+	public class GameObjectState : IMessage, IOutgoing
 	{
 		public TypesGameObject Type { get; private set; }
 		public IList<IMessage> StatesComponents { get; private set; }

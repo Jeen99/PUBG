@@ -87,6 +87,10 @@ namespace BattleRoayleServer
 			Gun gun = new Gun(this, new PointF(50, 70));
 			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(gun.ID, gun);
+
+			DeathZone deathZone = new DeathZone(this, lengthOfSide);
+			deathZone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
+			GameObjects.Add(deathZone.ID, deathZone);
 		}
 
 		private void Model_EventGameObjectDeleted(IGameObject gameObject)

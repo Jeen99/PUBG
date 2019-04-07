@@ -18,6 +18,7 @@ namespace CSInteraction.Common
 		Box,
 		Bush,
 		Tree,
+		DeathZone
 
 	}
 }

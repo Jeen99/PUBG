@@ -35,7 +35,7 @@ namespace ServerTest.ComponentsTest
 		}
 
 		
-		[TestMethod]
+		/*[TestMethod]
 		public void Test_BodyDelete()
 		{
 			var player = new StubPlayer();
@@ -47,7 +47,7 @@ namespace ServerTest.ComponentsTest
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count+1);
 			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count);
 
-		}
+		}*/
 
 		[TestMethod]
 		public void Test_UpdateComponent_TimeQuantPassed()

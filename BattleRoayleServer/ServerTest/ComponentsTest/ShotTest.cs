@@ -60,7 +60,7 @@ namespace ServerTest.ComponentsTest
 			ICurrentWeapon currentWeapon = player1.Components.GetComponent<CurrentWeapon>();
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//делаем выстрел
-			player1.SendMessage(new MakeShot(2));
+			player1.SendMessage(new MakeShot(270));
 			player1.Update(new TimeQuantPassed(1));
 			//проверяем
 			player2.Update(new TimeQuantPassed(1));
@@ -68,7 +68,7 @@ namespace ServerTest.ComponentsTest
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			//делаем 2 выстрел
-			player1.SendMessage(new MakeShot(0));
+			player1.SendMessage(new MakeShot(270));
 			player1.Update(new TimeQuantPassed(1));
 			//выстрел не должен произойти
 			player2.Update(new TimeQuantPassed(1));
@@ -76,7 +76,7 @@ namespace ServerTest.ComponentsTest
 
 			Thread.Sleep(550);
 			//делаем 3 выстрел
-			player1.SendMessage(new MakeShot(0));
+			player1.SendMessage(new MakeShot(270));
 			player1.Update(new TimeQuantPassed(1));
 			//выстрел должен произойти
 			player2.Update(new TimeQuantPassed(1));

@@ -58,11 +58,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public void PerformAction(IMessage action)
-		{
-			SendMessage(action);
-		}
-
 		public override void Dispose()
 		{
 			Model.AddEvent(new EndGame(ID));

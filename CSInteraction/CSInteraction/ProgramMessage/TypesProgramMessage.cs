@@ -46,7 +46,9 @@ namespace CSInteraction.ProgramMessage
 		HealthyState,
 		CollectorState,
 		FieldState,
-		EndGame
+		EndGame,
+		ChangedTimeTillReduction,
+		BodyZoneState
 
 	}
 }
