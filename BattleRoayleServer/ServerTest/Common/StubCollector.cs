@@ -24,9 +24,9 @@ namespace ServerTest
 		{
 		}
 
-		public IWeapon GetWeapon(TypesWeapon typeWeapon)
+		public Weapon GetWeapon(TypesWeapon typeWeapon)
 		{
-			return new StubWeapon();
+			return null;
 		}
 
 		public void SetNewParent(LootBox lootBox)

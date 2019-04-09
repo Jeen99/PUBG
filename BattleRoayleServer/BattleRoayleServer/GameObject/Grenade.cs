@@ -38,7 +38,6 @@ namespace BattleRoayleServer
 			sensorDef.IsSensor = true;
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
-
 			#endregion
 
 			var body = new SolidBody(this, new RectangleF(location, sizeGrenade), 

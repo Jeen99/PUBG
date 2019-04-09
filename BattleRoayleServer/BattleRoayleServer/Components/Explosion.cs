@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 		{
 			this.grenadeBullet = grenadeBullet;
 			//добавил минуту, чтобы не было ошибки при вычитании
-			timeTillExplosion = new DateTime(1, 1, 1, 0, 1, 4, 500);
+			timeTillExplosion = new DateTime(1, 1, 1, 0, 0, 4, 500);
 		}
 
 		public override void Setup()
@@ -45,10 +45,6 @@ namespace BattleRoayleServer
 			try
 			{
 				timeTillExplosion = timeTillExplosion.AddMilliseconds(-msg.QuantTime);
-				if (timeTillExplosion.Second  == 59 )
-				{
-					MakeExplosion();
-				}
 			}
 			catch (Exception e)
 			{

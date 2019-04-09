@@ -64,7 +64,7 @@ namespace BattleRoayleServer
 			//cоздаем новый магазин
 			bulletsInMagazinNow = bulletsInMagazin;
 			
-			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as IWeapon).Holder.ID));
+			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as Weapon).Holder.ID));
 			
 		}
 
@@ -77,7 +77,7 @@ namespace BattleRoayleServer
 			reloadMagazin.Elapsed += Handler_ReloadMagazin;
 			reloadMagazin.Start();
 			
-			Parent?.Model?.AddEvent(new StartReloadWeapon((Parent as IWeapon).Holder.ID));
+			Parent?.Model?.AddEvent(new StartReloadWeapon((Parent as Weapon).Holder.ID));
 			
 		}
 

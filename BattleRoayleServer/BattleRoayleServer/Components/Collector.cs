@@ -15,11 +15,11 @@ namespace BattleRoayleServer
 	public class Collector : Component, ICollector
 	{
 		private Modifier[] modifiers;
-		private IWeapon[] weapons;
+		private Weapon[] weapons;
 
 		private static readonly ulong  CountOfModifier = 5u;
 
-		public IWeapon GetWeapon(TypesWeapon typeWeapon)
+		public Weapon GetWeapon(TypesWeapon typeWeapon)
 		{
 			try
 			{
@@ -38,7 +38,7 @@ namespace BattleRoayleServer
 			weapons = new Weapon[sizeof(TypesWeapon)];
 		}
 		//только для тестов
-		public Collector(IGameObject parent, IWeapon[] weapons) : base(parent)
+		public Collector(IGameObject parent, Weapon[] weapons) : base(parent)
 		{
 			modifiers = new Modifier[CountOfModifier];
 			this.weapons = weapons;

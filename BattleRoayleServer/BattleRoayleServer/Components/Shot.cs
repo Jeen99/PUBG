@@ -56,7 +56,7 @@ namespace BattleRoayleServer
 		{
 			try
 			{
-				ISolidBody BodyHolder = (Parent as IWeapon).Holder?.Components?.GetComponent<SolidBody>();
+				ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 				if (BodyHolder == null)
 					return;
 				//получаем патрон
@@ -88,7 +88,7 @@ namespace BattleRoayleServer
 				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, 2, true, null);
 
 				//отправляем сообщение о совершении выстрела
-				Parent.Model.AddEvent(new MakedShot( (Parent as IWeapon).Holder.ID, bullet.Distance) );
+				Parent.Model.AddEvent(new MakedShot( (Parent as Weapon).Holder.ID, bullet.Distance) );
 
 				var damageMsg = new GotDamage(bullet.Damage);
 				//отправляем ему сообщение о нанесении урона	

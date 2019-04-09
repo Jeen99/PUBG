@@ -5,30 +5,28 @@ using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Common;
 using System.Drawing;
+using Box2DX.Collision;
 
 namespace BattleRoayleServer
 {
 	public class ShotGun : Weapon
 	{
-		private readonly int TimeBetweenShot = 800;
-		private readonly int TimeReload = 5000;
-		private readonly int bulletsInMagazin = 3;
-		private readonly SizeF sizeShotGun = new SizeF(5, 5);
-
 		public ShotGun(IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.ShotGun;
 
-			var body = new TransparentBody(this, new RectangleF(location, sizeShotGun));
-			Components.Add(body);
+			//задаем парамертры модели
+			this.TimeBetweenShot = 500;
+			this.TimeReload = 5000;
+			this.bulletsInMagazin = 3;
+			this.size = new SizeF(8, 8);
+			this.restetution = 0;
+			this.friction = 0;
+			this.density = 0.5f;
+			this.linearDamping = 0.85f;
 
-			var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);
-			Components.Add(magazin);
-
-			var shot = new Shot(this);
-			Components.Add(shot);
-
-			model.AddLoot(this);
+			//cоздал этот метод, чтобы сократить повторяющийся код
+			base.Setup(location);
 		}
 
 		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;

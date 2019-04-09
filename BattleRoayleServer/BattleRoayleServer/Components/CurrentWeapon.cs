@@ -11,9 +11,9 @@ namespace BattleRoayleServer
 	public class CurrentWeapon : Component, ICurrentWeapon
 	{
 		private ICollector inventory;
-		private IWeapon currentWeapon;
+		private Weapon currentWeapon;
 
-		public IWeapon GetCurrentWeapon { get => currentWeapon; }
+		public Weapon GetCurrentWeapon { get => currentWeapon; }
 
 		public CurrentWeapon(IGameObject parent) : base(parent)
 		{

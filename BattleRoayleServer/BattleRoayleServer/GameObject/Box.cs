@@ -26,7 +26,8 @@ namespace BattleRoayleServer
 			RectangleDef.Friction = friction;
 			RectangleDef.Density = density;
 			RectangleDef.Filter.CategoryBits = (ushort)CollideCategory.Box;
-			RectangleDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+			RectangleDef.Filter.MaskBits = (ushort)CollideCategory.Player |
+				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 			#endregion
 
 			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { RectangleDef });

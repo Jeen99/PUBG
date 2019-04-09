@@ -43,7 +43,7 @@ namespace BattleRoayleServer
 
 		private void Handler_ThrowGrenade(ThrowGrenade msg)
 		{
-			ISolidBody BodyHolder = (Parent as IWeapon).Holder?.Components?.GetComponent<SolidBody>();
+			ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 			if (BodyHolder == null)
 				return;
 			//получаем гранату

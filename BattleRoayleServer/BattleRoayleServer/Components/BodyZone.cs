@@ -31,7 +31,7 @@ namespace BattleRoayleServer
 			Radius = sizeMap / 2;
 			location = new PointF(Radius, Radius);		
 			//время до сужения зоны постоянно и равно 30 секундам
-			timeTillReducton = new DateTime(1, 1, 1, 1, 0, timeRound, 0);
+			timeTillReducton = new DateTime(1, 1, 1, 0, 0, timeRound, 0);
 		}
 
 		public override void Setup()
@@ -51,22 +51,27 @@ namespace BattleRoayleServer
 
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
-			//сохраняем количество секунд
-			int leftSecond = timeTillReducton.Second;
-			//отнимаем прошедшее время
-			timeTillReducton = timeTillReducton.AddMilliseconds(-msg.QuantTime);
-			if (timeTillReducton.Second != leftSecond)
+			try
 			{
-				Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
+				//сохраняем количество секунд
+				int leftSecond = timeTillReducton.Second;
+				//отнимаем прошедшее время
+
+				timeTillReducton = timeTillReducton.AddMilliseconds(-msg.QuantTime);
+				if (timeTillReducton.Second != leftSecond)
+				{
+					Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
+				}
+			}
+			catch (Exception e)
+			{
+				CheckReduction();
 			}
 
-			CheckReduction();
 		}
 
 		private void CheckReduction()
-		{
-			if (timeTillReducton.Second <= 0 && timeTillReducton.Millisecond <= 0)
-			{
+		{	
 				//определяем новую позицию центра зоны
 				Random rand = new Random();
 				location.X = rand.Next(Convert.ToInt32(location.X - Radius), Convert.ToInt32(location.X + Radius));
@@ -80,7 +85,6 @@ namespace BattleRoayleServer
 
 				//отпрвляем сообщение об изменение зоны
 				Parent.Model?.AddEvent(Parent.State);
-			}
 		}
 
 		public override IMessage State

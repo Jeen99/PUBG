@@ -44,29 +44,6 @@ namespace BattleRoayleServer
 			Body.SetUserData(this);
 		}
 
-		/*public SolidBody(IGameObject parent,  RectangleF shape, float restetution, float friction,
-			float density, TypesBody typesBody,ushort categoryBits, ushort maskBits): base(parent)
-		{
-			this.shape = shape;
-
-			BodyDef bDef = new BodyDef();
-			bDef.Position.Set(shape.X, shape.Y);
-			bDef.Angle = 0;
-			bDef.FixedRotation = true;
-
-			ShapeDef pDef = CreateShape(typesBody);
-			pDef.Restitution = restetution;
-			pDef.Friction = friction;
-			pDef.Density = density;
-			pDef.Filter.CategoryBits = categoryBits;
-			pDef.Filter.MaskBits = maskBits;
-
-			Body = Parent.Model.Field.CreateBody(bDef);
-			Body.CreateShape(pDef);
-			Body.SetMassFromShapes();
-			Body.SetUserData(this);
-		}*/
-
 		public SolidBody(IGameObject parent, RectangleF shape, ShapeDef[] shapesForBox2D) : base(parent)
 		{
 			this.shape = shape;
@@ -114,25 +91,7 @@ namespace BattleRoayleServer
 					
 			Body.SetMassFromShapes();			
 		}
-
-		/*private ShapeDef CreateShape(TypesBody typesBody)
-		{
-			ShapeDef pDef;
-
-			switch (typesBody)
-			{
-				case TypesBody.Circle:
-					pDef = new CircleDef();
-					(pDef as CircleDef).Radius = shape.Width / 2;
-					return pDef;
-				case TypesBody.Rectangle:
-					pDef = new PolygonDef();
-					(pDef as PolygonDef).SetAsBox(shape.Width / 2, shape.Height / 2);
-					return pDef;
-			}
-			throw new Exception("Ошибка создания формы!");
-		}*/
-		
+	
 		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg == null)
@@ -185,7 +144,8 @@ namespace BattleRoayleServer
 		Player = 0x0001,
 		Stone = 0x0002,
 		Box = 0x0004,
-		Grenade = 0x0008
+		Grenade = 0x0008,
+		Loot = 0x0016
 	}
 
 	public enum TypesBody

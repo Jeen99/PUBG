@@ -4,6 +4,6 @@ namespace BattleRoayleServer
 {
 	public interface ICurrentWeapon:IComponent
 	{
-		IWeapon GetCurrentWeapon { get; }
+		Weapon GetCurrentWeapon { get; }
 	}
 }

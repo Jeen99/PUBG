@@ -29,7 +29,8 @@ namespace BattleRoayleServer
 			CircleDef.Friction = friction;
 			CircleDef.Density = density;
 			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Stone;
-			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Player |
+				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 			#endregion
 
 			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { CircleDef });

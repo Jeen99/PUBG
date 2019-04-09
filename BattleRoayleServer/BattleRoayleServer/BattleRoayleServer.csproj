@@ -52,6 +52,7 @@
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\DictionaryComponent.cs" />
     <Compile Include="Common\VectorMethod.cs" />
+    <Compile Include="Components\AbstractComponent\ICollectorItem.cs" />
     <Compile Include="Components\BodyZone.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Collision\TransparentBody.cs" />

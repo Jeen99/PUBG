@@ -52,6 +52,7 @@
     <Compile Include="Common\Directions.cs" />
     <Compile Include="Common\ObservableQueue.cs" />
     <Compile Include="Common\TypesGameObject.cs" />
+    <Compile Include="Common\TypesModifier.cs" />
     <Compile Include="Common\TypesWeapon.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
     <Compile Include="ProgramMessage\Battle\Incoming\ThrowGrenade.cs" />
