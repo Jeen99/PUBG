@@ -8,7 +8,6 @@ using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
 using System.Drawing;
-using Box2DX.Common;
 
 
 namespace BattleRoayleServer
@@ -150,6 +149,7 @@ namespace BattleRoayleServer
 
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.SendMessage(msg);
+				Parent.Model.AddEvent(new DeleteInMap(weapon.ID));
 				Parent.Model?.AddEvent(msg);
 			}
 		}
