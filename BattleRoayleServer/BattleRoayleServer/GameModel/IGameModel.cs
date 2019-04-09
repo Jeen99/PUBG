@@ -19,8 +19,6 @@ namespace BattleRoayleServer
 		Dictionary<ulong, IGameObject> GameObjects { get; }
         World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
-		List<IGameObject> Loot { get; }
-		List<IGameObject> GetPickUpObjects(RectangleF shapePlayer);
 		GameObjectState State { get; }
 		bool Sleep { get; }
 		event RoaylGameModelEndWork EventRoaylGameModelEndWork;

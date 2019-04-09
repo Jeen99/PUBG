@@ -72,19 +72,19 @@ namespace BattleRoayleServer
 
 		private void CheckReduction()
 		{	
-				//определяем новую позицию центра зоны
-				Random rand = new Random();
-				location.X = rand.Next(Convert.ToInt32(location.X - Radius), Convert.ToInt32(location.X + Radius));
-				location.Y = rand.Next(Convert.ToInt32(location.Y - Radius), Convert.ToInt32(location.Y + Radius));
+			//пределяем новую позицию центра зоны
+			Random rand = new Random();
+			location.X = rand.Next(Convert.ToInt32(location.X - Radius), Convert.ToInt32(location.X + Radius));
+			location.Y = rand.Next(Convert.ToInt32(location.Y - Radius), Convert.ToInt32(location.Y + Radius));
 
-				//уменьшаем радиус на 40% процентов
-				Radius = Radius * 0.6f;
+			//уменьшаем радиус на 40% процентов
+			Radius = Radius * 0.6f;
 
-				//устанавливаем новое время до сужения зоны
-				timeTillReducton = timeTillReducton.AddSeconds(timeRound);
+			//устанавливаем новое время до сужения зоны
+			timeTillReducton = new DateTime(1, 1, 1, 0, 0, timeRound, 0);
 
-				//отпрвляем сообщение об изменение зоны
-				Parent.Model?.AddEvent(Parent.State);
+			//отпрвляем сообщение об изменение зоны
+			Parent.Model?.AddEvent(Parent.State);
 		}
 
 		public override IMessage State

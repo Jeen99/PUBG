@@ -7,6 +7,7 @@ using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
 using System.Drawing;
 using Box2DX.Collision;
+using Box2DX.Common;
 
 namespace BattleRoayleServer
 {
@@ -24,6 +25,10 @@ namespace BattleRoayleServer
 		protected int TimeReload;
 		protected int bulletsInMagazin;
 
+		//чтобы не пересоздавать структуры
+		private ShapeDef circleShape;
+		private ShapeDef sensorDef;
+
 		public Weapon(IModelForComponents model) : base(model)
 		{
 
@@ -37,24 +42,7 @@ namespace BattleRoayleServer
 		{
 			if (!IsCreate)
 			{
-				#region CreateShape
-				ShapeDef circleShape = new CircleDef();
-				(circleShape as CircleDef).Radius = size.Width / 2;
-				circleShape.Restitution = restetution;
-				circleShape.Friction = friction;
-				circleShape.Density = density;
-				circleShape.Filter.CategoryBits = (ushort)CollideCategory.Loot;
-				circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
-
-				ShapeDef sensorDef = new CircleDef();
-				(sensorDef as CircleDef).Radius = size.Width / 2;
-				sensorDef.Restitution = restetution;
-				sensorDef.Friction = friction;
-				sensorDef.Density = density;
-				sensorDef.IsSensor = true;
-				sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Loot;
-				sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
-				#endregion
+				CreateBodyShape();
 
 				var body = new SolidBody(this, new RectangleF(location, size),  new ShapeDef[] { circleShape , sensorDef });
 				Components.Add(body);
@@ -62,11 +50,37 @@ namespace BattleRoayleServer
 				var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);
 				Components.Add(magazin);
 
-				var shot = new Shot(this);
-				Components.Add(shot);
-
 				IsCreate = true;
 			}
+		}
+
+		private void CreateBodyShape()
+		{
+			circleShape = new CircleDef();
+			(circleShape as CircleDef).Radius = size.Width / 2;
+			circleShape.Restitution = restetution;
+			circleShape.Friction = friction;
+			circleShape.Density = density;
+			circleShape.Filter.CategoryBits = (ushort)CollideCategory.Loot;
+			circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
+
+			sensorDef = new CircleDef();
+			(sensorDef as CircleDef).Radius = size.Width / 2;
+			sensorDef.Restitution = restetution;
+			sensorDef.Friction = friction;
+			sensorDef.Density = density;
+			sensorDef.IsSensor = true;
+			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Loot;
+			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+		}
+
+		public void CreateNewBody(PointF location, Vec2 startVelocity)
+		{
+			if (circleShape == null || sensorDef == null) CreateBodyShape();
+
+			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef }, 
+				linearDamping, startVelocity);
+			Components.Add(body);
 		}
 	}
 }

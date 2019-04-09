@@ -29,11 +29,6 @@ namespace ServerTest
 			return null;
 		}
 
-		public void SetNewParent(LootBox lootBox)
-		{
-			Parent = lootBox;
-		}
-
 		public void UpdateComponent(IMessage msg)
 		{
 		}

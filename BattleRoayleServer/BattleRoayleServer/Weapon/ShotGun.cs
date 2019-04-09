@@ -25,11 +25,14 @@ namespace BattleRoayleServer
 			this.density = 0.5f;
 			this.linearDamping = 0.85f;
 
+			var shot = new Shot(this);
+			Components.Add(shot);
+
 			//cоздал этот метод, чтобы сократить повторяющийся код
 			base.Setup(location);
 		}
 
-		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
+		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
 
 		public override TypesGameObject Type { get; } = TypesGameObject.Weapon;
 	}

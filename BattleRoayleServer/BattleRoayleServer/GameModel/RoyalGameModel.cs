@@ -28,11 +28,7 @@ namespace BattleRoayleServer
 		/// Коллекция всех игровых объектов в игре
 		/// </summary>
         public Dictionary<ulong,IGameObject> GameObjects { get; private set; }
-		/// <summary>
-		/// Коллекция для объектов, которые не участвуют в физическом взаимодействии
-		/// </summary>
-		public List<IGameObject> Loot { get; private set; }
-
+		
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
@@ -145,7 +141,6 @@ namespace BattleRoayleServer
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
 			HappenedEvents = new ObservableQueue<IMessage>();
-			Loot = new List<IGameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -175,7 +170,6 @@ namespace BattleRoayleServer
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
 			HappenedEvents = new ObservableQueue<IMessage>();
-			Loot = new List<IGameObject>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0, 0);
@@ -279,31 +273,6 @@ namespace BattleRoayleServer
 			GameObjects.Clear();
 			Field.Dispose();
 			HappenedEvents.Clear();
-			Loot.Clear();
-		}
-
-		//возвращает коллекцию объектов, которые можно поднять
-		public List<IGameObject> GetPickUpObjects(RectangleF shapePlayer)
-		{
-			List<IGameObject> pickUpObjects = new List<IGameObject>();
-
-			foreach (var gameObject in Loot)
-			{
-
-				var shapeLoot = gameObject.Components.GetComponent<TransparentBody>().Shape;
-				if (shapeLoot.IntersectsWith(shapePlayer))
-				{
-					pickUpObjects.Add(gameObject);
-				}
-				break;
-
-			}
-			return pickUpObjects;
-		}
-
-		public void AddLoot(IGameObject gameObject)
-		{
-			Loot.Add(gameObject);
 		}
 
 		public void AddEvent(IMessage message)
@@ -311,10 +280,5 @@ namespace BattleRoayleServer
 			HappenedEvents.Enqueue(message);
 		}
 
-		public void RemoveLoot(IGameObject gameObject)
-		{
-			Loot.Remove(gameObject);
-		}
-		
 	}
 }

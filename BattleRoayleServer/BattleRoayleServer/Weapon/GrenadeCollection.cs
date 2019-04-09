@@ -9,27 +9,29 @@ using System.Drawing;
 namespace BattleRoayleServer
 {
 	public class GrenadeCollection:Weapon
-	{
-		private readonly int TimeBetweenShot = 50;
-		private readonly int TimeReload = 10000;
-		private readonly int bulletsInMagazin = 4;
-		private readonly float strengthThrowGrenade = 30;
+	{	
+		protected float strengthThrowGrenade = 30;
 
 		public GrenadeCollection(IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.GrenadeCollection;
-
-			var body = new TransparentBody(this, new RectangleF(location, new SizeF(8, 8)));
-			Components.Add(body);
-
-			var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);
-			Components.Add(magazin);
+			//задаем парамертры модели
+			this.TimeBetweenShot = 50;
+			this.TimeReload = 10000;
+			this.bulletsInMagazin = 4;
+			this.size = new SizeF(8, 8);
+			this.restetution = 0;
+			this.friction = 0;
+			this.density = 0.5f;
+			this.linearDamping = 0.85f;
 
 			var throwGrenade = new Throw(this, strengthThrowGrenade);
 			Components.Add(throwGrenade);
+
+			base.Setup(location);
 		}
 
-		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
+		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
 
 		public override TypesGameObject Type { get; } = TypesGameObject.Weapon;
 	}

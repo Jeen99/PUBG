@@ -76,30 +76,5 @@ namespace ServerTest.ComponentsTest
 			
 		}
 
-		[TestMethod]
-		public void Test_PickUpLootBox()
-		{
-			var Room = new RoyalGameModel();
-			var weapons = new Weapon[4];
-
-			weapons[0] = new Gun(Room, new PointF(50, 70));
-
-			var lootBox = new LootBox(Room, new Collector(new StubPlayer(), weapons), new PointF(50, 70));
-			Room.AddGameObject(lootBox);
-
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
-
-			Room.Field.Step(1f / 60f, 6, 3);
-
-			//поднимаем оружие
-			player1.SendMessage(new TryPickUp());
-			player1.Update(new TimeQuantPassed(1));
-			var collector = player1.Components.GetComponent<Collector>();
-			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
-
-		}
 	}
 }

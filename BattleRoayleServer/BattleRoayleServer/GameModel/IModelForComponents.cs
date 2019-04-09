@@ -10,10 +10,7 @@ namespace BattleRoayleServer
 		World Field { get; }
 		IList<IPlayer> Players { get; }
 		void AddGameObject(IGameObject gameObject);
-		List<IGameObject> GetPickUpObjects(RectangleF shapePlayer);
 		void RemoveGameObject(IGameObject gameObject);
-		void AddLoot(IGameObject gameObject);
 		void AddEvent(IMessage message);
-		void RemoveLoot(IGameObject gameObject);
 	}
 }
