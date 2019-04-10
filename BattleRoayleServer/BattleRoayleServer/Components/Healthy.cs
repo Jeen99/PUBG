@@ -43,7 +43,7 @@ namespace BattleRoayleServer
 		private void Handler_GotDamage(GotDamage msg)
 		{
 			HP -= msg.Damage;
-			if (HP < 0)
+			if (HP <= 0)
 			{
 				Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
 				Parent.Dispose();
