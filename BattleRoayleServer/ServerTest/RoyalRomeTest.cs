@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using CSInteraction.Server;
 using System.Net.Sockets;
 using System.Threading;
+using CSInteraction.ProgramMessage;
 
 namespace ServerTest
 {
@@ -28,7 +29,7 @@ namespace ServerTest
 			RoyalRoom royalRoom = (RoyalRoom)rooms.CollectionRooms[0];
 			GameObject player = (GameObject)royalRoom.GameLogic.Players[0];
 			player.Dispose();
-			Thread.Sleep(100);
+			player.Update(new TimeQuantPassed(100));
 			Assert.AreEqual(count, rooms.CollectionRooms.Count);
 		}
 	}

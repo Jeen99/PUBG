@@ -10,23 +10,24 @@ namespace BattleRoayleServer
 {
 	public class Magazin : Component, IMagazin
 	{
-		/// <summary>
-		/// Когда true - осуществляется перезарядка магазина
-		/// </summary>
-		public bool Reload { get; protected set; }
-		private float durationReload_BetweenShots;
-		private float durationReload_Magazin;
+		
+		public TypesReload Reload { get; protected set; }
+
+		private int durationReload_BetweenShots;
+		private int durationReload_Magazin;
+
 		private readonly int bulletsInMagazin;
 		private int bulletsInMagazinNow;
 
-		private Timer reloadMagazin;
+		private TimeSpan timeReload;
 
 		public TypesWeapon TypeMagazin { get; private set; }
 
-		public Magazin(IWeapon parent, TypesWeapon typeWeapon, float duration_BetweenShots,
-			float duration_Magazin,int bulletsInMagazin) : base(parent)
+		public Magazin(IWeapon parent, TypesWeapon typeWeapon, int duration_BetweenShots,
+			int duration_Magazin,int bulletsInMagazin) : base(parent)
 		{
 			TypeMagazin = typeWeapon;
+			Reload = TypesReload.Not;
 
 			this.bulletsInMagazin = bulletsInMagazin;
 
@@ -35,13 +36,6 @@ namespace BattleRoayleServer
 
 			//cоздаем новый магазин
 			bulletsInMagazinNow = bulletsInMagazin;
-
-			//создаем таймер
-			reloadMagazin = new Timer()
-			{
-				AutoReset = false		
-			};
-			Reload = false;
 		}
 
 		public override IMessage State
@@ -52,48 +46,23 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void Handler_ReloadBetweenShots(object sender, ElapsedEventArgs e)
-		{
-			Reload = false;
-			bulletsInMagazinNow--;
-		}
-
-		private void Handler_ReloadMagazin(object sender, ElapsedEventArgs e)
-		{
-			Reload = false;
-			//cоздаем новый магазин
-			bulletsInMagazinNow = bulletsInMagazin;
-			
-			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as Weapon).Holder.ID));
-			
-		}
-
 		private void Create_ReloadMagazin()
 		{
-			Reload = true;
-			reloadMagazin.Interval = (durationReload_Magazin);
-			reloadMagazin.Elapsed -= Handler_ReloadBetweenShots;
-			reloadMagazin.Elapsed -= Handler_ReloadMagazin;
-			reloadMagazin.Elapsed += Handler_ReloadMagazin;
-			reloadMagazin.Start();
-			
+			Reload =  TypesReload.ReloadMagazin;
+			timeReload = new TimeSpan(0, 0, 0, 0, durationReload_Magazin);	
 			Parent?.Model?.AddEvent(new StartReloadWeapon((Parent as Weapon).Holder.ID));
 			
 		}
 
 		private void Create_ReloadBetweenShots()
 		{
-			Reload = true;
-			reloadMagazin.Interval = (durationReload_BetweenShots);
-			reloadMagazin.Elapsed -= Handler_ReloadBetweenShots;
-			reloadMagazin.Elapsed -= Handler_ReloadMagazin;
-			reloadMagazin.Elapsed += Handler_ReloadBetweenShots;
-			reloadMagazin.Start();
+			Reload =  TypesReload.ReloadBetweenShots;
+			timeReload = new TimeSpan(0, 0, 0, 0, durationReload_BetweenShots);
 		}
 
 		public IBullet GetBullet()
 		{
-			if (!Reload)
+			if (Reload == TypesReload.Not)
 			{
 				if (bulletsInMagazinNow > 1)
 					Create_ReloadBetweenShots();
@@ -118,11 +87,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public override void Dispose()
-		{
-			reloadMagazin.Dispose();
-		}
-
 		public override void UpdateComponent(IMessage msg)
 		{
 			if (msg == null)
@@ -130,17 +94,64 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Получено null сообщение в компоненте Magazin");
 				return;
 			}
-				switch (msg.TypeMessage)
-				{
-					case TypesProgramMessage.MakeReloadWeapon:
-						Create_ReloadMagazin();
-						break;
-				}
+
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg as TimeQuantPassed);
+					break;
+				case TypesProgramMessage.MakeReloadWeapon:
+					Create_ReloadMagazin();
+					break;
+			}
+		}
+
+		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		{
+			if (Reload != TypesReload.Not)
+			{
+					timeReload = timeReload.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
+					if (timeReload.Milliseconds < 0)
+					{
+						switch (Reload)
+						{
+							case TypesReload.ReloadBetweenShots:
+								Handler_ReloadBetweenShots();
+								break;
+							case TypesReload.ReloadMagazin:
+								Handler_ReloadMagazin();
+								break;
+						}
+					}
+			}
+		}
+
+		private void Handler_ReloadBetweenShots()
+		{
+			Reload = TypesReload.Not;
+			bulletsInMagazinNow--;
+		}
+
+		private void Handler_ReloadMagazin()
+		{
+			Reload = TypesReload.Not;
+			//cоздаем новый магазин
+			bulletsInMagazinNow = bulletsInMagazin;
+
+			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as Weapon).Holder.ID));
+
 		}
 
 		public override void Setup()
 		{
 			
 		}
+	}
+
+	public enum TypesReload
+	{
+		ReloadBetweenShots,
+		ReloadMagazin,
+		Not
 	}
 }

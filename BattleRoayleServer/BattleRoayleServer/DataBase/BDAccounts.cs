@@ -20,17 +20,26 @@ namespace BattleRoayleServer
 
 		public static bool ExistAccount(string Login, string Password)
         {
-			//проверяем существует ли папка
-			if (!File.Exists(NameDirectory))
-				if (!CreateDirectoryForBD()) return false;
+			try
+			{
+				//проверяем существует ли папка
+				if (!Directory.Exists(NameDirectory))
+					if (!CreateDirectoryForBD()) return false;
 
-			//пока просто создаем аккаунт, если такой не существует
-			if (!File.Exists(CreatePathByLogin(Login))) CreateAccount(Login, Password);
+				//пока просто создаем аккаунт, если такой не существует
+				if (!File.Exists(CreatePathByLogin(Login))) CreateAccount(Login, Password);
 
-			//проверяем пароль
-			if (CheckPassword(Login, Password)) return true;
-			return false;
-        }
+				//проверяем пароль
+				if (CheckPassword(Login, Password)) return true;
+				return false;
+
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
+				return false;
+			}
+		}
 
 		private static bool CheckPassword(string Login, string Password)
 		{
@@ -59,8 +68,12 @@ namespace BattleRoayleServer
 		{
 			try
 			{
-				File.Create(CreatePathByLogin(nameFile));
-				return true;
+				using (File.Create(nameFile))
+				{
+
+				}
+
+			return true;
 			}
 			catch (Exception e)
 			{
@@ -88,31 +101,55 @@ namespace BattleRoayleServer
 
         public static bool CreateAccount(string Login, string Password)
         {
-			string Path = CreatePathByLogin(Login);
-			CreateFileForAccount(Path);
-			//инициализируем ее стандартными данными
-			DataOfAccount emptyAccount = new DataOfAccount(Login, Password, 0 ,0 , 0, new TimeSpan());
-			//записываем
-			if (!RecordInFile(Path, emptyAccount)) return false;
+			try
+			{
+				string Path = CreatePathByLogin(Login);
+				CreateFileForAccount(Path);
+				//инициализируем ее стандартными данными
+				DataOfAccount emptyAccount = new DataOfAccount(Login, Password, 0, 0, 0, new TimeSpan());
+				//записываем
+				if (!RecordInFile(Path, emptyAccount)) return false;
 
-			return true;
+				return true;
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
+				return false;
+			}
         }
 
         public static DataOfAccount GetDataOfAccount(string login, string password)
         {
-			if(CheckPassword(login, password))
-			return ReadData(CreatePathByLogin(login));
+			try
+			{
+				if (CheckPassword(login, password))
+					return ReadData(CreatePathByLogin(login));
 
-			return null;
+				return null;
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
+				return null;
+			}
 		}
 
         public static bool AddToStatistic(DataOfAccount achievements)
         {
-			string Path = CreatePathByLogin(achievements.NickName);
-			DataOfAccount mainData = ReadData(Path);
-			mainData.AddData(achievements);
-			if (RecordInFile(Path, mainData)) return true;
-			return false; 
+			try
+			{
+				string Path = CreatePathByLogin(achievements.NickName);
+				DataOfAccount mainData = ReadData(Path);
+				mainData.AddData(achievements);
+				if (RecordInFile(Path, mainData)) return true;
+				return false;
+			}
+			catch (Exception e)
+			{
+				Log.AddNewRecord(e.ToString());
+				return false;
+			}
         }
     }
 }

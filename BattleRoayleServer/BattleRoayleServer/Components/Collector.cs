@@ -120,8 +120,25 @@ namespace BattleRoayleServer
 				case TypesProgramMessage.TryPickUp:
 					Handler_TryPickUp();
 					break;
+				case TypesProgramMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);
+					break;
 			}
 		}
+
+		private void Handler_TimeQuantPassed(IMessage msg)
+		{
+			//пока только для оружия
+
+			for (int i = 0; i < weapons.Length; i++)
+			{
+				if (weapons[i] != null)
+				{
+					weapons[i].SendMessage(msg);
+				}
+			}
+		}
+
 		private void Handler_TryPickUp()
 		{
 			for (int i = 0; i < body.CoveredObjects.Count; i++)

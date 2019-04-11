@@ -9,25 +9,43 @@ namespace BattleRoayleServer
 	[Serializable]
     public class DataOfAccount
     {
-		public string NickName { get; private set; }
+		public string NickName { get; set; }
 
-		public string Password { get; private set; }
+		public string Password { get; set; }
 
-		public long QuantityKills { get; private set; }
+		public long QuantityKills { get; set; }
         
-        public long QuentityDeaths { get; private set; }
+        public long QuentityDeaths { get; set; }
       
-        public long QuentityBattles { get; private set; }
+        public long QuentityBattles { get; set; }
 
-        public TimeSpan QuentityGameTime { get; private set; }
+        public int TimeInGame_Seconds { get; set; }
+
+		public int TimeInGame_Minutes { get; set; }
+
+		public int TimeInGame_Hours { get; set; }
+
+		public int TimeInGame_Days { get; set; }
 
 		public void AddData(DataOfAccount addData)
 		{
 			QuantityKills += addData.QuantityKills;
 			QuentityBattles += addData.QuentityBattles;
 			QuentityDeaths += addData.QuentityDeaths;
-			QuentityGameTime += addData.QuentityGameTime;
+			TimeInGame_Seconds += addData.TimeInGame_Seconds;
+			TimeInGame_Minutes += addData.TimeInGame_Minutes;
+			TimeInGame_Hours += addData.TimeInGame_Hours;
+			TimeInGame_Days += addData.TimeInGame_Days;
 		}
+
+		public TimeSpan GetTimeInGame()
+		{
+			return new TimeSpan(TimeInGame_Days, TimeInGame_Hours, 
+				TimeInGame_Minutes, TimeInGame_Seconds);
+		}
+
+
+		public DataOfAccount() { }
 
 		public DataOfAccount(string nickName, string password, long quantityKills, 
 			long quentityDeaths, long quentityBattles, TimeSpan quentityGameTime)
@@ -37,7 +55,10 @@ namespace BattleRoayleServer
 			QuantityKills = quantityKills;
 			QuentityDeaths = quentityDeaths;
 			QuentityBattles = quentityBattles;
-			QuentityGameTime = quentityGameTime;
+			TimeInGame_Seconds = quentityGameTime.Seconds;
+			TimeInGame_Minutes = quentityGameTime.Minutes;
+			TimeInGame_Hours = quentityGameTime.Hours;
+			TimeInGame_Days = quentityGameTime.Days;
 		}
 	}
 }

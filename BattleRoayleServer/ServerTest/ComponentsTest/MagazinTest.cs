@@ -41,11 +41,11 @@ namespace ServerTest.ComponentsTest
 			{
 				Assert.IsNotNull(magazin.GetBullet());
 				Assert.IsNull(magazin.GetBullet());
-				Thread.Sleep(75);
+				magazin.UpdateComponent(new TimeQuantPassed(51));
 			}
 			//перезаряжаем 
 			Assert.IsNull(magazin.GetBullet());
-			Thread.Sleep(350);
+			magazin.UpdateComponent(new TimeQuantPassed(301));
 			Assert.IsNotNull(magazin.GetBullet());
 		}
 
@@ -57,7 +57,7 @@ namespace ServerTest.ComponentsTest
 
 			magazin.UpdateComponent(new MakeReloadWeapon());
 			Assert.IsNull(magazin.GetBullet());
-			Thread.Sleep(330);
+			magazin.UpdateComponent(new TimeQuantPassed(301));
 			Assert.IsNotNull(magazin.GetBullet());
 		}
 	}

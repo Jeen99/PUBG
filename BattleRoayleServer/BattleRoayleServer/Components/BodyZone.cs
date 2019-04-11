@@ -51,23 +51,18 @@ namespace BattleRoayleServer
 
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
-			try
-			{
-				//сохраняем количество секунд
-				int leftSecond = timeTillReducton.Seconds;
-				//отнимаем прошедшее время
+		
+			//сохраняем количество секунд
+			int leftSecond = timeTillReducton.Seconds;
+			//отнимаем прошедшее время
 
-				timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.QuantTime));
-				if (timeTillReducton.Seconds != leftSecond)
-				{
-					Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
-				}
-			}
-			catch (Exception e)
+			timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.QuantTime));
+			if (timeTillReducton.Seconds != leftSecond)
 			{
-				CheckReduction();
+				Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
 			}
 
+			if(timeTillReducton.Milliseconds < 0) CheckReduction();
 		}
 
 		private void CheckReduction()

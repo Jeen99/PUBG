@@ -40,7 +40,7 @@ namespace ServerTest.ComponentsTest
 			solid.Body.SetLinearVelocity(new Vec2(40f,0));
 
 			int quantTime = 60;
-			Room.Field.Step(quantTime/1000, 8, 3);
+			Room.Field.Step((float)quantTime/1000f, 8, 3);
 			var A = solid.Body.GetPosition();
 			Assert.AreNotEqual(A, compareVec);
 

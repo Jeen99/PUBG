@@ -13,11 +13,11 @@ namespace BattleRoayleServer
 		//в миллисекундах
 		private const int durationIntervale = 500;
 		private const float zoneIntervalDamage = 2;
-		private DateTime intervalBetweenDamage;
+		private TimeSpan intervalBetweenDamage;
 
 		public DamageZone(IGameObject parent) : base(parent)
 		{
-			intervalBetweenDamage = new DateTime(1, 1, 1, 0, 0, 0, durationIntervale);
+			intervalBetweenDamage = new TimeSpan(0, 0, 0, 0, durationIntervale);
 		}
 
 		public override void Setup()
@@ -42,13 +42,13 @@ namespace BattleRoayleServer
 
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
-			//уменьшаем время до следующего получения урона от зоны
-			intervalBetweenDamage = intervalBetweenDamage.AddMilliseconds(-msg.QuantTime);
-			if(intervalBetweenDamage.Millisecond <= 0)
+			//уменьшаем время до следующего получения урона от зоны	
+			intervalBetweenDamage = intervalBetweenDamage.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
+			if (intervalBetweenDamage.Milliseconds < 0)
 			{
 				CreateDamage();
-				intervalBetweenDamage = intervalBetweenDamage.AddMilliseconds(durationIntervale);
-			}			
+				intervalBetweenDamage = new TimeSpan(0, 0, 0, 0, durationIntervale);
+			}	
 		}
 
 		private void CreateDamage()

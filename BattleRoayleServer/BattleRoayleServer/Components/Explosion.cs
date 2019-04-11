@@ -42,14 +42,8 @@ namespace BattleRoayleServer
 
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
-			try
-			{
-				timeTillExplosion = timeTillExplosion.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
-			}
-			catch (Exception e)
-			{
-				MakeExplosion();
-			}
+			timeTillExplosion = timeTillExplosion.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
+			if(timeTillExplosion.Milliseconds < 0) MakeExplosion();
 		}
 
 		private void MakeExplosion()
