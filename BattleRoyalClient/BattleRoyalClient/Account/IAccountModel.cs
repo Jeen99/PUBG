@@ -11,7 +11,7 @@ namespace BattleRoyalClient
 		long Kills { get; }
 		long Deaths { get; }
 		long Battles { get; }
-		DateTime GameTime { get; }
+		TimeSpan GameTime { get; }
 		event ChangeModel AutorizationModelChange;
 	}
 }

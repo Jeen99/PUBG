@@ -21,7 +21,7 @@ namespace ServerTest
 			rooms.AddRoom(new List<QueueGamer>() {
 				new QueueGamer(
 					new ServerClient(new TcpClient(), new AuthorizationController()), 
-					new  DataOfAccount("", "", 0, 0, 0, new DateTime()))
+					new  DataOfAccount("", "", 0, 0, 0, new TimeSpan()))
 			});
 
 			Assert.AreEqual(count+1, rooms.CollectionRooms.Count);

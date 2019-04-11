@@ -27,9 +27,9 @@ namespace CSInteraction.ProgramMessage
 		/// <summary>
 		/// Количество времени проведенного в битвах
 		/// </summary>
-		public DateTime GameTime { get; private set; }
+		public TimeSpan GameTime { get; private set; }
 
-		public DataAccount(long kills, long deaths, long battles, DateTime gameTime)
+		public DataAccount(long kills, long deaths, long battles, TimeSpan gameTime)
 		{
 			Kills = kills;
 			Deaths = deaths;

@@ -24,20 +24,6 @@ namespace ServerTest.ComponentsTest
 			Assert.IsNotNull(solidBody.State);
 		}
 	
-		/*[TestMethod]
-		public void Test_BodyDelete()
-		{
-			var player = new StubPlayer();
-			int count = player.Model.Field.GetBodyCount();
-			ISolidBody solidBody = new SolidBody(player, new RectangleF(60, 70, 10, 10), 0, 0, 0.5f,
-				TypesBody.Circle, 0, 0);
-			player.Components.Add(solidBody);
-			player.Setup();
-			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count+1);
-			Assert.AreEqual(solidBody.Body.GetWorld().GetBodyCount(), count);
-
-		}*/
-
 		[TestMethod]
 		public void Test_UpdateComponent_TimeQuantPassed()
 		{
@@ -53,8 +39,8 @@ namespace ServerTest.ComponentsTest
 			Vec2 compareVec = solid.Body.GetPosition();
 			solid.Body.SetLinearVelocity(new Vec2(40f,0));
 
-			float quantTime = 1f / 60f;
-			Room.Field.Step(quantTime, 8, 3);
+			int quantTime = 60;
+			Room.Field.Step(quantTime/1000, 8, 3);
 			var A = solid.Body.GetPosition();
 			Assert.AreNotEqual(A, compareVec);
 

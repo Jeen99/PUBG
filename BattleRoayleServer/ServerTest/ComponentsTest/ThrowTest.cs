@@ -14,6 +14,7 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_ThrowGrenade()
 		{
+
 			RoyalGameModel model = new RoyalGameModel();
 			Grenade grenade = new Grenade(model, new PointF(50,50), new Vec2(0,10), new GrenadeBullet());
 			SolidBody bodyGrenade = grenade.Components.GetComponent<SolidBody>();

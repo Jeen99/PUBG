@@ -21,7 +21,7 @@ namespace BattleRoayleServer
 
 		public float Radius { get; private set; }
 
-		private DateTime timeTillReducton;
+		private TimeSpan timeTillReducton;
 		private float sizeMap;
 		private const int timeRound = 30;
 
@@ -29,9 +29,9 @@ namespace BattleRoayleServer
 		{
 			this.sizeMap = sizeMap;
 			Radius = sizeMap / 2;
-			location = new PointF(Radius, Radius);		
+			location = new PointF(Radius, Radius);
 			//время до сужения зоны постоянно и равно 30 секундам
-			timeTillReducton = new DateTime(1, 1, 1, 0, 0, timeRound, 0);
+			timeTillReducton = new TimeSpan(0, 0, timeRound); 
 		}
 
 		public override void Setup()
@@ -54,11 +54,11 @@ namespace BattleRoayleServer
 			try
 			{
 				//сохраняем количество секунд
-				int leftSecond = timeTillReducton.Second;
+				int leftSecond = timeTillReducton.Seconds;
 				//отнимаем прошедшее время
 
-				timeTillReducton = timeTillReducton.AddMilliseconds(-msg.QuantTime);
-				if (timeTillReducton.Second != leftSecond)
+				timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.QuantTime));
+				if (timeTillReducton.Seconds != leftSecond)
 				{
 					Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
 				}
@@ -81,7 +81,7 @@ namespace BattleRoayleServer
 			Radius = Radius * 0.6f;
 
 			//устанавливаем новое время до сужения зоны
-			timeTillReducton = new DateTime(1, 1, 1, 0, 0, timeRound, 0);
+			timeTillReducton = new TimeSpan(0, 0, timeRound);
 
 			//отпрвляем сообщение об изменение зоны
 			Parent.Model?.AddEvent(Parent.State);

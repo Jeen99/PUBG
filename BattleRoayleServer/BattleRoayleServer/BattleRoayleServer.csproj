@@ -90,7 +90,6 @@
     <Compile Include="Components\AbstractComponent\Component.cs" />
     <Compile Include="Controlers\AccountController.cs" />
     <Compile Include="Controlers\AuthorizationController.cs" />
-    <Compile Include="DataBase\AchievementsOfBattle.cs" />
     <Compile Include="DataBase\BDAccounts.cs" />
     <Compile Include="DataBase\DataOfAccount.cs" />
     <Compile Include="GameObject\GameObject.cs" />

@@ -20,7 +20,7 @@ namespace BattleRoyalClient
 		public long Kills { get; set; }
 		public long Deaths { get; set;  }
 		public long Battles { get; set; }
-		public DateTime GameTime { get; set;  }
+		public TimeSpan GameTime { get; set;  }
 		public event ChangeModel AutorizationModelChange;
 	}
 

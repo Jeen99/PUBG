@@ -13,9 +13,9 @@ namespace CSInteraction.ProgramMessage
 
 		public ulong ID { get; private set; }
 
-		public DateTime NewTime { get; private set; }
+		public TimeSpan NewTime { get; private set; }
 
-		public ChangedTimeTillReduction(ulong iD, DateTime newTime)
+		public ChangedTimeTillReduction(ulong iD, TimeSpan newTime)
 		{
 			ID = iD;
 			NewTime = newTime;

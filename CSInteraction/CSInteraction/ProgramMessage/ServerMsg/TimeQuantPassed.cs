@@ -8,9 +8,9 @@ namespace CSInteraction.ProgramMessage
 {
 	public class TimeQuantPassed : IMessage
 	{
-		public double QuantTime { get; private set; }
+		public int QuantTime { get; private set; }
 
-		public TimeQuantPassed(double quantTime = 1.0)
+		public TimeQuantPassed(int quantTime = 1)
 		{
 			QuantTime = quantTime;
 		}

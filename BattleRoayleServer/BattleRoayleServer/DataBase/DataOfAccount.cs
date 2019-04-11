@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
+	[Serializable]
     public class DataOfAccount
     {
 		public string NickName { get; private set; }
@@ -18,10 +19,18 @@ namespace BattleRoayleServer
       
         public long QuentityBattles { get; private set; }
 
-        public DateTime QuentityGameTime { get; private set; }
+        public TimeSpan QuentityGameTime { get; private set; }
+
+		public void AddData(DataOfAccount addData)
+		{
+			QuantityKills += addData.QuantityKills;
+			QuentityBattles += addData.QuentityBattles;
+			QuentityDeaths += addData.QuentityDeaths;
+			QuentityGameTime += addData.QuentityGameTime;
+		}
 
 		public DataOfAccount(string nickName, string password, long quantityKills, 
-			long quentityDeaths, long quentityBattles, DateTime quentityGameTime)
+			long quentityDeaths, long quentityBattles, TimeSpan quentityGameTime)
 		{
 			NickName = nickName;
 			Password = password;

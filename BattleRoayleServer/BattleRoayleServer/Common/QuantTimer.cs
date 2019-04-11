@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 			QuantValue = 0;
 		}
 
-		public double QuantValue { get; private set; }
+		public int QuantValue { get; private set; }
 
 		public void Start()
 		{
@@ -32,7 +32,7 @@ namespace BattleRoayleServer
 		public void Tick()
 		{
 			counter.Stop();
-			QuantValue = counter.ElapsedMilliseconds;
+			QuantValue = (int)counter.ElapsedMilliseconds;
 			counter.Restart();
 		}
 	}

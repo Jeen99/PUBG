@@ -11,13 +11,13 @@ namespace BattleRoayleServer
 	{
 		private IBullet grenadeBullet;
 		private SolidBody bodyGrenade;
-		private DateTime timeTillExplosion;
+		private TimeSpan timeTillExplosion;
 
 		public Explosion(IGameObject parent, IBullet grenadeBullet) : base(parent)
 		{
 			this.grenadeBullet = grenadeBullet;
 			//добавил минуту, чтобы не было ошибки при вычитании
-			timeTillExplosion = new DateTime(1, 1, 1, 0, 0, 4, 500);
+			timeTillExplosion = new TimeSpan(0, 0, 0, 4, 500);
 		}
 
 		public override void Setup()
@@ -44,7 +44,7 @@ namespace BattleRoayleServer
 		{
 			try
 			{
-				timeTillExplosion = timeTillExplosion.AddMilliseconds(-msg.QuantTime);
+				timeTillExplosion = timeTillExplosion.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
 			}
 			catch (Exception e)
 			{

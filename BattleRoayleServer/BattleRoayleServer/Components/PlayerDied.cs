@@ -22,7 +22,7 @@ namespace BattleRoayleServer
 		public override void Dispose()
 		{
 			//сохраняем статистику игрока
-			BDAccounts.AddToStatistic(new AchievementsOfBattle());
+			//BDAccounts.AddToStatistic(new AchievementsOfBattle());
 		}
 
 		public override void Setup()
