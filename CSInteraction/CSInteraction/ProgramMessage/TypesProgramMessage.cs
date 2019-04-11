@@ -49,7 +49,10 @@ namespace CSInteraction.ProgramMessage
 		EndGame,
 		ChangedTimeTillReduction,
 		BodyZoneState,
-		ThrowGrenade
+		ThrowGrenade,
+		MakedKill,
+		PlayerDied,
+		PlayerBattleStatistics
 
 	}
 }

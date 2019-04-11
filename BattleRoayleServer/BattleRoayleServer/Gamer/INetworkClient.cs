@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using CSInteraction.Server;
 using System.Drawing;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -17,6 +18,8 @@ namespace BattleRoayleServer
 		event GamerIsLoaded Event_GamerIsLoaded;
 		event NetworkClientEndWork EventNetworkClientEndWork;
 		event NetorkClientDisconnect EventNetorkClientDisconnect;
+
+		void SaveStatistics(PlayerBattleStatistics msg);
 		void Dispose();
 	    IPlayer Player { get; }
 	}

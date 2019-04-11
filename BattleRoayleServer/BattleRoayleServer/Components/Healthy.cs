@@ -46,6 +46,7 @@ namespace BattleRoayleServer
 			if (HP <= 0)
 			{
 				Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
+				Parent.SendMessage(new PlayerDied());
 				Parent.Dispose();
 			}
 			else

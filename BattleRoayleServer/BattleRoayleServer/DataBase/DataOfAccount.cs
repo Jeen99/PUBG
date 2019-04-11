@@ -15,9 +15,9 @@ namespace BattleRoayleServer
 
 		public long QuantityKills { get; set; }
         
-        public long QuentityDeaths { get; set; }
+        public long QuantityDeaths { get; set; }
       
-        public long QuentityBattles { get; set; }
+        public long QuantityBattles { get; set; }
 
         public int TimeInGame_Seconds { get; set; }
 
@@ -30,8 +30,8 @@ namespace BattleRoayleServer
 		public void AddData(DataOfAccount addData)
 		{
 			QuantityKills += addData.QuantityKills;
-			QuentityBattles += addData.QuentityBattles;
-			QuentityDeaths += addData.QuentityDeaths;
+			QuantityBattles += addData.QuantityBattles;
+			QuantityDeaths += addData.QuantityDeaths;
 			TimeInGame_Seconds += addData.TimeInGame_Seconds;
 			TimeInGame_Minutes += addData.TimeInGame_Minutes;
 			TimeInGame_Hours += addData.TimeInGame_Hours;
@@ -53,8 +53,8 @@ namespace BattleRoayleServer
 			NickName = nickName;
 			Password = password;
 			QuantityKills = quantityKills;
-			QuentityDeaths = quentityDeaths;
-			QuentityBattles = quentityBattles;
+			QuantityDeaths = quentityDeaths;
+			QuantityBattles = quentityBattles;
 			TimeInGame_Seconds = quentityGameTime.Seconds;
 			TimeInGame_Minutes = quentityGameTime.Minutes;
 			TimeInGame_Hours = quentityGameTime.Hours;

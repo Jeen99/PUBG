@@ -112,8 +112,12 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.DeleteInMap:
 					case TypesProgramMessage.ChangedCurrentWeapon:
 					case TypesProgramMessage.GameObjectState:
-					Handler_BroadcastMsg(message);
+						Handler_BroadcastMsg(message);
 						break;
+					case TypesProgramMessage.PlayerBattleStatistics:
+						
+						Handler_PrivateMsg((IOutgoing)message);
+					break;
 					//все остальные события
 					default:
 						Handler_DefaulteMsg((IOutgoing)message);
@@ -123,6 +127,8 @@ namespace BattleRoayleServer
 			
 
 		}
+
+		
 
 		private void Handler_BroadcastMsg(IMessage msg)
 		{

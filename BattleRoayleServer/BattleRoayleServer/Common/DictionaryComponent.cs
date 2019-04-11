@@ -44,7 +44,6 @@ namespace BattleRoayleServer
 					return Components[item];
 			}
 			throw new IndexOutOfRangeException($"Элемент с классом {type} не содержится в Dictionary");
-			//return null;
 		}
 
 		public T[] GetComponents<T>()

@@ -91,10 +91,16 @@ namespace BattleRoayleServer
 				Parent.Model.AddEvent(new MakedShot( (Parent as Weapon).Holder.ID, bullet.Distance) );
 
 				var damageMsg = new GotDamage(bullet.Damage);
+
 				//отправляем ему сообщение о нанесении урона	
 				ISolidBody attacked = (ISolidBody)objectsForDamage[1]?.GetBody().GetUserData();
+				attacked?.Parent.SendMessage(damageMsg);
 
-				attacked?.Parent?.SendMessage(damageMsg);
+				//определяем убили ли мы противника
+				Healthy healthyAttacked = attacked?.Parent.Components.GetComponent<Healthy>();
+				//если убили засчитываем фраг
+				if (healthyAttacked.HP < bullet.Damage) Parent.SendMessage(new MakedKill());
+
 			}
 			catch (Exception e)
 			{

@@ -100,5 +100,16 @@ namespace BattleRoayleServer
 			//переходим в окно аккаунта
 			new AccountController(Client, Nick, Password);
 		}
+
+		/// <summary>
+		/// Cохраняем результаты битвы в базе данных
+		/// </summary>
+		public void SaveStatistics(PlayerBattleStatistics msg)
+		{
+			int deaths;
+			if (msg.YouDied) deaths = 1;
+			else deaths = 0;
+			BDAccounts.AddToStatistic(new DataOfAccount(Nick, Password, msg.Kills, deaths, 1, msg.TimeLife));
+		}
 	}
 }

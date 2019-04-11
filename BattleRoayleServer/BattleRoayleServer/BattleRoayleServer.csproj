@@ -72,7 +72,7 @@
     <Compile Include="Components\Interfeces\IShot.cs" />
     <Compile Include="Components\Magazin.cs" />
     <Compile Include="Common\QuantTimer.cs" />
-    <Compile Include="Components\PlayerDied.cs" />
+    <Compile Include="Components\Statistics.cs" />
     <Compile Include="Components\Throw.cs" />
     <Compile Include="GameModel\IModelForComponents.cs" />
     <Compile Include="GameObject\Box.cs" />

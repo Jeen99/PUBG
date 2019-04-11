@@ -47,8 +47,8 @@ namespace BattleRoayleServer
 			var healthy = new Healthy(this);
 			Components.Add(healthy);
 
-			var playerDied = new PlayerDied(this);
-			Components.Add(playerDied);
+			var statistics = new Statistics(this);
+			Components.Add(statistics);
 		}
 
 		/// <summary>
