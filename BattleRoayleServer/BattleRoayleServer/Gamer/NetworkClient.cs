@@ -104,7 +104,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Cохраняем результаты битвы в базе данных
 		/// </summary>
-		public void SaveStatistics(PlayerBattleStatistics msg)
+		public void SaveStatistics(EndGame msg)
 		{
 			int deaths;
 			if (msg.YouDied) deaths = 1;

@@ -98,9 +98,15 @@ namespace BattleRoayleServer
 
 				//определяем убили ли мы противника
 				Healthy healthyAttacked = attacked?.Parent.Components.GetComponent<Healthy>();
-				//если убили засчитываем фраг
-				if (healthyAttacked.HP < bullet.Damage) Parent.SendMessage(new MakedKill());
+				if (healthyAttacked == null)
+				{
+					Log.AddNewRecord("Не удалось получить ссылку на коэфициент Healthy в метода MakeShot");
+					return;
+				}
 
+				//если убили засчитываем фраг
+				if (healthyAttacked.HP < bullet.Damage) Parent?.SendMessage(new MakedKill());
+				
 			}
 			catch (Exception e)
 			{

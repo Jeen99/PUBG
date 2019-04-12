@@ -70,7 +70,14 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			Model.AddEvent(new EndGame(ID));
+			Healthy healthy = Components.GetComponent<Healthy>();
+
+			bool youDied = false;
+			if (healthy.HP <= 0) youDied = true;
+
+			Statistics statistics = Components.GetComponent<Statistics>();
+
+			Model.AddEvent(new EndGame(ID, youDied, statistics.Kills, statistics.TimeInBattle));
 			base.Dispose();
 			EventPlayerDeleted?.Invoke(this);
 		}

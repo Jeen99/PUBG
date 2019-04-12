@@ -48,7 +48,10 @@ namespace BattleRoyalClient
 			Kills.Text = controller.Model.Kills.ToString();
 			Deaths.Text = controller.Model.Deaths.ToString();
 			Battles.Text = controller.Model.Battles.ToString();
-			GameTime.Text = controller.Model.GameTime.ToString();
+			Days.Text = controller.Model.GameTime.Days.ToString();
+			Hours.Text = controller.Model.GameTime.Hours.ToString();
+			Minutes.Text = controller.Model.GameTime.Minutes.ToString();
+			Seconds.Text = controller.Model.GameTime.Seconds.ToString();
 		}
 	}
 }

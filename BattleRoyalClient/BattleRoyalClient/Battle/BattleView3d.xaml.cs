@@ -56,6 +56,7 @@ namespace BattleRoyalClient
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
 			this.MouseWheel += BattleView3d_MouseWheel;
+			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm());
 
 			this.MouseDown += BattleView3d_MouseDown;
@@ -77,6 +78,14 @@ namespace BattleRoyalClient
 
 			System.Diagnostics.Debug.WriteLine("Angle: " + angle);
 			client.SendMessage(new MakeShot(angle));
+		}
+
+		private void Battle_Closed(object sender, EventArgs e)
+		{
+			if (!Transition)
+			{
+				Environment.Exit(0);
+			}
 		}
 
 		private void Chararcter_changePosition(System.Drawing.PointF location)

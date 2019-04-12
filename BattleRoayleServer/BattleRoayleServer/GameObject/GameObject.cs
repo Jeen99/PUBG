@@ -72,10 +72,6 @@ namespace BattleRoayleServer
 						Components.UpdateComponents(msg);
 					}
 
-					if (Destroyed)
-					{
-						AfterDestroyed();
-					}
 				}
 			}
 		}
@@ -134,11 +130,6 @@ namespace BattleRoayleServer
 		public virtual void Dispose()
 		{
 			Destroyed = true;
-			
-        }
-
-		private void AfterDestroyed()
-		{
 			EventGameObjectDeleted?.Invoke(this);
 			foreach (IComponent item in Components)
 			{

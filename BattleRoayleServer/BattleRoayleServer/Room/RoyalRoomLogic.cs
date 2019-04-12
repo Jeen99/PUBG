@@ -20,7 +20,6 @@ namespace BattleRoayleServer
 		private QuantTimer quantTimer;
 		public event RoomLogicEndWork EventRoomLogicEndWork;
 
-
 		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
@@ -122,7 +121,7 @@ namespace BattleRoayleServer
 						}
 					}
 				}
-			}			
+			}
 		}
 		
         public void RemovePlayer(IPlayer player)
@@ -137,7 +136,6 @@ namespace BattleRoayleServer
 
         public void Dispose()
         {
-	
 			timerNewIteration.Dispose();
 			//осовобождение ресурсво модели
 			roomContext.Dispose();

@@ -24,8 +24,17 @@
             <TextBlock x:Name="Battles" FontSize="16" Margin="5"></TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
-            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Времени проведено в игре</TextBlock>
-            <TextBlock x:Name="GameTime" FontSize="16" Margin="5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Времени проведено в игре:</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Дней</TextBlock>
+            <TextBlock x:Name="Days" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Часов</TextBlock>
+            <TextBlock x:Name="Hours" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Минут</TextBlock>
+            <TextBlock x:Name="Minutes" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Секунд</TextBlock>
+            <TextBlock x:Name="Seconds" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
         </StackPanel>
         <Button x:Name="InQueue" Height="40" Width="200" FontSize="20" Margin="0,50,0,0" HorizontalAlignment="Center">В бой</Button>
     </StackPanel>

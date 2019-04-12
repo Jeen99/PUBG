@@ -19,7 +19,7 @@ namespace BattleRoayleServer
 		event NetworkClientEndWork EventNetworkClientEndWork;
 		event NetorkClientDisconnect EventNetorkClientDisconnect;
 
-		void SaveStatistics(PlayerBattleStatistics msg);
+		void SaveStatistics(EndGame msg);
 		void Dispose();
 	    IPlayer Player { get; }
 	}

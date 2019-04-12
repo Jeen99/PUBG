@@ -96,39 +96,40 @@ namespace BattleRoayleServer
 		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			//возможно стоит отправлять в отдельном потоке
-			IMessage message = roomLogic.HappenedEvents.Dequeue();
+			IMessage msg = roomLogic.HappenedEvents.Dequeue();
 
-				switch (message.TypeMessage)
+				switch (msg.TypeMessage)
 				{
 					//сообщения, которые отправляются только игроку создавшему это событие
 					case TypesProgramMessage.AddWeapon:
 					case TypesProgramMessage.ChangedValueHP:
 					case TypesProgramMessage.StartReloadWeapon:
-					case TypesProgramMessage.EndRelaodWeapon:
-					case TypesProgramMessage.EndGame:
-						Handler_PrivateMsg((IOutgoing)message);
+					case TypesProgramMessage.EndRelaodWeapon:			
+						Handler_PrivateMsg((IOutgoing)msg);
 						break;
 					//сообщения которые отправляеются всем
 					case TypesProgramMessage.DeleteInMap:
 					case TypesProgramMessage.ChangedCurrentWeapon:
 					case TypesProgramMessage.GameObjectState:
-						Handler_BroadcastMsg(message);
+						Handler_BroadcastMsg(msg);
 						break;
-					case TypesProgramMessage.PlayerBattleStatistics:
-						
-						Handler_PrivateMsg((IOutgoing)message);
-					break;
+					case TypesProgramMessage.EndGame:
+						Handler_EndGame(msg as EndGame);
+						break;
 					//все остальные события
 					default:
-						Handler_DefaulteMsg((IOutgoing)message);
+						Handler_DefaulteMsg((IOutgoing)msg);
 						break;
 
 				}
 			
-
+		}
+		private void Handler_EndGame(EndGame msg)
+		{
+			Clients[msg.ID].SaveStatistics(msg);
+			Handler_PrivateMsg(msg);
 		}
 
-		
 
 		private void Handler_BroadcastMsg(IMessage msg)
 		{
