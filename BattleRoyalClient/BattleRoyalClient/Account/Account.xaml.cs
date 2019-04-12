@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CSInteraction.Client;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoyalClient
 {
@@ -28,11 +29,25 @@ namespace BattleRoyalClient
 
 		public Account(BaseClient client)
 		{
+			BaseInitialize(client);
+		}
+
+		private void BaseInitialize(BaseClient client)
+		{
 			InitializeComponent();
 			controller = new AccountController(client, this);
 			InQueue.Click += controller.InQueue;
 			controller.Model.AutorizationModelChange += Model_AutorizationModelChange;
 			this.Closed += Account_Closed;
+		}
+
+
+		public Account(BaseClient client, EndGame results)
+		{
+			BaseInitialize(client);
+			//отображаем форму с итогами битвы
+			ResultsBattle formStatistics = new ResultsBattle(results);
+			formStatistics.ShowDialog();
 		}
 
 		private void Account_Closed(object sender, EventArgs e)

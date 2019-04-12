@@ -96,6 +96,9 @@
     <Compile Include="Queue\QueueContoller.cs" />
     <Compile Include="Queue\QueueModel.cs" />
     <Compile Include="Battle\UserActionController.cs" />
+    <Compile Include="ResultsBattle\ResultsBattle.xaml.cs">
+      <DependentUpon>ResultsBattle.xaml</DependentUpon>
+    </Compile>
     <Page Include="Account\Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +124,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Queue\Queue.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultsBattle\ResultsBattle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

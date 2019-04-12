@@ -50,7 +50,23 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.DeleteInMap:
 					Handler_DeleteInMap(msg as DeleteInMap);
 					break;
+				case TypesProgramMessage.EndGame:
+					Handler_EndGame(msg as EndGame);
+					break;
 			}
+		}
+
+		private void Handler_EndGame(EndGame msg)
+		{
+			view.Dispatcher.Invoke(() =>
+			{
+				client.EventEndSession -= this.Client_EventEndSession;
+				client.EventNewMessage -= this.Client_EventNewMessage;
+				Account formAccount = new Account(client, msg);
+				formAccount.Show();
+				view.Transition = true;
+				view.Close();
+			});
 		}
 
 		private void Handler_DeleteInMap(DeleteInMap deleteInMap)
