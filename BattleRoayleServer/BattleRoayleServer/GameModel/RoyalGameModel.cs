@@ -17,7 +17,6 @@ namespace BattleRoayleServer
     public class RoyalGameModel : IGameModel, IModelForComponents
 	{
 
-		private const int minValueGamerInBattle = 1;
 		/// <summary>
 		///ширина одной стороны игровой карты 
 		/// </summary>
@@ -47,9 +46,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public bool Sleep { get; private set; } = false;
-
-		public event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами
 		/// </summary>
@@ -61,31 +57,24 @@ namespace BattleRoayleServer
 		{
 			//скрипт создания игровых объектов
 			Stone stone = new Stone(this, new PointF(10, 10), new Size(14,14));
-			stone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(stone.ID, stone);
 
 			stone = new Stone(this, new PointF(30, 28), new Size(12, 12));
-			stone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(stone.ID, stone);
 
 			stone = new Stone(this, new PointF(78, 30), new Size(15, 15));
 			GameObjects.Add(stone.ID, stone);
-			stone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 
 			Box box = new Box(this, new PointF(40, 100), new Size(12, 12));
 			GameObjects.Add(box.ID, box);
-			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
-
+			
 			box = new Box(this, new PointF(150, 10), new Size(12, 12));
-			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(box.ID, box);
 
 			Gun gun = new Gun(this, new PointF(50, 70));
-			box.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(gun.ID, gun);
 
 			DeathZone deathZone = new DeathZone(this, lengthOfSide);
-			deathZone.EventGameObjectDeleted += Model_EventGameObjectDeleted;
 			GameObjects.Add(deathZone.ID, deathZone);
 		}
 
@@ -105,21 +94,12 @@ namespace BattleRoayleServer
 				Gamer gamer = new Gamer(this, CreatePlayerLocation(i));
 				Players.Add(gamer);
 				GameObjects.Add(gamer.ID,gamer);
-				gamer.EventGameObjectDeleted += Model_EventGameObjectDeleted;
-				gamer.EventPlayerDeleted += RemovePlayer;
 			}
 		}
 
 		public void RemovePlayer(IPlayer player)
 		{
-			if (Players.Remove(player))
-			{
-				if (Players.Count <= minValueGamerInBattle && !Sleep)
-				{
-					Sleep = true;
-				   EventRoaylGameModelEndWork?.Invoke();
-				}
-			}
+			Players.Remove(player);
 		}
 		
 		private PointF CreatePlayerLocation(int index)
@@ -258,6 +238,7 @@ namespace BattleRoayleServer
 
 		public void RemoveGameObject(IGameObject gameObject)
 		{
+			gameObject.Dispose();
 			GameObjects.Remove(gameObject.ID);
 		}
 
@@ -267,6 +248,7 @@ namespace BattleRoayleServer
 			for(; Players.Count!=0;)
 			{
 				(Players[0] as GameObject).Dispose();
+				Players.RemoveAt(0);
 			}
 
 			Players.Clear();

@@ -39,6 +39,11 @@ namespace ServerTest
 			return;
 		}
 
+		public void SetDestroyed()
+		{
+			throw new NotImplementedException();
+		}
+
 		public void Setup()
 		{
 			foreach (IComponent item in Components)

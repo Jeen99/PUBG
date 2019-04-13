@@ -96,7 +96,8 @@ namespace BattleRoayleServer
 		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			//возможно стоит отправлять в отдельном потоке
-			IMessage msg = roomLogic.HappenedEvents.Dequeue();
+			IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
+			if (msg == null) return;
 
 				switch (msg.TypeMessage)
 				{
@@ -124,10 +125,20 @@ namespace BattleRoayleServer
 				}
 			
 		}
+
 		private void Handler_EndGame(EndGame msg)
 		{
-			Clients[msg.ID].SaveStatistics(msg);
-			Handler_PrivateMsg(msg);
+			lock (AccessSinchClients)
+			{
+				Clients[msg.ID].SaveStatistics(msg);
+				Handler_PrivateMsg(msg);
+			//закрываем этого клиента
+			
+				INetworkClient client = Clients[msg.ID];
+				Clients.Remove(msg.ID);
+				client.Dispose();
+			}
+			
 		}
 
 
@@ -173,6 +184,15 @@ namespace BattleRoayleServer
 			lock (AccessSinchClients)
 			{
 				timerTotalSinch.Dispose();
+				roomLogic.HappenedEvents.CollectionChanged -= HandlerGameEvent;
+				//считываем все пришедшие сообщения
+				int? countMsg = roomLogic?.HappenedEvents?.Count;
+				if (countMsg == null) return;
+
+				for(int i = 0; i < countMsg; i++)
+				{
+					HandlerGameEvent(null, null);
+				}
 
 				foreach (var id in Clients.Keys)
 				{
@@ -193,7 +213,6 @@ namespace BattleRoayleServer
 					var client = new NetworkClient(roomLogic.Players[i], gamers[i].Client,
 					   gamers[i].NickName, gamers[i].Password);
 					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
-					client.EventNetworkClientEndWork += Client_EventNetworkClientEndWork;
 					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
 					Clients.Add(client.Player.ID, client);
 				}
@@ -207,15 +226,6 @@ namespace BattleRoayleServer
 				Clients.Remove(client.Player.ID);	
 			}
 			roomLogic.RemovePlayer(client.Player);
-		}
-
-		private void Client_EventNetworkClientEndWork(INetworkClient client)
-		{
-			lock (AccessSinchClients)
-			{
-				Clients.Remove(client.Player.ID);
-			}
-			client.Dispose();
 		}
 
 		/// <summary>

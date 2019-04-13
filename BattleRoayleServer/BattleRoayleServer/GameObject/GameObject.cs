@@ -17,8 +17,6 @@ namespace BattleRoayleServer
 		//0 - зарезервированно за картой
 		private static ulong counterID = 1;
 
-		public event GameObjectDeleted EventGameObjectDeleted;
-
 		private ulong GetID()
 		{
 			lock (sinchGetId)
@@ -129,16 +127,13 @@ namespace BattleRoayleServer
 		/// </summary>
 		public virtual void Dispose()
 		{
-			Destroyed = true;
-			EventGameObjectDeleted?.Invoke(this);
+			//EventGameObjectDeleted?.Invoke(this);
 			foreach (IComponent item in Components)
 			{
 				item.Dispose();
 			}
-			Components.Clear();
-			messageQueue.Clear();
-			Model.AddEvent(new DeleteInMap(ID));
-			Model = null;
+
+			Model.AddEvent(new DeleteInMap(ID));	
 		}
 
 		public virtual void Setup()
@@ -147,6 +142,11 @@ namespace BattleRoayleServer
 			{
 				item.Setup();
 			}
+		}
+
+		public virtual void SetDestroyed()
+		{
+			Destroyed = true;
 		}
 
 		/// <summary>

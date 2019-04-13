@@ -44,8 +44,8 @@ namespace BattleRoayleServer
 			if (data != null)
 			{
 				//отправляем данные об аккаунте
-				client.SendMessage(new DataAccount(data.QuantityKills, data.QuantityBattles,
-					data.QuantityDeaths, data.GetTimeInGame()));
+				client.SendMessage(new DataAccount(data.QuantityKills, data.QuantityDeaths,
+					data.QuantityBattles, data.GetTimeInGame()));
 			}
 		}
 		/// <summary>

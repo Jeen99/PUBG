@@ -11,6 +11,7 @@ namespace BattleRoayleServer
 	{
 		public int Kills { get; private set; } = 0;
 		public TimeSpan TimeInBattle { get; private set; } = new TimeSpan();
+		public bool GamerDied { get; private set; } = false;
 
 		public Statistics(IGameObject parent) : base(parent)
 		{
@@ -33,7 +34,15 @@ namespace BattleRoayleServer
 				case TypesProgramMessage.MakedKill:
 					Handler_MakedKill();
 					break;
+				case TypesProgramMessage.GamerDied:
+					Handler_GamerDied();
+					break;
 			}
+		}
+
+		private void Handler_GamerDied()
+		{
+			GamerDied = true;
 		}
 
 		private void Handler_MakedKill()
@@ -49,6 +58,11 @@ namespace BattleRoayleServer
 		public override void Setup()
 		{
 			
+		}
+
+		public override void Dispose()
+		{
+			Parent.Model.AddEvent(new EndGame(Parent.ID, GamerDied, Kills, TimeInBattle));
 		}
 	}
 }

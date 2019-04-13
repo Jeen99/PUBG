@@ -17,7 +17,7 @@ namespace BattleRoayleServer
         /// <remarks>Координаты нужны для определния области, в которой игок видит игровые объекты</remarks>
         PointF Location { get; }
 
-		event PlayerDeleted EventPlayerDeleted;
+		//event PlayerDeleted EventPlayerDeleted;
 
 	}
 }

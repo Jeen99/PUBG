@@ -41,6 +41,11 @@ namespace ServerTest
 			
 		}
 
+		public void SetDestroyed()
+		{
+			throw new NotImplementedException();
+		}
+
 		public void Setup()
 		{
 			throw new NotImplementedException();

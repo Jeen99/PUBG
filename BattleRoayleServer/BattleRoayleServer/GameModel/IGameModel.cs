@@ -20,8 +20,7 @@ namespace BattleRoayleServer
         World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
 		GameObjectState State { get; }
-		bool Sleep { get; }
-		event RoaylGameModelEndWork EventRoaylGameModelEndWork;
+		//event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 
 		void AddGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);

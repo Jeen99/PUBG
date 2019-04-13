@@ -17,8 +17,6 @@ namespace BattleRoayleServer
 		private readonly float density = 0.5f;
 		private readonly SizeF GamerSize = new SizeF(10,10);
 
-		public event PlayerDeleted EventPlayerDeleted;
-
 		public Gamer(IModelForComponents context, PointF location) : base(context)
 		{
 			#region CreateShape
@@ -68,18 +66,5 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public override void Dispose()
-		{
-			Healthy healthy = Components.GetComponent<Healthy>();
-
-			bool youDied = false;
-			if (healthy.HP <= 0) youDied = true;
-
-			Statistics statistics = Components.GetComponent<Statistics>();
-
-			Model.AddEvent(new EndGame(ID, youDied, statistics.Kills, statistics.TimeInBattle));
-			base.Dispose();
-			EventPlayerDeleted?.Invoke(this);
-		}
 	}
 }

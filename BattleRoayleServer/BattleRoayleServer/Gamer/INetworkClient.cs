@@ -16,7 +16,7 @@ namespace BattleRoayleServer
 		RectangleF VisibleArea { get; }
 		string Password { get; }
 		event GamerIsLoaded Event_GamerIsLoaded;
-		event NetworkClientEndWork EventNetworkClientEndWork;
+		//event NetworkClientEndWork EventNetworkClientEndWork;
 		event NetorkClientDisconnect EventNetorkClientDisconnect;
 
 		void SaveStatistics(EndGame msg);

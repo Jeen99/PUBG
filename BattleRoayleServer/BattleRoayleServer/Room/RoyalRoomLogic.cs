@@ -18,12 +18,15 @@ namespace BattleRoayleServer
         private IGameModel roomContext;
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
+
+		private const int minValueGamerInBattle = 1;
+		private bool DeletedPlayer = false;
+
 		public event RoomLogicEndWork EventRoomLogicEndWork;
 
 		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			roomContext.EventRoaylGameModelEndWork += RoomContext_EventRoaylGameModelEndWork;
 			timerNewIteration = new Timer(70)
 			{
 				SynchronizingObject = null,
@@ -34,8 +37,9 @@ namespace BattleRoayleServer
 			
         }
 
-		private void RoomContext_EventRoaylGameModelEndWork()
+		private void EndWork()
 		{
+			timerNewIteration.Elapsed -= TickQuantTimer;
 			timerNewIteration.Stop();
 			EventRoomLogicEndWork?.Invoke(this);
 		}
@@ -101,8 +105,6 @@ namespace BattleRoayleServer
         //вызывается при срабатывании таймера
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
-			if (roomContext.Sleep) return;
-
 			quantTimer.Tick();
 			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
 
@@ -120,8 +122,26 @@ namespace BattleRoayleServer
 							solidBody.Parent.Update(msg);
 						}
 					}
+
+					//если объект уничтожен удаляем его
+					else
+					{
+						roomContext.RemoveGameObject(solidBody.Parent);
+						if (solidBody.Parent is Gamer)
+						{
+							roomContext.RemovePlayer((IPlayer)solidBody.Parent);
+							DeletedPlayer = true;
+						}
+					}
 				}
 			}
+
+			if (!DeletedPlayer) return;
+			else if (roomContext.Players.Count <= minValueGamerInBattle)
+			{
+				EndWork();
+			}
+			else DeletedPlayer = false;
 		}
 		
         public void RemovePlayer(IPlayer player)

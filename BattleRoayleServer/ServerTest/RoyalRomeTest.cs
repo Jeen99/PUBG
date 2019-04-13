@@ -22,14 +22,17 @@ namespace ServerTest
 			rooms.AddRoom(new List<QueueGamer>() {
 				new QueueGamer(
 					new ServerClient(new TcpClient(), new AuthorizationController()), 
+					new  DataOfAccount("", "", 0, 0, 0, new TimeSpan())),
+				new QueueGamer(
+					new ServerClient(new TcpClient(), new AuthorizationController()),
 					new  DataOfAccount("", "", 0, 0, 0, new TimeSpan()))
 			});
 
 			Assert.AreEqual(count+1, rooms.CollectionRooms.Count);
 			RoyalRoom royalRoom = (RoyalRoom)rooms.CollectionRooms[0];
 			GameObject player = (GameObject)royalRoom.GameLogic.Players[0];
-			player.Dispose();
-			player.Update(new TimeQuantPassed(100));
+			player.SetDestroyed();
+			Thread.Sleep(500);
 			Assert.AreEqual(count, rooms.CollectionRooms.Count);
 		}
 	}

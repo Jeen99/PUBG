@@ -13,10 +13,11 @@ namespace BattleRoayleServer
 		TypesGameObject Type { get; }
 		TypesBehaveObjects TypesBehave { get; }
 
-		event GameObjectDeleted EventGameObjectDeleted;
+		//event GameObjectDeleted EventGameObjectDeleted;
 
 		void Setup();
 		void Dispose();
+		void SetDestroyed();
 		void SendMessage(IMessage msg);
 		void Update(TimeQuantPassed quantPassed = null);
 	}

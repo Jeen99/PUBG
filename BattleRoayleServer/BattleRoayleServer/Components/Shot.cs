@@ -58,11 +58,14 @@ namespace BattleRoayleServer
 			{
 				ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 				if (BodyHolder == null)
+				{
+					Log.AddNewRecord("Ошибка получения держателя оружия");
 					return;
+				}
+
 				//получаем патрон
 				IBullet bullet = magazin.GetBullet();
-				if (bullet == null)
-					return;
+				if (bullet == null) return;
 								
 				Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
 				if (position == null)
@@ -90,22 +93,17 @@ namespace BattleRoayleServer
 				//отправляем сообщение о совершении выстрела
 				Parent.Model.AddEvent(new MakedShot( (Parent as Weapon).Holder.ID, bullet.Distance) );
 
-				var damageMsg = new GotDamage(bullet.Damage);
-
 				//отправляем ему сообщение о нанесении урона	
 				ISolidBody attacked = (ISolidBody)objectsForDamage[1]?.GetBody().GetUserData();
-				attacked?.Parent.SendMessage(damageMsg);
+				if (attacked == null) return;
+
+				var damageMsg = new GotDamage(bullet.Damage);
+				attacked.Parent.SendMessage(damageMsg);
 
 				//определяем убили ли мы противника
-				Healthy healthyAttacked = attacked?.Parent.Components.GetComponent<Healthy>();
-				if (healthyAttacked == null)
-				{
-					Log.AddNewRecord("Не удалось получить ссылку на коэфициент Healthy в метода MakeShot");
-					return;
-				}
-
+				Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();			
 				//если убили засчитываем фраг
-				if (healthyAttacked.HP < bullet.Damage) Parent?.SendMessage(new MakedKill());
+				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent.SendMessage(new MakedKill());
 				
 			}
 			catch (Exception e)

@@ -33,8 +33,8 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
-			NetworkLogic.Dispose();
 			GameLogic.Dispose();
+			NetworkLogic.Dispose();
 		}
 	}
 }

@@ -12,7 +12,6 @@ namespace BattleRoayleServer
 	{
 		public IPlayer Player { get; private set; }
 		public event GamerIsLoaded Event_GamerIsLoaded;
-		public event NetworkClientEndWork EventNetworkClientEndWork;
 		public event NetorkClientDisconnect EventNetorkClientDisconnect;
 
 		public string Nick { get; private set; }
@@ -42,7 +41,6 @@ namespace BattleRoayleServer
 		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password)
 		{
 			this.Player = gamerRoomLogic;
-			this.Player.EventPlayerDeleted += GamerRoomLogic_EventPlayerDeleted;
 			visibleArea = new RectangleF(0,0, widthVisibleArea, heightVisibleArea);
 			Nick = nick;
 			Client = gamer;
@@ -57,11 +55,6 @@ namespace BattleRoayleServer
 		private void Client_EventEndSession(ServerClient Client)
 		{
 			EventNetorkClientDisconnect?.Invoke(this);
-		}
-
-		private void GamerRoomLogic_EventPlayerDeleted(IPlayer player)
-		{
-			EventNetworkClientEndWork?.Invoke(this);
 		}
 
 		public void HanlderNewMessage()
