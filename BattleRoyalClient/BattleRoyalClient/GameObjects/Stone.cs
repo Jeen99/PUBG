@@ -10,18 +10,20 @@ namespace BattleRoyalClient
 {
 	class Stone : GameObject
 	{
+		public Stone(ulong ID) : base(ID)
+		{
+		}
+
+		public Stone(ulong ID, RectangleF shape, double angle = 0) : base(ID, shape, angle)
+		{
+		}
+
+		public Stone(ulong ID, PointF location, SizeF size, double angle = 0) : base(ID, location, size, angle)
+		{
+		}
+
 		public override TypesGameObject Type { get; protected set; } = TypesGameObject.Stone;
 
-		public Stone() : base()
-		{
-		}
-
-		public Stone(RectangleF shape, double angle = 0) : base(shape, angle)
-		{
-		}
-
-		public Stone(PointF location, SizeF size, double angle = 0) : base(location, size, angle)
-		{
-		}
+		
 	}
 }

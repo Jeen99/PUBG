@@ -14,39 +14,27 @@ namespace BattleRoyalClient
 
 		public PointF Location { get { return character.Location; } }
 
-		public event ChangeHPCharacter changeHP;
-		public event ChangePositionHandler changePosition;
+		public event CharacterChange Event_CharacterChange;
 
 		public ulong ID { get; private set; }
 
 		private float _HP;
 		public float HP
 		{
-			get
-			{
-				return _HP;
-			}
-			set
-			{
-				_HP = value;
-			}
+			get { return _HP; }
+			set{_HP = value;}
 		}
 
-		public void OnChangeHP()
+		public void OnChangeCharacter()
 		{
-			changeHP?.Invoke(HP);
-		}
-
-		public void OnChangePosition()
-		{
-			changePosition?.Invoke(character.Location);
+			Event_CharacterChange?.Invoke();
 		}
 
 		public PlayerChararcter(ulong ID, BattleModel parent)
 		{
 			this.ID = ID;
 			this.parent = parent;
-			this.character = new Gamer();
+			this.character = new Gamer(ID);
 			HP = 100f;
 		}
 
@@ -55,7 +43,6 @@ namespace BattleRoyalClient
 			character = gamer;
 		}
 
-		public delegate void ChangeHPCharacter(float hp);
-		public delegate void ChangePositionHandler(PointF location);
+		public delegate void CharacterChange();
 	}
 }

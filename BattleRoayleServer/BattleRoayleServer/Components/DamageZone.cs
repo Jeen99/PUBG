@@ -44,7 +44,7 @@ namespace BattleRoayleServer
 		{
 			//уменьшаем время до следующего получения урона от зоны	
 			intervalBetweenDamage = intervalBetweenDamage.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
-			if (intervalBetweenDamage.Milliseconds < 0)
+			if (intervalBetweenDamage.Milliseconds < 0 && bodyZone.Create)
 			{
 				CreateDamage();
 				intervalBetweenDamage = new TimeSpan(0, 0, 0, 0, durationIntervale);

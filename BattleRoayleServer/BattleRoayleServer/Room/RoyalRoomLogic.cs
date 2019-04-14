@@ -19,7 +19,7 @@ namespace BattleRoayleServer
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
 
-		private const int minValueGamerInBattle = 1;
+		private const int minValueGamerInBattle = 0;
 		private bool DeletedPlayer = false;
 
 		public event RoomLogicEndWork EventRoomLogicEndWork;
@@ -135,7 +135,8 @@ namespace BattleRoayleServer
 					}
 				}
 			}
-
+			//обновляем игровую зону
+			roomContext.Zone.Update(msg);
 			if (!DeletedPlayer) return;
 			else if (roomContext.Players.Count <= minValueGamerInBattle)
 			{

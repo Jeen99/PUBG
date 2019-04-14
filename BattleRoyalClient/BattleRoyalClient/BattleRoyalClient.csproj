@@ -75,9 +75,12 @@
     <Compile Include="Battle\IBattleModel.cs" />
     <Compile Include="Battle\IBattleView.cs" />
     <Compile Include="Battle\Model3D.cs" />
+    <Compile Include="Battle\Model3DGamer.cs" />
     <Compile Include="Battle\VisualConteyner.cs" />
     <Compile Include="ConvertPosition.cs" />
     <Compile Include="GameObjects\Box.cs" />
+    <Compile Include="GameObjects\DeathZone.cs" />
+    <Compile Include="GameObjects\Field.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
     <Compile Include="GameObjects\IModelObject.cs" />

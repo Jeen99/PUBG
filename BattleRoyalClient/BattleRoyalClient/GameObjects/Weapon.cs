@@ -14,14 +14,13 @@ namespace BattleRoyalClient
 
 		public override string TextureName => TypesWeapon.ToString();
 
-		public Weapon(TypesWeapon typesWeapon)
+		public Weapon(ulong ID, TypesWeapon typesWeapon) : base(ID)
 		{
 			TypesWeapon = typesWeapon;
 		}
 
-		public Weapon()
+		public Weapon(ulong ID) : base(ID)
 		{
-			TypesWeapon = TypesWeapon.Gun;
 		}
 	}
 }

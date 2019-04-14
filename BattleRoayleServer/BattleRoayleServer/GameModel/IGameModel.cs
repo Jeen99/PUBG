@@ -20,6 +20,7 @@ namespace BattleRoayleServer
         World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
 		GameObjectState State { get; }
+		DeathZone Zone { get; }
 		//event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 
 		void AddGameObject(IGameObject gameObject);

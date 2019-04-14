@@ -18,7 +18,7 @@ namespace BattleRoayleServer
 				return location;
 			}
 		}
-
+		public bool Create { get; private set; } = false;
 		public float Radius { get; private set; }
 
 		private TimeSpan timeTillReducton;
@@ -28,8 +28,8 @@ namespace BattleRoayleServer
 		public BodyZone(IGameObject parent, float sizeMap) : base(parent)
 		{
 			this.sizeMap = sizeMap;
-			Radius = sizeMap / 2;
-			location = new PointF(Radius, Radius);
+			Radius = 0;
+			location = new PointF();
 			//время до сужения зоны постоянно и равно 30 секундам
 			timeTillReducton = new TimeSpan(0, 0, timeRound); 
 		}
@@ -66,18 +66,28 @@ namespace BattleRoayleServer
 		}
 
 		private void CheckReduction()
-		{	
-			//пределяем новую позицию центра зоны
-			Random rand = new Random();
-			location.X = rand.Next(Convert.ToInt32(location.X - Radius), Convert.ToInt32(location.X + Radius));
-			location.Y = rand.Next(Convert.ToInt32(location.Y - Radius), Convert.ToInt32(location.Y + Radius));
+		{
+			if (Create)
+			{
+				//пределяем новую позицию центра зоны
+				Random rand = new Random();
+				float HalfRadius = Radius / 2f;
+				location.X = rand.Next(Convert.ToInt32(location.X - HalfRadius), Convert.ToInt32(location.X + HalfRadius));
+				location.Y = rand.Next(Convert.ToInt32(location.Y - HalfRadius), Convert.ToInt32(location.Y + HalfRadius));
 
-			//уменьшаем радиус на 40% процентов
-			Radius = Radius * 0.6f;
+				//уменьшаем радиус на 40% процентов
+				Radius = Radius * 0.6f;
 
+				
+			}
+			else
+			{
+				Radius = sizeMap / 2f;
+				location = new PointF(Radius, Radius);
+				Create = true;
+			}
 			//устанавливаем новое время до сужения зоны
 			timeTillReducton = new TimeSpan(0, 0, timeRound);
-
 			//отпрвляем сообщение об изменение зоны
 			Parent.Model?.AddEvent(Parent.State);
 		}

@@ -27,7 +27,7 @@ namespace BattleRoayleServer
 		/// Коллекция всех игровых объектов в игре
 		/// </summary>
         public Dictionary<ulong,IGameObject> GameObjects { get; private set; }
-		
+		public DeathZone Zone { get; private set; }
         public World Field { get; private set; }
 		/// <summary>
 		/// Колекция событий произошедших в игре
@@ -38,7 +38,7 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				List<IMessage> listState = new List<IMessage>();
+				var listState = new List<IMessage>();
 				//отправляем характеристики карты
 				listState.Add(new FieldState(new SizeF(lengthOfSide, lengthOfSide)));
 
@@ -76,6 +76,7 @@ namespace BattleRoayleServer
 
 			DeathZone deathZone = new DeathZone(this, lengthOfSide);
 			GameObjects.Add(deathZone.ID, deathZone);
+			Zone = deathZone;
 		}
 
 		private void Model_EventGameObjectDeleted(IGameObject gameObject)

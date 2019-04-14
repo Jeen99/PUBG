@@ -78,6 +78,8 @@ namespace BattleRoayleServer
 						{
 							case TypesProgramMessage.BodyState:
 							case TypesProgramMessage.CurrentWeaponState:
+							case TypesProgramMessage.FieldState:
+							case TypesProgramMessage.BodyZoneState:
 								filterStatesComponents.Add(stateComponent);
 								break;
 						}
@@ -112,6 +114,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.DeleteInMap:
 					case TypesProgramMessage.ChangedCurrentWeapon:
 					case TypesProgramMessage.GameObjectState:
+					case TypesProgramMessage.ChangedTimeTillReduction:
 						Handler_BroadcastMsg(msg);
 						break;
 					case TypesProgramMessage.EndGame:

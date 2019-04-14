@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BattleRoyalClient"
         mc:Ignorable="d"
-        Title="BattleView3d" Height="500" Width="500">
+        Title="BattleView3d" Height="650" Width="500">
     <Grid>
-        <Viewport3D x:Name="viewport" ClipToBounds="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="500"></RowDefinition>
+            <RowDefinition Height="100"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Viewport3D x:Name="viewport" ClipToBounds="True" Grid.Row="0">
             <Viewport3D.Camera>
                 <PerspectiveCamera x:Name="camera" FarPlaneDistance="1000" NearPlaneDistance="0.1" Position="0, 0, 200" LookDirection="0, 0, -1" UpDirection="0, 1, 0"/>
             </Viewport3D.Camera>
@@ -15,13 +19,22 @@
                 <ModelVisual3D.Content>
                     <Model3DGroup x:Name="models">
                         <!--Источники света-->
-                        <AmbientLight Color="#333"/>
+                        <AmbientLight Color="#FFF"/>
                         <DirectionalLight Color="#FFF" Direction="-1, -1, -1"/>
                         <DirectionalLight Color="#FFF" Direction="1, -1, -1"/>
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
         </Viewport3D>
-        <ProgressBar  x:Name="HP" Margin="40,0,0,15" VerticalAlignment="Bottom" MinWidth="100" MinHeight="10" HorizontalAlignment="Left"/>
+        <StackPanel Grid.Row="1" Orientation="Vertical">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20, 0, 0, 0">
+                <TextBlock  FontSize="14" Margin="2">До сужения зоны:</TextBlock>
+                <TextBlock  x:Name="TimeDeathZone" Foreground="Red" FontSize="14" Margin="2"></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 0, 0,0">
+                <TextBlock  FontSize="14" Margin="2">Здоровье:</TextBlock>
+                <ProgressBar x:Name="HP" VerticalAlignment="Bottom" MinWidth="200" MinHeight="14" HorizontalAlignment="Left"/>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

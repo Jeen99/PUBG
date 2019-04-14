@@ -30,7 +30,7 @@ namespace BattleRoyalClient
 				var x = Shape.X;
 				var y = Shape.Y;
 				var z = (double)Type;
-
+		
 				return new Point3D(x, y, z);
 			}
 			protected set
@@ -40,6 +40,7 @@ namespace BattleRoyalClient
 				shape.Location = new PointF(x, y);
 			}
 		}
+
 		public SizeF Size
 		{
 			get { return Shape.Size; }
@@ -51,26 +52,29 @@ namespace BattleRoyalClient
 
 		public double Angle { get; protected set; }
 
-		public ulong ID { get; set; }
+		public ulong ID { get; protected set; }
 
 		public virtual string TextureName
 		{
 			get { return Type.ToString(); }
 		}
 
-		public GameObject()
+		public GameObject(ulong ID)
 		{
+			this.ID = ID;
 			shape = new RectangleF();
 		}
 
-		public GameObject(PointF location, SizeF size, double angle = 0)
+		public GameObject(ulong ID, PointF location, SizeF size, double angle = 0)
 		{
+			this.ID = ID;
 			shape = new RectangleF(location, size);
 			this.Angle = angle;
 		}
 
-		public GameObject(RectangleF shape, double angle = 0)
+		public GameObject(ulong ID, RectangleF shape, double angle = 0)
 		{
+			this.ID = ID;
 			this.Shape = shape;
 			this.Angle = angle;
 		}

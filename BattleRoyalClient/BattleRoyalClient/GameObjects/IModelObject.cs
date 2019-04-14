@@ -13,5 +13,6 @@ namespace BattleRoyalClient
 		SizeF Size { get; }
 		string TextureName { get; }
 		ulong ID { get; }
+		TypesGameObject Type { get; }
 	}
 }

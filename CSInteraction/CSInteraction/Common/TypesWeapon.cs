@@ -8,10 +8,11 @@ namespace CSInteraction.Common
 {
 	[Serializable]
 	public enum TypesWeapon
-	{
+	{	
 		Gun,
 		ShotGun,
 		AssaultRifle,
-		GrenadeCollection
+		GrenadeCollection,
+		Not
 	}
 }

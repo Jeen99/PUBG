@@ -16,6 +16,7 @@ using CSInteraction.ProgramMessage;
 using CSInteraction.Client;
 using System.Collections.Concurrent;
 using BattleRoyalClient.Battle;
+using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
@@ -42,15 +43,13 @@ namespace BattleRoyalClient
 			//this.LayoutUpdated += MainWindow_LayoutUpdated;     // обработчик перериовки
 
 			this.visual = new VisualConteyner(this.models);
-			
 			// УБРАТЬ НЕНУЖНЫЕ ПОЛЯ!!!!
 			battleContoller = new GameActionController(id, client, this);
 			//battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
 			userContoller = new UserActionController(client);
 
 			battleContoller.Model.GameObjectChanged += Model_GameObjectChanged;
-			battleContoller.Model.Chararcter.changeHP += Chararcter_changeHP;
-			battleContoller.Model.Chararcter.changePosition += Chararcter_changePosition;
+			battleContoller.Model.Chararcter.Event_CharacterChange+= Handler_ChangeChararcter;
 
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
@@ -88,31 +87,49 @@ namespace BattleRoyalClient
 			}
 		}
 
-		private void Chararcter_changePosition(System.Drawing.PointF location)
+		private void Handler_ChangeChararcter()
 		{
 			var cameraPosition = camera.Position;
-			cameraPosition.X = location.X;
-			cameraPosition.Y = location.Y;
-
+			//меняем положение камеры
+			var character = battleContoller.Model.Chararcter;
+			cameraPosition.X = character.Location.X;
+			cameraPosition.Y = character.Location.Y;
 			camera.Position = cameraPosition;
+			//меняем количество HP
+			if (HP.Value != character.HP)
+			{
+				this.HP.Value = character.HP;
+			}
+				
 		}
 
 		private void Model_GameObjectChanged(IModelObject model, StateObject state)
 		{
 			switch (state)
 			{
-				case StateObject.CHANGE:
-					visual.AddOrUpdate(model, model.ID);
+				case StateObject.Change:
+					Hanler_ChangeGameObject(model);
 					break;
-				case StateObject.DELETE:
+				case StateObject.Delete:
 					visual.DeleteModel3d(model.ID);
 					break;
 			}
 		}
 
-		private void Chararcter_changeHP(float hp)
+		private void Hanler_ChangeGameObject(IModelObject gameObject)
 		{
-			this.HP.Value = hp;
+			switch (gameObject.Type)
+			{
+				case TypesGameObject.DeathZone:
+					Handler_ChangeDeathZone((DeathZone)gameObject);
+					break;
+			}
+			visual.AddOrUpdate(gameObject, gameObject.ID);
+		}
+
+		private void Handler_ChangeDeathZone(DeathZone deathZone)
+		{
+			TimeDeathZone.Text = $"{deathZone.TimeToChange.Minutes.ToString("D2")}:{deathZone.TimeToChange.Seconds.ToString("D2")}";
 		}
 
 		private void BattleView3d_MouseWheel(object sender, MouseWheelEventArgs e)

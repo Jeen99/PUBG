@@ -28,7 +28,7 @@ namespace BattleRoyalClient
 			BattleModelChanged?.Invoke();
 		}
 
-		public void OnChangeGameObject(IModelObject model, StateObject state = StateObject.CHANGE)
+		public void OnChangeGameObject(IModelObject model, StateObject state = StateObject.Change)
 		{
 			GameObjectChanged?.Invoke(model, state);
 		}

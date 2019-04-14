@@ -16,11 +16,11 @@ namespace BattleRoyalClient
 		Size SizeMap { get; }
 
 		void CreateChangeModel();
-		void OnChangeGameObject(IModelObject model, StateObject state = StateObject.CHANGE);
+		void OnChangeGameObject(IModelObject model, StateObject state = StateObject.Change);
 
 	}
 
-	enum StateObject { CHANGE, DELETE };
+	enum StateObject { Change, Delete };
 	/// <summary>
 	/// Делегат события изменения модели
 	/// </summary>

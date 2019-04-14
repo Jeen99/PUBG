@@ -17,25 +17,30 @@ namespace BattleRoyalClient.Battle
 		{
 			this.group = group;
 		}
-
+		//если возвращает true значит произошло добавление объекта
 		public void AddOrUpdate(IModelObject modelObject, ulong ID)
 		{
-			//var ID = modelObject.ID;
 
 			if (!visuals.Keys.Contains(ID))
+			{
 				CreateModel3d(modelObject, ID);
+				visuals[ID].CreateImage();
+				
+			}
 			else
 				UpdateVisual(ID);
 		}
 
 		public void CreateModel3d(IModelObject model, ulong ID)
 		{
-			visuals[ID] = new Model3D(this.group, model);
+			if (model is Gamer)
+				visuals[ID] = new Model3DGamer(this.group, model);
+			else visuals[ID] = new Model3D(this.group, model);
 		}
 
 		public void UpdateVisual(ulong ID)
 		{
-			visuals[ID].UpdatePosition();
+			visuals[ID].Update();
 		}
 
 		public bool DeleteModel3d(ulong ID)
