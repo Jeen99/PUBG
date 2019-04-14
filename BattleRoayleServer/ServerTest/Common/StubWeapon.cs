@@ -29,8 +29,6 @@ namespace ServerTest
 
 		public TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
-		public event GameObjectDeleted EventGameObjectDeleted;
-
 		public void Dispose()
 		{
 

@@ -58,8 +58,8 @@ namespace BattleRoyalClient
 			
 			var location = modelObject.Location3D;
 			translateTransform = new TranslateTransform3D(new Vector3D(location.X, location.Y, location.Z));
-			var Axis = new Vector3D(lastSize.Height / 2, lastSize.Height / 2, 0);
-			rotationTransform = new RotateTransform3D(new AxisAngleRotation3D(Axis, modelObject.Angle), Axis.X, Axis.Y, Axis.Z);
+			var Axis = new Vector3D(0, 0, 1);
+			rotationTransform = new RotateTransform3D(new AxisAngleRotation3D(Axis, modelObject.Angle), 0.5, 0.5, 0.5);
 
 			Transform3DGroup tgroup = new Transform3DGroup();
 			tgroup.Children.Add(translateTransform);
@@ -149,13 +149,19 @@ namespace BattleRoyalClient
 			return new Vector3D(translateTransform.OffsetX, translateTransform.OffsetY, translateTransform.OffsetZ);
 		}
 
-		// Поворачивает объект
-		public virtual void Rotation(Vector3D axis, double angle, double centerX = 0.5, double centerY = 0.5, double centerZ = 0.5)
+		protected virtual Point3D DefinCentre()
 		{
-			rotationTransform.CenterX = translateTransform.OffsetX;
-			rotationTransform.CenterY = translateTransform.OffsetY;
-			rotationTransform.CenterZ = translateTransform.OffsetZ;
-
+			return  new Point3D(translateTransform.OffsetX,
+				translateTransform.OffsetY, translateTransform.OffsetZ);
+		}
+		// Поворачивает объект
+		public virtual void Rotation(double angle)
+		{
+			var centre = DefinCentre();
+			rotationTransform.CenterX = centre.X;
+			rotationTransform.CenterY = centre.Y;
+			rotationTransform.CenterZ = centre.Z;
+			var axis = new Vector3D(0, 0, 1);
 			rotationTransform.Rotation = new AxisAngleRotation3D(axis, angle);
 		}
 		

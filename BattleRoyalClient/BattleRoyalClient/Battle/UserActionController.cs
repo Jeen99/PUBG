@@ -14,10 +14,14 @@ namespace BattleRoyalClient
 	{
 		private BaseClient client;
 		private Direction direction;
+		private GameActionController gameController;
+		private BattleView3d view;
 
-		public UserActionController(BaseClient client)
+		public UserActionController(BaseClient client, GameActionController controller, BattleView3d view)
 		{
 			this.client = client;
+			gameController = controller;
+			this.view = view;
 			this.direction = new Direction();
 		}
 
@@ -84,6 +88,19 @@ namespace BattleRoyalClient
 				direction.Vertical = DirectionVertical.None;
 				client.SendMessage(new GoTo(direction));
 			}
+		}
+
+		public void MakeShot(float angle)
+		{
+			client.SendMessage(new MakeShot(angle));
+		}
+
+		public void UserTurn(float angle)
+		{
+			//отправляем сообщение
+			client.SendMessage(new PlayerTurn(angle));
+			gameController.Model.Chararcter.Character.Update(angle);
+			view.Dispatcher.Invoke(() => { gameController.Model.OnChangeGameObject(gameController.Model.Chararcter.Character); });
 		}
 	}
 }

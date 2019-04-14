@@ -51,7 +51,9 @@ namespace CSInteraction.ProgramMessage
 		BodyZoneState,
 		ThrowGrenade,
 		MakedKill,
-		GamerDied
+		GamerDied,
+		PlayerTurn,
+		PlayerTurned
 
 	}
 }

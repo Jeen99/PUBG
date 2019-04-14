@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
@@ -22,25 +23,8 @@ namespace BattleRoayleServer
 	/// <param name="room"></param>
 	public delegate void RoomEndWork(IRoom room);
 
-	/// <summary>
-	/// делегат для создания события, уведомляющего, что игрок завершил игру
-	/// </summary>
-	/// <param name="player"></param>
-	public delegate void PlayerDeleted(IPlayer player);
-
-	/// <summary>
-	/// делегат для создания событий, уведомляющего, что участие игрока в игре завершено
-	/// </summary>
-	/// <param name=""></param>
-	public delegate void NetworkClientEndWork(INetworkClient networkClient);
-
-	public delegate void GameObjectDeleted(IGameObject gameObject);
-
 	public delegate void NetorkClientDisconnect(INetworkClient client);
 
-	/// <summary>
-	/// Делегат для создания события уведомляющего, что в комнате осталось минимальное количество игроков
-	/// </summary>
-	public delegate void RoaylGameModelEndWork();
+	public delegate void GetViewMsg(ulong ID, IMessage msg);
 
 }

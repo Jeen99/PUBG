@@ -14,5 +14,9 @@ namespace BattleRoyalClient
 		string TextureName { get; }
 		ulong ID { get; }
 		TypesGameObject Type { get; }
+		void Update(RectangleF rectangle, double Angle = 0);
+		void Update(PointF location, double Angle = 0);
+		void Update(double angle);
+		
 	}
 }

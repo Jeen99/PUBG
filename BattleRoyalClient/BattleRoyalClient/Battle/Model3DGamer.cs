@@ -34,6 +34,7 @@ namespace BattleRoyalClient.Battle
 			lastSize = new SizeF(koefStretch * modelObject.Size.Width,
 				koefStretch * modelObject.Size.Height);
 		}
+
 		public override void Update()
 		{
 			var pos = modelObject.Location3D;
@@ -42,18 +43,32 @@ namespace BattleRoyalClient.Battle
 			translateTransform.OffsetY = pos.Y;
 			translateTransform.OffsetZ = pos.Z;
 
-			if (modelObject is Gamer)
+			var gamer = (Gamer)modelObject;
+			if (lastCurrentWeapon != gamer.CurrentWeapon)
 			{
-				var gamer = (Gamer)modelObject;
-				if (lastCurrentWeapon != gamer.CurrentWeapon)
-				{
-					lastCurrentWeapon = gamer.CurrentWeapon;
-					Remove();
-					//устанавливаем коээфициент увеличения для этого изображения
-					SetKoef();
-					CreateImage();
-				}
+				lastCurrentWeapon = gamer.CurrentWeapon;
+				Remove();
+				//устанавливаем коээфициент увеличения для этого изображения
+				SetKoef();
+				CreateImage();
 			}
+			
+			Rotation(-modelObject.Angle);
 		}
+
+		protected override Point3D DefinCentre()
+		{
+			switch (lastCurrentWeapon)
+			{
+				case TypesWeapon.Gun:
+					return new Point3D(translateTransform.OffsetX - lastSize.Width*0.1,
+				translateTransform.OffsetY, translateTransform.OffsetZ);
+				case TypesWeapon.Not:
+					return new Point3D(translateTransform.OffsetX - lastSize.Width * 0.05,
+				translateTransform.OffsetY, translateTransform.OffsetZ);
+			}
+			return base.DefinCentre();
+		}
+
 	}
 }

@@ -27,8 +27,6 @@ namespace ServerTest
 
 		public TypesWeapon TypeWeapon { get; } = TypesWeapon.Gun;
 
-		public event GameObjectDeleted EventGameObjectDeleted;
-
 		public void Dispose()
 		{
 			return;

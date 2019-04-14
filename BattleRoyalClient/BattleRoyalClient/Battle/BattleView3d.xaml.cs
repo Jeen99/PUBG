@@ -29,7 +29,6 @@ namespace BattleRoyalClient
 
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
-		private BaseClient client;
 
 		private DispatcherTimer timer;      // для обновления экрана
 
@@ -39,14 +38,10 @@ namespace BattleRoyalClient
 		{
 			this.InitializeComponent();
 
-			this.client = client;
-			//this.LayoutUpdated += MainWindow_LayoutUpdated;     // обработчик перериовки
-
 			this.visual = new VisualConteyner(this.models);
-			// УБРАТЬ НЕНУЖНЫЕ ПОЛЯ!!!!
+
 			battleContoller = new GameActionController(id, client, this);
-			//battleContoller.Model.BattleChangeModel += Model_BattleChangeModel;
-			userContoller = new UserActionController(client);
+			userContoller = new UserActionController(client, battleContoller, this);
 
 			battleContoller.Model.GameObjectChanged += Model_GameObjectChanged;
 			battleContoller.Model.Chararcter.Event_CharacterChange+= Handler_ChangeChararcter;
@@ -55,28 +50,33 @@ namespace BattleRoyalClient
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
 			this.MouseWheel += BattleView3d_MouseWheel;
+			this.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm());
 
 			this.MouseDown += BattleView3d_MouseDown;
-
-			// таймер перерисовки
-			//timer = new DispatcherTimer();
-			//timer.Tick += Repaint;
-			//timer.Interval = new TimeSpan(1_000_000 / 60);      // ~60fps update
-			//timer.Start();
 		}
 
+		private void BattleView3d_MouseMove(object sender, MouseEventArgs e)
+		{
+			//определяем угол
+			var angle = DefineAngle(e);
+			userContoller.UserTurn(angle);
+		}
+
+		private float DefineAngle(MouseEventArgs e)
+		{
+			var mousePosition = e.GetPosition(null);
+			//центр карты
+			var centre = new Point(viewport.ActualWidth / 2, viewport.ActualHeight / 2);
+			//позиция мыши		
+			float angle = (float)(Math.Atan2(mousePosition.Y - centre.Y, mousePosition.X - centre.X) / Math.PI * 180);
+			return angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
+		}
 		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			var p1 = e.GetPosition(null);
-			var p2 = new Point(viewport.ActualWidth / 2, viewport.ActualHeight / 2);
-			
-			float angle = (float)(Math.Atan2(p1.Y - p2.Y, p1.X - p2.X) / Math.PI * 180);
-			angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
-
-			System.Diagnostics.Debug.WriteLine("Angle: " + angle);
-			client.SendMessage(new MakeShot(angle));
+			var angle = DefineAngle(e);
+			userContoller.MakeShot(angle);
 		}
 
 		private void Battle_Closed(object sender, EventArgs e)

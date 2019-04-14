@@ -63,7 +63,17 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.ChangedCurrentWeapon:
 					Handler_ChangedCurrentWeapon((ChangedCurrentWeapon)msg);
 					break;
+				case TypesProgramMessage.PlayerTurned:
+					Handler_PlayerTurned((PlayerTurned)msg);
+					break;
 			}
+		}
+
+		private void Handler_PlayerTurned(PlayerTurned msg)
+		{
+			if (!model.GameObjects.ContainsKey(msg.ID)) return;
+			model.GameObjects[msg.ID].Update(msg.Angle);
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(model.GameObjects[msg.ID]); });
 		}
 
 		private void Handler_ChangedCurrentWeapon(ChangedCurrentWeapon msg)

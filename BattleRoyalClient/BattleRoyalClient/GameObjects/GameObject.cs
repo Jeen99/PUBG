@@ -88,5 +88,9 @@ namespace BattleRoyalClient
 		{
 			this.shape.Location = location;	// переделать
 		}
+		public void Update(double angle)
+		{
+			this.Angle = angle;
+		}
 	}
 }

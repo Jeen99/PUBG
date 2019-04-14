@@ -217,11 +217,43 @@ namespace BattleRoayleServer
 					   gamers[i].NickName, gamers[i].Password);
 					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
 					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
+					client.Event_GetViewMsg += Client_Event_GetViewMsg1;
 					Clients.Add(client.Player.ID, client);
 				}
 			}
 		}
 
+		private void Client_Event_GetViewMsg1(ulong ID, IMessage msg)
+		{
+			switch (msg.TypeMessage)
+			{
+				case TypesProgramMessage.PlayerTurn:
+					Handler_PlayerTurn(ID, (PlayerTurn)msg);
+					break;
+			}
+		}
+
+		private void Client_Event_GetViewMsg(IMessage msg)
+		{
+			
+		}
+		private void Handler_PlayerTurn(ulong ID, PlayerTurn msg)
+		{
+			if (!Clients.ContainsKey(ID)) return;
+
+			RectangleF area = Clients[ID].VisibleArea;
+			foreach (var id in Clients.Keys)
+			{
+				//если область видимости одного игрока находит на другого отправляем ему сообщение
+				if (ID != id)
+				{
+					if (area.IntersectsWith(Clients[id].VisibleArea))
+					{
+						Clients[id].Client.SendMessage(new PlayerTurned(ID, msg.Angle));
+					}
+				}
+			}
+		}
 		private void Client_EventNetorkClientDisconnect(INetworkClient client)
 		{
 			lock (AccessSinchClients)

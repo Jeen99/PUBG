@@ -9,10 +9,10 @@ namespace BattleRoyalClient
 {
 	class PlayerChararcter
 	{
-		public Gamer character;
+		public Gamer Character { get; private set; }
 		private BattleModel parent;
 
-		public PointF Location { get { return character.Location; } }
+		public PointF Location { get { return Character.Location; } }
 
 		public event CharacterChange Event_CharacterChange;
 
@@ -34,13 +34,13 @@ namespace BattleRoyalClient
 		{
 			this.ID = ID;
 			this.parent = parent;
-			this.character = new Gamer(ID);
+			this.Character = new Gamer(ID);
 			HP = 100f;
 		}
 
 		public void Create(Gamer gamer)
 		{
-			character = gamer;
+			Character = gamer;
 		}
 
 		public delegate void CharacterChange();

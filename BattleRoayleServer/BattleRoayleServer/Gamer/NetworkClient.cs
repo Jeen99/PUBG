@@ -13,6 +13,7 @@ namespace BattleRoayleServer
 		public IPlayer Player { get; private set; }
 		public event GamerIsLoaded Event_GamerIsLoaded;
 		public event NetorkClientDisconnect EventNetorkClientDisconnect;
+		public event GetViewMsg Event_GetViewMsg;
 
 		public string Nick { get; private set; }
 
@@ -64,6 +65,9 @@ namespace BattleRoayleServer
 			{
 				case TypesProgramMessage.LoadedBattleForm:
 					Handler_LoadedBattleForm();
+					break;
+				case TypesProgramMessage.PlayerTurn:
+					Event_GetViewMsg?.Invoke(Player.ID, msg);
 					break;
 				default:
 					Player.SendMessage(msg);

@@ -55,6 +55,7 @@
     <Compile Include="Common\TypesModifier.cs" />
     <Compile Include="Common\TypesWeapon.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
+    <Compile Include="ProgramMessage\Battle\Incoming\PlayerTurn.cs" />
     <Compile Include="ProgramMessage\Battle\Incoming\ThrowGrenade.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\ChangedCurrentWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\ChangedValueHP.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="ProgramMessage\Battle\Outgoing\EndReloadWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\DeleteInMap.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\IOutgoing.cs" />
+    <Compile Include="ProgramMessage\Battle\Outgoing\PlayerTurned.cs" />
     <Compile Include="ProgramMessage\ServerMsg\GamerDied.cs" />
     <Compile Include="ProgramMessage\ServerMsg\GotDamage.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\MakedShot.cs" />
