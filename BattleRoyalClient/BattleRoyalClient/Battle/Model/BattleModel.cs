@@ -22,7 +22,6 @@ namespace BattleRoyalClient
 		public ConcurrentDictionary<ulong, IModelObject> GameObjects { get; } 
 			= new ConcurrentDictionary<ulong, IModelObject>();
 
-		
 		public void CreateChangeModel()
 		{
 			BattleModelChanged?.Invoke();

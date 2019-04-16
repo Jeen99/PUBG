@@ -22,5 +22,10 @@ namespace BattleRoayleServer
 				Y = (float)(-distance * System.Math.Sin(RadAngle))
 			};
 		}
+
+		public static float DefineDistance(Vec2 A, Vec2 B)
+		{
+			return (float)System.Math.Sqrt(System.Math.Pow(B.X-A.X,2) + System.Math.Pow(B.Y - A.Y, 2));
+		}
 	}
 }

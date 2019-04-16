@@ -12,6 +12,7 @@ namespace CSInteraction.Common
 		// используются в отрисовке. Чем больше значение, тем выше наодится объект.	
 		Field = 1,
 		DeathZone,
+		Indefinitely,
 		Grenade,
 		Stone,
 		Box,

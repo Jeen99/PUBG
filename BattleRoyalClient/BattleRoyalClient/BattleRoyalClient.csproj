@@ -67,15 +67,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Authorization\AuthorizationData.cs" />
-    <Compile Include="Battle\BattleModel.cs" />
-    <Compile Include="Battle\BattleView3d.xaml.cs">
+    <Compile Include="Battle\3DModels\Model3DVisualEffect.cs" />
+    <Compile Include="Battle\Model\BattleModel.cs" />
+    <Compile Include="Battle\View\BattleView3d.xaml.cs">
       <DependentUpon>BattleView3d.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Battle\GameActionController.cs" />
-    <Compile Include="Battle\IBattleModel.cs" />
-    <Compile Include="Battle\IBattleView.cs" />
-    <Compile Include="Battle\Model3D.cs" />
-    <Compile Include="Battle\Model3DGamer.cs" />
+    <Compile Include="Battle\Controllers\GameActionController.cs" />
+    <Compile Include="Battle\Model\IBattleModel.cs" />
+    <Compile Include="Battle\View\IBattleView.cs" />
+    <Compile Include="Battle\3DModels\Model3D.cs" />
+    <Compile Include="Battle\3DModels\Model3DGamer.cs" />
     <Compile Include="Battle\VisualConteyner.cs" />
     <Compile Include="ConvertPosition.cs" />
     <Compile Include="GameObjects\Box.cs" />
@@ -86,6 +87,7 @@
     <Compile Include="GameObjects\IModelObject.cs" />
     <Compile Include="GameObjects\Stone.cs" />
     <Compile Include="Battle\PlayerChararcter.cs" />
+    <Compile Include="GameObjects\Traser.cs" />
     <Compile Include="GameObjects\Weapon.cs" />
     <Compile Include="Properties\Recources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -98,7 +100,7 @@
     </Compile>
     <Compile Include="Queue\QueueContoller.cs" />
     <Compile Include="Queue\QueueModel.cs" />
-    <Compile Include="Battle\UserActionController.cs" />
+    <Compile Include="Battle\Controllers\UserActionController.cs" />
     <Compile Include="ResultsBattle\ResultsBattle.xaml.cs">
       <DependentUpon>ResultsBattle.xaml</DependentUpon>
     </Compile>
@@ -122,7 +124,7 @@
     <Compile Include="Authorization\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
     </Compile>
-    <Page Include="Battle\BattleView3d.xaml">
+    <Page Include="Battle\View\BattleView3d.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

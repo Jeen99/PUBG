@@ -124,7 +124,10 @@ namespace BattleRoyalClient
 					Handler_ChangeDeathZone((DeathZone)gameObject);
 					break;
 			}
-			visual.AddOrUpdate(gameObject, gameObject.ID);
+			if (gameObject.Type == TypesGameObject.Indefinitely)
+				visual.AddOnlyVisual(gameObject);
+			else
+				visual.AddOrUpdate(gameObject, gameObject.ID);
 		}
 
 		private void Handler_ChangeDeathZone(DeathZone deathZone)

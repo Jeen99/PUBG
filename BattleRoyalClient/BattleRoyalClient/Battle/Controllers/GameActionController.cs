@@ -66,7 +66,21 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.PlayerTurned:
 					Handler_PlayerTurned((PlayerTurned)msg);
 					break;
+				case TypesProgramMessage.MakedShot:
+					Handler_MakedShot((MakedShot)msg);
+					break;
 			}
+		}
+
+		private void Handler_MakedShot(MakedShot msg)
+		{
+			var gunMan = model.GameObjects[msg.ID];
+			//PointF leftCorner = new PointF((float)(gunMan.Location.X - (msg.Distance+ gunMan.Size.Width)/ 2f),
+				//(float)(gunMan.Location.Y - (msg.Distance - gunMan.Size.Height) / 2f));
+			//у данного объекта нет собственного ID
+			Traser traser = new Traser(ulong.MaxValue, gunMan.Location, 
+				new SizeF(msg.Distance + gunMan.Size.Width, msg.Distance + gunMan.Size.Height), msg.Angle);
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(traser); });
 		}
 
 		private void Handler_PlayerTurned(PlayerTurned msg)

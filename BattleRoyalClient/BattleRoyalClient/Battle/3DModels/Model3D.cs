@@ -33,7 +33,7 @@ namespace BattleRoyalClient
 			lastSize = modelObject.Size;
 		}
 		//при смене оружия пересоздаем изображение
-		public void CreateImage()
+		public virtual void CreateImage()
 		{
 			string pathImage = pathResources + modelObject.TextureName + ".png";
 			mesh = new MeshGeometry3D();
@@ -167,7 +167,7 @@ namespace BattleRoyalClient
 		
 		public virtual void Remove()
 		{
-			models.Children.Remove(geometryModel);
+			models.Dispatcher.Invoke(() => models.Children.Remove(geometryModel));
 			
 		}
 	}

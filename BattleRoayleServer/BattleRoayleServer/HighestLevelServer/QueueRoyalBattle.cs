@@ -16,7 +16,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Количество игроков необходимых для создания комнаты
 		/// </summary>
-		private const int _gamersInRoom = 2;
+		private const int _gamersInRoom = 1;
 		/// <summary>
 		/// true = идет процесс создания комнаты
 		/// </summary>

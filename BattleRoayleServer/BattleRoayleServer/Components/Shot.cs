@@ -91,7 +91,11 @@ namespace BattleRoayleServer
 				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, 2, true, null);
 
 				//отправляем сообщение о совершении выстрела
-				Parent.Model.AddEvent(new MakedShot( (Parent as Weapon).Holder.ID, bullet.Distance) );
+				if (objectsForDamage[1] == null)
+					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID,msg.Angle, bullet.Distance));
+				else
+					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, msg.Angle,
+						VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition())));
 
 				//отправляем ему сообщение о нанесении урона	
 				ISolidBody attacked = (ISolidBody)objectsForDamage[1]?.GetBody().GetUserData();
