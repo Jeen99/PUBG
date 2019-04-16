@@ -193,6 +193,8 @@ namespace BattleRoyalClient
 				return (GameObject)model.GameObjects[msg.ID];
 
 			DeathZone deathZone = new DeathZone(msg.ID);
+			model.DeathZone = deathZone;
+
 			foreach (IMessage message in msg.StatesComponents)
 			{
 				switch (message.TypeMessage)

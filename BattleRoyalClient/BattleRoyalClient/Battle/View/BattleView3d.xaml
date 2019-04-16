@@ -30,6 +30,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20, 0, 0, 0">
                 <TextBlock  FontSize="14" Margin="2">До сужения зоны:</TextBlock>
                 <TextBlock  x:Name="TimeDeathZone" Foreground="Red" FontSize="14" Margin="2"></TextBlock>
+                <Image x:Name="IndicatorDeadZone"  MinWidth="5" MinHeight="5" Source="../../Resources/Indicator.png" Height="19" Width="19" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="70,0,0,0" RenderTransformOrigin="0.5,0.5" IsEnabled="False"/>
             </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="20, 0, 0,0">
                 <TextBlock  FontSize="14" Margin="2">Здоровье:</TextBlock>
