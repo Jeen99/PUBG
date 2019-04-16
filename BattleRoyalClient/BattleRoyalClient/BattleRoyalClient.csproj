@@ -169,8 +169,11 @@
     <Content Include="Resources\Box.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Traser.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\DeathZone.png" />
+    <Content Include="Resources\Field.png" />
     <Content Include="Resources\Player.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -191,6 +194,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\PlayerGun.png" />
     <Content Include="Resources\ShotGun.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
