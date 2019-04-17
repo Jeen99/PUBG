@@ -14,7 +14,13 @@ namespace BattleRoyalClient
 
 		public Gamer Character { get; private set; }	
 		public TypesWeapon[] Weapons { get; private set; }
-		public PointF Location { get { return Character.Location; } }
+		public PointF Location
+		{ get {
+				if (Character != null)
+					return Character.Location;
+				else return new PointF();
+			}
+		}
 
 		public event CharacterChange Event_CharacterChange;
 		public event CharacterAddWeapon Event_AddWeapon;

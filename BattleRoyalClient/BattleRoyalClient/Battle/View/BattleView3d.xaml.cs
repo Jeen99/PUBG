@@ -19,6 +19,7 @@ using BattleRoyalClient.Battle;
 using CSInteraction.Common;
 using System.Drawing;
 using Point = System.Windows.Point;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace BattleRoyalClient
 {
@@ -113,6 +114,8 @@ namespace BattleRoyalClient
 
 		private void Handler_ChangeCharacter()
 		{
+			if (battleContoller.Model.Chararcter.Character == null) return;
+			
 			var cameraPosition = camera.Position;
 			//меняем положение камеры
 			var character = battleContoller.Model.Chararcter;
@@ -149,15 +152,17 @@ namespace BattleRoyalClient
 
 		private void Handler_IndicatorDeadZone()
 		{
+			if (battleContoller.Model.Chararcter.Character == null) return;
+
 			var centre = battleContoller.Model.Chararcter.Location;
 			var zone = battleContoller.Model.DeathZone.Location;
 			//угол между игроком и зоной	
 			float angle = (float)(Math.Atan2(zone.X - centre.X, zone.Y - centre.Y) / Math.PI * 180);
-			//angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
-
+		
 			var RotateTransform = IndicatorDeadZone.RenderTransform as RotateTransform;
 			var transform = new RotateTransform(angle);
 			IndicatorDeadZone.RenderTransform = transform;
+		
 		}
 
 		private void Model_GameObjectChanged(IModelObject model, StateObject state)
