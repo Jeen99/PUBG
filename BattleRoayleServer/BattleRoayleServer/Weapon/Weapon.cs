@@ -82,5 +82,29 @@ namespace BattleRoayleServer
 				linearDamping, startVelocity);
 			Components.Add(body);
 		}
+
+		public override IMessage State
+		{
+			get
+			{
+				lock (sinchWorkWithComponent)
+				{
+					var states = new List<IMessage>();
+					if (Destroyed) return null;
+					else
+					{
+						foreach (IComponent component in Components)
+						{
+							var state = component.State;
+							if (state != null)
+							{
+								states.Add(state);
+							}
+						}
+						return new WeaponState(ID, Type, TypeWeapon, states);
+					}
+				}
+			}
+		}
 	}
 }

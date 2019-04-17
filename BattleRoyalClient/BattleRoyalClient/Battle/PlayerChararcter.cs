@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using CSInteraction.Common;
 
 namespace BattleRoyalClient
 {
@@ -11,10 +12,11 @@ namespace BattleRoyalClient
 	{
 		public Gamer Character { get; private set; }
 		private BattleModel parent;
-
+		public TypesWeapon[] Weapons { get; private set; }
 		public PointF Location { get { return Character.Location; } }
 
 		public event CharacterChange Event_CharacterChange;
+		public event CharacterAddWeapon Event_AddWeapon;
 
 		public ulong ID { get; private set; }
 
@@ -35,6 +37,7 @@ namespace BattleRoyalClient
 			this.ID = ID;
 			this.parent = parent;
 			this.Character = new Gamer(ID);
+			Weapons = new TypesWeapon[4] { 0, 0, 0, 0};
 			HP = 100f;
 		}
 
@@ -43,6 +46,13 @@ namespace BattleRoyalClient
 			Character = gamer;
 		}
 
-		public delegate void CharacterChange();
+		public void AddWeapon(TypesWeapon weapon)
+		{
+			int index = (int)weapon - 1;
+			Weapons[index] = weapon;
+			Event_AddWeapon?.Invoke(index);
+		}
 	}
+	public delegate void CharacterChange();
+	public delegate void CharacterAddWeapon(int index);
 }

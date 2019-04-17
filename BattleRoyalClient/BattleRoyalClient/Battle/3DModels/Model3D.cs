@@ -106,7 +106,7 @@ namespace BattleRoyalClient
 		}
 
 		// Утсанавливает позицию объекта
-		public virtual void SetPosition(Vector3D v3)
+		public virtual void SetPosition(Point3D v3)
 		{
 			translateTransform.OffsetX = v3.X;
 			translateTransform.OffsetY = v3.Y;
@@ -139,9 +139,7 @@ namespace BattleRoyalClient
 					lastSize = modelObject.Size;
 					CreateSize(mesh);
 				}
-			}
-			
-			
+			}		
 		}
 
 		public Vector3D GetPosition()

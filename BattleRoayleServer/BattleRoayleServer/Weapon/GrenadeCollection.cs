@@ -19,7 +19,7 @@ namespace BattleRoayleServer
 			this.TimeBetweenShot = 50;
 			this.TimeReload = 10000;
 			this.bulletsInMagazin = 4;
-			this.size = new SizeF(8, 8);
+			this.size = new SizeF(5.46f, 8.12f);
 			this.restetution = 0;
 			this.friction = 0;
 			this.density = 0.5f;

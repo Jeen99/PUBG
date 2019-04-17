@@ -8,18 +8,14 @@ using CSInteraction.Common;
 namespace CSInteraction.ProgramMessage
 {
 	[Serializable]
-	public class WeaponState : IMessage
+	public class WeaponState : GameObjectState
 	{
-		public TypesWeapon TypeWeapon { get; private set; }
-		public IList<IMessage> StatesComponents { get; private set; }
-		public ulong ID { get; private set; }
-		public TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.WeaponState;
-
-		public WeaponState(ulong id, TypesWeapon typeWeapon, IList<IMessage> statesComponents)
+		public WeaponState(ulong id, TypesGameObject type, TypesWeapon typeWeapon, IList<IMessage> statesComponents) : base(id, type, statesComponents)
 		{
-			ID = id;
-			StatesComponents = statesComponents;
 			TypeWeapon = typeWeapon;
 		}
+
+		public TypesWeapon TypeWeapon { get; private set; }
+		public override TypesProgramMessage TypeMessage { get; } = TypesProgramMessage.WeaponState;
 	}
 }

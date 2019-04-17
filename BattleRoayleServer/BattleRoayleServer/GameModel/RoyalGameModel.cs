@@ -74,6 +74,15 @@ namespace BattleRoayleServer
 			Gun gun = new Gun(this, new PointF(50, 70));
 			GameObjects.Add(gun.ID, gun);
 
+			AssaultRifle assaultRifle = new AssaultRifle(this, new PointF(100,80));
+			GameObjects.Add(assaultRifle.ID, assaultRifle);
+
+			ShotGun shotGun = new ShotGun(this, new PointF(200, 50));
+			GameObjects.Add(shotGun.ID, shotGun);
+
+			GrenadeCollection grenade = new GrenadeCollection(this, new PointF(40, 200));
+			GameObjects.Add(grenade.ID, grenade);
+
 			DeathZone deathZone = new DeathZone(this, lengthOfSide);
 			GameObjects.Add(deathZone.ID, deathZone);
 			Zone = deathZone;

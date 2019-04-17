@@ -12,8 +12,8 @@ namespace BattleRoayleServer
 	public abstract class GameObject : IGameObject
 	{
 		//получение id - не должно переопределясться
-		private object sinchGetId = new object();
-		private object sinchWorkWithComponent = new object();
+		protected object sinchGetId = new object();
+		protected object sinchWorkWithComponent = new object();
 		//0 - зарезервированно за картой
 		private static ulong counterID = 1;
 
@@ -79,7 +79,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Создаем список состояний компонентов игрового объекта
 		/// </summary>
-		public IMessage State {
+		public virtual IMessage State {
 			get
 			{	
 				lock (sinchWorkWithComponent)

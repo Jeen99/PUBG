@@ -12,27 +12,13 @@ namespace BattleRoyalClient.Battle
 	class Model3DGamer : Model3D
 	{
 		protected TypesWeapon lastCurrentWeapon;
-		protected float koefStretch = 1;
+		protected Model3D modelHands;
 
 		public Model3DGamer(Model3DGroup models, IModelObject modelObject) : base(models, modelObject)
 		{
 			lastCurrentWeapon = TypesWeapon.Not;
-			SetKoef();
-		}
-
-		private void SetKoef()
-		{
-			switch (lastCurrentWeapon)
-			{
-				case TypesWeapon.Not:
-					koefStretch = 1.1f;
-					break;
-				case TypesWeapon.Gun:
-					koefStretch = 1.25f;
-					break;
-			}
-			lastSize = new SizeF(koefStretch * modelObject.Size.Width,
-				koefStretch * modelObject.Size.Height);
+			modelHands = new Model3D(models, new Hand(modelObject as Gamer));
+			modelHands.CreateImage();
 		}
 
 		public override void Update()
@@ -42,33 +28,18 @@ namespace BattleRoyalClient.Battle
 			translateTransform.OffsetX = pos.X;
 			translateTransform.OffsetY = pos.Y;
 			translateTransform.OffsetZ = pos.Z;
+			modelHands.SetPosition(modelObject.Location3D);
 
 			var gamer = (Gamer)modelObject;
 			if (lastCurrentWeapon != gamer.CurrentWeapon)
 			{
 				lastCurrentWeapon = gamer.CurrentWeapon;
-				Remove();
-				//устанавливаем коээфициент увеличения для этого изображения
-				SetKoef();
-				CreateImage();
+				modelHands.Remove();
+				modelHands = new Model3D(models,new Hand(modelObject as Gamer));
+				modelHands.CreateImage();
 			}
 			
-			Rotation(-modelObject.Angle);
+			modelHands.Rotation(-modelObject.Angle);
 		}
-
-		protected override Point3D DefinCentre()
-		{
-			switch (lastCurrentWeapon)
-			{
-				case TypesWeapon.Gun:
-					return new Point3D(translateTransform.OffsetX - lastSize.Width*0.1,
-				translateTransform.OffsetY, translateTransform.OffsetZ);
-				case TypesWeapon.Not:
-					return new Point3D(translateTransform.OffsetX - lastSize.Width * 0.05,
-				translateTransform.OffsetY, translateTransform.OffsetZ);
-			}
-			return base.DefinCentre();
-		}
-
 	}
 }

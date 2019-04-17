@@ -62,6 +62,18 @@ namespace BattleRoyalClient
 				case Key.Escape:
 					client.Close();
 					break;
+				case Key.NumPad1:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.Gun));
+					break;
+				case Key.NumPad2:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.ShotGun));
+					break;
+				case Key.NumPad3:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.AssaultRifle));
+					break;
+				case Key.NumPad4:
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.GrenadeCollection));
+					break;
 			}
 
 			if (e.Key == Key.Up	  ||

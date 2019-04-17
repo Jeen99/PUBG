@@ -58,26 +58,32 @@ namespace BattleRoyalClient
 					Handler_GameObjectState(msg as GameObjectState);
 					break;
 				case TypesProgramMessage.ChangedTimeTillReduction:
-					Handler_ChangedTimeTillReduction((ChangedTimeTillReduction)msg);
+					Handler_ChangedTimeTillReduction((ChangedTimeTillReduction) msg);
 					break;
 				case TypesProgramMessage.ChangedCurrentWeapon:
-					Handler_ChangedCurrentWeapon((ChangedCurrentWeapon)msg);
+					Handler_ChangedCurrentWeapon((ChangedCurrentWeapon) msg);
 					break;
 				case TypesProgramMessage.PlayerTurned:
-					Handler_PlayerTurned((PlayerTurned)msg);
+					Handler_PlayerTurned((PlayerTurned) msg);
 					break;
 				case TypesProgramMessage.MakedShot:
-					Handler_MakedShot((MakedShot)msg);
+					Handler_MakedShot((MakedShot) msg);
+					break;
+				case TypesProgramMessage.AddWeapon:
+					Handler_AddWeapon((AddWeapon) msg);
 					break;
 			}
+		}
+
+		private void Handler_AddWeapon(AddWeapon msg)
+		{
+			model.Chararcter.AddWeapon(msg.TypeWeapon);
+			view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeCharacter(); });
 		}
 
 		private void Handler_MakedShot(MakedShot msg)
 		{
 			var gunMan = model.GameObjects[msg.ID];
-			//PointF leftCorner = new PointF((float)(gunMan.Location.X - (msg.Distance+ gunMan.Size.Width)/ 2f),
-				//(float)(gunMan.Location.Y - (msg.Distance - gunMan.Size.Height) / 2f));
-			//у данного объекта нет собственного ID
 			Traser traser = new Traser(ulong.MaxValue, gunMan.Location, 
 				new SizeF(msg.Distance + gunMan.Size.Width, msg.Distance + gunMan.Size.Height), msg.Angle);
 			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(traser); });
@@ -96,6 +102,8 @@ namespace BattleRoyalClient
 			var gamer = (model.GameObjects[msg.ID] as Gamer);
 			gamer.CurrentWeapon = msg.NewCurrentWeapon;
 			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gamer); });
+			if(msg.ID == model.Chararcter.ID)
+				view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeCharacter(); });
 		}
 
 		private void Handler_ChangedTimeTillReduction(ChangedTimeTillReduction msg)
@@ -158,8 +166,35 @@ namespace BattleRoyalClient
 					case TypesProgramMessage.GameObjectState:
 						Handler_GameObjectState((GameObjectState)message);
 						break;
+					case TypesProgramMessage.WeaponState:
+						Handler_WeaponState((WeaponState)message);
+						break;
 				}
 			}
+		}
+
+		private void Handler_WeaponState(WeaponState msg)
+		{
+			model.GameObjects.AddOrUpdate(msg.ID, AddWeapon(msg), (k, v) => Updateweapon(v, msg));
+		}
+
+		private GameObject AddWeapon(WeaponState msg)
+		{
+			if (model.GameObjects.Keys.Contains(msg.ID))
+				return (GameObject)model.GameObjects[msg.ID];
+
+			Weapon weapon = new Weapon(msg.ID, msg.TypeWeapon);
+			foreach (IMessage message in msg.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						Handler_BodyState(weapon, message as BodyState);
+						break;
+				}
+			}
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(weapon); });
+			return weapon;
 		}
 
 		private void Handler_GameObjectState(GameObjectState msg)
@@ -174,10 +209,7 @@ namespace BattleRoyalClient
 					break;
 				case TypesGameObject.Stone:
 					model.GameObjects.AddOrUpdate(msg.ID, AddStone(msg), (k, v) => UpdateGameObject(v, msg));
-					break;
-				case TypesGameObject.Weapon:
-					model.GameObjects.AddOrUpdate(msg.ID, AddWeapon(msg), (k, v) => UpdateGameObject(v, msg));
-					break;
+					break;			
 				case TypesGameObject.Field:
 					model.GameObjects.AddOrUpdate(msg.ID, AddField(msg), (k, v) => UpdateGameObject(v, msg));
 					break;
@@ -210,26 +242,6 @@ namespace BattleRoyalClient
 		{
 			deathZone.Shape = new RectangleF(msg.Location, new SizeF(msg.Radius * 2, msg.Radius * 2));
 
-		}
-
-		private GameObject AddWeapon(GameObjectState msg)
-		{
-			if (model.GameObjects.Keys.Contains(msg.ID))
-				return (GameObject)model.GameObjects[msg.ID];
-
-			Weapon weapon = new Weapon(msg.ID);
-			foreach (IMessage message in msg.StatesComponents)
-			{
-				switch (message.TypeMessage)
-				{
-					case TypesProgramMessage.BodyState:
-						Handler_BodyState(weapon, message as BodyState);
-						break;
-					//case TypesProgramMessage.
-				}
-			}
-			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(weapon); });
-			return weapon;
 		}
 
 		private GameObject AddField(GameObjectState msg)
@@ -344,6 +356,21 @@ namespace BattleRoyalClient
 						break;
 					case TypesProgramMessage.CurrentWeaponState:
 						Handler_CurrentWeaponState(gameObject as Gamer, message as CurrentWeaponState);
+						break;
+				}
+			}
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gameObject); });
+			return gameObject;
+		}
+
+		private IModelObject Updateweapon(IModelObject gameObject, WeaponState newData)
+		{
+			foreach (IMessage message in newData.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						Handler_BodyState(gameObject, message as BodyState);
 						break;
 				}
 			}

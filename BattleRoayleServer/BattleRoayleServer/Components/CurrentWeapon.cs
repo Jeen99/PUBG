@@ -83,19 +83,20 @@ namespace BattleRoayleServer
 		}
 
 		private void Handler_ChoiceWeapon(ChoiceWeapon msg)
-		{
-			if (msg.ChooseWeapon != currentWeapon.TypeWeapon)
-			{
-				ChangeWeapon(msg.ChooseWeapon);
-			}
+		{		
+			ChangeWeapon(msg.ChooseWeapon);		
 		}
 
 		private void ChangeWeapon(TypesWeapon type)
 		{
-			currentWeapon = inventory.GetWeapon(type);
-			currentWeapon.Holder = Parent;
-			//отправляем сообщение об этом
-			Parent?.Model?.AddEvent(new ChangedCurrentWeapon(Parent.ID,type));
+			var weapon = inventory.GetWeapon(type);
+			if (weapon != null)
+			{
+				currentWeapon = weapon;
+				currentWeapon.Holder = Parent;
+				//отправляем сообщение об этом
+				Parent?.Model?.AddEvent(new ChangedCurrentWeapon(Parent.ID, type));
+			}
 		}
 
 		public override void Setup()

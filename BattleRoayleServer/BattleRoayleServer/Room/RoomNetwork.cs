@@ -8,6 +8,7 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
+using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
@@ -85,7 +86,17 @@ namespace BattleRoayleServer
 						}
 					}
 
-					filterStates.Add(new GameObjectState(stateObject.ID, stateObject.Type, filterStatesComponents));
+					switch (stateObject.TypeMessage)
+					{
+						case  TypesProgramMessage.WeaponState:
+							var weaponState = (WeaponState)stateObject;
+							filterStates.Add(new WeaponState(weaponState.ID, weaponState.Type, weaponState.TypeWeapon, filterStatesComponents));
+							break;
+						default:
+							filterStates.Add(new GameObjectState(stateObject.ID, stateObject.Type, filterStatesComponents));
+							break;
+					}
+					
 				}
 			}
 
@@ -114,6 +125,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.DeleteInMap:
 					case TypesProgramMessage.ChangedCurrentWeapon:
 					case TypesProgramMessage.GameObjectState:
+					case TypesProgramMessage.WeaponState:
 					case TypesProgramMessage.ChangedTimeTillReduction:
 						Handler_BroadcastMsg(msg);
 						break;

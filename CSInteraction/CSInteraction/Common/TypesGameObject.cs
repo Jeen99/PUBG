@@ -18,6 +18,7 @@ namespace CSInteraction.Common
 		Box,
 		Weapon,
 		Player,
+		HandPlayer,
 		Bush,
 		Tree
 	}

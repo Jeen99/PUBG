@@ -83,6 +83,12 @@ namespace BattleRoayleServer
 			{
 				case TypesWeapon.Gun:
 					return new GunBullet();
+				case TypesWeapon.GrenadeCollection:
+					return new GrenadeBullet();
+				case TypesWeapon.AssaultRifle:
+					return new AssaultRifleBullet();
+				case TypesWeapon.ShotGun:
+					return new ShotGunBullet();
 				default: return null;
 			}
 		}

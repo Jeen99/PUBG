@@ -23,7 +23,7 @@ namespace BattleRoayleServer
 		{
 			try
 			{
-				return weapons[(int)typeWeapon];
+				return weapons[(int)typeWeapon-1];
 			}
 			catch (Exception) { return null; }
 		}
@@ -121,12 +121,12 @@ namespace BattleRoayleServer
 					Handler_TryPickUp();
 					break;
 				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);
+					Handler_TimeQuantPassed((TimeQuantPassed)msg);
 					break;
 			}
 		}
 
-		private void Handler_TimeQuantPassed(IMessage msg)
+		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			//пока только для оружия
 
@@ -134,7 +134,7 @@ namespace BattleRoayleServer
 			{
 				if (weapons[i] != null)
 				{
-					weapons[i].SendMessage(msg);
+					weapons[i].Update(msg);
 				}
 			}
 		}
@@ -157,9 +157,9 @@ namespace BattleRoayleServer
 		private void PickUpWeapon(Weapon weapon)
 		{
 
-			if (weapons[(int)weapon.TypeWeapon] == null)
+			if (weapons[(int)weapon.TypeWeapon-1] == null)
 			{
-				weapons[(int)weapon.TypeWeapon] = weapon;
+				weapons[(int)weapon.TypeWeapon-1] = weapon;
 				//удаляем компонент, отвечающий за  тело оружия
 				weapon.Components.GetComponent<SolidBody>().Dispose();
 				weapon.Components.Remove<SolidBody>();

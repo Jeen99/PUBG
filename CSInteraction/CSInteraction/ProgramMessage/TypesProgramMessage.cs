@@ -53,7 +53,8 @@ namespace CSInteraction.ProgramMessage
 		MakedKill,
 		GamerDied,
 		PlayerTurn,
-		PlayerTurned
+		PlayerTurned,
+		WeaponState,
 
 	}
 }

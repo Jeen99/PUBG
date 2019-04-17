@@ -10,13 +10,12 @@ namespace BattleRoyalClient.Battle
 {
 	class Model3DVisualEffect : Model3D
 	{
-
 		private VisualConteyner forSelfDeleted;
 
 		private Timer timerVisisble = new Timer()
 		{
 			AutoReset = false,
-			Interval = 250
+			Interval = 150
 		};
 
 		public Model3DVisualEffect(Model3DGroup models, IModelObject modelObject, VisualConteyner conteyner) : base(models, modelObject)
@@ -36,6 +35,5 @@ namespace BattleRoyalClient.Battle
 			Rotation(-modelObject.Angle);
 			timerVisisble.Start();
 		}
-
 	}
 }
