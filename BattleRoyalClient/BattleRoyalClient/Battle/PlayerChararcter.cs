@@ -10,8 +10,9 @@ namespace BattleRoyalClient
 {
 	class PlayerChararcter
 	{
-		public Gamer Character { get; private set; }
 		private BattleModel parent;
+
+		public Gamer Character { get; private set; }	
 		public TypesWeapon[] Weapons { get; private set; }
 		public PointF Location { get { return Character.Location; } }
 
@@ -29,28 +30,30 @@ namespace BattleRoyalClient
 
 		public void OnChangeCharacter()
 		{
-			Event_CharacterChange?.Invoke();
+			if(Character!=null)
+				Event_CharacterChange?.Invoke();
 		}
 
 		public PlayerChararcter(ulong ID, BattleModel parent)
 		{
 			this.ID = ID;
 			this.parent = parent;
-			this.Character = new Gamer(ID);
-			Weapons = new TypesWeapon[4] { 0, 0, 0, 0};
-			HP = 100f;
 		}
 
 		public void Create(Gamer gamer)
 		{
 			Character = gamer;
+			Weapons = new TypesWeapon[4] { TypesWeapon.Not,
+				TypesWeapon.Not, TypesWeapon.Not, TypesWeapon.Not };
+			HP = 100f;
 		}
 
 		public void AddWeapon(TypesWeapon weapon)
 		{
-			int index = (int)weapon - 1;
+			int index = (int)weapon;
 			Weapons[index] = weapon;
-			Event_AddWeapon?.Invoke(index);
+			if(Character!=null)
+				Event_AddWeapon?.Invoke(index);
 		}
 	}
 	public delegate void CharacterChange();

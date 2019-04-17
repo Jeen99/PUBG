@@ -18,9 +18,13 @@ namespace BattleRoyalClient.Battle
 		{
 			lastCurrentWeapon = TypesWeapon.Not;
 			modelHands = new Model3D(models, new Hand(modelObject as Gamer));
-			modelHands.CreateImage();
 		}
 
+		public override void CreateImage()
+		{
+			base.CreateImage();
+			modelHands.CreateImage();
+		}
 		public override void Update()
 		{
 			var pos = modelObject.Location3D;

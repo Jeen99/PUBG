@@ -37,7 +37,6 @@ namespace BattleRoyalClient
 		{
 			string pathImage = pathResources + modelObject.TextureName + ".png";
 			mesh = new MeshGeometry3D();
-
 			CreateSize(mesh);
 			mesh.TriangleIndices = new Int32Collection(new List<int> { 0, 1, 2, 0, 2, 3 });
 			mesh.TextureCoordinates = new PointCollection
@@ -115,7 +114,7 @@ namespace BattleRoyalClient
 
 		public virtual void UpdatePosition()
 		{
-			//translateTransform.Transform(modelObject.Location);
+			translateTransform.Transform(modelObject.Location3D);
 			var pos = modelObject.Location3D;
 
 			translateTransform.OffsetX = pos.X;

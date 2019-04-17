@@ -19,7 +19,7 @@ namespace BattleRoyalClient
 				return model;
 			}
 		}
-		
+		public bool Loaded { get; private set; } = false;
 		private BaseClient client;
 		private BattleView3d view;
 
@@ -171,6 +171,8 @@ namespace BattleRoyalClient
 						break;
 				}
 			}
+			//обработано первое сообщение RoomState - значит комната загружена
+			Loaded = true;
 		}
 
 		private void Handler_WeaponState(WeaponState msg)

@@ -45,7 +45,7 @@ namespace BattleRoyalClient
 
 			battleContoller.Model.GameObjectChanged += Model_GameObjectChanged;
 			battleContoller.Model.Chararcter.Event_CharacterChange += Handler_ChangeCharacter;
-			battleContoller.Model.Chararcter.Event_AddWeapon += Chararcter_Event_AddWeapon; ;
+			battleContoller.Model.Chararcter.Event_AddWeapon += Chararcter_Event_AddWeapon;
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;

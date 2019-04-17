@@ -17,13 +17,14 @@ namespace BattleRoayleServer
 		private Modifier[] modifiers;
 		private Weapon[] weapons;
 
-		private static readonly ulong  CountOfModifier = 5u;
+		private static readonly ulong  CountOfModifier = 5;
+		private static readonly ulong CountOfWeapon = 4;
 
 		public Weapon GetWeapon(TypesWeapon typeWeapon)
 		{
 			try
 			{
-				return weapons[(int)typeWeapon-1];
+				return weapons[(int)typeWeapon];
 			}
 			catch (Exception) { return null; }
 		}
@@ -36,7 +37,7 @@ namespace BattleRoayleServer
 		public Collector(IGameObject parent) : base(parent)
 		{
 			modifiers = new Modifier[CountOfModifier];
-			weapons = new Weapon[sizeof(TypesWeapon)];
+			weapons = new Weapon[CountOfWeapon];
 		}
 		//только для тестов
 		public Collector(IGameObject parent, Weapon[] weapons) : base(parent)
@@ -157,9 +158,9 @@ namespace BattleRoayleServer
 		private void PickUpWeapon(Weapon weapon)
 		{
 
-			if (weapons[(int)weapon.TypeWeapon-1] == null)
+			if (weapons[(int)weapon.TypeWeapon] == null)
 			{
-				weapons[(int)weapon.TypeWeapon-1] = weapon;
+				weapons[(int)weapon.TypeWeapon] = weapon;
 				//удаляем компонент, отвечающий за  тело оружия
 				weapon.Components.GetComponent<SolidBody>().Dispose();
 				weapon.Components.Remove<SolidBody>();
