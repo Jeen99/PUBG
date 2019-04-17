@@ -76,10 +76,12 @@
     <Compile Include="Components\Throw.cs" />
     <Compile Include="GameModel\IModelForComponents.cs" />
     <Compile Include="GameObject\Box.cs" />
+    <Compile Include="GameObject\Bush.cs" />
     <Compile Include="GameObject\DeathZone.cs" />
     <Compile Include="GameObject\Grenade.cs" />
     <Compile Include="GameObject\IGameObject.cs" />
     <Compile Include="GameObject\Stone.cs" />
+    <Compile Include="GameObject\Tree.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />
     <Compile Include="HandlerException\ConsoleLogger.cs" />

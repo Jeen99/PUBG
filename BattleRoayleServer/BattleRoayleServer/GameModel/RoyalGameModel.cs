@@ -83,6 +83,12 @@ namespace BattleRoayleServer
 			GrenadeCollection grenade = new GrenadeCollection(this, new PointF(40, 200));
 			GameObjects.Add(grenade.ID, grenade);
 
+			Bush bush = new Bush(this, new PointF(45, 90));
+			GameObjects.Add(bush.ID, bush);
+
+			Tree tree = new Tree(this, new PointF(100, 250));
+			GameObjects.Add(tree.ID, tree);
+
 			DeathZone deathZone = new DeathZone(this, lengthOfSide);
 			GameObjects.Add(deathZone.ID, deathZone);
 			Zone = deathZone;

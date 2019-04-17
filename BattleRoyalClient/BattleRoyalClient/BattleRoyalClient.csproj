@@ -80,6 +80,7 @@
     <Compile Include="Battle\VisualConteyner.cs" />
     <Compile Include="ConvertPosition.cs" />
     <Compile Include="GameObjects\Box.cs" />
+    <Compile Include="GameObjects\Bush.cs" />
     <Compile Include="GameObjects\DeathZone.cs" />
     <Compile Include="GameObjects\Field.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="GameObjects\Stone.cs" />
     <Compile Include="Battle\PlayerChararcter.cs" />
     <Compile Include="GameObjects\Traser.cs" />
+    <Compile Include="GameObjects\Tree.cs" />
     <Compile Include="GameObjects\Weapon.cs" />
     <Compile Include="Properties\Recources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -167,11 +169,13 @@
     <Resource Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Tree.png" />
     <Resource Include="Resources\AssaultRifleForInventory.png" />
     <Content Include="Resources\Box.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\EmptyForInventory.png" />
+    <Content Include="Resources\Bush.png" />
     <Content Include="Resources\Grenade.png" />
     <Resource Include="Resources\GunForInventory.png" />
     <Resource Include="Resources\GrenadeCollectionForInventory.png" />
