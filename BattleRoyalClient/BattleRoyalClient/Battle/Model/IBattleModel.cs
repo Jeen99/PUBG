@@ -13,6 +13,7 @@ namespace BattleRoyalClient
 		event GameObjectChangedHandler GameObjectChanged;
 
 		PlayerChararcter Chararcter { get; }
+		DeathZone DeathZone { get; }
 		Size SizeMap { get; }
 
 		void CreateChangeModel();

@@ -18,6 +18,7 @@ namespace BattleRoyalClient
 		public Size SizeMap { get; } = new Size(500, 500);
 
 		public PlayerChararcter Chararcter { get; private set; }
+		public DeathZone DeathZone { get; set; }
 		
 		public ConcurrentDictionary<ulong, IModelObject> GameObjects { get; } 
 			= new ConcurrentDictionary<ulong, IModelObject>();

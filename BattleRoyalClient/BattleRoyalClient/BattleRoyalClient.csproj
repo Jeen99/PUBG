@@ -182,10 +182,17 @@
     <Content Include="Resources\HandShotGun.png" />
     <Resource Include="Resources\ShotGunForInventory.png" />
     <Content Include="Resources\Traser.png" />
+    <Content Include="Resources\Indicator.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\DeathZone.png" />
-    <Content Include="Resources\Field.png" />
+    <Content Include="Resources\DeathZone.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Field.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\Player.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

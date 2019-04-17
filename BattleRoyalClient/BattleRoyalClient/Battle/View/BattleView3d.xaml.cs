@@ -17,6 +17,8 @@ using CSInteraction.Client;
 using System.Collections.Concurrent;
 using BattleRoyalClient.Battle;
 using CSInteraction.Common;
+using System.Drawing;
+using Point = System.Windows.Point;
 
 namespace BattleRoyalClient
 {
@@ -143,7 +145,19 @@ namespace BattleRoyalClient
 					BorderGrenadeCollection.BorderBrush = Brushes.Green;
 					break;
 			}
+		}
 
+		private void Handler_IndicatorDeadZone()
+		{
+			var centre = battleContoller.Model.Chararcter.Location;
+			var zone = battleContoller.Model.DeathZone.Location;
+			//угол между игроком и зоной	
+			float angle = (float)(Math.Atan2(zone.X - centre.X, zone.Y - centre.Y) / Math.PI * 180);
+			//angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
+
+			var RotateTransform = IndicatorDeadZone.RenderTransform as RotateTransform;
+			var transform = new RotateTransform(angle);
+			IndicatorDeadZone.RenderTransform = transform;
 		}
 
 		private void Model_GameObjectChanged(IModelObject model, StateObject state)
@@ -164,6 +178,11 @@ namespace BattleRoyalClient
 			switch (gameObject.Type)
 			{
 				case TypesGameObject.DeathZone:
+					if (!IndicatorDeadZone.IsEnabled && battleContoller.Model.DeathZone.Location != PointF.Empty)	// включаем индикатор
+					{
+						IndicatorDeadZone.IsEnabled = true;
+						battleContoller.Model.Chararcter.Event_CharacterChange += Handler_IndicatorDeadZone;
+					}
 					Handler_ChangeDeathZone((DeathZone)gameObject);
 					break;
 				case TypesGameObject.Player:
@@ -178,6 +197,7 @@ namespace BattleRoyalClient
 		private void Handler_ChangeDeathZone(DeathZone deathZone)
 		{
 			TimeDeathZone.Text = $"{deathZone.TimeToChange.Minutes.ToString("D2")}:{deathZone.TimeToChange.Seconds.ToString("D2")}";
+			Handler_IndicatorDeadZone();
 		}
 
 		private void BattleView3d_MouseWheel(object sender, MouseWheelEventArgs e)
