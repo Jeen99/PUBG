@@ -175,15 +175,32 @@ namespace BattleRoayleServer
 
 		private void Handler_DefaulteMsg(IOutgoing msg)
 		{
-			if (!Clients.ContainsKey(msg.ID)) return;
-
-			RectangleF area = Clients[msg.ID].VisibleArea;
-			foreach(var id in Clients.Keys)
+			
+			if (!Clients.ContainsKey(msg.ID))
 			{
-				//если область видимости одного игрока находит на другого отправляем ему сообщение
-				if (area.IntersectsWith(Clients[id].VisibleArea))
+				if (msg is ObjectMoved)
 				{
-					Clients[id].Client.SendMessage((IMessage)msg);
+					var message = (ObjectMoved)msg;
+					foreach (var id in Clients.Keys)
+					{
+						//если область видимости одного игрока находит на другого отправляем ему сообщение
+						if (Clients[id].VisibleArea.Contains(message.NewLocation.X, message.NewLocation.Y))
+						{
+							Clients[id].Client.SendMessage((IMessage)msg);
+						}
+					}
+				}
+			}
+			else
+			{
+				RectangleF area = Clients[msg.ID].VisibleArea;
+				foreach (var id in Clients.Keys)
+				{
+					//если область видимости одного игрока находит на другого отправляем ему сообщение
+					if (area.IntersectsWith(Clients[id].VisibleArea))
+					{
+						Clients[id].Client.SendMessage((IMessage)msg);
+					}
 				}
 			}
 		}
@@ -191,7 +208,7 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			timerTotalSinch.Start();
+			//timerTotalSinch.Start();
 		}
 
         public void Dispose()

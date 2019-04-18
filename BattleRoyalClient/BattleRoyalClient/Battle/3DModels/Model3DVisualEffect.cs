@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Timers;
+using CSInteraction.Common;
 
 namespace BattleRoyalClient.Battle
 {
@@ -15,13 +16,15 @@ namespace BattleRoyalClient.Battle
 		private Timer timerVisisble = new Timer()
 		{
 			AutoReset = false,
-			Interval = 150
 		};
 
 		public Model3DVisualEffect(Model3DGroup models, IModelObject modelObject, VisualConteyner conteyner) : base(models, modelObject)
 		{
 			timerVisisble.Elapsed += TimerVisisble_Elapsed;
 			forSelfDeleted = conteyner;
+
+			if (modelObject is Traser) timerVisisble.Interval = 150;
+			else if (modelObject is Explosion) timerVisisble.Interval = 500;
 		}
 
 		private void TimerVisisble_Elapsed(object sender, ElapsedEventArgs e)

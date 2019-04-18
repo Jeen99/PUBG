@@ -49,7 +49,7 @@ namespace ServerTest.ComponentsTest
 			player1.Setup();
 			Room.GameObjects.Add(player1.ID, player1);
 
-			var player2 = new Gamer(Room, new PointF(50, 85));
+			var player2 = new Gamer(Room, new PointF(35, 75));
 			player2.Setup();
 			Room.GameObjects.Add(player2.ID, player2);
 
@@ -60,7 +60,7 @@ namespace ServerTest.ComponentsTest
 			ICurrentWeapon currentWeapon = player1.Components.GetComponent<CurrentWeapon>();
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//делаем выстрел
-			player1.SendMessage(new MakeShot(270));
+			player1.SendMessage(new MakeShot(new PointF(35, 75)));
 			player1.Update(new TimeQuantPassed(100));
 			//проверяем
 			player2.Update(new TimeQuantPassed(100));
@@ -68,7 +68,7 @@ namespace ServerTest.ComponentsTest
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			//делаем 2 выстрел
-			player1.SendMessage(new MakeShot(270));
+			player1.SendMessage(new MakeShot(new PointF(35, 75)));
 			player1.Update(new TimeQuantPassed(401));
 			//выстрел не должен произойти
 			player2.Update(new TimeQuantPassed(401));
@@ -76,7 +76,7 @@ namespace ServerTest.ComponentsTest
 
 			Thread.Sleep(550);
 			//делаем 3 выстрел
-			player1.SendMessage(new MakeShot(270));
+			player1.SendMessage(new MakeShot(new PointF(35, 75)));
 			player1.Update(new TimeQuantPassed(100));
 			//выстрел должен произойти
 			player2.Update(new TimeQuantPassed(100));

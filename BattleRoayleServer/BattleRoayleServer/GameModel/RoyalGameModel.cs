@@ -243,9 +243,13 @@ namespace BattleRoayleServer
 			frame.CreateShape(pDefRight);
 		}
 
-		public void AddGameObject(IGameObject gameObject)
+		public void AddOrUpdateGameObject(IGameObject gameObject)
 		{
-			GameObjects.Add(gameObject.ID, gameObject);
+			if (!GameObjects.ContainsKey(gameObject.ID))
+			{
+				GameObjects.Add(gameObject.ID, gameObject);
+			}
+			
 			gameObject.Setup();
 			//посылваем сообщение об добавлении нового объекта
 			//отправляем просто состояние объекта(не вижу смысла создавать специальное сообщение для этого)

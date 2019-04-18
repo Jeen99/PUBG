@@ -77,13 +77,14 @@ namespace BattleRoayleServer
 				var segment = new Segment();
 				//начальная точка выстрела
 				segment.P1 = position;
-
-				var sweepVector = VectorMethod.RotateVector(msg.Angle, bullet.Distance);
+				//определяем угол
+				float angle = VectorMethod.DefineAngle(position, new Vec2(msg.PointOfClick.X, msg.PointOfClick.Y));
+				var sweepVector = VectorMethod.RotateVector(angle, bullet.Distance);
 				//конечная точка выстрела
 				segment.P2 = new Vec2
 				{
 					X = position.X + sweepVector.X,
-					Y = position.Y + sweepVector.Y
+					Y = position.Y - sweepVector.Y
 				};
 				//получаем только первый встетившийся на пути пули объект
 				Shape[] objectsForDamage = new Shape[2];
@@ -92,10 +93,12 @@ namespace BattleRoayleServer
 
 				//отправляем сообщение о совершении выстрела
 				if (objectsForDamage[1] == null)
-					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID,msg.Angle, bullet.Distance));
+					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, angle, bullet.Distance));
 				else
-					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, msg.Angle,
-						VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition())));
+				{
+					float newDistance = VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition());
+					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, angle, newDistance));
+				}
 
 				//отправляем ему сообщение о нанесении урона	
 				ISolidBody attacked = (ISolidBody)objectsForDamage[1]?.GetBody().GetUserData();
@@ -105,9 +108,10 @@ namespace BattleRoayleServer
 				attacked.Parent.SendMessage(damageMsg);
 
 				//определяем убили ли мы противника
-				Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();			
+				Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();
+				if (healthyAttacked == null) return;
 				//если убили засчитываем фраг
-				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent.SendMessage(new MakedKill());
+				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent?.SendMessage(new MakedKill());
 				
 			}
 			catch (Exception e)

@@ -7,6 +7,7 @@ using CSInteraction.ProgramMessage;
 using CSInteraction.Client;
 using CSInteraction.Common;
 using System.Windows.Input;
+using System.Drawing;
 
 namespace BattleRoyalClient
 {
@@ -108,11 +109,11 @@ namespace BattleRoyalClient
 			}
 		}
 
-		public void MakeShot(float angle)
+		public void MakeShot(PointF pointOfClick)
 		{
 			if (gameController.Loaded)
 			{
-				client.SendMessage(new MakeShot(angle));
+				client.SendMessage(new MakeShot(pointOfClick));
 			}
 		}
 

@@ -23,7 +23,7 @@ namespace ServerTest
 			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
 			stone.Setup();
 
-			model.AddGameObject(stone);
+			model.AddOrUpdateGameObject(stone);
 			Assert.AreEqual(count + 1, model.GameObjects.Count);
 		}
 		[TestMethod]
@@ -34,7 +34,7 @@ namespace ServerTest
 			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
 			stone.Setup();
 
-			model.AddGameObject(stone);
+			model.AddOrUpdateGameObject(stone);
 			Assert.AreEqual(count + 1, model.GameObjects.Count);
 			model.RemoveGameObject(stone);
 			Assert.AreEqual(count, model.GameObjects.Count);

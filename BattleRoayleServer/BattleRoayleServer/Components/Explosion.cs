@@ -57,7 +57,7 @@ namespace BattleRoayleServer
 				}
 			}
 			//удаляем гранату
-			Parent.Dispose();
+			Parent.SetDestroyed();
 		}
 	}
 }

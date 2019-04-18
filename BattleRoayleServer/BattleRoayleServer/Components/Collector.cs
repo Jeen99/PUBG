@@ -97,7 +97,8 @@ namespace BattleRoayleServer
 				if (weapons[i] != null)
 				{
 					weapons[i].Holder = null;
-					weapons[i].CreateNewBody(position, CreateRandVec2());		
+					weapons[i].CreateNewBody(position, CreateRandVec2());
+					Parent.Model.AddOrUpdateGameObject(weapons[i]);
 				}			
 			}		
 		}

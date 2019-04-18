@@ -33,9 +33,9 @@ namespace BattleRoyalClient
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
 
-		private DispatcherTimer timer;      // для обновления экрана
+		private DispatcherTimer timer;// для обновления экрана
 
-		private VisualConteyner visual;				// хранит 3Д модели
+		private VisualConteyner visual;// хранит 3Д модели
 
 		public BattleView3d(ulong id, BaseClient client)
 		{
@@ -52,8 +52,8 @@ namespace BattleRoyalClient
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
-			this.MouseWheel += BattleView3d_MouseWheel;
-			this.MouseMove += BattleView3d_MouseMove;
+			viewport.MouseWheel += BattleView3d_MouseWheel;
+			viewport.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm());
 
@@ -83,8 +83,8 @@ namespace BattleRoyalClient
 		}
 
 		private void BattleView3d_MouseMove(object sender, MouseEventArgs e)
-		{
-			//определяем угол
+		{	
+			   //определяем угол
 			var angle = DefineAngle(e);
 			userContoller.UserTurn(angle);
 		}
@@ -93,15 +93,24 @@ namespace BattleRoyalClient
 		{
 			var mousePosition = e.GetPosition(null);
 			//центр карты
-			var centre = new Point(viewport.ActualWidth / 2, viewport.ActualHeight / 2);
+			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
 			//позиция мыши		
 			float angle = (float)(Math.Atan2(mousePosition.Y - centre.Y, mousePosition.X - centre.X) / Math.PI * 180);
 			return angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
 		}
-		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
+
+		private PointF DefinePositionClick(MouseEventArgs e)
 		{
-			var angle = DefineAngle(e);
-			userContoller.MakeShot(angle);
+			Point point = e.GetPosition(null);
+			//центр карты
+			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
+			var inScale = (point - centre)/((30000/camera.Position.Z)/50);
+			return new PointF((float)(camera.Position.X+inScale.X), (float)(camera.Position.Y+inScale.Y));
+		}
+
+		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
+		{	 
+			userContoller.MakeShot(DefinePositionClick(e));
 		}
 
 		private void Battle_Closed(object sender, EventArgs e)

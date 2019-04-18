@@ -46,6 +46,9 @@ namespace BattleRoayleServer
 
 		public SolidBody(IGameObject parent, RectangleF shape, ShapeDef[] shapesForBox2D) : base(parent)
 		{
+			if(shapesForBox2D == null || shapesForBox2D.Length == 0)
+				throw new Exception("Невозможно создать тело без описания хотя бы одной его формы");
+
 			this.shape = shape;
 
 			BodyDef bDef = new BodyDef();

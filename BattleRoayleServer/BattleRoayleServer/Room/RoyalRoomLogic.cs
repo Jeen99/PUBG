@@ -97,6 +97,14 @@ namespace BattleRoayleServer
 			}
 		}
 
+		public Dictionary<ulong, IGameObject> GameObjects
+		{
+			get
+			{
+				return roomContext.GameObjects;
+			}
+		}
+
 		public void AddPlayer()
         {
             throw new NotImplementedException();
