@@ -8,6 +8,7 @@ using CSInteraction.Common;
 using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
+using System.Diagnostics;
 
 namespace BattleRoayleServer
 {
@@ -79,12 +80,13 @@ namespace BattleRoayleServer
 				segment.P1 = position;
 				//определяем угол
 				float angle = VectorMethod.DefineAngle(position, new Vec2(msg.PointOfClick.X, msg.PointOfClick.Y));
+				Debug.WriteLine("Угол " + angle);
 				var sweepVector = VectorMethod.RotateVector(angle, bullet.Distance);
 				//конечная точка выстрела
 				segment.P2 = new Vec2
 				{
 					X = position.X + sweepVector.X,
-					Y = position.Y - sweepVector.Y
+					Y = position.Y + sweepVector.Y
 				};
 				//получаем только первый встетившийся на пути пули объект
 				Shape[] objectsForDamage = new Shape[2];
@@ -97,7 +99,7 @@ namespace BattleRoayleServer
 				else
 				{
 					float newDistance = VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition());
-					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, angle, newDistance));
+					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, 360-angle, newDistance));
 				}
 
 				//отправляем ему сообщение о нанесении урона	

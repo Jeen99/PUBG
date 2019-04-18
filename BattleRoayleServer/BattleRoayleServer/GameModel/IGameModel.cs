@@ -26,6 +26,6 @@ namespace BattleRoayleServer
 		void AddOrUpdateGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
 		void Dispose();
-		void RemovePlayer(IPlayer player);
+		void RemovePlayer(Gamer player);
 	}
 }

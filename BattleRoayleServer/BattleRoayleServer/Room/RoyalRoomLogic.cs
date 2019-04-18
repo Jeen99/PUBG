@@ -19,7 +19,7 @@ namespace BattleRoayleServer
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
 
-		private const int minValueGamerInBattle = 0;
+		private const int minValueGamerInBattle = 1;
 		private bool DeletedPlayer = false;
 
 		public event RoomLogicEndWork EventRoomLogicEndWork;
@@ -137,7 +137,7 @@ namespace BattleRoayleServer
 						roomContext.RemoveGameObject(solidBody.Parent);
 						if (solidBody.Parent is Gamer)
 						{
-							roomContext.RemovePlayer((IPlayer)solidBody.Parent);
+							roomContext.RemovePlayer(solidBody.Parent as Gamer);
 							DeletedPlayer = true;
 						}
 					}
@@ -155,7 +155,12 @@ namespace BattleRoayleServer
 		
         public void RemovePlayer(IPlayer player)
         {
-			roomContext.RemovePlayer(player);
+			if (player is Gamer)
+			{
+				roomContext.RemovePlayer(player as Gamer);
+				if (roomContext.Players.Count <= minValueGamerInBattle)
+					EndWork();
+			}
 		}
 
         public void Start()

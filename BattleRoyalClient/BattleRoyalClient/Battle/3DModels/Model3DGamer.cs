@@ -48,7 +48,7 @@ namespace BattleRoyalClient.Battle
 				modelHands.CreateImage();
 			}
 			
-			modelHands.Rotation(-modelObject.Angle);
+			modelHands.Rotation(modelObject.Angle);
 		}
 	}
 }

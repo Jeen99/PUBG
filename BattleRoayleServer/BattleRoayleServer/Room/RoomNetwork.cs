@@ -145,13 +145,15 @@ namespace BattleRoayleServer
 		{
 			lock (AccessSinchClients)
 			{
-				Clients[msg.ID].SaveStatistics(msg);
-				Handler_PrivateMsg(msg);
-			//закрываем этого клиента
-			
-				INetworkClient client = Clients[msg.ID];
-				Clients.Remove(msg.ID);
-				client.Dispose();
+				
+					Clients[msg.ID].SaveStatistics(msg);
+					Handler_PrivateMsg(msg);
+					//закрываем этого клиента
+
+					INetworkClient client = Clients[msg.ID];
+					Clients.Remove(msg.ID);
+					client.Dispose();
+				
 			}
 			
 		}
@@ -208,13 +210,14 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			//timerTotalSinch.Start();
+			timerTotalSinch.Start();
 		}
 
         public void Dispose()
         {
 			lock (AccessSinchClients)
 			{
+				timerTotalSinch.Elapsed -= HandlerTotalSinch;
 				timerTotalSinch.Dispose();
 				roomLogic.HappenedEvents.CollectionChanged -= HandlerGameEvent;
 				//считываем все пришедшие сообщения

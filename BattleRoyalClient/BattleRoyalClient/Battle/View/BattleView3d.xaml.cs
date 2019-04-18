@@ -16,6 +16,7 @@ using CSInteraction.ProgramMessage;
 using CSInteraction.Client;
 using System.Collections.Concurrent;
 using BattleRoyalClient.Battle;
+using System.Diagnostics;
 using CSInteraction.Common;
 using System.Drawing;
 using Point = System.Windows.Point;
@@ -96,7 +97,8 @@ namespace BattleRoyalClient
 			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
 			//позиция мыши		
 			float angle = (float)(Math.Atan2(mousePosition.Y - centre.Y, mousePosition.X - centre.X) / Math.PI * 180);
-			return angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
+			 angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
+			return 360 - angle;
 		}
 
 		private PointF DefinePositionClick(MouseEventArgs e)
@@ -104,12 +106,14 @@ namespace BattleRoyalClient
 			Point point = e.GetPosition(null);
 			//центр карты
 			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
-			var inScale = (point - centre)/((30000/camera.Position.Z)/50);
-			return new PointF((float)(camera.Position.X+inScale.X), (float)(camera.Position.Y+inScale.Y));
+			double scale = (30000 / camera.Position.Z) / 50;
+			var inScale = (point - centre)/scale;
+			return new PointF((float)(camera.Position.X+inScale.X), (float)(camera.Position.Y-inScale.Y));
 		}
 
 		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
-		{	 
+		{
+			Debug.WriteLine("Угол" + DefineAngle(e));
 			userContoller.MakeShot(DefinePositionClick(e));
 		}
 

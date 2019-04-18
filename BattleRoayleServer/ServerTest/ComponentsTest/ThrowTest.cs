@@ -50,7 +50,7 @@ namespace ServerTest.ComponentsTest
 			Gamer player = new Gamer(model, new PointF(70,100));
 			Healthy healthy= player.Components.GetComponent<Healthy>();
 			float startHp = healthy.HP;
-			model.AddGameObject(player);
+			model.AddOrUpdateGameObject(player);
 			model.Players.Add(player);
 			player.Setup();
 

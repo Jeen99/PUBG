@@ -21,6 +21,7 @@ namespace BattleRoayleServer
 		///ширина одной стороны игровой карты 
 		/// </summary>
 		private const float lengthOfSide = 500;
+		private object sinchDelitePlayer = new object();
         //только на чтение
         public IList<IPlayer> Players { get; private set; }
 		/// <summary>
@@ -113,9 +114,13 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public void RemovePlayer(IPlayer player)
+		public void RemovePlayer(Gamer player)
 		{
-			Players.Remove(player);
+			lock (sinchDelitePlayer)
+			{
+				Players.Remove(player);
+				player.SetDestroyed();
+			}
 		}
 		
 		private PointF CreatePlayerLocation(int index)
@@ -264,17 +269,19 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
-			//выполняем все необходимые действия при уничтожении для всех оставшихся игроков
-			for(; Players.Count!=0;)
+			lock (sinchDelitePlayer)
 			{
-				(Players[0] as GameObject).Dispose();
-				Players.RemoveAt(0);
-			}
+				//выполняем все необходимые действия при уничтожении для всех оставшихся игроков
+				for (; Players.Count != 0;)
+				{
+					(Players[0] as GameObject).Dispose();
+					Players.RemoveAt(0);
+				}
 
-			Players.Clear();
-			GameObjects.Clear();
-			Field.Dispose();
-			HappenedEvents.Clear();
+				GameObjects.Clear();
+				Field.Dispose();
+				HappenedEvents.Clear();
+			}
 		}
 
 		public void AddEvent(IMessage message)
