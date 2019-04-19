@@ -93,6 +93,7 @@ namespace BattleRoayleServer
 		{
 			try
 			{
+				//Parallel.ForEach<Type>(Components.Keys, (index) => { Components[index].UpdateComponent(msg); });
 				foreach (var item in Components.Keys)
 				{
 					Components[item].UpdateComponent(msg);

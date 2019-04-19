@@ -27,7 +27,7 @@ namespace BattleRoayleServer
 		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(70)
+			timerNewIteration = new Timer(80)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
@@ -117,6 +117,7 @@ namespace BattleRoayleServer
 			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
 
 			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
+
 			for (Body list = roomContext.Field.GetBodyList(); list != null; list = list.GetNext())
 			{
 				if (list.GetUserData() != null)
@@ -130,7 +131,6 @@ namespace BattleRoayleServer
 							solidBody.Parent.Update(msg);
 						}
 					}
-
 					//если объект уничтожен удаляем его
 					else
 					{

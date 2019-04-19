@@ -8,13 +8,18 @@ namespace BattleRoayleServer
 {
 	class ConsoleLogger : ILogger
 	{
+		private object sinchWrite = new object();
+
 		public void AddInLog(string header = "", string description = "")
 		{
-			Console.WriteLine("Произошла ошибка: ");
-			Console.WriteLine(header);
-			Console.WriteLine("Описание: ");
-			Console.WriteLine(description);
-			Console.WriteLine();
+			lock (sinchWrite)
+			{
+				Console.WriteLine("Произошла ошибка: ");
+				Console.WriteLine(header);
+				Console.WriteLine("Описание: ");
+				Console.WriteLine(description);
+				Console.WriteLine();
+			}
 		}
 	}
 }

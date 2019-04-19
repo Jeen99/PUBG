@@ -16,12 +16,13 @@ namespace BattleRoayleServer
 		private readonly float restetution = 0;
 		private readonly float friction = 0;
 		private readonly float density = 0;
+		private readonly SizeF boxSize = new SizeF(15, 15);
 
-		public Box(IModelForComponents context, PointF location, SizeF size) : base(context)
+		public Box(IModelForComponents context, PointF location) : base(context)
 		{
 			#region CreateShape
 			ShapeDef RectangleDef = new PolygonDef();
-			(RectangleDef as PolygonDef).SetAsBox(size.Width / 2, size.Height / 2);
+			(RectangleDef as PolygonDef).SetAsBox(boxSize.Width / 2, boxSize.Height / 2);
 			RectangleDef.Restitution = restetution;
 			RectangleDef.Friction = friction;
 			RectangleDef.Density = density;
@@ -30,7 +31,7 @@ namespace BattleRoayleServer
 				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 			#endregion
 
-			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { RectangleDef });
+			var body = new SolidBody(this, new RectangleF(location, boxSize), new ShapeDef[] { RectangleDef });
 			Components.Add(body);
 		}
 

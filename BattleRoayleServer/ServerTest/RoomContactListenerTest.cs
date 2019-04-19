@@ -19,7 +19,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel();
 
-			var box = new Box(Room, new PointF(55, 70), new SizeF(10,10));
+			var box = new Box(Room, new PointF(55, 70));
 			box.Setup();
 			Room.GameObjects.Add(box.ID, box);
 
@@ -38,7 +38,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel();
 
-			var box = new Box(Room, new PointF(55, 70), new SizeF(10, 10));
+			var box = new Box(Room, new PointF(55, 70));
 			box.Setup();
 			Room.AddOrUpdateGameObject(box);
 
@@ -60,7 +60,7 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel();
 
-			var box = new Box(Room, new PointF(55, 70), new SizeF(10, 10));
+			var box = new Box(Room, new PointF(55, 70));
 			box.Setup();
 			Room.AddOrUpdateGameObject(box);
 

@@ -50,15 +50,21 @@ namespace BattleRoyalClient
 			battleContoller.Model.GameObjectChanged += Model_GameObjectChanged;
 			battleContoller.Model.Chararcter.Event_CharacterChange += Handler_ChangeCharacter;
 			battleContoller.Model.Chararcter.Event_AddWeapon += Chararcter_Event_AddWeapon;
+			battleContoller.Model.EventChangeCountPlayers += Model_EventChangeCountPlayers;
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
-			viewport.MouseWheel += BattleView3d_MouseWheel;
+			//viewport.MouseWheel += BattleView3d_MouseWheel;
 			viewport.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm());
 
 			this.MouseDown += BattleView3d_MouseDown;
+		}
+
+		private void Model_EventChangeCountPlayers()
+		{
+			this.Dispatcher.Invoke(() => { CountPlayers.Text = battleContoller.Model.CountPlayersInGame.ToString(); });
 		}
 
 		private void Chararcter_Event_AddWeapon(int index)
@@ -98,7 +104,7 @@ namespace BattleRoyalClient
 			//позиция мыши		
 			float angle = (float)(Math.Atan2(mousePosition.Y - centre.Y, mousePosition.X - centre.X) / Math.PI * 180);
 			 angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
-			return 360 - angle;
+			return  -angle;
 		}
 
 		private PointF DefinePositionClick(MouseEventArgs e)
@@ -108,12 +114,12 @@ namespace BattleRoyalClient
 			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
 			double scale = (30000 / camera.Position.Z) / 50;
 			var inScale = (point - centre)/scale;
-			return new PointF((float)(camera.Position.X+inScale.X), (float)(camera.Position.Y-inScale.Y));
+			return new PointF((float)(camera.Position.X+inScale.X), (float)(camera.Position.Y+inScale.Y));
 		}
 
 		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
 		{
-			Debug.WriteLine("Угол" + DefineAngle(e));
+			Debug.WriteLine("Угол " + DefineAngle(e));
 			userContoller.MakeShot(DefinePositionClick(e));
 		}
 

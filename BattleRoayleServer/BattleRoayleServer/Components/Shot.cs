@@ -80,7 +80,7 @@ namespace BattleRoayleServer
 				segment.P1 = position;
 				//определяем угол
 				float angle = VectorMethod.DefineAngle(position, new Vec2(msg.PointOfClick.X, msg.PointOfClick.Y));
-				Debug.WriteLine("Угол " + angle);
+				Debug.WriteLine("Угол" + angle);
 				var sweepVector = VectorMethod.RotateVector(angle, bullet.Distance);
 				//конечная точка выстрела
 				segment.P2 = new Vec2
@@ -99,7 +99,7 @@ namespace BattleRoayleServer
 				else
 				{
 					float newDistance = VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition());
-					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, 360-angle, newDistance));
+					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, angle, newDistance));
 				}
 
 				//отправляем ему сообщение о нанесении урона	

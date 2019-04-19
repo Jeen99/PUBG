@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using CSInteraction.Common;
 using CSInteraction.ProgramMessage;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
@@ -63,13 +64,15 @@ namespace BattleRoayleServer
 						messageQueue.Enqueue(quantPassed);
 					}
 					//рассылваем сообщение всем объектам
-					
-					while (messageQueue.Count > 0)
+					Task.Run(() =>
 					{
-						IMessage msg = messageQueue.Dequeue();
-						Components.UpdateComponents(msg);
-					}
-
+						while (messageQueue.Count > 0)
+						{
+							IMessage msg = messageQueue.Dequeue();
+							if (msg == null) return;
+							Components.UpdateComponents(msg);
+						}
+					});
 				}
 			}
 		}

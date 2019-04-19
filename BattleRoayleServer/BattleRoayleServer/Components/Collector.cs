@@ -148,15 +148,17 @@ namespace BattleRoayleServer
 				switch (body.CoveredObjects[i].Parent.Type)
 				{
 					case TypesGameObject.Weapon:
-						PickUpWeapon(body.CoveredObjects[i].Parent as Weapon);
-						//после добаления объекта в Collector он должен удлаиться из CoveredObjects
-						i--;
+						if (PickUpWeapon(body.CoveredObjects[i].Parent as Weapon))
+						{
+							//после добаления объекта в Collector он должен удлаиться из CoveredObjects			
+							i--;
+						}				
 						break;
 				}
 			}
 		}
 
-		private void PickUpWeapon(Weapon weapon)
+		private bool PickUpWeapon(Weapon weapon)
 		{
 
 			if (weapons[(int)weapon.TypeWeapon] == null)
@@ -170,7 +172,9 @@ namespace BattleRoayleServer
 				Parent.SendMessage(msg);
 				Parent.Model.AddEvent(new DeleteInMap(weapon.ID));
 				Parent.Model?.AddEvent(msg);
+				return true;
 			}
+			return false;
 		}
 
 		

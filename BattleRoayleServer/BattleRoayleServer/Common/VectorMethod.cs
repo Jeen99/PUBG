@@ -12,6 +12,7 @@ namespace BattleRoayleServer
 {
 	static class VectorMethod
 	{
+		private static Random random = new Random();
 		public static Vec2 RotateVector(float angle, float distance)
 		{
 			//в радианах, на вход угол в градусах
@@ -20,7 +21,7 @@ namespace BattleRoayleServer
 			return new Vec2()
 			{
 				X = (float)(distance * System.Math.Cos(RadAngle)),
-				Y = (float)(distance * System.Math.Sin(RadAngle))
+				Y = (float)(-distance * System.Math.Sin(RadAngle))
 			};
 		}
 
@@ -35,6 +36,11 @@ namespace BattleRoayleServer
 			float angle = (float)(System.Math.Atan2(end.Y - start.Y, end.X - start.X) / System.Math.PI * 180);
 			angle = (angle < 0) ? angle + 360 : angle;
 			return angle;
+		}
+
+		public static PointF CreateRandPosition(float sizeMap)
+		{
+			return new PointF(random.Next(0, (int)sizeMap), random.Next(0,(int)sizeMap));
 		}
 	}
 }

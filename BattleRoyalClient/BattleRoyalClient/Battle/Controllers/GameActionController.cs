@@ -35,7 +35,6 @@ namespace BattleRoyalClient
 		private void Client_EventNewMessage()
 		{
 			IMessage msg = client.ReceivedMsg.Dequeue();
-			System.Diagnostics.Debug.WriteLine(msg.TypeMessage);
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.RoomState:
@@ -75,7 +74,14 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.AddWeapon:
 					Handler_AddWeapon((AddWeapon) msg);
 					break;
+				case TypesProgramMessage.ChangeCountPlayersInGame:
+					Handler_ChangeCountPayersInGame((ChangeCountPlayersInGame) msg);
+					break;
 			}
+		}
+		private void Handler_ChangeCountPayersInGame(ChangeCountPlayersInGame msg)
+		{
+			model.CountPlayersInGame = msg.Count;
 		}
 
 		private void Handler_AddWeapon(AddWeapon msg)

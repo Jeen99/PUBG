@@ -54,6 +54,7 @@ namespace CSInteraction.ProgramMessage
 		PlayerTurn,
 		PlayerTurned,
 		WeaponState,
+		ChangeCountPlayersInGame
 
 	}
 }

@@ -13,6 +13,7 @@ namespace BattleRoyalClient
 	{
 		public event BattleModelChangedHandler BattleModelChanged;
 		public event GameObjectChangedHandler GameObjectChanged;
+		public event ChangeCountPlayers EventChangeCountPlayers;
 
 		//пока задаем прямо в коде
 		public Size SizeMap { get; } = new Size(500, 500);
@@ -22,6 +23,18 @@ namespace BattleRoyalClient
 		
 		public ConcurrentDictionary<ulong, IModelObject> GameObjects { get; } 
 			= new ConcurrentDictionary<ulong, IModelObject>();
+
+		private int countPlayersInGame = 0;
+		public int CountPlayersInGame
+		{
+			get { return countPlayersInGame; }
+			set
+			{
+				countPlayersInGame = value;
+				EventChangeCountPlayers?.Invoke();
+			}
+		}
+
 
 		public void CreateChangeModel()
 		{
@@ -38,4 +51,6 @@ namespace BattleRoyalClient
 			Chararcter = new PlayerChararcter(id, this);
 		}
 	}
+
+	
 }

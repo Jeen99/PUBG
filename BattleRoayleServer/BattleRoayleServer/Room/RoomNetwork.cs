@@ -108,9 +108,9 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			//возможно стоит отправлять в отдельном потоке
-			IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
-			if (msg == null) return;
+				//возможно стоит отправлять в отдельном потоке
+				IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
+				if (msg == null) return;
 
 				switch (msg.TypeMessage)
 				{
@@ -118,7 +118,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.AddWeapon:
 					case TypesProgramMessage.ChangedValueHP:
 					case TypesProgramMessage.StartReloadWeapon:
-					case TypesProgramMessage.EndRelaodWeapon:			
+					case TypesProgramMessage.EndRelaodWeapon:
 						Handler_PrivateMsg((IOutgoing)msg);
 						break;
 					//сообщения которые отправляеются всем
@@ -127,6 +127,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.GameObjectState:
 					case TypesProgramMessage.WeaponState:
 					case TypesProgramMessage.ChangedTimeTillReduction:
+					case TypesProgramMessage.ChangeCountPlayersInGame:
 						Handler_BroadcastMsg(msg);
 						break;
 					case TypesProgramMessage.EndGame:
@@ -138,7 +139,6 @@ namespace BattleRoayleServer
 						break;
 
 				}
-			
 		}
 
 		private void Handler_EndGame(EndGame msg)
@@ -161,47 +161,55 @@ namespace BattleRoayleServer
 
 		private void Handler_BroadcastMsg(IMessage msg)
 		{
-			foreach (var id in Clients.Keys)
+			lock (AccessSinchClients)
 			{
-				Clients[id].Client.SendMessage(msg);
+				foreach (var id in Clients.Keys)
+				{
+					Clients[id].Client.SendMessage(msg);
+				}
 			}
 		}
 
 		private void Handler_PrivateMsg(IOutgoing msg)
 		{
-			if (Clients.ContainsKey(msg.ID))
+			lock (AccessSinchClients)
 			{
-				Clients[msg.ID].Client.SendMessage((IMessage)msg);
+				if (Clients.ContainsKey(msg.ID))
+				{
+					Clients[msg.ID].Client.SendMessage((IMessage)msg);
+				}
 			}
 		}
 
 		private void Handler_DefaulteMsg(IOutgoing msg)
 		{
-			
-			if (!Clients.ContainsKey(msg.ID))
+			lock (AccessSinchClients)
 			{
-				if (msg is ObjectMoved)
+				if (!Clients.ContainsKey(msg.ID))
 				{
-					var message = (ObjectMoved)msg;
-					foreach (var id in Clients.Keys)
+					if (msg is ObjectMoved)
 					{
-						//если область видимости одного игрока находит на другого отправляем ему сообщение
-						if (Clients[id].VisibleArea.Contains(message.NewLocation.X, message.NewLocation.Y))
+						var message = (ObjectMoved)msg;
+						foreach (var id in Clients.Keys)
 						{
-							Clients[id].Client.SendMessage((IMessage)msg);
+							//если область видимости одного игрока находит на другого отправляем ему сообщение
+							if (Clients[id].VisibleArea.Contains(message.NewLocation.X, message.NewLocation.Y))
+							{
+								Clients[id].Client.SendMessage((IMessage)msg);
+							}
 						}
 					}
 				}
-			}
-			else
-			{
-				RectangleF area = Clients[msg.ID].VisibleArea;
-				foreach (var id in Clients.Keys)
+				else
 				{
-					//если область видимости одного игрока находит на другого отправляем ему сообщение
-					if (area.IntersectsWith(Clients[id].VisibleArea))
+					RectangleF area = Clients[msg.ID].VisibleArea;
+					foreach (var id in Clients.Keys)
 					{
-						Clients[id].Client.SendMessage((IMessage)msg);
+						//если область видимости одного игрока находит на другого отправляем ему сообщение
+						if (area.IntersectsWith(Clients[id].VisibleArea))
+						{
+							Clients[id].Client.SendMessage((IMessage)msg);
+						}
 					}
 				}
 			}
@@ -210,7 +218,7 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			timerTotalSinch.Start();
+			//timerTotalSinch.Start();
 		}
 
         public void Dispose()
