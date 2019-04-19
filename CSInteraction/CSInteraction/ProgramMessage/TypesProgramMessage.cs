@@ -49,12 +49,12 @@ namespace CSInteraction.ProgramMessage
 		EndGame,
 		ChangedTimeTillReduction,
 		BodyZoneState,
-		ThrowGrenade,
 		MakedKill,
 		GamerDied,
 		PlayerTurn,
 		PlayerTurned,
 		WeaponState,
+		ChangeCountPlayersInGame
 
 	}
 }

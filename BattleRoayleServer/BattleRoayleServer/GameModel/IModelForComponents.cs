@@ -9,7 +9,7 @@ namespace BattleRoayleServer
 	{
 		World Field { get; }
 		IList<IPlayer> Players { get; }
-		void AddGameObject(IGameObject gameObject);
+		void AddOrUpdateGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
 		void AddEvent(IMessage message);
 	}

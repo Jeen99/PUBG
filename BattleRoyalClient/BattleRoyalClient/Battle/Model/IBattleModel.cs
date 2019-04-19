@@ -11,10 +11,13 @@ namespace BattleRoyalClient
 	{
 		event BattleModelChangedHandler BattleModelChanged;
 		event GameObjectChangedHandler GameObjectChanged;
+		event ChangeCountPlayers EventChangeCountPlayers;
 
 		PlayerChararcter Chararcter { get; }
 		DeathZone DeathZone { get; }
 		Size SizeMap { get; }
+		int CountPlayersInGame { get; }
+
 
 		void CreateChangeModel();
 		void OnChangeGameObject(IModelObject model, StateObject state = StateObject.Change);
@@ -27,4 +30,5 @@ namespace BattleRoyalClient
 	/// </summary>
 	delegate void BattleModelChangedHandler();
 	delegate void GameObjectChangedHandler(IModelObject model, StateObject state);
+	delegate void ChangeCountPlayers();
 }

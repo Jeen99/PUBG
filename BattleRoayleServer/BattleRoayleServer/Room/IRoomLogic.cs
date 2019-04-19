@@ -13,7 +13,9 @@ namespace BattleRoayleServer
         /// <summary>
         /// Возвращает состояние объектов в данный момент времени
         /// </summary>
-       IMessage RoomState { get; }
+		IMessage RoomState { get; }
+
+		Dictionary<ulong, IGameObject> GameObjects { get; }
 		/// <summary>
 		/// Содержит список живых игроков
 		/// </summary>

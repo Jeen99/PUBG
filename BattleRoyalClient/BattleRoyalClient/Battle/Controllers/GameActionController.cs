@@ -35,7 +35,6 @@ namespace BattleRoyalClient
 		private void Client_EventNewMessage()
 		{
 			IMessage msg = client.ReceivedMsg.Dequeue();
-			System.Diagnostics.Debug.WriteLine(msg.TypeMessage);
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.RoomState:
@@ -43,7 +42,7 @@ namespace BattleRoyalClient
 					view.Dispatcher.Invoke(()=> { model.CreateChangeModel(); });			
 					break;
 				case TypesProgramMessage.ObjectMoved:
-					Handler_PlayerMoved(msg as ObjectMoved);
+					Handler_ObjectMoved(msg as ObjectMoved);
 					break;
 				case TypesProgramMessage.ChangedValueHP:
 					Handler_HealthyCharacter(msg as ChangedValueHP);
@@ -56,6 +55,9 @@ namespace BattleRoyalClient
 					break;
 				case TypesProgramMessage.GameObjectState:
 					Handler_GameObjectState(msg as GameObjectState);
+					break;
+				case TypesProgramMessage.WeaponState:
+					Handler_WeaponState(msg as WeaponState);
 					break;
 				case TypesProgramMessage.ChangedTimeTillReduction:
 					Handler_ChangedTimeTillReduction((ChangedTimeTillReduction) msg);
@@ -72,7 +74,14 @@ namespace BattleRoyalClient
 				case TypesProgramMessage.AddWeapon:
 					Handler_AddWeapon((AddWeapon) msg);
 					break;
+				case TypesProgramMessage.ChangeCountPlayersInGame:
+					Handler_ChangeCountPayersInGame((ChangeCountPlayersInGame) msg);
+					break;
 			}
+		}
+		private void Handler_ChangeCountPayersInGame(ChangeCountPlayersInGame msg)
+		{
+			model.CountPlayersInGame = msg.Count;
 		}
 
 		private void Handler_AddWeapon(AddWeapon msg)
@@ -85,7 +94,7 @@ namespace BattleRoyalClient
 		{
 			var gunMan = model.GameObjects[msg.ID];
 			Traser traser = new Traser(ulong.MaxValue, gunMan.Location, 
-				new SizeF(msg.Distance + gunMan.Size.Width, msg.Distance + gunMan.Size.Height), msg.Angle);
+				new SizeF(msg.Distance*2, msg.Distance*2), msg.Angle);
 			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(traser); });
 		}
 
@@ -132,6 +141,11 @@ namespace BattleRoyalClient
 			IModelObject modelObject;
 			if (model.GameObjects.TryRemove(deleteInMap.ID, out modelObject))
 				view.Dispatcher.Invoke(() => { model.OnChangeGameObject(modelObject, StateObject.Delete); });
+			if (modelObject.Type == TypesGameObject.Grenade)
+			{
+				Explosion traser = new Explosion(ulong.MaxValue, modelObject.Location);
+				view.Dispatcher.Invoke(() => { model.OnChangeGameObject(traser); });
+			}
 		}
 
 		private void Handler_HealthyCharacter(ChangedValueHP changedValueHP)
@@ -140,18 +154,17 @@ namespace BattleRoyalClient
 			view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeCharacter(); });
 		}
 
-		private void Handler_PlayerMoved(ObjectMoved moved)
+		private void Handler_ObjectMoved(ObjectMoved moved)
 		{
 			IModelObject modelObject;
 			if (!model.GameObjects.TryGetValue(moved.ID, out modelObject))
 				return;
 
-			var gamer = modelObject as Gamer;
-			gamer.Update(moved.NewLocation);
+			modelObject.Update(moved.NewLocation);
 
-			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gamer); });
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(modelObject); });
 
-			if (gamer.ID == model.Chararcter.ID)
+			if (modelObject.ID == model.Chararcter.ID)
 			{
 				view.Dispatcher.Invoke(() => { model.Chararcter.OnChangeCharacter(); });
 			}
@@ -207,10 +220,10 @@ namespace BattleRoyalClient
 					model.GameObjects.AddOrUpdate(msg.ID,AddGamer(msg), (k,v) => UpdateGameObject(v, msg));
 					break;
 				case TypesGameObject.Box:
-					model.GameObjects.AddOrUpdate(msg.ID, AddBox(msg), (k, v) => UpdateGameObject(v, msg));
+					model.GameObjects.AddOrUpdate(msg.ID, AddUniversal(msg), (k, v) => UpdateGameObject(v, msg));
 					break;
 				case TypesGameObject.Stone:
-					model.GameObjects.AddOrUpdate(msg.ID, AddStone(msg), (k, v) => UpdateGameObject(v, msg));
+					model.GameObjects.AddOrUpdate(msg.ID, AddUniversal(msg), (k, v) => UpdateGameObject(v, msg));
 					break;			
 				case TypesGameObject.Field:
 					model.GameObjects.AddOrUpdate(msg.ID, AddField(msg), (k, v) => UpdateGameObject(v, msg));
@@ -218,7 +231,56 @@ namespace BattleRoyalClient
 				case TypesGameObject.DeathZone:
 					model.GameObjects.AddOrUpdate(msg.ID, AddZone(msg), (k, v) => UpdateGameObject(v, msg));
 					break;
+				case TypesGameObject.Bush:
+					model.GameObjects.AddOrUpdate(msg.ID, AddUniversal(msg), (k, v) => UpdateGameObject(v, msg));
+					break;
+				case TypesGameObject.Tree:
+					model.GameObjects.AddOrUpdate(msg.ID, AddUniversal(msg), (k, v) => UpdateGameObject(v, msg));
+					break;
+				case TypesGameObject.Grenade:
+					model.GameObjects.AddOrUpdate(msg.ID, AddUniversal(msg), (k, v) => UpdateGameObject(v, msg));
+					break;
 			}
+		}
+
+		private GameObject AddUniversal(GameObjectState msg)
+		{
+			if (model.GameObjects.Keys.Contains(msg.ID))
+				return (GameObject)model.GameObjects[msg.ID];
+
+			GameObject gameObject = null;
+
+			switch (msg.Type)
+			{
+				case TypesGameObject.Box:
+					gameObject = new Box(msg.ID);
+					break;
+				case TypesGameObject.Bush:
+					gameObject = new Bush(msg.ID);
+					break;
+				case TypesGameObject.Tree:
+					gameObject = new Tree(msg.ID);
+					break;
+				case TypesGameObject.Stone:
+					gameObject = new Stone(msg.ID);
+					break;
+				case TypesGameObject.Grenade:
+					gameObject = new Grenade(msg.ID);
+					break;
+			}
+
+			foreach (IMessage message in msg.StatesComponents)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesProgramMessage.BodyState:
+						Handler_BodyState(gameObject, message as BodyState);
+						break;
+				}
+			}
+
+			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(gameObject); });
+			return gameObject;
 		}
 
 		private GameObject AddZone(GameObjectState msg)
@@ -273,25 +335,7 @@ namespace BattleRoyalClient
 							msg.Size.Width,msg.Size.Height);
 		}
 
-		private GameObject AddStone(GameObjectState msg)
-		{
-			if (model.GameObjects.Keys.Contains(msg.ID))
-				return (GameObject)model.GameObjects[msg.ID];
-
-			Stone stone = new Stone(msg.ID);
-			foreach (IMessage message in msg.StatesComponents)
-			{
-				switch (message.TypeMessage)
-				{
-					case TypesProgramMessage.BodyState:
-						Handler_BodyState(stone, message as BodyState);
-						break;
-				}
-			}
-			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(stone); });
-			return stone;
-		}
-
+		
 		private GameObject AddGamer(GameObjectState msg)
 		{
 			if (model.GameObjects.Keys.Contains(msg.ID))
@@ -321,29 +365,9 @@ namespace BattleRoyalClient
 			return gamer;
 		}
 
-		private GameObject AddBox(GameObjectState msg)
-		{
-			if (model.GameObjects.Keys.Contains(msg.ID))
-				return (GameObject)model.GameObjects[msg.ID];
-
-			Box box = new Box(msg.ID);
-			foreach (IMessage message in msg.StatesComponents)
-			{
-				switch (message.TypeMessage)
-				{
-					case TypesProgramMessage.BodyState:
-						Handler_BodyState(box, message as BodyState);
-						break;
-				}
-			}
-
-			view.Dispatcher.Invoke(() => { model.OnChangeGameObject(box); });
-			return box;
-		}
-
 		private void Handler_BodyState(IModelObject gameObject, BodyState msg)
 		{
-			gameObject.Shape = msg.Shape;
+			gameObject.Update(msg.Shape);
 		}
 
 		private IModelObject UpdateGameObject(IModelObject gameObject, GameObjectState newData)

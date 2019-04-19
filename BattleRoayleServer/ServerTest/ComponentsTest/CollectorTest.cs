@@ -103,7 +103,7 @@ namespace ServerTest.ComponentsTest
 
 			//уничтожаем игрока 
 			player1.SendMessage(new GotDamage(100));
-			player1.Update(new TimeQuantPassed(1));
+			player1.Dispose();
 
 			Assert.AreEqual(objectsInMap, Room.Field.GetBodyCount());
 			Assert.IsNotNull(gun.Components.GetComponent<SolidBody>());

@@ -15,7 +15,7 @@ namespace BattleRoayleServer
 		private readonly float restetution = 0;
 		private readonly float friction = 0;
 		private readonly float density = 0.5f;
-		private readonly SizeF GamerSize = new SizeF(10,10);
+		private readonly SizeF GamerSize = new SizeF(10, 10);
 
 		public Gamer(IModelForComponents context, PointF location) : base(context)
 		{

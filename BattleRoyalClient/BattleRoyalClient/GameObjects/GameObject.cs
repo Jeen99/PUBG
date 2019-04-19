@@ -79,16 +79,16 @@ namespace BattleRoyalClient
 			this.Angle = angle;
 		}
 
-		public void Update(RectangleF rectangle, double Angle = 0)
+		public virtual void Update(RectangleF rectangle, double Angle = 0)
 		{
 			Shape = rectangle;
 		}
 
-		public void Update(PointF location, double Angle = 0)
+		public virtual void Update(PointF location, double Angle = 0)
 		{
 			this.shape.Location = location;	// переделать
 		}
-		public void Update(double angle)
+		public virtual void Update(double angle)
 		{
 			this.Angle = angle;
 		}

@@ -19,7 +19,7 @@ namespace BattleRoayleServer
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
 
-		private const int minValueGamerInBattle = 0;
+		private const int minValueGamerInBattle = 1;
 		private bool DeletedPlayer = false;
 
 		public event RoomLogicEndWork EventRoomLogicEndWork;
@@ -27,7 +27,7 @@ namespace BattleRoayleServer
 		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(70)
+			timerNewIteration = new Timer(80)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
@@ -97,6 +97,14 @@ namespace BattleRoayleServer
 			}
 		}
 
+		public Dictionary<ulong, IGameObject> GameObjects
+		{
+			get
+			{
+				return roomContext.GameObjects;
+			}
+		}
+
 		public void AddPlayer()
         {
             throw new NotImplementedException();
@@ -109,6 +117,7 @@ namespace BattleRoayleServer
 			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
 
 			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
+
 			for (Body list = roomContext.Field.GetBodyList(); list != null; list = list.GetNext())
 			{
 				if (list.GetUserData() != null)
@@ -122,14 +131,13 @@ namespace BattleRoayleServer
 							solidBody.Parent.Update(msg);
 						}
 					}
-
 					//если объект уничтожен удаляем его
 					else
 					{
 						roomContext.RemoveGameObject(solidBody.Parent);
 						if (solidBody.Parent is Gamer)
 						{
-							roomContext.RemovePlayer((IPlayer)solidBody.Parent);
+							roomContext.RemovePlayer(solidBody.Parent as Gamer);
 							DeletedPlayer = true;
 						}
 					}
@@ -147,7 +155,12 @@ namespace BattleRoayleServer
 		
         public void RemovePlayer(IPlayer player)
         {
-			roomContext.RemovePlayer(player);
+			if (player is Gamer)
+			{
+				roomContext.RemovePlayer(player as Gamer);
+				if (roomContext.Players.Count <= minValueGamerInBattle)
+					EndWork();
+			}
 		}
 
         public void Start()

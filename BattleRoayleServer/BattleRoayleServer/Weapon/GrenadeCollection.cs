@@ -10,7 +10,7 @@ namespace BattleRoayleServer
 {
 	public class GrenadeCollection:Weapon
 	{	
-		protected float strengthThrowGrenade = 30;
+		protected float strengthThrowGrenade = 100;
 
 		public GrenadeCollection(IModelForComponents model, PointF location) : base(model)
 		{

@@ -21,8 +21,8 @@ namespace BattleRoayleServer
 
 		public string Password { get; private set; }
 
-		private const int widthVisibleArea = 100;
-		private const int heightVisibleArea = 100;
+		private const int widthVisibleArea = 160;
+		private const int heightVisibleArea = 160;
 		private RectangleF visibleArea;
 
 		public RectangleF VisibleArea

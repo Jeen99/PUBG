@@ -19,7 +19,12 @@ namespace BattleRoyalClient.Battle
 			lastCurrentWeapon = TypesWeapon.Not;
 			modelHands = new Model3D(models, new Hand(modelObject as Gamer));
 		}
-
+		public override void Remove()
+		{
+			base.Remove();
+			modelHands.Remove();
+			
+		}
 		public override void CreateImage()
 		{
 			base.CreateImage();
@@ -43,7 +48,7 @@ namespace BattleRoyalClient.Battle
 				modelHands.CreateImage();
 			}
 			
-			modelHands.Rotation(-modelObject.Angle);
+			modelHands.Rotation(modelObject.Angle);
 		}
 	}
 }

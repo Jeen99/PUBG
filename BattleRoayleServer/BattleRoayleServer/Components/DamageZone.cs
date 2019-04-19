@@ -32,6 +32,12 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
+			if (msg == null)
+			{
+				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
+				return;
+			}
+
 			switch (msg.TypeMessage)
 			{
 				case TypesProgramMessage.TimeQuantPassed:
@@ -59,7 +65,7 @@ namespace BattleRoayleServer
 				//определяем расстоняие до центра
 				float distance = (float)Math.Sqrt(
 					Math.Pow(player.Location.X - bodyZone.Location.X, 2) +
-					Math.Pow(player.Location.X - bodyZone.Location.X, 2));
+					Math.Pow(player.Location.Y - bodyZone.Location.Y, 2));
 				if (bodyZone.Radius < distance)
 				{
 					//игрок получает урон

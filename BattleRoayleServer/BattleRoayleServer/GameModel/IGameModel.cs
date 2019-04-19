@@ -23,9 +23,9 @@ namespace BattleRoayleServer
 		DeathZone Zone { get; }
 		//event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 
-		void AddGameObject(IGameObject gameObject);
+		void AddOrUpdateGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
 		void Dispose();
-		void RemovePlayer(IPlayer player);
+		void RemovePlayer(Gamer player);
 	}
 }

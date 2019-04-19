@@ -108,9 +108,9 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
 		{
-			//возможно стоит отправлять в отдельном потоке
-			IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
-			if (msg == null) return;
+				//возможно стоит отправлять в отдельном потоке
+				IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
+				if (msg == null) return;
 
 				switch (msg.TypeMessage)
 				{
@@ -118,7 +118,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.AddWeapon:
 					case TypesProgramMessage.ChangedValueHP:
 					case TypesProgramMessage.StartReloadWeapon:
-					case TypesProgramMessage.EndRelaodWeapon:			
+					case TypesProgramMessage.EndRelaodWeapon:
 						Handler_PrivateMsg((IOutgoing)msg);
 						break;
 					//сообщения которые отправляеются всем
@@ -127,6 +127,7 @@ namespace BattleRoayleServer
 					case TypesProgramMessage.GameObjectState:
 					case TypesProgramMessage.WeaponState:
 					case TypesProgramMessage.ChangedTimeTillReduction:
+					case TypesProgramMessage.ChangeCountPlayersInGame:
 						Handler_BroadcastMsg(msg);
 						break;
 					case TypesProgramMessage.EndGame:
@@ -138,20 +139,21 @@ namespace BattleRoayleServer
 						break;
 
 				}
-			
 		}
 
 		private void Handler_EndGame(EndGame msg)
 		{
 			lock (AccessSinchClients)
 			{
-				Clients[msg.ID].SaveStatistics(msg);
-				Handler_PrivateMsg(msg);
-			//закрываем этого клиента
-			
-				INetworkClient client = Clients[msg.ID];
-				Clients.Remove(msg.ID);
-				client.Dispose();
+				
+					Clients[msg.ID].SaveStatistics(msg);
+					Handler_PrivateMsg(msg);
+					//закрываем этого клиента
+
+					INetworkClient client = Clients[msg.ID];
+					Clients.Remove(msg.ID);
+					client.Dispose();
+				
 			}
 			
 		}
@@ -159,31 +161,56 @@ namespace BattleRoayleServer
 
 		private void Handler_BroadcastMsg(IMessage msg)
 		{
-			foreach (var id in Clients.Keys)
+			lock (AccessSinchClients)
 			{
-				Clients[id].Client.SendMessage(msg);
+				foreach (var id in Clients.Keys)
+				{
+					Clients[id].Client.SendMessage(msg);
+				}
 			}
 		}
 
 		private void Handler_PrivateMsg(IOutgoing msg)
 		{
-			if (Clients.ContainsKey(msg.ID))
+			lock (AccessSinchClients)
 			{
-				Clients[msg.ID].Client.SendMessage((IMessage)msg);
+				if (Clients.ContainsKey(msg.ID))
+				{
+					Clients[msg.ID].Client.SendMessage((IMessage)msg);
+				}
 			}
 		}
 
 		private void Handler_DefaulteMsg(IOutgoing msg)
 		{
-			if (!Clients.ContainsKey(msg.ID)) return;
-
-			RectangleF area = Clients[msg.ID].VisibleArea;
-			foreach(var id in Clients.Keys)
+			lock (AccessSinchClients)
 			{
-				//если область видимости одного игрока находит на другого отправляем ему сообщение
-				if (area.IntersectsWith(Clients[id].VisibleArea))
+				if (!Clients.ContainsKey(msg.ID))
 				{
-					Clients[id].Client.SendMessage((IMessage)msg);
+					if (msg is ObjectMoved)
+					{
+						var message = (ObjectMoved)msg;
+						foreach (var id in Clients.Keys)
+						{
+							//если область видимости одного игрока находит на другого отправляем ему сообщение
+							if (Clients[id].VisibleArea.Contains(message.NewLocation.X, message.NewLocation.Y))
+							{
+								Clients[id].Client.SendMessage((IMessage)msg);
+							}
+						}
+					}
+				}
+				else
+				{
+					RectangleF area = Clients[msg.ID].VisibleArea;
+					foreach (var id in Clients.Keys)
+					{
+						//если область видимости одного игрока находит на другого отправляем ему сообщение
+						if (area.IntersectsWith(Clients[id].VisibleArea))
+						{
+							Clients[id].Client.SendMessage((IMessage)msg);
+						}
+					}
 				}
 			}
 		}
@@ -191,13 +218,14 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			timerTotalSinch.Start();
+			//timerTotalSinch.Start();
 		}
 
         public void Dispose()
         {
 			lock (AccessSinchClients)
 			{
+				timerTotalSinch.Elapsed -= HandlerTotalSinch;
 				timerTotalSinch.Dispose();
 				roomLogic.HappenedEvents.CollectionChanged -= HandlerGameEvent;
 				//считываем все пришедшие сообщения

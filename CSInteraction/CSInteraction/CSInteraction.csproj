@@ -56,11 +56,11 @@
     <Compile Include="Common\TypesWeapon.cs" />
     <Compile Include="ProgramMessage\Account\LoadedAccountForm.cs" />
     <Compile Include="ProgramMessage\Battle\Incoming\PlayerTurn.cs" />
-    <Compile Include="ProgramMessage\Battle\Incoming\ThrowGrenade.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\ChangedCurrentWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\ChangedValueHP.cs" />
     <Compile Include="ProgramMessage\Battle\Incoming\ChoiceWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\ChangedTimeTillReduction.cs" />
+    <Compile Include="ProgramMessage\Battle\Outgoing\ChangeCountPayersInGame.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\EndGame.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\EndReloadWeapon.cs" />
     <Compile Include="ProgramMessage\Battle\Outgoing\DeleteInMap.cs" />

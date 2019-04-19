@@ -33,17 +33,23 @@ namespace BattleRoayleServer
 
 		public override void UpdateComponent(IMessage msg)
 		{
+			if (msg == null)
+			{
+				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
+				return;
+			}
+
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.ThrowGrenade:
-					Handler_ThrowGrenade(msg as ThrowGrenade);
+				case TypesProgramMessage.MakeShot:
+					Handler_MakeShot(msg as MakeShot);
 					break;
 			}
 		}
 
-		private void Handler_ThrowGrenade(ThrowGrenade msg)
+		private void Handler_MakeShot(MakeShot msg)
 		{
-			ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
+			 ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 			if (BodyHolder == null)
 				return;
 			//получаем гранату
@@ -54,8 +60,8 @@ namespace BattleRoayleServer
 			//получаем позицию игрока
 			Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
 			//определяем импульс
-			float dX = msg.PointOfThrow.X - position.X;
-			float dY = msg.PointOfThrow.Y - position.Y;
+			float dX = msg.PointOfClick.X - position.X;
+			float dY = -(msg.PointOfClick.Y - position.Y);
 			//нельзя бросить дальше дальности броска
 			if (System.Math.Sqrt(dX * dX + dY * dY) > strength) return;
 			Vec2 impulse = new Vec2(dX, dY);
@@ -63,7 +69,7 @@ namespace BattleRoayleServer
 			//создаем объект гранаты
 			Grenade grenade = new Grenade(Parent.Model, 
 				(Parent as Weapon).Holder.Components.GetComponent<SolidBody>().Shape.Location, impulse, grenadeBullet);
-			Parent.Model.AddGameObject(grenade);
+			Parent.Model.AddOrUpdateGameObject(grenade);
 		}
 	}
 }

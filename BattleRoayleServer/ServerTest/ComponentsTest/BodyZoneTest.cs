@@ -42,7 +42,7 @@ namespace ServerTest.ComponentsTest
 
 			Assert.AreEqual(model.HappenedEvents.Count, 2);
 			Assert.AreNotEqual(startLocation, bodyZone.Location);
-			Assert.AreEqual(radius*0.6f, bodyZone.Radius);
+			Assert.AreEqual(250, bodyZone.Radius);
 
 
 			startLocation = bodyZone.Location;

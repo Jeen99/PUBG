@@ -19,10 +19,13 @@ namespace CSInteraction.Common
 			lock (sinchAccess)
 			{
 				Add(newElement);
-				if(CollectionChanged!=null)
-				CollectionChanged(this, 
-					new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, Count));
 			}
+			Task.Run(() =>
+			{
+				CollectionChanged?.Invoke(this,
+				new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, Count));
+			});
+
 		}
 
 		public T Dequeue()
