@@ -19,6 +19,7 @@ namespace CSInteraction.Common
 			lock (sinchAccess)
 			{
 				Add(newElement);
+				
 			}
 			Task.Run(() =>
 			{

@@ -60,6 +60,7 @@ namespace BattleRoyalClient
 			client.SendMessage(new LoadedBattleForm());
 
 			this.MouseDown += BattleView3d_MouseDown;
+
 		}
 
 		private void Model_EventChangeCountPlayers()

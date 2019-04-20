@@ -10,6 +10,7 @@ using CSInteraction.Common;
 using Box2DX.Common;
 using Box2DX.Collision;
 using Box2DX.Dynamics;
+using System.Diagnostics;
 
 namespace BattleRoayleServer
 {
@@ -19,7 +20,7 @@ namespace BattleRoayleServer
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
 
-		private const int minValueGamerInBattle = 1;
+		private const int minValueGamerInBattle = 0;
 		private bool DeletedPlayer = false;
 
 		public event RoomLogicEndWork EventRoomLogicEndWork;
@@ -27,7 +28,7 @@ namespace BattleRoayleServer
 		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(80)
+			timerNewIteration = new Timer(75)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
@@ -117,7 +118,7 @@ namespace BattleRoayleServer
 			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
 
 			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
-
+			Debug.WriteLine("Прошло времени: " + msg.QuantTime);
 			for (Body list = roomContext.Field.GetBodyList(); list != null; list = list.GetNext())
 			{
 				if (list.GetUserData() != null)

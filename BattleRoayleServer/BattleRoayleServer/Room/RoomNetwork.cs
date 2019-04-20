@@ -161,30 +161,27 @@ namespace BattleRoayleServer
 
 		private void Handler_BroadcastMsg(IMessage msg)
 		{
-			lock (AccessSinchClients)
-			{
+			
 				foreach (var id in Clients.Keys)
 				{
 					Clients[id].Client.SendMessage(msg);
 				}
-			}
+			
 		}
 
 		private void Handler_PrivateMsg(IOutgoing msg)
 		{
-			lock (AccessSinchClients)
-			{
+			
 				if (Clients.ContainsKey(msg.ID))
 				{
 					Clients[msg.ID].Client.SendMessage((IMessage)msg);
 				}
-			}
+			
 		}
 
 		private void Handler_DefaulteMsg(IOutgoing msg)
 		{
-			lock (AccessSinchClients)
-			{
+			
 				if (!Clients.ContainsKey(msg.ID))
 				{
 					if (msg is ObjectMoved)
@@ -212,7 +209,7 @@ namespace BattleRoayleServer
 						}
 					}
 				}
-			}
+			
 		}
 
 		public void Start()

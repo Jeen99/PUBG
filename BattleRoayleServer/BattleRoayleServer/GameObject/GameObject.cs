@@ -63,16 +63,16 @@ namespace BattleRoayleServer
 					{
 						messageQueue.Enqueue(quantPassed);
 					}
+					Debug.WriteLine("Сообщение в очереди: " + messageQueue.Count);
 					//рассылваем сообщение всем объектам
-					Task.Run(() =>
-					{
-						while (messageQueue.Count > 0)
+
+					while (messageQueue.Count > 0)
 						{
 							IMessage msg = messageQueue.Dequeue();
 							if (msg == null) return;
 							Components.UpdateComponents(msg);
 						}
-					});
+					
 				}
 			}
 		}

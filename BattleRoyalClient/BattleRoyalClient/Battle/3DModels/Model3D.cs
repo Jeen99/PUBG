@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using Point = System.Windows.Point;
 using CSInteraction.Common;
+using System.Windows.Media.Animation;
 
 namespace BattleRoyalClient
 {
@@ -21,7 +22,6 @@ namespace BattleRoyalClient
 		protected MeshGeometry3D mesh;
 		protected Model3DGroup models;
 		protected GeometryModel3D geometryModel;
-
 		protected IModelObject modelObject;
 
 		protected static readonly string pathResources = "Resources/";
@@ -72,7 +72,6 @@ namespace BattleRoyalClient
 			}
 
 		}
-
 		protected void CreateSize(MeshGeometry3D mesh)
 		{
 			mesh.Positions = new Point3DCollection(new List<Point3D>
@@ -109,26 +108,21 @@ namespace BattleRoyalClient
 		{
 			translateTransform.OffsetX = v3.X;
 			translateTransform.OffsetY = v3.Y;
-			translateTransform.OffsetZ = v3.Z;
 		}
 
 		public virtual void UpdatePosition()
 		{
-			translateTransform.Transform(modelObject.Location3D);
-			var pos = modelObject.Location3D;
-
+			var pos = modelObject.Location;
 			translateTransform.OffsetX = pos.X;
 			translateTransform.OffsetY = pos.Y;
-			translateTransform.OffsetZ = pos.Z;
 		}
 
 		public virtual void Update()
 		{
-			var pos = modelObject.Location3D;
+			var pos = modelObject.Location;
 
 			translateTransform.OffsetX = pos.X;
 			translateTransform.OffsetY = pos.Y;
-			translateTransform.OffsetZ = pos.Z;
 
 			if (modelObject is DeathZone)
 			{

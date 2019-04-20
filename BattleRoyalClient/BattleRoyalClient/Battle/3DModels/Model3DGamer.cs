@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using CSInteraction.Common;
 using System.Drawing;
+using System.Windows.Media.Animation;
+using System.Windows;
 
 namespace BattleRoyalClient.Battle
 {
@@ -32,11 +34,11 @@ namespace BattleRoyalClient.Battle
 		}
 		public override void Update()
 		{
-			var pos = modelObject.Location3D;
+			var pos = modelObject.Location;
 
 			translateTransform.OffsetX = pos.X;
 			translateTransform.OffsetY = pos.Y;
-			translateTransform.OffsetZ = pos.Z;
+
 			modelHands.SetPosition(modelObject.Location3D);
 
 			var gamer = (Gamer)modelObject;
