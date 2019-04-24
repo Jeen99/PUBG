@@ -32,7 +32,7 @@ namespace ServerTest
 			return;
 		}
 
-		public void SendMessage(IMessage msg)
+		public void Update(IMessage msg)
 		{
 			return;
 		}
@@ -50,9 +50,5 @@ namespace ServerTest
 			}
 		}
 
-		public void Update(TimeQuantPassed quantPassed = null)
-		{
-			return;
-		}
 	}
 }

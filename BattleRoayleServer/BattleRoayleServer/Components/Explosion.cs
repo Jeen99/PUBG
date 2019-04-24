@@ -59,7 +59,7 @@ namespace BattleRoayleServer
 			{
 				if (solidBody.Parent is Gamer)
 				{
-					solidBody.Parent.SendMessage(new GotDamage(grenadeBullet.Damage));
+					solidBody.Parent.Update(new GotDamage(grenadeBullet.Damage));
 				}
 			}
 			//удаляем гранату

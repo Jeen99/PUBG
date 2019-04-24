@@ -199,7 +199,7 @@ namespace CSInteraction.Client
 			ReceivedMsg.Enqueue(ObjectMsg);
             //генерируем событие
 			if(EventNewMessage != null)
-            Task.Run(()=>EventNewMessage());
+            EventNewMessage?.Invoke();
         }
     }
 

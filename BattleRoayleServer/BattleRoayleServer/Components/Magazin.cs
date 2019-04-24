@@ -8,7 +8,7 @@ using System.Timers;
 
 namespace BattleRoayleServer
 {
-	public class Magazin : Component, IMagazin
+	public class Magazin : Component
 	{
 		
 		public TypesReload Reload { get; protected set; }

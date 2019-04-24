@@ -12,14 +12,14 @@ using Box2DX.Dynamics;
 
 namespace BattleRoayleServer
 {
-	public class SolidBody : Component, ISolidBody
+	public class SolidBody : Component
 	{
 		private RectangleF shape;
 		//на данный момент временное поле
 		public RectangleF Shape { get { return shape; } }
 
 		public Body Body { get; private set; }
-		public List<ISolidBody> CoveredObjects { get; } = new List<ISolidBody>();
+		public List<SolidBody> CoveredObjects { get; } = new List<SolidBody>();
 
 		//только для тестов
 		public SolidBody(IGameObject parent):base(parent)

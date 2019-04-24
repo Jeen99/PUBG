@@ -8,7 +8,7 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	public class BodyZone : Component, IBodyZone
+	public class BodyZone : Component
 	{
 		PointF location;
 		public PointF Location

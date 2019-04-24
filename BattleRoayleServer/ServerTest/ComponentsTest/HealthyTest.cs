@@ -11,7 +11,7 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_UpdateComponent_GotDamaged()
 		{
-			IHealthy healthy = new Healthy(new StubPlayer());
+			Healthy healthy = new Healthy(new StubPlayer());
 			healthy.Setup();
 			healthy.UpdateComponent(new GotDamage(8));
 			Assert.AreEqual(healthy.HP, 92);
@@ -21,19 +21,19 @@ namespace ServerTest.ComponentsTest
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorCreateHealthy()
 		{
-			IHealthy healthy = new Healthy(null);
+			Healthy healthy = new Healthy(null);
 		}
 
 		[TestMethod]
 		public void Test_CreateHealthy()
 		{
-			IHealthy healthy = new Healthy(new StubPlayer());
+			Healthy healthy = new Healthy(new StubPlayer());
 		}
 
 		[TestMethod]
 		public void Test_HealthyState()
 		{
-			IHealthy healthy = new Healthy(new StubPlayer());
+			Healthy healthy = new Healthy(new StubPlayer());
 			Assert.IsNotNull(healthy.State);
 		}
 	}

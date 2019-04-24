@@ -28,7 +28,7 @@ namespace BattleRoayleServer
 		public RoyalRoomLogic(int GamersInRoom)
         {
 			roomContext = new RoyalGameModel(GamersInRoom);
-			timerNewIteration = new Timer(75)
+			timerNewIteration = new Timer(16)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
@@ -115,43 +115,13 @@ namespace BattleRoayleServer
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
 			quantTimer.Tick();
-			roomContext.Field.Step((float)quantTimer.QuantValue/1000, 8, 3);
+			roomContext.MakeStep(quantTimer.QuantValue);
 
-			TimeQuantPassed msg = new TimeQuantPassed(quantTimer.QuantValue);
-			Debug.WriteLine("Прошло времени: " + msg.QuantTime);
-			for (Body list = roomContext.Field.GetBodyList(); list != null; list = list.GetNext())
-			{
-				if (list.GetUserData() != null)
-				{
-					ISolidBody solidBody = (ISolidBody)list.GetUserData();
-					if (!solidBody.Parent.Destroyed)
-					{
-						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
-						{
-							//запускаем  обработку всех событий на этом объекте
-							solidBody.Parent.Update(msg);
-						}
-					}
-					//если объект уничтожен удаляем его
-					else
-					{
-						roomContext.RemoveGameObject(solidBody.Parent);
-						if (solidBody.Parent is Gamer)
-						{
-							roomContext.RemovePlayer(solidBody.Parent as Gamer);
-							DeletedPlayer = true;
-						}
-					}
-				}
-			}
-			//обновляем игровую зону
-			roomContext.Zone.Update(msg);
-			if (!DeletedPlayer) return;
-			else if (roomContext.Players.Count <= minValueGamerInBattle)
+			Debug.WriteLine("Прошло времени" + quantTimer.QuantValue);
+			if (roomContext.Players.Count <= minValueGamerInBattle)
 			{
 				EndWork();
 			}
-			else DeletedPlayer = false;
 		}
 		
         public void RemovePlayer(IPlayer player)

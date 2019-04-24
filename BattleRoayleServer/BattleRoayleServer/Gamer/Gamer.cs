@@ -52,7 +52,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Для упрощения доступа к расположения игрока на карте
 		/// </summary>
-		private ISolidBody body;
+		private SolidBody body;
 
 		public override TypesGameObject Type { get; } = TypesGameObject.Player;
 

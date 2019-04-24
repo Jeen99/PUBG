@@ -14,12 +14,12 @@ namespace BattleRoayleServer
 		public override void Add(ContactPoint point)
 		{
 			base.Add(point);
-			if (point.Shape1.GetBody().GetUserData() is ISolidBody)
+			if (point.Shape1.GetBody().GetUserData() is SolidBody)
 			{
-				ISolidBody bodyA = (ISolidBody)point.Shape1.GetBody().GetUserData();
-				if (point.Shape2.GetBody().GetUserData() is ISolidBody)
+				SolidBody bodyA = (SolidBody)point.Shape1.GetBody().GetUserData();
+				if (point.Shape2.GetBody().GetUserData() is SolidBody)
 				{
-					ISolidBody bodyB = (ISolidBody)point.Shape2.GetBody().GetUserData();
+					SolidBody bodyB = (SolidBody)point.Shape2.GetBody().GetUserData();
 					if (bodyA.CoveredObjects.IndexOf(bodyB) == -1)
 					{
 						bodyA.CoveredObjects.Add(bodyB);
@@ -35,12 +35,12 @@ namespace BattleRoayleServer
 		public override void Remove(ContactPoint point)
 		{
 			base.Remove(point);
-			if (point.Shape1.GetBody().GetUserData() is ISolidBody)
+			if (point.Shape1.GetBody().GetUserData() is SolidBody)
 			{
-				ISolidBody bodyA = (ISolidBody)point.Shape1.GetBody().GetUserData();
-				if (point.Shape2.GetBody().GetUserData() is ISolidBody)
+				SolidBody bodyA = (SolidBody)point.Shape1.GetBody().GetUserData();
+				if (point.Shape2.GetBody().GetUserData() is SolidBody)
 				{
-					ISolidBody bodyB = (ISolidBody)point.Shape2.GetBody().GetUserData();
+					SolidBody bodyB = (SolidBody)point.Shape2.GetBody().GetUserData();
 					bodyA.CoveredObjects.Remove(bodyB);
 					bodyB.CoveredObjects.Remove(bodyA);
 				}

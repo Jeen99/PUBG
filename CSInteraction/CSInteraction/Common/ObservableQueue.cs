@@ -21,12 +21,9 @@ namespace CSInteraction.Common
 				Add(newElement);
 				
 			}
-			Task.Run(() =>
-			{
-				CollectionChanged?.Invoke(this,
-				new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, Count));
-			});
-
+			
+			CollectionChanged?.Invoke(this,
+			new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, Count));
 		}
 
 		public T Dequeue()

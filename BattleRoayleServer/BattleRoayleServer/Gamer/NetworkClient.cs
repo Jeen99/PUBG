@@ -70,7 +70,7 @@ namespace BattleRoayleServer
 					Event_GetViewMsg?.Invoke(Player.ID, msg);
 					break;
 				default:
-					Player.SendMessage(msg);
+					Player.Update(msg);
 					break;
 			}
 					

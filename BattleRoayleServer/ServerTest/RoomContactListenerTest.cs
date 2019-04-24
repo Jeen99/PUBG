@@ -28,7 +28,7 @@ namespace ServerTest
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
-			ISolidBody solid = (ISolidBody)player1.Components.GetComponent<SolidBody>();
+			SolidBody solid = (SolidBody)player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
 			Assert.AreEqual(solid.CoveredObjects.Count, 1);
 		}
@@ -47,7 +47,7 @@ namespace ServerTest
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
-			ISolidBody solid = player1.Components.GetComponent<SolidBody>();
+			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			solid.Body.SetLinearVelocity(new Vec2(0, 40f));
 			Room.Field.Step(2, 6, 3);
 			//только после 2 перемещения срабатывает потеря наслоения
@@ -69,7 +69,7 @@ namespace ServerTest
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
-			ISolidBody solid = player1.Components.GetComponent<SolidBody>();
+			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1f / 60f, 6, 3);
 			solid.Parent.Model.Field.DestroyBody(solid.Body);
 			Assert.AreEqual(solid.CoveredObjects.Count, 0);

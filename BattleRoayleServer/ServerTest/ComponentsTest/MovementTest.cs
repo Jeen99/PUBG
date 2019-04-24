@@ -16,14 +16,14 @@ namespace ServerTest.ComponentsTest
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
 			player.Setup();
-			IMovement movement = new Movement(player, 8);
+			Movement movement = new Movement(player, 8);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorCreateMovement()
 		{
-			IMovement movement = new Movement(null, 10);
+			Movement movement = new Movement(null, 10);
 		}
 
 		[TestMethod]
@@ -35,7 +35,7 @@ namespace ServerTest.ComponentsTest
 			player.Setup();
 
 			float speed = 8;
-			IMovement movement = new Movement(player, speed);
+			Movement movement = new Movement(player, speed);
 			movement.Setup();
 			movement.UpdateComponent(new GoTo(new Direction(DirectionHorisontal.Left, DirectionVertical.Down)));
 			

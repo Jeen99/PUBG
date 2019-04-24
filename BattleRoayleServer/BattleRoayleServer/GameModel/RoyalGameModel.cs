@@ -50,10 +50,6 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами
 		/// </summary>
-		/// <remarks>
-		/// По умолчанию создает список объектов.
-		/// Должен создавать объекты, добавлять их в список и на карту.
-		/// </remarks>
 		private void CreateStaticGameObject()
 		{
 			//статическое задание
@@ -279,10 +275,9 @@ namespace BattleRoayleServer
 
 			#endregion
 
-			DeathZone deathZone = new DeathZone(this, lengthOfSide);
-			GameObjects.Add(deathZone.ID, deathZone);
-			Zone = deathZone;
+		
 		}
+
 		private void CreateDinamicGameObject()
 		{
 			//15 камней
@@ -339,10 +334,6 @@ namespace BattleRoayleServer
 				Tree tree = new Tree(this, VectorMethod.CreateRandPosition(lengthOfSide));
 				GameObjects.Add(tree.ID, tree);
 			}
-
-			DeathZone deathZone = new DeathZone(this, lengthOfSide);
-			GameObjects.Add(deathZone.ID, deathZone);
-			Zone = deathZone;
 		}
 
 		private void Model_EventGameObjectDeleted(IGameObject gameObject)
@@ -403,6 +394,8 @@ namespace BattleRoayleServer
 			Field.SetContactListener(solver);
 			CreateFrame();
 
+			Zone = new DeathZone(this, lengthOfSide);
+			GameObjects.Add(Zone.ID, Zone);
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			//CreateStaticGameObject();
@@ -432,6 +425,8 @@ namespace BattleRoayleServer
 			var solver = new RoomContactListener();
 			Field.SetContactListener(solver);
 			CreateFrame();
+			Zone = new DeathZone(this, lengthOfSide);
+			GameObjects.Add(Zone.ID, Zone);
 		}
 
 		private void CreateFrame()
@@ -541,6 +536,41 @@ namespace BattleRoayleServer
 		{
 			HappenedEvents.Enqueue(message);
 		}
+		/// <summary>
+		/// Делаем шаг игровой карты
+		/// </summary>
+		/// <param name="passedTime">в миллесекундах</param>
+		public void MakeStep(int passedTime)
+		{
+			Field.Step((float)passedTime / 1000, 8, 3);
+			TimeQuantPassed msg = new TimeQuantPassed(passedTime);
 
+			for (Body list = Field.GetBodyList(); list != null; list = list.GetNext())
+			{
+				if (list.GetUserData() != null)
+				{
+					SolidBody solidBody = (SolidBody)list.GetUserData();
+					if (!solidBody.Parent.Destroyed)
+					{
+						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
+						{
+							//запускаем  обработку всех событий на этом объекте
+							solidBody.Parent.Update(msg);
+						}
+					}
+					//если объект уничтожен удаляем его
+					else
+					{
+						RemoveGameObject(solidBody.Parent);
+						if (solidBody.Parent is Gamer)
+						{
+							RemovePlayer(solidBody.Parent as Gamer);
+						}
+					}
+				}
+			}
+			//обновляем игровую зону
+			Zone.Update(msg);
+		}
 	}
 }

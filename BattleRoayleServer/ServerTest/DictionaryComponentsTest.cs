@@ -15,7 +15,7 @@ namespace ServerTest
 			IComponent magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 500, 1000, 8);
 			magazin.Setup();
 			dictionary.Add(magazin);
-			IMagazin thisMagazin = dictionary.GetComponent<Magazin>();
+			Magazin thisMagazin = dictionary.GetComponent<Magazin>();
 			Assert.AreEqual(magazin, thisMagazin);
 		}
 	}

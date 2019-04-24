@@ -34,7 +34,7 @@ namespace ServerTest
 
 		}
 
-		public void SendMessage(IMessage msg)
+		public void Update(IMessage msg)
 		{
 			
 		}
@@ -49,9 +49,5 @@ namespace ServerTest
 			throw new NotImplementedException();
 		}
 
-		public void Update(TimeQuantPassed quantPassed = null)
-		{
-
-		}
 	}
 }

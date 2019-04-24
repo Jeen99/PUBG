@@ -12,7 +12,7 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	public class Collector : Component, ICollector
+	public class Collector : Component
 	{
 		private Modifier[] modifiers;
 		private Weapon[] weapons;
@@ -169,7 +169,7 @@ namespace BattleRoayleServer
 				weapon.Components.Remove<SolidBody>();
 
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
-				Parent.SendMessage(msg);
+				Parent.Update(msg);
 				Parent.Model.AddEvent(new DeleteInMap(weapon.ID));
 				Parent.Model?.AddEvent(msg);
 				return true;

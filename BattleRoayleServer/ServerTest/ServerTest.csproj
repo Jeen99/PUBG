@@ -54,11 +54,8 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\StubMagazin.cs" />
     <Compile Include="Common\StubPlayer.cs" />
-    <Compile Include="Common\StubSolidBody.cs" />
     <Compile Include="Common\StubWeapon.cs" />
-    <Compile Include="Common\StubCollector.cs" />
     <Compile Include="ComponentsTest\CollectorTest.cs" />
     <Compile Include="ComponentsTest\CurrentWeaponTest.cs" />
     <Compile Include="ComponentsTest\HealthyTest.cs" />
@@ -87,6 +84,7 @@
       <Name>BattleRoayleServer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

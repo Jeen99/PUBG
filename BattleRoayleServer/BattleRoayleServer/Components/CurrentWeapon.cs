@@ -8,9 +8,9 @@ using CSInteraction.Common;
 
 namespace BattleRoayleServer
 {
-	public class CurrentWeapon : Component, ICurrentWeapon
-	{
-		private ICollector inventory;
+	public class CurrentWeapon : Component
+	{ 
+		private Collector inventory;
 		private Weapon currentWeapon;
 
 		public Weapon GetCurrentWeapon { get => currentWeapon; }
@@ -76,9 +76,7 @@ namespace BattleRoayleServer
 		{
 			if (currentWeapon != null)
 			{
-				currentWeapon.SendMessage(shot);
-				//обновляем объект раньше очереди, тк выстрел операция с наивысшим приорететом
-				currentWeapon.Update();
+				currentWeapon.Update(shot);
 			}
 		}
 

@@ -17,15 +17,14 @@ namespace BattleRoayleServer
     {
         IList<IPlayer> Players { get;}
 		Dictionary<ulong, IGameObject> GameObjects { get; }
-        World Field { get;}
 		ObservableQueue<IMessage> HappenedEvents { get; }
 		GameObjectState State { get; }
 		DeathZone Zone { get; }
-		//event RoaylGameModelEndWork EventRoaylGameModelEndWork;
 
 		void AddOrUpdateGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
 		void Dispose();
 		void RemovePlayer(Gamer player);
+		void MakeStep(int passedTime);
 	}
 }

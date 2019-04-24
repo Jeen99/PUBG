@@ -186,7 +186,7 @@ namespace CSInteraction.Server
 			ReceivedMsg.Enqueue(ObjectMsg);
             //генерируем событие
 			if(Controler!=null)
-            Task.Run(() => Controler.HanlderNewMessage());
+			Controler.HanlderNewMessage();
         }
     }
 }

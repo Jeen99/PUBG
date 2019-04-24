@@ -7,7 +7,7 @@ using CSInteraction.ProgramMessage;
 
 namespace BattleRoayleServer
 {
-	public class Healthy : Component, IHealthy
+	public class Healthy : Component
 	{
 		public Healthy(IGameObject parent) : base(parent)
 		{
@@ -46,7 +46,7 @@ namespace BattleRoayleServer
 			if (HP <= 0)
 			{
 				Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
-				Parent.SendMessage(new GamerDied());
+				Parent.Update(new GamerDied());
 				Parent.SetDestroyed();
 			}
 			else

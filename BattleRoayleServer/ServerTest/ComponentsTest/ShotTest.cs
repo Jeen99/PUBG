@@ -55,20 +55,20 @@ namespace ServerTest.ComponentsTest
 
 			Room.Field.Step(1f / 60f, 6, 3);
 			//поднимаем оружие
-			player1.SendMessage(new TryPickUp());
+			player1.Update(new TryPickUp());
 			player1.Update(new TimeQuantPassed(1));
-			ICurrentWeapon currentWeapon = player1.Components.GetComponent<CurrentWeapon>();
+			CurrentWeapon currentWeapon = player1.Components.GetComponent<CurrentWeapon>();
 			Assert.IsNotNull(currentWeapon.GetCurrentWeapon);
 			//делаем выстрел
-			player1.SendMessage(new MakeShot(new PointF(35, 75)));
+			player1.Update(new MakeShot(new PointF(35, 75)));
 			player1.Update(new TimeQuantPassed(100));
 			//проверяем
 			player2.Update(new TimeQuantPassed(100));
-			IHealthy healtySecondGamer = player2.Components.GetComponent<Healthy>();
+			Healthy healtySecondGamer = player2.Components.GetComponent<Healthy>();
 			Assert.AreEqual(healtySecondGamer.HP, 92);
 
 			//делаем 2 выстрел
-			player1.SendMessage(new MakeShot(new PointF(35, 75)));
+			player1.Update(new MakeShot(new PointF(35, 75)));
 			player1.Update(new TimeQuantPassed(401));
 			//выстрел не должен произойти
 			player2.Update(new TimeQuantPassed(401));
@@ -76,7 +76,7 @@ namespace ServerTest.ComponentsTest
 
 			Thread.Sleep(550);
 			//делаем 3 выстрел
-			player1.SendMessage(new MakeShot(new PointF(35, 75)));
+			player1.Update(new MakeShot(new PointF(35, 75)));
 			player1.Update(new TimeQuantPassed(100));
 			//выстрел должен произойти
 			player2.Update(new TimeQuantPassed(100));

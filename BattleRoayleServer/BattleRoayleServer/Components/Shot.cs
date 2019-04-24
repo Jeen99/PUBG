@@ -13,9 +13,9 @@ using System.Diagnostics;
 namespace BattleRoayleServer
 {
 	//отвечает за выстрел
-	public class Shot : Component, IShot
+	public class Shot : Component
 	{
-		private IMagazin magazin;
+		private Magazin magazin;
 
 		public Shot(IWeapon parent) : base(parent)
 		{
@@ -57,7 +57,7 @@ namespace BattleRoayleServer
 		{
 			try
 			{
-				ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
+				SolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 				if (BodyHolder == null)
 				{
 					Log.AddNewRecord("Ошибка получения держателя оружия");
@@ -103,17 +103,17 @@ namespace BattleRoayleServer
 				}
 
 				//отправляем ему сообщение о нанесении урона	
-				ISolidBody attacked = (ISolidBody)objectsForDamage[1]?.GetBody().GetUserData();
+				SolidBody attacked = (SolidBody)objectsForDamage[1]?.GetBody().GetUserData();
 				if (attacked == null) return;
 
 				var damageMsg = new GotDamage(bullet.Damage);
-				attacked.Parent.SendMessage(damageMsg);
+				attacked.Parent.Update(damageMsg);
 
 				//определяем убили ли мы противника
 				Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();
 				if (healthyAttacked == null) return;
 				//если убили засчитываем фраг
-				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent?.SendMessage(new MakedKill());
+				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent?.Update(new MakedKill());
 				
 			}
 			catch (Exception e)

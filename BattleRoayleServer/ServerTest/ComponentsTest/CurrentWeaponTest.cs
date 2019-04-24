@@ -16,14 +16,14 @@ namespace ServerTest.ComponentsTest
 			player.Components.Add(new SolidBody(player));
 			player.Components.Add(new Collector(player));
 			player.Setup();
-			ICurrentWeapon currentWeapon = new CurrentWeapon(player);
+			CurrentWeapon currentWeapon = new CurrentWeapon(player);
 		}
 
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorSetupCurrentWeapon1()
 		{
-			ICurrentWeapon currentWeapon = new CurrentWeapon(new StubWeapon());
+			CurrentWeapon currentWeapon = new CurrentWeapon(new StubWeapon());
 			currentWeapon.Setup();
 		}
 
@@ -31,7 +31,7 @@ namespace ServerTest.ComponentsTest
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorCreateCurrentWeapon()
 		{
-			ICurrentWeapon currentWeapon = new CurrentWeapon(null);
+			CurrentWeapon currentWeapon = new CurrentWeapon(null);
 		}
 
 		[TestMethod]
@@ -40,7 +40,7 @@ namespace ServerTest.ComponentsTest
 			var weapon = new StubPlayer();
 			weapon.Components.Add(new SolidBody(weapon));
 			weapon.Components.Add(new Collector(weapon));
-			ICurrentWeapon currentWeapon = new CurrentWeapon(weapon);
+			CurrentWeapon currentWeapon = new CurrentWeapon(weapon);
 			Assert.IsNull(currentWeapon.State);
 		}
 

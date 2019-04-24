@@ -13,7 +13,7 @@ namespace BattleRoayleServer
 {
 	public class Throw : Component
 	{
-		private IMagazin magazin;
+		private Magazin magazin;
 		private float strength;
 
 		public Throw(IWeapon parent, float strength) : base(parent)
@@ -49,7 +49,7 @@ namespace BattleRoayleServer
 
 		private void Handler_MakeShot(MakeShot msg)
 		{
-			 ISolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
+			SolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 			if (BodyHolder == null)
 				return;
 			//получаем гранату

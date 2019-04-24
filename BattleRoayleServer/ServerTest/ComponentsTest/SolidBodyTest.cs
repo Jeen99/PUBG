@@ -13,14 +13,14 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_CreateSolidBody()
 		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer());
+			SolidBody solidBody = new SolidBody(new StubPlayer());
 			Assert.IsNotNull(solidBody.Body);
 		}
 
 		[TestMethod]
 		public void Test_SolidBodyState()
 		{
-			ISolidBody solidBody = new SolidBody(new StubPlayer());
+			SolidBody solidBody = new SolidBody(new StubPlayer());
 			Assert.IsNotNull(solidBody.State);
 		}
 	
@@ -33,7 +33,7 @@ namespace ServerTest.ComponentsTest
 			Room.GameObjects.Add(player1.ID, player1);
 			Room.Players.Add(player1);
 
-			ISolidBody solid = player1.Components.GetComponent<SolidBody>();
+			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			RectangleF compareShape = solid.Shape;
 			Assert.AreEqual(solid.Shape, compareShape);
 			Vec2 compareVec = solid.Body.GetPosition();

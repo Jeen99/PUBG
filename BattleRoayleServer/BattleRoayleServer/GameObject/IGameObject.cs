@@ -18,7 +18,6 @@ namespace BattleRoayleServer
 		void Setup();
 		void Dispose();
 		void SetDestroyed();
-		void SendMessage(IMessage msg);
-		void Update(TimeQuantPassed quantPassed = null);
+		void Update(IMessage msg);
 	}
 }

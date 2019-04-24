@@ -16,7 +16,7 @@ namespace ServerTest.ComponentsTest
 		{
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
-			ICollector collector = new Collector(player);
+			Collector collector = new Collector(player);
 		}
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
@@ -30,7 +30,7 @@ namespace ServerTest.ComponentsTest
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorCreateCollector()
 		{
-			ICollector collector = new Collector(null);
+			Collector collector = new Collector(null);
 		}
 
 		[TestMethod]
@@ -38,7 +38,7 @@ namespace ServerTest.ComponentsTest
 		{
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
-			ICollector collector = new Collector(player);
+			Collector collector = new Collector(player);
 			player.Setup();
 			Assert.IsNull(collector.GetWeapon(TypesWeapon.Gun));
 		}
@@ -48,7 +48,7 @@ namespace ServerTest.ComponentsTest
 		{
 			var player = new StubPlayer();
 			player.Components.Add(new SolidBody(player));
-			ICollector collector = new Collector(player);
+			Collector collector = new Collector(player);
 			player.Setup();
 			Assert.IsNotNull(collector.State);
 		}
@@ -70,7 +70,7 @@ namespace ServerTest.ComponentsTest
 			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие
-			player1.SendMessage(new TryPickUp());
+			player1.Update(new TryPickUp());
 			player1.Update(new TimeQuantPassed(1));
 			var collector = player1.Components.GetComponent<Collector>();
 			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
@@ -93,7 +93,7 @@ namespace ServerTest.ComponentsTest
 			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие
-			player1.SendMessage(new TryPickUp());
+			player1.Update(new TryPickUp());
 			player1.Update(new TimeQuantPassed(1));
 			var collector = player1.Components.GetComponent<Collector>();
 			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
@@ -102,7 +102,7 @@ namespace ServerTest.ComponentsTest
 			int objectsInMap = Room.Field.GetBodyCount();
 
 			//уничтожаем игрока 
-			player1.SendMessage(new GotDamage(100));
+			player1.Update(new GotDamage(100));
 			player1.Dispose();
 
 			Assert.AreEqual(objectsInMap, Room.Field.GetBodyCount());
