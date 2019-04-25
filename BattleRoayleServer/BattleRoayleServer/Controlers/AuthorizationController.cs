@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.AutorizationMessages;
 using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-    public class AuthorizationController:IController
+    public class AuthorizationController:IController<IMessage>
     {
-        private ServerClient client;
+        private ServerClient<IMessage> client;
         public AuthorizationController()
         {
             client = null;
         }
 
-        public AuthorizationController(ServerClient client)
+        public AuthorizationController(ServerClient<IMessage> client)
         {
             this.client = client;
 			client.Controler = this;
@@ -23,7 +24,7 @@ namespace BattleRoayleServer
 			client.EventEndSession += Log.Handler_LostConnectServerClient;
         }
 
-        public IController GetNewControler(ServerClient client)
+        public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
         {
             return new AuthorizationController(client);
         }
@@ -33,8 +34,8 @@ namespace BattleRoayleServer
 			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.Authorization:
-					Handler_AuthorizationMsg((Authorization)msg);
+				case TypesMessage.RequestOnAutorization:
+					Handler_AuthorizationMsg(msg);
 					break;
 				default:
 					//записываем в лог, сообщение что не смогли обработать сообщение
@@ -43,16 +44,16 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public void Handler_AuthorizationMsg(Authorization msg)
+		public void Handler_AuthorizationMsg(IMessage msg)
 		{
 			if (BDAccounts.ExistAccount(msg.Login, msg.Password))
 			{
 				new AccountController(client, msg.Login, msg.Password);
-				client.SendMessage(new SuccessAuthorization());
+				client.SendMessage(new ResultAuthorization(true));
 			}
 			else
 			{
-				client.SendMessage(new ErrorAuhorization());
+				client.SendMessage(new ResultAuthorization(false));
 			}
 		}
 

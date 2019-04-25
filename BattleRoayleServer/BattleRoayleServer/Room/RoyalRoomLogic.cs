@@ -5,12 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
+using CommonLibrary;
 using Box2DX.Common;
 using Box2DX.Collision;
 using Box2DX.Dynamics;
 using System.Diagnostics;
+using CommonLibrary.GameMessages;
+using ObservalableExtended;
+
 
 namespace BattleRoayleServer
 {
@@ -21,7 +23,6 @@ namespace BattleRoayleServer
 		private QuantTimer quantTimer;
 
 		private const int minValueGamerInBattle = 0;
-		private bool DeletedPlayer = false;
 
 		public event RoomLogicEndWork EventRoomLogicEndWork;
 

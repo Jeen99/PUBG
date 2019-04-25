@@ -1,5 +1,5 @@
-﻿using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+﻿using CommonLibrary;
+using CommonLibrary.CommonElements;
 
 namespace BattleRoayleServer
 {

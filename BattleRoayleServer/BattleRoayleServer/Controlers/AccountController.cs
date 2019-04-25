@@ -2,20 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.GameMessages;
+using CommonLibrary;
 using CSInteraction.Server;
+using CommonLibrary.AccountMessages;
 
 namespace BattleRoayleServer
 {
-    public class AccountController : IController
+    public class AccountController: IController<IMessage>
 	{
-		private ServerClient client;
+		private ServerClient<IMessage> client;
 		/// <summary>
 		/// Модель игрового меню 
 		/// </summary>
 		private DataOfAccount data;
 
-		public IController GetNewControler(ServerClient client)
+		public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
         {
 			return new AccountController(client);
 		}
@@ -25,10 +27,10 @@ namespace BattleRoayleServer
 			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.JoinToQueue:
+				case TypesMessage.RequestJoinToQueue:
 					Handler_JoinToQueue();
 					break;
-				case TypesProgramMessage.LoadedAccountForm:
+				case TypesMessage.LoadedAccountForm:
 					Handler_LoadedAccountForm();
 					break;
 				default:
@@ -56,12 +58,12 @@ namespace BattleRoayleServer
 			new QueueController(client, data);
 		}
 
-		public AccountController(ServerClient client)
+		public AccountController(ServerClient<IMessage> client)
 		{
 			this.client = client;
 		}
 
-		public AccountController(ServerClient client, string login, string password)
+		public AccountController(ServerClient<IMessage> client, string login, string password)
 		{
 			this.client = client;
 			client.Controler = this;

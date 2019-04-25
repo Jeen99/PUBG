@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 
 namespace BattleRoayleServer
 {
@@ -40,15 +42,15 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg as TimeQuantPassed);
+				case TypesMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);
 					break;
 			}
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
-			timeTillExplosion = timeTillExplosion.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
+			timeTillExplosion = timeTillExplosion.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
 			if(timeTillExplosion.Milliseconds < 0) MakeExplosion();
 		}
 
@@ -59,7 +61,7 @@ namespace BattleRoayleServer
 			{
 				if (solidBody.Parent is Gamer)
 				{
-					solidBody.Parent.Update(new GotDamage(grenadeBullet.Damage));
+					solidBody.Parent.Update(new GotDamage(this.Parent.ID, grenadeBullet.Damage));
 				}
 			}
 			//удаляем гранату

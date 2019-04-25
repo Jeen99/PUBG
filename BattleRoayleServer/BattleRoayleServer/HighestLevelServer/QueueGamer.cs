@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CommonLibrary;
 using CSInteraction.Server;
 
 namespace BattleRoayleServer
@@ -12,7 +13,7 @@ namespace BattleRoayleServer
 
 		public string Password { get; private set; }
 
-		public ServerClient Client { get; private set; }
+		public ServerClient<IMessage> Client { get; private set; }
 
 		/// <summary>
 		/// Указывет, что данный игрок сейчас будет добавлне в комнату 
@@ -20,7 +21,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		public bool AddInRoom { get; set;}
 
-        public QueueGamer( ServerClient client, DataOfAccount data)
+        public QueueGamer( ServerClient<IMessage> client, DataOfAccount data)
         {
             NickName = data.NickName;
 			Password = data.Password;

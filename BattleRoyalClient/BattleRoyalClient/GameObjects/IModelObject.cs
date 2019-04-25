@@ -1,6 +1,6 @@
 ﻿using System.Drawing;
 using System.Windows.Media.Media3D;
-using CSInteraction.Common;
+using CommonLibrary.CommonElements;
 
 namespace BattleRoyalClient
 {

@@ -1,4 +1,4 @@
-﻿using CSInteraction.ProgramMessage;
+﻿using CommonLibrary;
 
 namespace BattleRoayleServer
 {

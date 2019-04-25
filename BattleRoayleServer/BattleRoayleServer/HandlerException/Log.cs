@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Server;
+using CommonLibrary;
 
 namespace BattleRoayleServer
 {
@@ -15,7 +16,7 @@ namespace BattleRoayleServer
 		/// Обрабатывает ошибки потери соединения с клиентом
 		/// </summary>
 		/// <param name="client"></param>
-		public static void Handler_LostConnectServerClient(ServerClient client)
+		public static void Handler_LostConnectServerClient(ServerClient<IMessage> client)
 		{
 			client.Controler = null;
 			logger.AddInLog("Потеря соединения с клиентом", "Клиент разорвал подключение с сервером");

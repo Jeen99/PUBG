@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
+using CommonLibrary;
 
 namespace BattleRoayleServer
 {
@@ -28,13 +30,13 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg as TimeQuantPassed);
+				case TypesMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);
 					break;
-				case TypesProgramMessage.MakedKill:
+				case TypesMessage.MakedKill:
 					Handler_MakedKill();
 					break;
-				case TypesProgramMessage.GamerDied:
+				case TypesMessage.GamerDied:
 					Handler_GamerDied();
 					break;
 			}
@@ -50,9 +52,9 @@ namespace BattleRoayleServer
 			Kills++;
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
-			TimeInBattle = TimeInBattle.Add(new TimeSpan(0, 0, 0, 0, msg.QuantTime));
+			TimeInBattle = TimeInBattle.Add(new TimeSpan(0, 0, 0, 0, msg.TimePassed));
 		}
 
 		public override void Setup()

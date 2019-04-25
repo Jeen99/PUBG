@@ -2,34 +2,35 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.QueueMessages;
+using CommonLibrary;
 using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-	public class QueueController : IController
+	public class QueueController : IController<IMessage>
 	{
-		private ServerClient client;
+		private ServerClient<IMessage> client;
 		/// <summary>
 		/// Модель игрока в игроовой очереди
 		/// </summary>
 		private QueueGamer gamer;
 
-		public IController GetNewControler(ServerClient client)
+		public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
 		{
 			throw new NotImplementedException();
 		}
 
-		public QueueController(ServerClient client, DataOfAccount data)
+		public QueueController(ServerClient<IMessage> client, DataOfAccount data)
 		{
 			this.client = client;
 			client.Controler = this;
 			client.EventEndSession += Client_EventEndSession;
-			client.SendMessage(new JoinedToQueue());
+			client.SendMessage(new RequestJoinToQueue());
 			gamer = new QueueGamer(client, data);
 		}
 
-		private void Client_EventEndSession(ServerClient Client)
+		private void Client_EventEndSession(ServerClient<IMessage> Client)
 		{
 			Program.QueueOfServer.DeleteOfQueue(gamer);
 		}
@@ -39,10 +40,10 @@ namespace BattleRoayleServer
 			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.DeleteOfQueue:
+				case TypesMessage.RequestExitOfQueue:
 					Handler_DeleteOfMessage();
 					break;
-				case TypesProgramMessage.LoadedQueueForm:
+				case TypesMessage.LoadedQueueForm:
 					Handler_LoadedQueueForm();
 					break;
 				default:
@@ -65,12 +66,12 @@ namespace BattleRoayleServer
 			if (Program.QueueOfServer.DeleteOfQueue(gamer))
 			{
 				//удаление прошло успешно
-				client.SendMessage(new SuccessExitOfQueue());
+				client.SendMessage(new ResultRequestExit(false));
 				new AccountController(gamer);
 			}
 			else
 			{
-				client.SendMessage(new FailedExitOfQueue());
+				client.SendMessage(new ResultRequestExit(false));
 			}
 		}
 

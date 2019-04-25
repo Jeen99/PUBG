@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using Box2DX.Dynamics;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
 
 namespace BattleRoayleServer
 {

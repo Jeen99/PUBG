@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
+using CommonLibrary;
 using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
@@ -51,6 +52,16 @@ namespace BattleRoayleServer
 		{
 			get
 			{
+				//создаем массив состояний оружия
+				List<IMessage> WeaponsState = new List<IMessage>();
+				for (int i = 0; i < weapons.Length; i++)
+				{
+					if (weapons[i] != null)
+					{
+						WeaponsState.Add(weapons[i]?.State);
+					}
+				}
+
 				//создаем массив состояний модификаций
 				List<IMessage> ModifiersState = new List<IMessage>();
 				for (int i = 0; i < modifiers.Length; i++)
@@ -61,16 +72,8 @@ namespace BattleRoayleServer
 					}
 				}
 
-				//создаем массив состояний оружия
-				List<IMessage> WeaponsState = new List<IMessage>();
-				for (int i = 0; i < weapons.Length; i++)
-				{
-					if (weapons[i] != null)
-					{
-						WeaponsState.Add(weapons[i]?.State);
-					}
-				}
-				return new CollectorState(ModifiersState, WeaponsState);
+				
+				return new CollectorState(WeaponsState, ModifiersState);
 
 			}
 		}
@@ -119,16 +122,16 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TryPickUp:
+				case TypesMessage.TryPickUp:
 					Handler_TryPickUp();
 					break;
-				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed((TimeQuantPassed)msg);
+				case TypesMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);
 					break;
 			}
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			//пока только для оружия
 
@@ -170,7 +173,7 @@ namespace BattleRoayleServer
 
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.Update(msg);
-				Parent.Model.AddEvent(new DeleteInMap(weapon.ID));
+				Parent.Model.AddEvent(new DeletedInMap(weapon.ID));
 				Parent.Model?.AddEvent(msg);
 				return true;
 			}

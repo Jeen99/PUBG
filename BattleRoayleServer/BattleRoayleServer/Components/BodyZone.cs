@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 using System.Drawing;
 
 namespace BattleRoayleServer
@@ -49,23 +51,23 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed((TimeQuantPassed)msg);
+				case TypesMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);
 					break;
 			}
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 		
 			//сохраняем количество секунд
 			int leftSecond = timeTillReducton.Seconds;
 			//отнимаем прошедшее время
 
-			timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.QuantTime));
+			timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.TimePassed));
 			if (timeTillReducton.Seconds != leftSecond)
 			{
-				Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
+				Parent.Model?.AddEvent(new ChangedTimeTillReduction(0, timeTillReducton));
 			}
 
 			if(timeTillReducton.Milliseconds < 0) CheckReduction();

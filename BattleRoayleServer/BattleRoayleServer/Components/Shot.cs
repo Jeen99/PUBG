@@ -3,8 +3,9 @@ using System.Windows;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
@@ -47,13 +48,13 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.MakeShot:
-					Handler_MakeShot(msg as MakeShot);
+				case TypesMessage.MakeShot:
+					Handler_MakeShot(msg);
 					break;
 			}		
 		}
 
-		private void Handler_MakeShot(MakeShot msg)
+		private void Handler_MakeShot(IMessage msg)
 		{
 			try
 			{
@@ -79,8 +80,8 @@ namespace BattleRoayleServer
 				//начальная точка выстрела
 				segment.P1 = position;
 				//определяем угол
-				float angle = VectorMethod.DefineAngle(position, new Vec2(msg.PointOfClick.X, msg.PointOfClick.Y));
-				Debug.WriteLine("Угол" + angle);
+				float angle = VectorMethod.DefineAngle(position, new Vec2(msg.Location.X, msg.Location.Y));
+
 				var sweepVector = VectorMethod.RotateVector(angle, bullet.Distance);
 				//конечная точка выстрела
 				segment.P2 = new Vec2
@@ -106,14 +107,14 @@ namespace BattleRoayleServer
 				SolidBody attacked = (SolidBody)objectsForDamage[1]?.GetBody().GetUserData();
 				if (attacked == null) return;
 
-				var damageMsg = new GotDamage(bullet.Damage);
+				var damageMsg = new GotDamage(BodyHolder.Parent.ID, bullet.Damage);
 				attacked.Parent.Update(damageMsg);
 
 				//определяем убили ли мы противника
 				Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();
 				if (healthyAttacked == null) return;
 				//если убили засчитываем фраг
-				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent?.Update(new MakedKill());
+				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent?.Update(new MakedKill(BodyHolder.Parent.ID));
 				
 			}
 			catch (Exception e)

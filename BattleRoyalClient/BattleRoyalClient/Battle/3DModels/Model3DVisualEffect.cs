@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 using System.Timers;
-using CSInteraction.Common;
+using CommonLibrary.CommonElements;
 
 namespace BattleRoyalClient.Battle
 {

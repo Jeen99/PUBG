@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Client;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.AccountMessages;
+using CommonLibrary.QueueMessages;
+
 
 namespace BattleRoyalClient
 {
@@ -17,11 +20,11 @@ namespace BattleRoyalClient
 				return model;
 			}
 		}
-		private BaseClient client;
+		private BaseClient<IMessage> client;
 		private bool OnClick = false;
 		private Account view;
 
-		public AccountController(BaseClient client, Account view)
+		public AccountController(BaseClient<IMessage> client, Account view)
 		{
 			this.client = client;
 			this.view = view;
@@ -36,7 +39,7 @@ namespace BattleRoyalClient
 			if (!OnClick)
 			{
 				OnClick = true;
-				client.SendMessage(new JoinToQueue());
+				client.SendMessage(new RequestJoinToQueue());
 				OnClick = false;
 			}
 		}
@@ -46,10 +49,10 @@ namespace BattleRoyalClient
 			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.DataAccount:
+				case TypesMessage.InitializeAccount:
 					Handle_DataAccount((DataAccount)msg);
 					break;
-				case TypesProgramMessage.JoinedToQueue:
+				case TypesMessage.RequestJoinToQueue:
 					Handler_JoinedToQueue();
 					break;
 			}
@@ -72,7 +75,7 @@ namespace BattleRoyalClient
 			model.Kills = msg.Kills;
 			model.Deaths = msg.Deaths;
 			model.Battles = msg.Battles;
-			model.GameTime = msg.GameTime;
+			model.GameTime = msg.Time;
 			view.Dispatcher.Invoke(() =>
 			{
 				model.CreateChangeModel();

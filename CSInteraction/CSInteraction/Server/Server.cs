@@ -6,24 +6,24 @@ using System.Net;
 
 namespace CSInteraction.Server
 {
-     public class Server
+     public class Server<T>
         {
             public string IPAdress { get; private set; }
             public int Port { get; private set; }
-            private IController BaseControler { get; set; }
-            public List<ServerClient> ConnectedClients { get; private set; }
+            private IController<T> BaseControler { get; set; }
+            public List<ServerClient<T>> ConnectedClients { get; private set; }
 
             private TcpListener ServerPoint;
             private Thread ThreadCheckNewClient;
             //конструктор
-            public Server(string ipAdress, int port, IController baseControler)
+            public Server(string ipAdress, int port, IController<T> baseControler)
             {
                 if (baseControler != null)
                 {
                     IPAdress = ipAdress;
                     Port = port;
                     BaseControler = baseControler;
-                    ConnectedClients = new List<ServerClient>();
+                    ConnectedClients = new List<ServerClient<T>>();
                 }
                 else throw new Exception("Не передано исключения по умолчанию");
             }
@@ -55,7 +55,7 @@ namespace CSInteraction.Server
                         if (BaseControler != null)
                         {
                             //добавляем нового клиента
-                            ServerClient Client = new ServerClient(ServerPoint.AcceptTcpClient(), BaseControler);
+                            ServerClient<T> Client = new ServerClient<T>(ServerPoint.AcceptTcpClient(), BaseControler);
                             Client.EventEndSession += HandlerEndSessionClient;
                             ConnectedClients.Add(Client);
                         }
@@ -65,7 +65,7 @@ namespace CSInteraction.Server
                 }
             }
 
-            private void HandlerEndSessionClient(ServerClient client)
+            private void HandlerEndSessionClient(ServerClient<T> client)
             {
                 ConnectedClients.Remove(client);
 				client.EventEndSession -= HandlerEndSessionClient;

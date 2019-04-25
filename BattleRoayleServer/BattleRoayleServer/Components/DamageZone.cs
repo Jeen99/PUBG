@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 
 namespace BattleRoayleServer
 {
@@ -40,7 +42,7 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TimeQuantPassed:
+				case TypesMessage.TimeQuantPassed:
 					Handler_TimeQuantPassed((TimeQuantPassed)msg);
 					break;
 			}
@@ -49,7 +51,7 @@ namespace BattleRoayleServer
 		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
 		{
 			//уменьшаем время до следующего получения урона от зоны	
-			intervalBetweenDamage = intervalBetweenDamage.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
+			intervalBetweenDamage = intervalBetweenDamage.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
 			if (intervalBetweenDamage.Milliseconds < 0 && bodyZone.Create)
 			{
 				CreateDamage();
@@ -69,7 +71,7 @@ namespace BattleRoayleServer
 				if (bodyZone.Radius < distance)
 				{
 					//игрок получает урон
-					player.Update(new GotDamage(zoneIntervalDamage));
+					player.Update(new GotDamage(this.Parent.ID, zoneIntervalDamage));
 				}
 			}
 		}

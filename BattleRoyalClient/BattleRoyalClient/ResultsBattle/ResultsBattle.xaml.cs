@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
 
 namespace BattleRoyalClient
 {
@@ -20,12 +20,12 @@ namespace BattleRoyalClient
 	/// </summary>
 	public partial class ResultsBattle : Window
 	{
-		public ResultsBattle(EndGame msg)
+		public ResultsBattle(IMessage msg)
 		{
 			InitializeComponent();
 
 			//заполняем поля
-			if (msg.YouDied)
+			if (msg.Result)
 			{
 				Reason.Text = "Вы проиграли!";
 				Reason.Foreground = new SolidColorBrush(Colors.Red);
@@ -37,8 +37,8 @@ namespace BattleRoyalClient
 			}
 
 			Kills.Text = msg.Kills.ToString();
-			Minutes.Text = msg.TimeLife.Minutes.ToString();
-			Seconds.Text = msg.TimeLife.Seconds.ToString();
+			Minutes.Text = msg.Time.Minutes.ToString();
+			Seconds.Text = msg.Time.Seconds.ToString();
 		}
 	}
 }

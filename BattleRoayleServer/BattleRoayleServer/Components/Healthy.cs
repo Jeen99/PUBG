@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 
 namespace BattleRoayleServer
 {
@@ -26,8 +28,8 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.GotDamage:
-					Handler_GotDamage(msg as GotDamage);
+				case TypesMessage.GotDamage:
+					Handler_GotDamage(msg);
 					break;
 			}
 		}
@@ -40,13 +42,13 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void Handler_GotDamage(GotDamage msg)
+		private void Handler_GotDamage(IMessage msg)
 		{
 			HP -= msg.Damage;
 			if (HP <= 0)
 			{
 				Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
-				Parent.Update(new GamerDied());
+				Parent.Update( new GamerDied(this.Parent.ID));
 				Parent.SetDestroyed();
 			}
 			else

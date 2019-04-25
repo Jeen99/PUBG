@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CSInteraction.Client;
+using CommonLibrary;
 
 namespace BattleRoyalClient
 {
@@ -25,7 +26,7 @@ namespace BattleRoyalClient
 		/// Если true, то происходит переход из формы в форму и приложение закрывать не надо
 		/// </summary>
 		public bool Transition { get; set; }
-		public Queue(BaseClient client)
+		public Queue(BaseClient<IMessage> client)
         {
             InitializeComponent();
 			contoller = new QueueContoller(client, this);

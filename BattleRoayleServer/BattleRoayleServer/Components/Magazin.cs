@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 using System.Timers;
 
 namespace BattleRoayleServer
@@ -50,7 +51,7 @@ namespace BattleRoayleServer
 		{
 			Reload =  TypesReload.ReloadMagazin;
 			timeReload = new TimeSpan(0, 0, 0, 0, durationReload_Magazin);	
-			Parent?.Model?.AddEvent(new StartReloadWeapon((Parent as Weapon).Holder.ID));
+			Parent?.Model?.AddEvent(new ReloadWeapon((Parent as Weapon).Holder.ID, true));
 			
 		}
 
@@ -103,20 +104,20 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg as TimeQuantPassed);
+				case TypesMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);
 					break;
-				case TypesProgramMessage.MakeReloadWeapon:
+				case TypesMessage.MakeReloadWeapon:
 					Create_ReloadMagazin();
 					break;
 			}
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			if (Reload != TypesReload.Not)
 			{
-					timeReload = timeReload.Add(new TimeSpan(0, 0, 0, 0, -msg.QuantTime));
+					timeReload = timeReload.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
 					if (timeReload.Milliseconds < 0)
 					{
 						switch (Reload)
@@ -144,7 +145,7 @@ namespace BattleRoayleServer
 			//cоздаем новый магазин
 			bulletsInMagazinNow = bulletsInMagazin;
 
-			Parent?.Model?.AddEvent(new EndReloadWeapon((Parent as Weapon).Holder.ID));
+			Parent?.Model?.AddEvent(new ReloadWeapon((Parent as Weapon).Holder.ID, false));
 
 		}
 

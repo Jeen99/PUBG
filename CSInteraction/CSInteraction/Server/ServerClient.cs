@@ -6,32 +6,29 @@ using System.IO;
 using System.Threading;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Net;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
-using System.Threading.Tasks;
+using ObservalableExtended;
 
 namespace CSInteraction.Server
 {
-    public delegate void EndSession(ServerClient Client);
-
-    public class ServerClient
+    public class ServerClient<T>
     {
         private TcpClient Client;
         private BinaryFormatter formatter;
         private Thread ThreadOfHandlerMsg;
-        public IController Controler { get; set; }
-		public ObservableQueue<IMessage> ReceivedMsg { get; private set; }
+        public IController<T> Controler { get; set; }
+		public ObservableQueue<T> ReceivedMsg { get; private set; }
 		private Mutex SendMsgSinch = new Mutex();
-        //уведомляет о получении нового сообщения от клиента
-        public event EndSession EventEndSession;
+		
+		//уведомляет о получении нового сообщения от клиента
+		public event EndSession EventEndSession;
 
-        public ServerClient(TcpClient client, IController baseControler)
+        public ServerClient(TcpClient client, IController<T> baseControler)
         {
             Client = client;
             formatter = new BinaryFormatter();
             //создаем обработчик сообшений от пользователя
             Controler = baseControler.GetNewControler(this);
-			ReceivedMsg = new ObservableQueue<IMessage>();
+			ReceivedMsg = new ObservableQueue<T>();
 			//обработка сообщений производитсва в отдельном потоке
 			ThreadOfHandlerMsg = new Thread(StartReadMessage);
             ThreadOfHandlerMsg.Start();
@@ -58,7 +55,7 @@ namespace CSInteraction.Server
         }
 
         //отправляет сообщение серверу
-        public bool SendMessage(IMessage msg)
+        public bool SendMessage(T msg)
         {
             try
             {
@@ -176,17 +173,19 @@ namespace CSInteraction.Server
             //считываем сообщение
             ReadData(Msg, length, stream);
             //десериализуем сообщение
-            IMessage ObjectMsg;
+            T ObjectMsg;
             using (MemoryStream MemStream = new MemoryStream())
             {
                 MemStream.Write(Msg, 0, Msg.Length);
                 MemStream.Seek(0, SeekOrigin.Begin);
-                ObjectMsg = (IMessage)formatter.Deserialize(MemStream);
+                ObjectMsg = (T)formatter.Deserialize(MemStream);
             }
 			ReceivedMsg.Enqueue(ObjectMsg);
             //генерируем событие
 			if(Controler!=null)
 			Controler.HanlderNewMessage();
         }
-    }
+
+		public delegate void EndSession(ServerClient<T> Client);
+	}
 }

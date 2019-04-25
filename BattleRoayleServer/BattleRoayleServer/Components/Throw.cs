@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.GameMessages;
 using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
@@ -41,13 +42,13 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.MakeShot:
-					Handler_MakeShot(msg as MakeShot);
+				case TypesMessage.MakeShot:
+					Handler_MakeShot(msg);
 					break;
 			}
 		}
 
-		private void Handler_MakeShot(MakeShot msg)
+		private void Handler_MakeShot(IMessage msg)
 		{
 			SolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
 			if (BodyHolder == null)
@@ -60,8 +61,8 @@ namespace BattleRoayleServer
 			//получаем позицию игрока
 			Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
 			//определяем импульс
-			float dX = msg.PointOfClick.X - position.X;
-			float dY = -(msg.PointOfClick.Y - position.Y);
+			float dX = msg.Location.X - position.X;
+			float dY = -(msg.Location.Y - position.Y);
 			//нельзя бросить дальше дальности броска
 			if (System.Math.Sqrt(dX * dX + dY * dY) > strength) return;
 			Vec2 impulse = new Vec2(dX, dY);

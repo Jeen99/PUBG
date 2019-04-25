@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 
 namespace BattleRoayleServer
 {
@@ -52,19 +53,19 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.ChoiceWeapon:
-					Handler_ChoiceWeapon(msg as ChoiceWeapon);
+				case TypesMessage.ChoiceWeapon:
+					Handler_ChoiceWeapon(msg);
 					break;
-				case TypesProgramMessage.MakeShot:
-					Handler_MakeShot(msg as MakeShot);
+				case TypesMessage.MakeShot:
+					Handler_MakeShot(msg);
 					break;
-				case TypesProgramMessage.AddWeapon:
-					Handler_AddWeapon(msg as AddWeapon);
+				case TypesMessage.AddWeapon:
+					Handler_AddWeapon(msg);
 					break;
 			}
 		}
 
-		private void Handler_AddWeapon(AddWeapon msg)
+		private void Handler_AddWeapon(IMessage msg)
 		{
 			//если это первое подобранное оружие делаем его выбранным
 			if (currentWeapon == null)
@@ -72,7 +73,7 @@ namespace BattleRoayleServer
 				ChangeWeapon(msg.TypeWeapon);
 			}
 		}
-		private void Handler_MakeShot(MakeShot shot)
+		private void Handler_MakeShot(IMessage shot)
 		{
 			if (currentWeapon != null)
 			{
@@ -80,9 +81,9 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void Handler_ChoiceWeapon(ChoiceWeapon msg)
+		private void Handler_ChoiceWeapon(IMessage msg)
 		{		
-			ChangeWeapon(msg.ChooseWeapon);		
+			ChangeWeapon(msg.TypeWeapon);		
 		}
 
 		private void ChangeWeapon(TypesWeapon type)

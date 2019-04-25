@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
 using Box2DX.Common;
 using Box2DX.Collision;
 using Box2DX.Dynamics;
+using CommonLibrary.GameMessages;
 
 
 namespace BattleRoayleServer
@@ -105,14 +105,14 @@ namespace BattleRoayleServer
 
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg as TimeQuantPassed);					
+				case TypesMessage.TimeQuantPassed:
+					Handler_TimeQuantPassed(msg);					
 					break;
 			}
 			
 		}
 
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			Vec2 position = Body.GetPosition();
 			if (position.X != shape.X || position.Y != shape.Y)

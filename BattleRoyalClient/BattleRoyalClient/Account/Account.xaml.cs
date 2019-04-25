@@ -12,7 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using CSInteraction.Client;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+
 
 namespace BattleRoyalClient
 {
@@ -27,12 +28,12 @@ namespace BattleRoyalClient
 		/// </summary>
 		public bool Transition { get; set; }
 
-		public Account(BaseClient client)
+		public Account(BaseClient<IMessage> client)
 		{
 			BaseInitialize(client);
 		}
 
-		private void BaseInitialize(BaseClient client)
+		private void BaseInitialize(BaseClient<IMessage> client)
 		{
 			InitializeComponent();
 			controller = new AccountController(client, this);
@@ -42,7 +43,7 @@ namespace BattleRoyalClient
 		}
 
 
-		public Account(BaseClient client, EndGame results)
+		public Account(BaseClient<IMessage> client, IMessage results)
 		{
 			BaseInitialize(client);
 			//отображаем форму с итогами битвы

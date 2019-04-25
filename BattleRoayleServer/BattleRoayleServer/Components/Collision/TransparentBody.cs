@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 using System.Drawing;
 
 namespace BattleRoayleServer
@@ -38,7 +40,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			Parent.Model.AddEvent(new DeleteInMap(Parent.ID));
+			Parent.Model.AddEvent(new DeletedInMap(Parent.ID));
 		}
 
 		public override void Setup()

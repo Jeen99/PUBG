@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections.Concurrent;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 
 namespace BattleRoayleServer
 {
@@ -106,7 +107,7 @@ namespace BattleRoayleServer
 				item.Dispose();
 			}
 
-			Model.AddEvent(new DeleteInMap(ID));	
+			Model.AddEvent(new DeletedInMap(ID));	
 		}
 
 		public virtual void Setup()

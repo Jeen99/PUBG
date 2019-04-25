@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
 using CSInteraction.Client;
 using System.Threading;
+using CommonLibrary.AutorizationMessages;
 
 namespace BattleRoyalClient
 {
@@ -13,7 +14,7 @@ namespace BattleRoyalClient
 		private AuthorizationModel model;
 		//чтобы не обрабатывать большо одного нажатия кнопки одновременно
 		private bool PerfomConnect = false;
-		private BaseClient client;
+		private BaseClient<IMessage> client;
 		private BattleRoyalClient.Autorization view;
 
 		public IAuthorizationModel Model {
@@ -35,7 +36,7 @@ namespace BattleRoyalClient
 				}
 				if (client.ConnectToServer())
 				{
-					client.SendMessage(new CSInteraction.ProgramMessage.Authorization(model.NickName, model.Password));
+					client.SendMessage(new RequestOnAutorization(model.NickName, model.Password));
 				}
 				else
 				{
@@ -62,43 +63,43 @@ namespace BattleRoyalClient
 			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.ErrorAuhorization:
-					Handler_ErrorAuhorization();
-					break;
-				case TypesProgramMessage.SuccessAuthorization:
-					Handler_SuccessAuthorization();
+				case TypesMessage.ResultAutorization:
+					Handler_ResultAutorization(msg);
 					break;
 			}
 		}
 
-		private void Handler_ErrorAuhorization()
+		private void Handler_ResultAutorization(IMessage msg)
 		{
-
-			model.State = StatesAutorizationModel.IncorrectData;
-			view.Dispatcher.Invoke(() =>
+			if (msg.Result)
 			{
-				model.CreateModelChange();
-			});
+				view.Dispatcher.Invoke(() =>
+				{
+					client.EventNewMessage -= this.Client_EventNewMessage;
+					client.EventEndSession -= this.Client_EventEndSession;
+					Account account = new Account(client);
+					account.Show();
+					view.Transition = true;
+					view.Close();
+				});
+			}
+			else
+			{
+				model.State = StatesAutorizationModel.IncorrectData;
+				view.Dispatcher.Invoke(() =>
+				{
+					model.CreateModelChange();
+				});
+			}
+			
 		}
 
-		private void Handler_SuccessAuthorization()
-		{
-			view.Dispatcher.Invoke(() =>
-			{
-				client.EventNewMessage -= this.Client_EventNewMessage;
-				client.EventEndSession -= this.Client_EventEndSession;
-				Account account = new Account(client);
-				account.Show();
-				view.Transition = true;
-				view.Close();
-			});
-		}
 		/// <summary>
 		/// Загружает сетевый настройки из файла и создает объект BaseClient
 		/// </summary>
-		private BaseClient LoadNetworkSettings()
+		private BaseClient<IMessage> LoadNetworkSettings()
 		{
-			return new BaseClient("127.0.0.1", 11000);
+			return new BaseClient<IMessage>("127.0.0.1", 11000);
 		}
 		public AuthorizationController(Autorization view)
 		{

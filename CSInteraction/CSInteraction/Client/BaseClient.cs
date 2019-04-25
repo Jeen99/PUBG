@@ -6,14 +6,13 @@ using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System.Threading;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+using ObservalableExtended;
 using System.Threading.Tasks;
 
 
 namespace CSInteraction.Client
 {
-    public class BaseClient
+    public class BaseClient<T>
     {
         public string IPAdress { get; private set; }
         public int Port { get; private set; }
@@ -26,14 +25,14 @@ namespace CSInteraction.Client
         //уведомляет о получении нового сообщения от сервера
         public event NewMessage EventNewMessage;
         public event EndSession EventEndSession;
-		public ObservableQueue<IMessage> ReceivedMsg { get; private set; }
+		public ObservableQueue<T> ReceivedMsg { get; private set; }
 		//конструктор
 		public BaseClient(string ipAdress, int port)
         {
             IPAdress = ipAdress;
             Port = port;
             Status = StatusClient.Initialize;
-			ReceivedMsg = new ObservableQueue<IMessage>();
+			ReceivedMsg = new ObservableQueue<T>();
 		}
         //закрывает подлючение
         public void Close()
@@ -79,7 +78,7 @@ namespace CSInteraction.Client
 		    return true;
         }
         //отправляет сообщение серверу
-        public bool SendMessage(IMessage msg)
+        public bool SendMessage(T msg)
         {
             try
             {
@@ -189,12 +188,12 @@ namespace CSInteraction.Client
             //считываем сообщение
             ReadData(Msg, length, stream);
             //десериализуем сообщение
-            IMessage ObjectMsg;
+            T ObjectMsg;
             using (MemoryStream MemStream = new MemoryStream())
             {
                 MemStream.Write(Msg, 0, Msg.Length);
                 MemStream.Seek(0, SeekOrigin.Begin);
-                ObjectMsg = (IMessage)formatter.Deserialize(MemStream);
+                ObjectMsg = (T)formatter.Deserialize(MemStream);
             }
 			ReceivedMsg.Enqueue(ObjectMsg);
             //генерируем событие

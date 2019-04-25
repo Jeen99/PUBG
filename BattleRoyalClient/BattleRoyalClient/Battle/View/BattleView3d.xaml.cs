@@ -12,12 +12,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
+using CommonLibrary;
 using CSInteraction.Client;
 using System.Collections.Concurrent;
 using BattleRoyalClient.Battle;
 using System.Diagnostics;
-using CSInteraction.Common;
 using System.Drawing;
 using Point = System.Windows.Point;
 using Brushes = System.Windows.Media.Brushes;
@@ -38,7 +39,7 @@ namespace BattleRoyalClient
 
 		private VisualConteyner visual;// хранит 3Д модели
 
-		public BattleView3d(ulong id, BaseClient client)
+		public BattleView3d(ulong id, BaseClient<IMessage> client)
 		{
 			this.InitializeComponent();
 
@@ -57,7 +58,7 @@ namespace BattleRoyalClient
 			//viewport.MouseWheel += BattleView3d_MouseWheel;
 			viewport.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
-			client.SendMessage(new LoadedBattleForm());
+			client.SendMessage(new LoadedBattleForm(id));
 
 			this.MouseDown += BattleView3d_MouseDown;
 

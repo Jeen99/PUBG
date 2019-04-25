@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Client;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.QueueMessages;
 
 namespace BattleRoyalClient
 {
     class QueueContoller
     {
 		private QueueModel model;
-		private BaseClient client;
+		private BaseClient<IMessage> client;
 		private Queue view;
 
 		public IQueueModel Model
@@ -19,7 +20,7 @@ namespace BattleRoyalClient
 			get { return model; }
 		}
 
-		public QueueContoller(BaseClient client, Queue view)
+		public QueueContoller(BaseClient<IMessage> client, Queue view)
 		{
 			this.client = client;
 			this.view = view;
@@ -34,17 +35,14 @@ namespace BattleRoyalClient
 			IMessage msg = client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.ChangeCountPlayersInQueue:
+				case TypesMessage.ChangeCountPlayersInQueue:
 					Handler_ChangeCountPlayersInQueue((ChangeCountPlayersInQueue)msg);
 					break;
-				case TypesProgramMessage.SuccessExitOfQueue:
-					Handler_SuccessExitOfQueue();
+				case TypesMessage.ResultRequestExit:
+					Handler_ResultRequestExit(msg);
 					break;
-				case TypesProgramMessage.FailedExitOfQueue:
-					Handle_FailedExitOfQueue();
-					break;
-				case TypesProgramMessage.AddInBattle:
-					Handler_AddInBattle((AddInBattle)msg);
+				case TypesMessage.AddInBattle:
+					Handler_AddInBattle(msg);
 					break;
 				default:
 					int a = 10;
@@ -52,7 +50,7 @@ namespace BattleRoyalClient
 			}
 		}
 
-		private void Handler_AddInBattle(AddInBattle msg)
+		private void Handler_AddInBattle(IMessage msg)
 		{
 			view.Dispatcher.Invoke(()=>
 			{
@@ -65,26 +63,29 @@ namespace BattleRoyalClient
 			});
 		}
 
-		private void Handler_SuccessExitOfQueue()
+		private void Handler_ResultRequestExit(IMessage msg)
 		{
-			view.Dispatcher.Invoke(() => 
+			if (msg.Result)
 			{
-				client.EventEndSession -= this.Client_EventEndSession;
-				client.EventNewMessage -= this.Client_EventNewMessage;
-				Account formAccount = new Account(client);
-				formAccount.Show();
-				view.Transition = true;
-				view.Close();
-			});
-		}
-		private void Handle_FailedExitOfQueue()
-		{
-			//если попытка выхода закончилась неудачей, значит игрок уже добавлен в игровую комнату
-		}
+				view.Dispatcher.Invoke(() =>
+				{
+					client.EventEndSession -= this.Client_EventEndSession;
+					client.EventNewMessage -= this.Client_EventNewMessage;
+					Account formAccount = new Account(client);
+					formAccount.Show();
+					view.Transition = true;
+					view.Close();
+				});
+			}
+			else
+			{
+				//если попытка выхода закончилась неудачей, значит игрок уже добавлен в игровую комнату
+			}
+		}	
 
 		private void Handler_ChangeCountPlayersInQueue(ChangeCountPlayersInQueue msg)
 		{
-			model.PlaysersInQueue = msg.PlayersInQueue;
+			model.PlaysersInQueue = msg.Count;
 			view.Dispatcher.Invoke(() =>
 			{
 				model.CreateChangeModel();
@@ -93,7 +94,7 @@ namespace BattleRoyalClient
 
 		public void Handler_SignOutOfQueue(object sender, EventArgs e)
 		{
-			client.SendMessage(new DeleteOfQueue());
+			client.SendMessage(new RequestExitOfQueue());
 		}
 
 		private void Client_EventEndSession()

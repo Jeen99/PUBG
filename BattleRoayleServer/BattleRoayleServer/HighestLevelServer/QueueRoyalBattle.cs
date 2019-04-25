@@ -5,7 +5,8 @@ using System.Text;
 using CSInteraction.Server;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.QueueMessages;
 using System.Threading.Tasks;
 
 namespace BattleRoayleServer

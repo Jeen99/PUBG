@@ -3,25 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSInteraction.ProgramMessage;
 using CSInteraction.Client;
-using CSInteraction.Common;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
 using System.Windows.Input;
 using System.Drawing;
+using CommonLibrary.GameMessages;
 
 namespace BattleRoyalClient
 {
 	class UserActionController
 	{
-		private BaseClient client;
+		private BaseClient<IMessage> client;
 		private Direction direction;
 		private GameActionController gameController;
 		private BattleView3d view;
+		private ulong idPlayer;
 
-		public UserActionController(BaseClient client, GameActionController controller, BattleView3d view)
+		public UserActionController(BaseClient<IMessage> client, GameActionController controller, BattleView3d view)
 		{
 			this.client = client;
 			gameController = controller;
+			idPlayer = gameController.Model.Chararcter.ID;
 			this.view = view;
 			this.direction = new Direction();
 		}
@@ -45,37 +48,37 @@ namespace BattleRoyalClient
 						direction.Vertical = DirectionVertical.Down;
 						break;
 					case Key.F:
-						client.SendMessage(new TryPickUp());
+						client.SendMessage(new TryPickUp(idPlayer));
 						break;
 					case Key.Oem1:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.Gun));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.Gun));
 						break;
 					case Key.Oem2:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.ShotGun));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.ShotGun));
 						break;
 					case Key.Oem3:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.AssaultRifle));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.AssaultRifle));
 						break;
 					case Key.Oem4:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.GrenadeCollection));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.GrenadeCollection));
 						break;
 					case Key.R:
-						client.SendMessage(new MakeReloadWeapon());
+						client.SendMessage(new MakeReloadWeapon(idPlayer));
 						break;
 					case Key.Escape:
 						client.Close();
 						break;
 					case Key.NumPad1:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.Gun));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.Gun));
 						break;
 					case Key.NumPad2:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.ShotGun));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.ShotGun));
 						break;
 					case Key.NumPad3:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.AssaultRifle));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.AssaultRifle));
 						break;
 					case Key.NumPad4:
-						client.SendMessage(new ChoiceWeapon(TypesWeapon.GrenadeCollection));
+						client.SendMessage(new ChoiceWeapon(idPlayer, TypesWeapon.GrenadeCollection));
 						break;
 				}
 
@@ -84,7 +87,7 @@ namespace BattleRoyalClient
 					e.Key == Key.Left ||
 					e.Key == Key.Right)
 				{
-					client.SendMessage(new GoTo(direction));
+					client.SendMessage(new GoTo(idPlayer, direction));
 				}
 			}
 		}
@@ -97,14 +100,14 @@ namespace BattleRoyalClient
 				e.KeyboardDevice.IsKeyUp(Key.Right))
 				{
 					direction.Horisontal = DirectionHorisontal.None;
-					client.SendMessage(new GoTo(direction));
+					client.SendMessage(new GoTo(idPlayer, direction));
 				}
 
 				if (e.KeyboardDevice.IsKeyUp(Key.Up) &&
 					e.KeyboardDevice.IsKeyUp(Key.Down))
 				{
 					direction.Vertical = DirectionVertical.None;
-					client.SendMessage(new GoTo(direction));
+					client.SendMessage(new GoTo(idPlayer, direction));
 				}
 			}
 		}
@@ -113,7 +116,7 @@ namespace BattleRoyalClient
 		{
 			if (gameController.Loaded)
 			{
-				client.SendMessage(new MakeShot(pointOfClick));
+				client.SendMessage(new MakeShot(idPlayer, pointOfClick));
 			}
 		}
 
@@ -122,7 +125,7 @@ namespace BattleRoyalClient
 			if (gameController.Loaded)
 			{
 				//отправляем сообщение
-				client.SendMessage(new PlayerTurn(angle));
+				client.SendMessage(new PlayerTurn(idPlayer, angle));
 				gameController.Model.Chararcter.Character.Update(angle);
 				view.Dispatcher.Invoke(() => { gameController.Model.OnChangeGameObject(gameController.Model.Chararcter.Character); });
 			}

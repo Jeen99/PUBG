@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
+using CommonLibrary;
+using CommonLibrary.GameMessages;
 using System.Collections.Specialized;
 using System.Drawing;
 using Box2DX.Common;
 using Box2DX.Collision;
 using Box2DX.Dynamics;
+using ObservalableExtended;
+using CommonLibrary.CommonElements;
 
 namespace BattleRoayleServer
 {
@@ -543,7 +545,7 @@ namespace BattleRoayleServer
 		public void MakeStep(int passedTime)
 		{
 			Field.Step((float)passedTime / 1000, 8, 3);
-			TimeQuantPassed msg = new TimeQuantPassed(passedTime);
+			IMessage msg = new TimeQuantPassed(passedTime);
 
 			for (Body list = Field.GetBodyList(); list != null; list = list.GetNext())
 			{

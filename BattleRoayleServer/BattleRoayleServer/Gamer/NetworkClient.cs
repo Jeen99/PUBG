@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.GameMessages;
+using CommonLibrary;
 using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
-	public class NetworkClient : INetworkClient, IController
+	public class NetworkClient : INetworkClient, IController<IMessage>
 	{
 		public IPlayer Player { get; private set; }
 		public event GamerIsLoaded Event_GamerIsLoaded;
@@ -17,7 +18,7 @@ namespace BattleRoayleServer
 
 		public string Nick { get; private set; }
 
-		public ServerClient Client { get; private set; }
+		public ServerClient<IMessage> Client { get; private set; }
 
 		public string Password { get; private set; }
 
@@ -39,7 +40,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public NetworkClient(IPlayer gamerRoomLogic, ServerClient gamer, string nick, string password)
+		public NetworkClient(IPlayer gamerRoomLogic, ServerClient<IMessage> gamer, string nick, string password)
 		{
 			this.Player = gamerRoomLogic;
 			visibleArea = new RectangleF(0,0, widthVisibleArea, heightVisibleArea);
@@ -53,7 +54,7 @@ namespace BattleRoayleServer
 
 		}
 		//игрок вышел из игры до завершения игры
-		private void Client_EventEndSession(ServerClient Client)
+		private void Client_EventEndSession(ServerClient<IMessage> Client)
 		{
 			EventNetorkClientDisconnect?.Invoke(this);
 		}
@@ -63,10 +64,10 @@ namespace BattleRoayleServer
 			IMessage msg = Client.ReceivedMsg.Dequeue();
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.LoadedBattleForm:
+				case TypesMessage.LoadedBattleForm:
 					Handler_LoadedBattleForm();
 					break;
-				case TypesProgramMessage.PlayerTurn:
+				case TypesMessage.PlayerTurn:
 					Event_GetViewMsg?.Invoke(Player.ID, msg);
 					break;
 				default:
@@ -80,7 +81,7 @@ namespace BattleRoayleServer
 			Event_GamerIsLoaded(this);
 		}
 
-		public IController GetNewControler(ServerClient client)
+		public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
 		{
 			throw new Exception("Данный класс не может реализовать данную функцию");
 		}
@@ -101,12 +102,12 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Cохраняем результаты битвы в базе данных
 		/// </summary>
-		public void SaveStatistics(EndGame msg)
+		public void SaveStatistics(IMessage msg)
 		{
 			int deaths;
-			if (msg.YouDied) deaths = 1;
+			if (msg.Result) deaths = 1;
 			else deaths = 0;
-			BDAccounts.AddToStatistic(new DataOfAccount(Nick, Password, msg.Kills, deaths, 1, msg.TimeLife));
+			BDAccounts.AddToStatistic(new DataOfAccount(Nick, Password, msg.Kills, deaths, 1, msg.Time));
 		}
 	}
 }

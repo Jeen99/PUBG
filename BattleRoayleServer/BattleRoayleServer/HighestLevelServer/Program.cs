@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSInteraction.Server;
-
+using CommonLibrary;
 
 namespace BattleRoayleServer
 {
     class Program
     {
-        public static Server Server { get; private set; }
+        public static Server<IMessage> Server { get; private set; }
         public static QueueRoyalBattle QueueOfServer { get; private set; }
         public static Rooms RoomsOfRoyaleBattle { get; private set; }
 
@@ -55,7 +55,7 @@ namespace BattleRoayleServer
 
         static private void AutomaticLoadServer()
         {
-            Server = new Server("127.0.0.1", 11000, new AuthorizationController());
+            Server = new Server<IMessage>("127.0.0.1", 11000, new AuthorizationController());
             if (Server.StartServer())
             {
                 Console.WriteLine("Сервер запущен");
@@ -81,7 +81,7 @@ namespace BattleRoayleServer
                     continue;
                 }
 
-                Server = new Server(ipAdress, portServer, new AuthorizationController());
+                Server = new Server<IMessage>(ipAdress, portServer, new AuthorizationController());
 
                 if (Server.StartServer())
                 {

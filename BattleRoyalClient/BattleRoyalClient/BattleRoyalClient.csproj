@@ -38,9 +38,16 @@
     <Reference Include="Box2DX, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\BattleRoayleServer\packages\Box2DX.2.0.2.0\lib\net40\Box2DX.dll</HintPath>
     </Reference>
+    <Reference Include="CommonLibrary">
+      <HintPath>..\..\CommonLibrary\bin\Debug\netstandard2.0\CommonLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="CSInteraction, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\CSInteraction\CSInteraction\bin\Debug\CSInteraction.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="ObservalableExtended">
+      <HintPath>..\..\ObservalableExtended\bin\Debug\ObservalableExtended.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

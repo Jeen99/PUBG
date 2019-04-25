@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Timers;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.GameMessages;
+using CommonLibrary.CommonElements;
 using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
-using CSInteraction.Common;
+
 
 namespace BattleRoayleServer
 {
@@ -63,7 +65,7 @@ namespace BattleRoayleServer
 		private IMessage Filter_StateRoom(ulong ID, RoomState stateRoom)
 		{
 			List<IMessage> filterStates = new List<IMessage>();
-			foreach (GameObjectState stateObject in stateRoom.GameObjectsStates)
+			foreach (GameObjectState stateObject in stateRoom.InsertCollections[0])
 			{
 				if (stateObject.ID == ID)
 				{
@@ -73,14 +75,14 @@ namespace BattleRoayleServer
 				{
 					//только данные визуальных компонентов
 					List<IMessage> filterStatesComponents = new List<IMessage>();
-					foreach (IMessage stateComponent in stateObject.StatesComponents)
+					foreach (IMessage stateComponent in stateObject.InsertCollections[0])
 					{
 						switch (stateComponent.TypeMessage)
 						{
-							case TypesProgramMessage.BodyState:
-							case TypesProgramMessage.CurrentWeaponState:
-							case TypesProgramMessage.FieldState:
-							case TypesProgramMessage.BodyZoneState:
+							case TypesMessage.BodyState:
+							case TypesMessage.CurrentWeaponState:
+							case TypesMessage.FieldState:
+							case TypesMessage.BodyZoneState:
 								filterStatesComponents.Add(stateComponent);
 								break;
 						}
@@ -88,12 +90,12 @@ namespace BattleRoayleServer
 
 					switch (stateObject.TypeMessage)
 					{
-						case  TypesProgramMessage.WeaponState:
+						case  TypesMessage.WeaponState:
 							var weaponState = (WeaponState)stateObject;
-							filterStates.Add(new WeaponState(weaponState.ID, weaponState.Type, weaponState.TypeWeapon, filterStatesComponents));
+							filterStates.Add(new WeaponState(weaponState.ID, weaponState.TypeGameObject, weaponState.TypeWeapon, filterStatesComponents));
 							break;
 						default:
-							filterStates.Add(new GameObjectState(stateObject.ID, stateObject.Type, filterStatesComponents));
+							filterStates.Add(new GameObjectState(stateObject.ID, stateObject.TypeGameObject, filterStatesComponents));
 							break;
 					}
 					
@@ -115,33 +117,32 @@ namespace BattleRoayleServer
 				switch (msg.TypeMessage)
 				{
 					//сообщения, которые отправляются только игроку создавшему это событие
-					case TypesProgramMessage.AddWeapon:
-					case TypesProgramMessage.ChangedValueHP:
-					case TypesProgramMessage.StartReloadWeapon:
-					case TypesProgramMessage.EndRelaodWeapon:
-						Handler_PrivateMsg((IOutgoing)msg);
+					case TypesMessage.AddWeapon:
+					case TypesMessage.ChangedValueHP:
+					case TypesMessage.ReloadWeapon:
+						Handler_PrivateMsg(msg);
 						break;
 					//сообщения которые отправляеются всем
-					case TypesProgramMessage.DeleteInMap:
-					case TypesProgramMessage.ChangedCurrentWeapon:
-					case TypesProgramMessage.GameObjectState:
-					case TypesProgramMessage.WeaponState:
-					case TypesProgramMessage.ChangedTimeTillReduction:
-					case TypesProgramMessage.ChangeCountPlayersInGame:
+					case TypesMessage.DeletedInMap:
+					case TypesMessage.ChangedCurrentWeapon:
+					case TypesMessage.GameObjectState:
+					case TypesMessage.WeaponState:
+					case TypesMessage.ChangedTimeTillReduction:
+					case TypesMessage.ChangeCountPayersInGame:
 						Handler_BroadcastMsg(msg);
 						break;
-					case TypesProgramMessage.EndGame:
-						Handler_EndGame(msg as EndGame);
+					case TypesMessage.EndGame:
+						Handler_EndGame(msg);
 						break;
 					//все остальные события
 					default:
-						Handler_DefaulteMsg((IOutgoing)msg);
+						Handler_DefaulteMsg(msg);
 						break;
 
 				}
 		}
 
-		private void Handler_EndGame(EndGame msg)
+		private void Handler_EndGame(IMessage msg)
 		{
 			lock (AccessSinchClients)
 			{
@@ -169,7 +170,7 @@ namespace BattleRoayleServer
 			
 		}
 
-		private void Handler_PrivateMsg(IOutgoing msg)
+		private void Handler_PrivateMsg(IMessage msg)
 		{
 			
 				if (Clients.ContainsKey(msg.ID))
@@ -179,7 +180,7 @@ namespace BattleRoayleServer
 			
 		}
 
-		private void Handler_DefaulteMsg(IOutgoing msg)
+		private void Handler_DefaulteMsg(IMessage msg)
 		{
 			
 				if (!Clients.ContainsKey(msg.ID))
@@ -190,7 +191,7 @@ namespace BattleRoayleServer
 						foreach (var id in Clients.Keys)
 						{
 							//если область видимости одного игрока находит на другого отправляем ему сообщение
-							if (Clients[id].VisibleArea.Contains(message.NewLocation.X, message.NewLocation.Y))
+							if (Clients[id].VisibleArea.Contains(message.Location.X, message.Location.Y))
 							{
 								Clients[id].Client.SendMessage((IMessage)msg);
 							}
@@ -254,17 +255,17 @@ namespace BattleRoayleServer
 					   gamers[i].NickName, gamers[i].Password);
 					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
 					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
-					client.Event_GetViewMsg += Client_Event_GetViewMsg1;
+					client.Event_GetViewMsg += Client_Event_GetViewMsg;
 					Clients.Add(client.Player.ID, client);
 				}
 			}
 		}
 
-		private void Client_Event_GetViewMsg1(ulong ID, IMessage msg)
+		private void Client_Event_GetViewMsg(ulong ID, IMessage msg)
 		{
 			switch (msg.TypeMessage)
 			{
-				case TypesProgramMessage.PlayerTurn:
+				case TypesMessage.PlayerTurn:
 					Handler_PlayerTurn(ID, (PlayerTurn)msg);
 					break;
 			}
@@ -286,7 +287,7 @@ namespace BattleRoayleServer
 				{
 					if (area.IntersectsWith(Clients[id].VisibleArea))
 					{
-						Clients[id].Client.SendMessage(new PlayerTurned(ID, msg.Angle));
+						Clients[id].Client.SendMessage(new PlayerTurn(ID, msg.Angle));
 					}
 				}
 			}

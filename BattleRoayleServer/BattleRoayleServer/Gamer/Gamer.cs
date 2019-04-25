@@ -4,8 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Collections.Concurrent;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
+using CommonLibrary;
+using CommonLibrary.GameMessages;
+using CommonLibrary.CommonElements;
 using Box2DX.Collision;
 
 namespace BattleRoayleServer

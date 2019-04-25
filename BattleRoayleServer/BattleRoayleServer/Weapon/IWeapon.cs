@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-using CSInteraction.Common;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
 
 namespace BattleRoayleServer
 {
