@@ -13,13 +13,11 @@ namespace CommonLibrary.GameMessages
 	{
 		public ulong ID { get; private set; }
 
-		public int Kills { get; private set; }
+		public long Kills { get; private set; }
 
 		public TimeSpan Time { get; private set; }
 
 		public bool Result { get; private set; }
-
-		long IMessage.Kills => throw new NotImplementedException();
 
 		public long Deaths => throw new NotImplementedException();
 
@@ -57,7 +55,7 @@ namespace CommonLibrary.GameMessages
 
 		public TypesGameObject TypeGameObject => throw new NotImplementedException();
 
-		public List<List<IMessage>> InsertCollections => throw new NotImplementedException();
+		public List<IMessage> InsertCollections => throw new NotImplementedException();
 
 		public TypesMessage TypeMessage { get; } = TypesMessage.EndGame;
 

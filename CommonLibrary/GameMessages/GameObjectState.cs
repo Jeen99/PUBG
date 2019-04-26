@@ -56,7 +56,7 @@ namespace CommonLibrary.GameMessages
 
 		public SizeF Size => throw new NotImplementedException();
 
-		public List<List<IMessage>> InsertCollections { get; } = new List<List<IMessage>>();
+		public List<IMessage> InsertCollections { get; private set; }
 
 		public virtual TypesMessage TypeMessage { get; } = TypesMessage.GameObjectState;
 
@@ -64,7 +64,7 @@ namespace CommonLibrary.GameMessages
 		{
 			ID = id;
 			TypeGameObject = type;
-			InsertCollections.Add(statesComponents);
+			InsertCollections = statesComponents;
 		}
 	}
 }

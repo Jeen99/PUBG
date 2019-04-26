@@ -57,11 +57,8 @@ namespace BattleRoayleServer
 					Log.AddNewRecord("Получено null сообщение");
 					return;
 				}
-
-				lock (sinchWorkWithComponent)
-				{	
+			
 					Components.UpdateComponents(msg);
-				}
 			}
 		}
 

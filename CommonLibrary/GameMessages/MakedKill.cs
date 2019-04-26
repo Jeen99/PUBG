@@ -58,7 +58,7 @@ namespace CommonLibrary.GameMessages
 
 		public TypesGameObject TypeGameObject => throw new NotImplementedException();
 
-		public List<List<IMessage>> InsertCollections => throw new NotImplementedException();
+		public List<IMessage> InsertCollections => throw new NotImplementedException();
 
 		public ulong ID { get; private set; }
 

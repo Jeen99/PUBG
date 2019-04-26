@@ -11,10 +11,9 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class CollectorState : IMessage
 	{
-		public CollectorState(List<IMessage> weapons, List<IMessage> modifiers)
+		public CollectorState(List<IMessage> content)
 		{
-			InsertCollections.Add(weapons);
-			InsertCollections.Add(modifiers);			
+			InsertCollections = content;	
 		}
 
 		public long Kills => throw new NotImplementedException();
@@ -59,7 +58,7 @@ namespace CommonLibrary.GameMessages
 
 		public TypesGameObject TypeGameObject => throw new NotImplementedException();
 
-		public List<List<IMessage>> InsertCollections { get; } = new List<List<IMessage>>();
+		public List<IMessage> InsertCollections { get; private set; }
 
 		public ulong ID => throw new NotImplementedException();
 

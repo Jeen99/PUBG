@@ -33,7 +33,7 @@ namespace CommonLibrary
 		float Radius { get; }
 		SizeF Size { get; }
 		TypesGameObject TypeGameObject { get; }
-		List<List<IMessage>> InsertCollections { get; }
+		List<IMessage> InsertCollections { get; }
 		ulong ID { get; }
 
 		TypesMessage TypeMessage { get; }

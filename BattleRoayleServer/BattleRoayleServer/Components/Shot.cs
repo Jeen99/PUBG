@@ -92,7 +92,7 @@ namespace BattleRoayleServer
 				//получаем только первый встетившийся на пути пули объект
 				Shape[] objectsForDamage = new Shape[2];
 
-				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, 2, true, null);
+				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, objectsForDamage.Length, true, null);
 
 				//отправляем сообщение о совершении выстрела
 				if (objectsForDamage[1] == null)

@@ -65,7 +65,7 @@ namespace BattleRoayleServer
 		private IMessage Filter_StateRoom(ulong ID, RoomState stateRoom)
 		{
 			List<IMessage> filterStates = new List<IMessage>();
-			foreach (GameObjectState stateObject in stateRoom.InsertCollections[0])
+			foreach (GameObjectState stateObject in stateRoom.InsertCollections)
 			{
 				if (stateObject.ID == ID)
 				{
@@ -75,7 +75,7 @@ namespace BattleRoayleServer
 				{
 					//только данные визуальных компонентов
 					List<IMessage> filterStatesComponents = new List<IMessage>();
-					foreach (IMessage stateComponent in stateObject.InsertCollections[0])
+					foreach (IMessage stateComponent in stateObject.InsertCollections)
 					{
 						switch (stateComponent.TypeMessage)
 						{
@@ -158,7 +158,6 @@ namespace BattleRoayleServer
 			}
 			
 		}
-
 
 		private void Handler_BroadcastMsg(IMessage msg)
 		{

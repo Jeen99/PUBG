@@ -52,7 +52,7 @@ namespace BattleRoyalClient
 					Handler_DeletedInMap(msg);
 					break;
 				case TypesMessage.EndGame:
-					Handler_EndGame(msg as EndGame);
+					Handler_EndGame(msg);
 					break;
 				case TypesMessage.GameObjectState:
 					Handler_GameObjectState(msg);
@@ -179,7 +179,7 @@ namespace BattleRoyalClient
 
 		private void Handler_RoomState(IMessage msg)
 		{
-			foreach (IMessage message in msg.InsertCollections[0])
+			foreach (IMessage message in msg.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
@@ -206,7 +206,7 @@ namespace BattleRoyalClient
 				return (GameObject)model.GameObjects[msg.ID];
 
 			Weapon weapon = new Weapon(msg.ID, msg.TypeWeapon);
-			foreach (IMessage message in msg.InsertCollections[0])
+			foreach (IMessage message in msg.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
@@ -276,12 +276,12 @@ namespace BattleRoyalClient
 					break;
 			}
 
-			foreach (IMessage message in msg.InsertCollections[0])
+			foreach (IMessage message in msg.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
 					case TypesMessage.BodyState:
-						Handler_BodyState(gameObject, message as BodyState);
+						Handler_BodyState(gameObject, message);
 						break;
 				}
 			}
@@ -298,12 +298,12 @@ namespace BattleRoyalClient
 			DeathZone deathZone = new DeathZone(msg.ID);
 			model.DeathZone = deathZone;
 
-			foreach (IMessage message in msg.InsertCollections[0])
+			foreach (IMessage message in msg.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
 					case TypesMessage.BodyZoneState:
-						Handler_BodyZoneState(deathZone, (BodyZoneState)message);
+						Handler_BodyZoneState(deathZone, message);
 						break;
 				}
 			}
@@ -323,12 +323,12 @@ namespace BattleRoyalClient
 				return (GameObject)model.GameObjects[msg.ID];
 
 			Field field = new Field(msg.ID);
-			foreach (IMessage message in msg.InsertCollections[0])
+			foreach (IMessage message in msg.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
 					case TypesMessage.FieldState:
-						Handler_FieldState(field, (FieldState)message);						
+						Handler_FieldState(field, message);						
 						break;
 				}
 			}
@@ -336,7 +336,7 @@ namespace BattleRoyalClient
 			return field;
 		}
 
-		private void Handler_FieldState(Field field, FieldState msg)
+		private void Handler_FieldState(Field field, IMessage msg)
 		{
 			field.Shape = new RectangleF(msg.Size.Width / 2, msg.Size.Height / 2,
 							msg.Size.Width,msg.Size.Height);
@@ -350,7 +350,7 @@ namespace BattleRoyalClient
 
 			Gamer gamer = new Gamer(msg.ID);
 
-			foreach (IMessage message in msg.InsertCollections[0])
+			foreach (IMessage message in msg.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
@@ -379,18 +379,18 @@ namespace BattleRoyalClient
 
 		private IModelObject UpdateGameObject(IModelObject gameObject, IMessage newData)
 		{
-			foreach (IMessage message in newData.InsertCollections[0])
+			foreach (IMessage message in newData.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
 					case TypesMessage.BodyState:
-						Handler_BodyState(gameObject, message as BodyState);
+						Handler_BodyState(gameObject, message);
 						break;
 					case TypesMessage.BodyZoneState:
-						Handler_BodyZoneState(gameObject as DeathZone, message as BodyZoneState);
+						Handler_BodyZoneState(gameObject as DeathZone, message);
 						break;
 					case TypesMessage.CurrentWeaponState:
-						Handler_CurrentWeaponState(gameObject as Gamer, message as CurrentWeaponState);
+						Handler_CurrentWeaponState(gameObject as Gamer, message);
 						break;
 				}
 			}
@@ -400,12 +400,12 @@ namespace BattleRoyalClient
 
 		private IModelObject Updateweapon(IModelObject gameObject, IMessage newData)
 		{
-			foreach (IMessage message in newData.InsertCollections[0])
+			foreach (IMessage message in newData.InsertCollections)
 			{
 				switch (message.TypeMessage)
 				{
 					case TypesMessage.BodyState:
-						Handler_BodyState(gameObject, message as BodyState);
+						Handler_BodyState(gameObject, message );
 						break;
 				}
 			}

@@ -67,7 +67,7 @@ namespace BattleRoayleServer
 			timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.TimePassed));
 			if (timeTillReducton.Seconds != leftSecond)
 			{
-				Parent.Model?.AddEvent(new ChangedTimeTillReduction(0, timeTillReducton));
+				Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
 			}
 
 			if(timeTillReducton.Milliseconds < 0) CheckReduction();

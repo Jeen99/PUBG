@@ -52,28 +52,25 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				//создаем массив состояний оружия
-				List<IMessage> WeaponsState = new List<IMessage>();
+				List<IMessage> content = new List<IMessage>();
 				for (int i = 0; i < weapons.Length; i++)
 				{
 					if (weapons[i] != null)
 					{
-						WeaponsState.Add(weapons[i]?.State);
+						content.Add(weapons[i]?.State);
 					}
 				}
 
-				//создаем массив состояний модификаций
-				List<IMessage> ModifiersState = new List<IMessage>();
 				for (int i = 0; i < modifiers.Length; i++)
 				{
 					if (modifiers[i] != null)
 					{
-						ModifiersState.Add(modifiers[i]?.State);
+						content.Add(modifiers[i]?.State);
 					}
 				}
 
 				
-				return new CollectorState(WeaponsState, ModifiersState);
+				return new CollectorState(content);
 
 			}
 		}

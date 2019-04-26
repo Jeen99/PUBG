@@ -13,7 +13,7 @@ namespace CommonLibrary.GameMessages
 	{	
 		public RoomState(List<IMessage> gameObjectsStates)
 		{
-			InsertCollections.Add(gameObjectsStates);
+			InsertCollections = gameObjectsStates;
 		}
 
 		public long Kills => throw new NotImplementedException();
@@ -58,7 +58,7 @@ namespace CommonLibrary.GameMessages
 
 		public TypesGameObject TypeGameObject => throw new NotImplementedException();
 
-		public List<List<IMessage>> InsertCollections { get; } = new List<List<IMessage>>();
+		public List<IMessage> InsertCollections { get; private set; }
 
 		public ulong ID => throw new NotImplementedException();
 
