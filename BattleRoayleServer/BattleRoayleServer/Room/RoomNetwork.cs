@@ -46,7 +46,7 @@ namespace BattleRoayleServer
 				AutoReset = true
 			};
 			timerTotalSinch.Elapsed += HandlerTotalSinch;
-			SenderMessage = new Task(HandlerGameEvent);
+			SenderMessage = new Task(MethodForSenderMessage);
 			SenderMessage.Start();
 		}
 		/// <summary>
@@ -111,7 +111,41 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Определяет тип сообщения и запускает соответствующий обработчик
 		/// </summary>
-		private void HandlerGameEvent()
+		private void Handler_GameEvent(IMessage msg)
+		{		
+			#region Выбор типа обработчика
+			switch (msg.TypeMessage)
+			{
+				//сообщения, которые отправляются только игроку создавшему это событие
+				case TypesMessage.AddWeapon:
+				case TypesMessage.ChangedValueHP:
+				case TypesMessage.ReloadWeapon:
+					Handler_PrivateMsg(msg);
+					break;
+				//сообщения которые отправляеются всем
+				case TypesMessage.DeletedInMap:
+				case TypesMessage.ChangedCurrentWeapon:
+				case TypesMessage.GameObjectState:
+				case TypesMessage.WeaponState:
+				case TypesMessage.ChangedTimeTillReduction:
+				case TypesMessage.ChangeCountPayersInGame:
+					Handler_BroadcastMsg(msg);
+					break;
+				case TypesMessage.EndGame:
+					Handler_EndGame(msg);
+					break;
+				case TypesMessage.PlayerTurn:
+					Handler_PlayerTurn(msg);
+					break;
+					//все остальные события
+				default:
+					Handler_DefaulteMsg(msg);
+					break;
+
+			}
+			#endregion
+		}
+		private void MethodForSenderMessage()
 		{
 			while (!roomClosing)
 			{
@@ -121,38 +155,7 @@ namespace BattleRoayleServer
 					Thread.Sleep(1);
 					continue;
 				}
-				#region Выбор типа обработчика
-				switch (msg.TypeMessage)
-				{
-					//сообщения, которые отправляются только игроку создавшему это событие
-					case TypesMessage.AddWeapon:
-					case TypesMessage.ChangedValueHP:
-					case TypesMessage.ReloadWeapon:
-						Handler_PrivateMsg(msg);
-						break;
-					//сообщения которые отправляеются всем
-					case TypesMessage.DeletedInMap:
-					case TypesMessage.ChangedCurrentWeapon:
-					case TypesMessage.GameObjectState:
-					case TypesMessage.WeaponState:
-					case TypesMessage.ChangedTimeTillReduction:
-					case TypesMessage.ChangeCountPayersInGame:
-						Handler_BroadcastMsg(msg);
-						break;
-					case TypesMessage.EndGame:
-						Handler_EndGame(msg);
-						break;
-					case TypesMessage.PlayerTurn:
-						Handler_PlayerTurn(msg);
-						break;
-						//все остальные события
-					default:
-						Handler_DefaulteMsg(msg);
-						break;
-
-					}
-					#endregion
-
+				Handler_GameEvent(msg);
 			}
 		}
 
@@ -233,6 +236,12 @@ namespace BattleRoayleServer
 				timerTotalSinch.Dispose();
 				SenderMessage.Wait();
 				SenderMessage.Dispose();
+				while (true)
+				{
+					IMessage msg = roomLogic.RoomModel.GetOutgoingMessage();
+					if (msg == null) break;
+					Handler_GameEvent(msg);
+				}
 
 				foreach (var id in Clients.Keys)
 				{
