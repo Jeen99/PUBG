@@ -28,12 +28,6 @@ namespace BattleRoayleServer
 			get { return null; }
 		}
        	
-        /// <summary>
-        /// Запускает алгоритм обработки сообщения
-        /// </summary>
-        /// <param name="msg"></param>
-        public abstract void UpdateComponent(IMessage msg);
-
 		public virtual void Dispose()
 		{
 			return;

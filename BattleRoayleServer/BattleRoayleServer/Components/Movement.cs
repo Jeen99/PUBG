@@ -30,34 +30,10 @@ namespace BattleRoayleServer
 		public override void Dispose()
 		{
 			body = null;
+			Parent.Received_GoTo -= Handler_GoTo;
 		}
 
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Movement");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-				{
-					case  TypesMessage.GoTo:
-						Handler_StartMoveGamer(msg);
-						break;
-					case TypesMessage.TimeQuantPassed:
-						Handler_TimeQuantPassed();
-						break;
-				}
-		
-		}
-
-		private void Handler_TimeQuantPassed()
-		{
-
-		}
-
-		private void Handler_StartMoveGamer(IMessage msg)
+		private void Handler_GoTo(IMessage msg)
 		{
 			currentDirection = msg.Direction;
 			float dX = 0;
@@ -96,6 +72,7 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Ошибка создания компонента Movement", "Не получена сслыка на компонент SoldiBody");
 				throw new Exception("Ошибка создания компонента Movement");
 			}
+			Parent.Received_GoTo += Handler_GoTo;
 		}
 	}
 }

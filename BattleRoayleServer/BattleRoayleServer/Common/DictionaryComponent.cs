@@ -89,21 +89,6 @@ namespace BattleRoayleServer
 			Components.Clear();
 		}
 
-		public void UpdateComponents(IMessage msg)
-		{
-			try
-			{
-				foreach (var item in Components.Keys)
-				{
-					Components[item].UpdateComponent(msg);
-				}
-			}
-			catch (Exception e)
-			{
-				Log.AddNewRecord(e.ToString());
-			}
-		}
-
 		public IEnumerator GetEnumerator()
 		{ 
 				foreach (var item in Components.Keys)

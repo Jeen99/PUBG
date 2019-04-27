@@ -20,12 +20,13 @@ namespace BattleRoayleServer
 
 		public Shot(IWeapon parent) : base(parent)
 		{
-					
+
 		}
 
 		public override void Dispose()
 		{
 			magazin = null;
+			Parent.Received_MakeShot -= Handler_MakeShot;
 		}
 
 		public override void Setup()
@@ -36,22 +37,7 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Ошибка создания компонента Shot", "Не получена сслыка на компонент Magazin");
 				throw new Exception("Ошибка создания компонента Shot");
 			}
-		}
-
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Shot");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.MakeShot:
-					Handler_MakeShot(msg);
-					break;
-			}		
+			Parent.Received_MakeShot += Handler_MakeShot;
 		}
 
 		private void Handler_MakeShot(IMessage msg)

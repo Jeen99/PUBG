@@ -25,11 +25,6 @@ namespace BattleRoayleServer
 			this.shape = shape;
 		}
 
-		public override void UpdateComponent(IMessage msg)
-		{
-
-		}
-
 		public override IMessage State
 		{
 			get

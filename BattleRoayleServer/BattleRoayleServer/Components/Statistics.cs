@@ -20,34 +20,12 @@ namespace BattleRoayleServer
 
 		}
 
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Shot");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);
-					break;
-				case TypesMessage.MakedKill:
-					Handler_MakedKill();
-					break;
-				case TypesMessage.GamerDied:
-					Handler_GamerDied();
-					break;
-			}
-		}
-
-		private void Handler_GamerDied()
+		private void Handler_GamerDied(IMessage msg)
 		{
 			GamerDied = true;
 		}
 
-		private void Handler_MakedKill()
+		private void Handler_MakedKill(IMessage msg)
 		{
 			Kills++;
 		}
@@ -59,12 +37,17 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
-			
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
+			Parent.Received_GamerDied += Handler_GamerDied;
+			Parent.Received_MakedKill += Handler_MakedKill;
 		}
 
 		public override void Dispose()
 		{
 			Parent.Model.AddOutgoingMessage(new EndGame(Parent.ID, GamerDied, Kills, TimeInBattle));
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
+			Parent.Received_GamerDied -= Handler_GamerDied;
+			Parent.Received_MakedKill -= Handler_MakedKill;
 		}
 	}
 }

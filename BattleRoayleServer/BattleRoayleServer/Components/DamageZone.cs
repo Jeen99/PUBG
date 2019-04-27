@@ -30,25 +30,10 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Ошибка создания компонента DamageZone", "Не получена сслыка на компонент BodyZone");
 				throw new Exception("Ошибка создания компонента DamageZone");
 			}
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
 		}
 
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed((TimeQuantPassed)msg);
-					break;
-			}
-		}
-
-		private void Handler_TimeQuantPassed(TimeQuantPassed msg)
+		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			//уменьшаем время до следующего получения урона от зоны	
 			intervalBetweenDamage = intervalBetweenDamage.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
@@ -74,6 +59,11 @@ namespace BattleRoayleServer
 					(player as GameObject).Update(new GotDamage(this.Parent.ID, zoneIntervalDamage));
 				}
 			}
+		}
+
+		public override void Dispose()
+		{
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
 		}
 	}
 }

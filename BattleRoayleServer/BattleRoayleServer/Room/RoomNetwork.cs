@@ -10,7 +10,8 @@ using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
-
+using System.Threading;
+using Timer = System.Timers.Timer;
 
 namespace BattleRoayleServer
 {
@@ -115,105 +116,106 @@ namespace BattleRoayleServer
 			while (!roomClosing)
 			{
 				IMessage msg = roomLogic.RoomModel.GetOutgoingMessage();
-				if (msg == null) continue;
+				if (msg == null)
+				{
+					Thread.Sleep(1);
+					continue;
+				}
 				#region Выбор типа обработчика
-					switch (msg.TypeMessage)
-					{
-						//сообщения, которые отправляются только игроку создавшему это событие
-						case TypesMessage.AddWeapon:
-						case TypesMessage.ChangedValueHP:
-						case TypesMessage.ReloadWeapon:
-							Handler_PrivateMsg(msg);
-							break;
-						//сообщения которые отправляеются всем
-						case TypesMessage.DeletedInMap:
-						case TypesMessage.ChangedCurrentWeapon:
-						case TypesMessage.GameObjectState:
-						case TypesMessage.WeaponState:
-						case TypesMessage.ChangedTimeTillReduction:
-						case TypesMessage.ChangeCountPayersInGame:
-							Handler_BroadcastMsg(msg);
-							break;
-						case TypesMessage.EndGame:
-							Handler_EndGame(msg);
-							break;
+				switch (msg.TypeMessage)
+				{
+					//сообщения, которые отправляются только игроку создавшему это событие
+					case TypesMessage.AddWeapon:
+					case TypesMessage.ChangedValueHP:
+					case TypesMessage.ReloadWeapon:
+						Handler_PrivateMsg(msg);
+						break;
+					//сообщения которые отправляеются всем
+					case TypesMessage.DeletedInMap:
+					case TypesMessage.ChangedCurrentWeapon:
+					case TypesMessage.GameObjectState:
+					case TypesMessage.WeaponState:
+					case TypesMessage.ChangedTimeTillReduction:
+					case TypesMessage.ChangeCountPayersInGame:
+						Handler_BroadcastMsg(msg);
+						break;
+					case TypesMessage.EndGame:
+						Handler_EndGame(msg);
+						break;
+					case TypesMessage.PlayerTurn:
+						Handler_PlayerTurn(msg);
+						break;
 						//все остальные события
-						default:
-							Handler_DefaulteMsg(msg);
-							break;
+					default:
+						Handler_DefaulteMsg(msg);
+						break;
 
 					}
 					#endregion
+
 			}
 		}
 
 		private void Handler_EndGame(IMessage msg)
 		{
 			lock (AccessSinchClients)
-			{
-				
-					Clients[msg.ID].SaveStatistics(msg);
-					Handler_PrivateMsg(msg);
-					//закрываем этого клиента
-
-					INetworkClient client = Clients[msg.ID];
-					Clients.Remove(msg.ID);
-					client.Dispose();
-				
-			}
+			{			
+				Clients[msg.ID].SaveStatistics(msg);
+				Handler_PrivateMsg(msg);
+				//закрываем этого клиента
 			
+				INetworkClient client = Clients[msg.ID];
+				Clients.Remove(msg.ID);
+				client.Dispose();			
+			}			
 		}
 
 		private void Handler_BroadcastMsg(IMessage msg)
-		{
-			
-				foreach (var id in Clients.Keys)
-				{
-					Clients[id].Client.SendMessage(msg);
-				}
-			
+		{		
+			foreach (var id in Clients.Keys)
+			{
+				Clients[id].Client.SendMessage(msg);
+			}	
 		}
 
 		private void Handler_PrivateMsg(IMessage msg)
-		{
-			
-				if (Clients.ContainsKey(msg.ID))
-				{
-					Clients[msg.ID].Client.SendMessage((IMessage)msg);
-				}
-			
+		{		
+			if (Clients.ContainsKey(msg.ID))
+			{
+				Clients[msg.ID].Client.SendMessage((IMessage)msg);
+			}	
 		}
 
 		private void Handler_DefaulteMsg(IMessage msg)
 		{
 			
-				if (!Clients.ContainsKey(msg.ID))
+			if (!Clients.ContainsKey(msg.ID))
+			{
+				if (msg is ObjectMoved)
 				{
-					if (msg is ObjectMoved)
-					{
-						var message = (ObjectMoved)msg;
-						foreach (var id in Clients.Keys)
-						{
-							//если область видимости одного игрока находит на другого отправляем ему сообщение
-							if (Clients[id].VisibleArea.Contains(message.Location.X, message.Location.Y))
-							{
-								Clients[id].Client.SendMessage((IMessage)msg);
-							}
-						}
-					}
-				}
-				else
-				{
-					RectangleF area = Clients[msg.ID].VisibleArea;
+					var message = (ObjectMoved)msg;
 					foreach (var id in Clients.Keys)
 					{
 						//если область видимости одного игрока находит на другого отправляем ему сообщение
-						if (area.IntersectsWith(Clients[id].VisibleArea))
+						if (Clients[id].VisibleArea.Contains(message.Location.X, message.Location.Y))
 						{
-							Clients[id].Client.SendMessage(msg);
+							Clients[id].Client.SendMessage((IMessage)msg);
 						}
 					}
-				}		
+				}
+			}
+			else
+			{
+				RectangleF area = Clients[msg.ID].VisibleArea;
+				foreach (var id in Clients.Keys)
+				{
+					//если область видимости одного игрока находит на другого отправляем ему сообщение
+					if (area.IntersectsWith(Clients[id].VisibleArea))
+					{
+						Clients[id].Client.SendMessage(msg);
+					}
+				}
+			}		
 		}
 
 		public void Start()
@@ -252,39 +254,30 @@ namespace BattleRoayleServer
 					   gamers[i].NickName, gamers[i].Password);
 					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
 					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
-					client.Event_GetViewMsg += Client_Event_GetViewMsg;
 					Clients.Add(client.Player.ID, client);
 				}
 			}
 		}
 
-		private void Client_Event_GetViewMsg(ulong ID, IMessage msg)
+		
+		private void Handler_PlayerTurn(IMessage msg)
 		{
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.PlayerTurn:
-					Handler_PlayerTurn(ID, (PlayerTurn)msg);
-					break;
-			}
-		}
+			if (!Clients.ContainsKey(msg.ID)) return;
 
-		private void Handler_PlayerTurn(ulong ID, PlayerTurn msg)
-		{
-			if (!Clients.ContainsKey(ID)) return;
-
-			RectangleF area = Clients[ID].VisibleArea;
+			RectangleF area = Clients[msg.ID].VisibleArea;
 			foreach (var id in Clients.Keys)
 			{
 				//если область видимости одного игрока находит на другого отправляем ему сообщение
-				if (ID != id)
+				if (msg.ID != id)
 				{
 					if (area.IntersectsWith(Clients[id].VisibleArea))
 					{
-						Clients[id].Client.SendMessage(new PlayerTurn(ID, msg.Angle));
+						Clients[id].Client.SendMessage(msg);
 					}
 				}
 			}
 		}
+
 		private void Client_EventNetorkClientDisconnect(INetworkClient client)
 		{
 			lock (AccessSinchClients)

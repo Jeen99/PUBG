@@ -20,6 +20,64 @@ namespace BattleRoayleServer
 		//0 - зарезервированно за картой
 		private static ulong counterID = 1;
 
+		#region Cобытия для уведомления клиентов о получении нового сообытия
+			public event ReceivedMessage Received_ChoiceWeapon;
+			public event ReceivedMessage Received_GamerDied;
+			public event ReceivedMessage Received_GotDamage;
+			public event ReceivedMessage Received_GoTo;
+			public event ReceivedMessage Received_MakeShot;
+			public event ReceivedMessage Received_PlayerTurn;
+			public event ReceivedMessage Received_MakeReloadWeapon;
+			public event ReceivedMessage Received_TryPickUp;
+			public event ReceivedMessage Received_DeletedInMap;
+			public event ReceivedMessage Received_TimeQuantPassed;
+			public event ReceivedMessage Received_AddWeapon;
+			public event ReceivedMessage Received_MakedKill;
+		#endregion
+
+		protected virtual void SendMessage(IMessage msg)
+		{
+			switch (msg.TypeMessage)
+			{
+				case TypesMessage.ChoiceWeapon:
+					Received_ChoiceWeapon?.Invoke(msg);
+					break;
+				case TypesMessage.GamerDied:
+					Received_GamerDied?.Invoke(msg);
+					break;
+				case TypesMessage.GotDamage:
+					Received_GotDamage?.Invoke(msg);
+					break;
+				case TypesMessage.GoTo:
+					Received_GoTo?.Invoke(msg);
+					break;
+				case TypesMessage.MakeShot:
+					Received_MakeShot?.Invoke(msg);
+					break;
+				case TypesMessage.PlayerTurn:
+					Received_PlayerTurn?.Invoke(msg);
+					break;
+				case TypesMessage.MakeReloadWeapon:
+					Received_MakeReloadWeapon?.Invoke(msg);
+					break;
+				case TypesMessage.TryPickUp:
+					Received_TryPickUp?.Invoke(msg);
+					break;
+				case TypesMessage.DeletedInMap:
+					Received_DeletedInMap?.Invoke(msg);
+					break;
+				case TypesMessage.TimeQuantPassed:
+					Received_TimeQuantPassed?.Invoke(msg);
+					break;
+				case TypesMessage.AddWeapon:
+					Received_AddWeapon?.Invoke(msg);
+					break;
+				case TypesMessage.MakedKill:
+					Received_MakedKill?.Invoke(msg);
+					break;
+			}
+		}
+
 		private ulong GetID()
 		{
 			lock (sinchGetId)
@@ -61,7 +119,7 @@ namespace BattleRoayleServer
 
 				lock (sinchUpdateObject)
 				{
-					Components.UpdateComponents(msg);
+					SendMessage(msg);
 				}
 			}
 		}
@@ -101,8 +159,7 @@ namespace BattleRoayleServer
 		/// Освобождает все ресурысы объекта
 		/// </summary>
 		public virtual void Dispose()
-		{
-			//EventGameObjectDeleted?.Invoke(this);
+		{ 
 			foreach (IComponent item in Components)
 			{
 				item.Dispose();
@@ -128,6 +185,8 @@ namespace BattleRoayleServer
 		/// Возвращает true, если объект уничтожен
 		/// </summary>
 		public bool Destroyed { get; protected set; }
+
+
 		
 	}
 }

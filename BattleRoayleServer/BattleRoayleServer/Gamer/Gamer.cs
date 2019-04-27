@@ -67,5 +67,21 @@ namespace BattleRoayleServer
 			}
 		}
 
+		public override void Setup()
+		{
+			base.Setup();
+			Received_PlayerTurn += Handler_Received_PlayerTurn;
+		}
+
+		private void Handler_Received_PlayerTurn(IMessage msg)
+		{
+			Model.AddOutgoingMessage(msg);
+		}
+
+		public override void Dispose()
+		{
+			base.Dispose();
+			Received_PlayerTurn -= Handler_Received_PlayerTurn;
+		}
 	}
 }

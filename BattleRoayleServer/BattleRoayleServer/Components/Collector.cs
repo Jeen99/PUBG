@@ -100,7 +100,10 @@ namespace BattleRoayleServer
 					weapons[i].CreateNewBody(position, CreateRandVec2());
 					Parent.Model.AddOrUpdateGameObject(weapons[i]);
 				}			
-			}		
+			}
+
+			Parent.Received_TryPickUp -= Handler_TryPickUp;
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
 		}
 
 		private Vec2 CreateRandVec2()
@@ -109,25 +112,6 @@ namespace BattleRoayleServer
 			return new Vec2(rand.Next(1, 15), rand.Next(1, 15));
 		}
 			
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TryPickUp:
-					Handler_TryPickUp();
-					break;
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);
-					break;
-			}
-		}
-
 		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			//пока только для оружия
@@ -141,7 +125,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void Handler_TryPickUp()
+		private void Handler_TryPickUp(IMessage msg)
 		{
 			for (int i = 0; i < body.CoveredObjects.Count; i++)
 			{
@@ -187,6 +171,8 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Ошибка создания компонента Сollector", "Не получена сслыка на компонент SolidBody");
 				throw new Exception("Ошибка создания компонента Сollector");
 			}
+			Parent.Received_TryPickUp += Handler_TryPickUp;
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
 		}
 	}
 

@@ -95,23 +95,6 @@ namespace BattleRoayleServer
 			Body.SetMassFromShapes();			
 		}
 	
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте SolidBody");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);					
-					break;
-			}
-			
-		}
-
 		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			Vec2 position = Body.GetPosition();
@@ -125,6 +108,7 @@ namespace BattleRoayleServer
 		public override void Dispose()
 		{
 			CoveredObjects.Clear();
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
 			//удаляем объект с карты
 			Body.GetWorld().DestroyBody(Body);
 		}
@@ -138,7 +122,7 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
-
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
 		}
 	}
 

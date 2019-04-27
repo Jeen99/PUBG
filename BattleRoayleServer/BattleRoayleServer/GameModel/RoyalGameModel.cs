@@ -13,6 +13,7 @@ using Box2DX.Collision;
 using Box2DX.Dynamics;
 using CommonLibrary.CommonElements;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace BattleRoayleServer
 {
@@ -24,7 +25,7 @@ namespace BattleRoayleServer
 		private const float lengthOfSide = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
-		private const int minValueGamerInBattle = 0;
+		private const int minValueGamerInBattle = 1;
 
 		//только на чтение
 		public IList<IPlayer> Players { get; private set; }
@@ -613,6 +614,7 @@ namespace BattleRoayleServer
 					IMessage msg = IncomingMessages.Dequeue();
 					GameObjects[msg.ID]?.Update(msg);
 				}
+				else Thread.Sleep(1);
 			}
 		}
 

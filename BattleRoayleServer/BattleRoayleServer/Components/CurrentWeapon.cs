@@ -38,31 +38,11 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
+			Parent.Received_ChoiceWeapon -= Handler_ChoiceWeapon;
+			Parent.Received_MakeShot -= Handler_MakeShot;
+			Parent.Received_AddWeapon -= Handler_AddWeapon;
 			inventory = null;
 			currentWeapon = null;
-		}
-
-		public override void UpdateComponent(IMessage msg)
-		{
-
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте CurrentWeapon");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.ChoiceWeapon:
-					Handler_ChoiceWeapon(msg);
-					break;
-				case TypesMessage.MakeShot:
-					Handler_MakeShot(msg);
-					break;
-				case TypesMessage.AddWeapon:
-					Handler_AddWeapon(msg);
-					break;
-			}
 		}
 
 		private void Handler_AddWeapon(IMessage msg)
@@ -105,7 +85,12 @@ namespace BattleRoayleServer
 			{
 				Log.AddNewRecord("Ошибка создания компонента CurrentWeapon", "Не получена сслыка на компонент Collector");
 				throw new Exception("Ошибка создания компонента CurrentWeapon");
+				
 			}
+
+			Parent.Received_ChoiceWeapon += Handler_ChoiceWeapon;
+			Parent.Received_MakeShot += Handler_MakeShot;
+			Parent.Received_AddWeapon += Handler_AddWeapon;
 		}
 	}
 }

@@ -94,25 +94,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Magazin");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);
-					break;
-				case TypesMessage.MakeReloadWeapon:
-					Create_ReloadMagazin();
-					break;
-			}
-		}
-
 		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			if (Reload != TypesReload.Not)
@@ -126,7 +107,7 @@ namespace BattleRoayleServer
 								Handler_ReloadBetweenShots();
 								break;
 							case TypesReload.ReloadMagazin:
-								Handler_ReloadMagazin();
+								Handler_ReloadMagazin(msg);
 								break;
 						}
 					}
@@ -139,7 +120,7 @@ namespace BattleRoayleServer
 			bulletsInMagazinNow--;
 		}
 
-		private void Handler_ReloadMagazin()
+		private void Handler_ReloadMagazin(IMessage msg)
 		{
 			Reload = TypesReload.Not;
 			//cоздаем новый магазин
@@ -151,7 +132,14 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
-			
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
+			Parent.Received_MakeReloadWeapon += Handler_ReloadMagazin;
+		}
+
+		public override void Dispose()
+		{
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
+			Parent.Received_MakeReloadWeapon -= Handler_ReloadMagazin;
 		}
 	}
 

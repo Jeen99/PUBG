@@ -38,23 +38,7 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
-
-		}
-
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);
-					break;
-			}
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
 		}
 
 		private void Handler_TimeQuantPassed(IMessage msg)
@@ -106,6 +90,11 @@ namespace BattleRoayleServer
 			{
 				return new BodyZoneState(location, Radius);
 			}
+		}
+
+		public override void Dispose()
+		{
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
 		}
 
 	}

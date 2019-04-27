@@ -30,4 +30,6 @@ namespace BattleRoayleServer
 
 	public delegate void HappenedEndGame();
 
+	public delegate void ReceivedMessage(IMessage msg);
+
 }

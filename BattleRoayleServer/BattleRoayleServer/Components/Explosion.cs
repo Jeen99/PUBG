@@ -30,22 +30,7 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Ошибка создания компонента Explosion", "Не получена сслыка на компонент SolidBody");
 				throw new Exception("Ошибка создания компонента Explosion");
 			}
-		}
-
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.TimeQuantPassed:
-					Handler_TimeQuantPassed(msg);
-					break;
-			}
+			Parent.Received_TimeQuantPassed += Handler_TimeQuantPassed;
 		}
 
 		private void Handler_TimeQuantPassed(IMessage msg)
@@ -66,6 +51,10 @@ namespace BattleRoayleServer
 			}
 			//удаляем гранату
 			Parent.SetDestroyed();
+		}
+		public override void Dispose()
+		{
+			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
 		}
 	}
 }

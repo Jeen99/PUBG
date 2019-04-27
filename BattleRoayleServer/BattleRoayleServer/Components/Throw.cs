@@ -30,22 +30,7 @@ namespace BattleRoayleServer
 				Log.AddNewRecord("Ошибка создания компонента Throw", "Не получена сслыка на компонент Magazin");
 				throw new Exception("Ошибка создания компонента Throw");
 			}
-		}
-
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Collector");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.MakeShot:
-					Handler_MakeShot(msg);
-					break;
-			}
+			Parent.Received_MakeShot += Handler_MakeShot;
 		}
 
 		private void Handler_MakeShot(IMessage msg)
@@ -71,6 +56,11 @@ namespace BattleRoayleServer
 			Grenade grenade = new Grenade(Parent.Model, 
 				(Parent as Weapon).Holder.Components.GetComponent<SolidBody>().Shape.Location, impulse, grenadeBullet);
 			Parent.Model.AddOrUpdateGameObject(grenade);
+		}
+
+		public override void Dispose()
+		{
+			Parent.Received_MakeShot -= Handler_MakeShot;
 		}
 	}
 }

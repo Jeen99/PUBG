@@ -18,22 +18,6 @@ namespace BattleRoayleServer
 
 		public float HP { get; private set; }
 
-		public override void UpdateComponent(IMessage msg)
-		{
-			if (msg == null)
-			{
-				Log.AddNewRecord("Получено null сообщение в компоненте Healthy");
-				return;
-			}
-
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.GotDamage:
-					Handler_GotDamage(msg);
-					break;
-			}
-		}
-
 		public override IMessage State
 		{
 			get
@@ -59,7 +43,12 @@ namespace BattleRoayleServer
 
 		public override void Setup()
 		{
+			Parent.Received_GotDamage += Handler_GotDamage;
+		}
 
+		public override void Dispose()
+		{
+			Parent.Received_GotDamage -= Handler_GotDamage;
 		}
 	}
 }
