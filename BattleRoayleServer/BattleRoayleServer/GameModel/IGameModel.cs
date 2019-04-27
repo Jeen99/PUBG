@@ -17,11 +17,10 @@ namespace BattleRoayleServer
 {
     public interface IGameModel
     {
-        IList<IPlayer> Players { get;}
-		Dictionary<ulong, IGameObject> GameObjects { get; }		
-		GameObjectState State { get; }
+        IList<IPlayer> Players { get;}	
 		DeathZone Zone { get; }
 		IMessage RoomState { get; }
+		IMessage FullRoomState { get; }
 
 		event HappenedEndGame Event_HappenedEndGame;
 

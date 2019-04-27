@@ -45,21 +45,6 @@ namespace BattleRoayleServer
 			EventRoomLogicEndWork?.Invoke(this);
 		}
 
-		//возврашает состояние всех объектов (активных и неактивных)
-		public IMessage GetInitializeData()
-		{
-			List<IMessage> states = new List<IMessage>();
-			foreach (var gameObject in RoomModel.GameObjects)
-			{		
-					IMessage msg = gameObject.Value.State;
-					if (msg != null) states.Add(msg);	
-			}
-
-			states.Add(RoomModel.State);
-			
-			return new RoomState(states);
-		}
-
         //вызывается при срабатывании таймера
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {

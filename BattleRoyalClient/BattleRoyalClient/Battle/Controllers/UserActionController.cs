@@ -24,7 +24,7 @@ namespace BattleRoyalClient
 		{
 			this.client = client;
 			gameController = controller;
-			idPlayer = gameController.Model.Chararcter.ID;
+			idPlayer = gameController.Model.CharacterView.ID;
 			this.view = view;
 			this.direction = new Direction();
 		}
@@ -125,9 +125,9 @@ namespace BattleRoyalClient
 			if (gameController.Loaded)
 			{
 				//отправляем сообщение
-				client.SendMessage(new PlayerTurn(idPlayer, angle));
-				gameController.Model.Chararcter.Character.Update(angle);
-				view.Dispatcher.Invoke(() => { gameController.Model.OnChangeGameObject(gameController.Model.Chararcter.Character); });
+				IMessage msg = new PlayerTurn(idPlayer, angle);
+				client.SendMessage(msg);
+				gameController.Handler_PlayerTurned(msg);
 			}
 		}
 	}

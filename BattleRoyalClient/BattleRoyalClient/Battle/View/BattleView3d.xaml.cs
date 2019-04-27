@@ -35,8 +35,6 @@ namespace BattleRoyalClient
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
 
-		private DispatcherTimer timer;// для обновления экрана
-
 		private VisualConteyner visual;// хранит 3Д модели
 
 		public BattleView3d(ulong id, BaseClient<IMessage> client)
@@ -49,112 +47,90 @@ namespace BattleRoyalClient
 			userContoller = new UserActionController(client, battleContoller, this);
 
 			battleContoller.Model.GameObjectChanged += Model_GameObjectChanged;
-			battleContoller.Model.Chararcter.Event_CharacterChange += Handler_ChangeCharacter;
-			battleContoller.Model.Chararcter.Event_AddWeapon += Chararcter_Event_AddWeapon;
-			battleContoller.Model.EventChangeCountPlayers += Model_EventChangeCountPlayers;
+			battleContoller.Model.CharacterView.Event_CharacterChange += Handler_ChangeCharacter;
+			battleContoller.Model.BattleModelChanged += Handler_BattleModelChanged; ;
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
+			this.MouseDown += BattleView3d_MouseDown;
+
 			//viewport.MouseWheel += BattleView3d_MouseWheel;
 			viewport.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm(id));
 
-			this.MouseDown += BattleView3d_MouseDown;
-
 		}
 
-		private void Model_EventChangeCountPlayers()
-		{
-			this.Dispatcher.Invoke(() => { CountPlayers.Text = battleContoller.Model.CountPlayersInGame.ToString(); });
-		}
-
-		private void Chararcter_Event_AddWeapon(int index)
+		private void Handler_BattleModelChanged(TypesChange typeChange)
 		{
 			this.Dispatcher.Invoke(() =>
 			{
-				switch (battleContoller.Model.Chararcter.Weapons[index])
+				switch (typeChange)
 				{
-					case TypesWeapon.Gun:
-						Gun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.Gun.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-					case TypesWeapon.ShotGun:
-						ShotGun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.ShotGun.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-					case TypesWeapon.AssaultRifle:
-						AssaultRifle.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.AssaultRifle.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-					case TypesWeapon.GrenadeCollection:
-						GrenadeCollection.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.GrenadeCollection.ToString() + "ForInventory.png", UriKind.Relative));
+					case TypesChange.CountPlyers:
+						Handler_ChangeCountPlyers();
 						break;
 				}
 			});
 		}
 
-		private void BattleView3d_MouseMove(object sender, MouseEventArgs e)
-		{	
-			   //определяем угол
-			var angle = DefineAngle(e);
-			userContoller.UserTurn(angle);
+		private void Handler_ChangeCountPlyers()
+		{
+			CountPlayers.Text = battleContoller.Model.CountPlayersInGame.ToString();
 		}
 
-		private float DefineAngle(MouseEventArgs e)
+		private void Handler_ChangeCharacter(TypesChangeCharacter typeChange)
 		{
-			var mousePosition = e.GetPosition(null);
-			//центр карты
-			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
-			//позиция мыши		
-			float angle = (float)(Math.Atan2(mousePosition.Y - centre.Y, mousePosition.X - centre.X) / Math.PI * 180);
-			 angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
-			return  -angle;
-		}
-
-		private PointF DefinePositionClick(MouseEventArgs e)
-		{
-			Point point = e.GetPosition(null);
-			//центр карты
-			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
-			double scale = (30000 / camera.Position.Z) / 50;
-			var inScale = (point - centre)/scale;
-			return new PointF((float)(camera.Position.X+inScale.X), (float)(camera.Position.Y+inScale.Y));
-		}
-
-		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
-		{
-			Debug.WriteLine("Угол " + DefineAngle(e));
-			userContoller.MakeShot(DefinePositionClick(e));
-		}
-
-		private void Battle_Closed(object sender, EventArgs e)
-		{
-			if (!Transition)
+			this.Dispatcher.Invoke(() =>
 			{
-				Environment.Exit(0);
-			}
+				switch (typeChange)
+				{
+					case TypesChangeCharacter.AddWeapon:
+						Handler_CharacterChangeAddWeapon();
+						break;
+					case TypesChangeCharacter.All:
+						Handler_CharacterChangeHP();
+						Handler_CharacterChangeLocation();
+						Handler_CharacterChangeCurrentWeapon();
+						Handler_IndicatorDeadZone();
+						break;
+					case TypesChangeCharacter.CurrentWepon:
+						Handler_CharacterChangeCurrentWeapon();
+						break;
+					case TypesChangeCharacter.HP:
+						Handler_CharacterChangeHP();
+						break;
+					case TypesChangeCharacter.Location:
+						Handler_CharacterChangeLocation();
+						Handler_IndicatorDeadZone();
+						break;
+				}
+			});
 		}
 
-		private void Handler_ChangeCharacter()
+		private void Handler_CharacterChangeLocation()
 		{
-			if (battleContoller.Model.Chararcter.Character == null) return;
-			
 			var cameraPosition = camera.Position;
 			//меняем положение камеры
-			var character = battleContoller.Model.Chararcter;
+			var character = battleContoller.Model.CharacterView;
 			cameraPosition.X = character.Location.X;
 			cameraPosition.Y = character.Location.Y;
 			camera.Position = cameraPosition;
-			//меняем количество HP
-			if (HP.Value != character.HP)
-			{
-				this.HP.Value = character.HP;
-			}
+		}
 
+		private void Handler_CharacterChangeHP()
+		{
+			this.HP.Value = battleContoller.Model.CharacterView.HP;
+		}
+
+		private void Handler_CharacterChangeCurrentWeapon()
+		{
 			//снимаем выделение
 			BorderGun.BorderBrush = Brushes.Black;
 			BorderShotGun.BorderBrush = Brushes.Black;
 			BorderAssaultRifle.BorderBrush = Brushes.Black;
 			BorderGrenadeCollection.BorderBrush = Brushes.Black;
-			switch (character.Character.CurrentWeapon)
+			switch (battleContoller.Model.CharacterView.Character.CurrentWeapon)
 			{
 				case TypesWeapon.Gun:
 					BorderGun.BorderBrush = Brushes.Green;
@@ -171,32 +147,49 @@ namespace BattleRoyalClient
 			}
 		}
 
-		private void Handler_IndicatorDeadZone()
+		private void Handler_CharacterChangeAddWeapon()
 		{
-			if (battleContoller.Model.Chararcter.Character == null) return;
+			for (int i = 0; i < battleContoller.Model.CharacterView.Weapons.Length; i++)
+			{
+				switch (battleContoller.Model.CharacterView.Weapons[i])
+				{
+					case TypesWeapon.Gun:
+						Gun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.Gun.ToString() + "ForInventory.png", UriKind.Relative));
+						break;
+					case TypesWeapon.ShotGun:
+						ShotGun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.ShotGun.ToString() + "ForInventory.png", UriKind.Relative));
+						break;
+					case TypesWeapon.AssaultRifle:
+						AssaultRifle.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.AssaultRifle.ToString() + "ForInventory.png", UriKind.Relative));
+						break;
+					case TypesWeapon.GrenadeCollection:
+						GrenadeCollection.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.GrenadeCollection.ToString() + "ForInventory.png", UriKind.Relative));
+						break;
+				}
+			}
+		}
 
-			var centre = battleContoller.Model.Chararcter.Location;
-			var zone = battleContoller.Model.DeathZone.Location;
-			//угол между игроком и зоной	
-			float angle = (float)(Math.Atan2(zone.X - centre.X, zone.Y - centre.Y) / Math.PI * 180);
-		
-			var RotateTransform = IndicatorDeadZone.RenderTransform as RotateTransform;
-			var transform = new RotateTransform(angle);
-			IndicatorDeadZone.RenderTransform = transform;
-		
+		private void BattleView3d_MouseMove(object sender, MouseEventArgs e)
+		{	
+			   //определяем угол
+			var angle = DefineAngle(e);
+			userContoller.UserTurn(angle);
 		}
 
 		private void Model_GameObjectChanged(IModelObject model, StateObject state)
 		{
-			switch (state)
+			this.Dispatcher.Invoke(() =>
 			{
-				case StateObject.Change:
-					Hanler_ChangeGameObject(model);
-					break;
-				case StateObject.Delete:
-					visual.DeleteModel3d(model.ID);
-					break;
-			}
+				switch (state)
+				{
+					case StateObject.Change:
+						Hanler_ChangeGameObject(model);
+						break;
+					case StateObject.Delete:
+						visual.DeleteModel3d(model.ID);
+						break;
+				}
+			});
 		}
 
 		private void Hanler_ChangeGameObject(IModelObject gameObject)
@@ -207,7 +200,6 @@ namespace BattleRoyalClient
 					if (!IndicatorDeadZone.IsEnabled && battleContoller.Model.DeathZone.Location != PointF.Empty)	// включаем индикатор
 					{
 						IndicatorDeadZone.IsEnabled = true;
-						battleContoller.Model.Chararcter.Event_CharacterChange += Handler_IndicatorDeadZone;
 					}
 					Handler_ChangeDeathZone((DeathZone)gameObject);
 					break;
@@ -234,6 +226,55 @@ namespace BattleRoyalClient
 			camera.Position = cameraPos;
 
 			System.Diagnostics.Debug.WriteLine("Camera zoom:", cameraPos.Z);
+		}
+
+		private float DefineAngle(MouseEventArgs e)
+		{
+			var mousePosition = e.GetPosition(null);
+			//центр карты
+			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
+			//позиция мыши		
+			float angle = (float)(Math.Atan2(mousePosition.Y - centre.Y, mousePosition.X - centre.X) / Math.PI * 180);
+			angle = (angle < 0) ? angle + 360 : angle;   //Без этого диапазон от 0...180 и -1...-180
+			return -angle;
+		}
+
+		private PointF DefinePositionClick(MouseEventArgs e)
+		{
+			Point point = e.GetPosition(null);
+			//центр карты
+			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
+			double scale = (30000 / camera.Position.Z) / 50;
+			var inScale = (point - centre) / scale;
+			return new PointF((float)(camera.Position.X + inScale.X), (float)(camera.Position.Y + inScale.Y));
+		}
+
+		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			userContoller.MakeShot(DefinePositionClick(e));
+		}
+
+		private void Battle_Closed(object sender, EventArgs e)
+		{
+			if (!Transition)
+			{
+				Environment.Exit(0);
+			}
+		}
+
+		private void Handler_IndicatorDeadZone()
+		{
+			if (battleContoller.Model.CharacterView.Character == null) return;
+
+			var centre = battleContoller.Model.CharacterView.Location;
+			var zone = battleContoller.Model.DeathZone.Location;
+			//угол между игроком и зоной	
+			float angle = (float)(Math.Atan2(zone.X - centre.X, zone.Y - centre.Y) / Math.PI * 180);
+
+			var RotateTransform = IndicatorDeadZone.RenderTransform as RotateTransform;
+			var transform = new RotateTransform(angle);
+			IndicatorDeadZone.RenderTransform = transform;
+
 		}
 	}
 }

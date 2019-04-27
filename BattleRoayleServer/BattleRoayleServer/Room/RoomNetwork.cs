@@ -65,7 +65,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private IMessage Filter_StateRoom(ulong ID, RoomState stateRoom)
+		private IMessage Filter_StateRoom(ulong ID, IMessage stateRoom)
 		{
 			List<IMessage> filterStates = new List<IMessage>();
 			foreach (GameObjectState stateObject in stateRoom.InsertCollections)
@@ -300,7 +300,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
 		{
-			RoomState msg = (RoomState)roomLogic.GetInitializeData();
+			IMessage msg = roomLogic.RoomModel.FullRoomState;
 			client.Client.SendMessage(Filter_StateRoom(client.Player.ID, msg));
 		}
 

@@ -75,12 +75,15 @@
     </ApplicationDefinition>
     <Compile Include="Authorization\AuthorizationData.cs" />
     <Compile Include="Battle\3DModels\Model3DVisualEffect.cs" />
+    <Compile Include="Battle\ICharacterForView.cs" />
+    <Compile Include="Battle\ICharacterForControler.cs" />
     <Compile Include="Battle\Model\BattleModel.cs" />
+    <Compile Include="Battle\Model\IBattleModelForView.cs" />
     <Compile Include="Battle\View\BattleView3d.xaml.cs">
       <DependentUpon>BattleView3d.xaml</DependentUpon>
     </Compile>
     <Compile Include="Battle\Controllers\GameActionController.cs" />
-    <Compile Include="Battle\Model\IBattleModel.cs" />
+    <Compile Include="Battle\Model\IBattleModelForControler.cs" />
     <Compile Include="Battle\View\IBattleView.cs" />
     <Compile Include="Battle\3DModels\Model3D.cs" />
     <Compile Include="Battle\3DModels\Model3DGamer.cs" />
@@ -90,14 +93,17 @@
     <Compile Include="GameObjects\Bush.cs" />
     <Compile Include="GameObjects\DeathZone.cs" />
     <Compile Include="GameObjects\Explosion.cs" />
+    <Compile Include="GameObjects\FactoryForCreateGameObjects.cs" />
     <Compile Include="GameObjects\Field.cs" />
     <Compile Include="GameObjects\GameObject.cs" />
     <Compile Include="GameObjects\Gamer.cs" />
     <Compile Include="GameObjects\Grenade.cs" />
     <Compile Include="GameObjects\Hand.cs" />
+    <Compile Include="GameObjects\IDeathZoneForView.cs" />
+    <Compile Include="GameObjects\IGamerForView.cs" />
     <Compile Include="GameObjects\IModelObject.cs" />
     <Compile Include="GameObjects\Stone.cs" />
-    <Compile Include="Battle\PlayerChararcter.cs" />
+    <Compile Include="Battle\PlayerCharacter.cs" />
     <Compile Include="GameObjects\Traser.cs" />
     <Compile Include="GameObjects\Tree.cs" />
     <Compile Include="GameObjects\Weapon.cs" />

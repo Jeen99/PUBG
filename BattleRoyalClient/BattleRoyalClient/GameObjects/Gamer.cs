@@ -8,7 +8,7 @@ using CommonLibrary.CommonElements;
 
 namespace BattleRoyalClient
 {
-	class Gamer : GameObject
+	class Gamer : GameObject, IGamerForView
 	{
 		public TypesWeapon CurrentWeapon { get; set; } = TypesWeapon.Not;
 

@@ -44,9 +44,6 @@ namespace BattleRoyalClient
 				case TypesMessage.AddInBattle:
 					Handler_AddInBattle(msg);
 					break;
-				default:
-					int a = 10;
-					break;
 			}
 		}
 

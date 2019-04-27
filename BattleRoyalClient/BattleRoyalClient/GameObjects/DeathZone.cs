@@ -7,7 +7,7 @@ using CommonLibrary.CommonElements;
 
 namespace BattleRoyalClient
 {
-	class DeathZone : GameObject
+	class DeathZone : GameObject, IDeathZoneForView
 	{
 		private TimeSpan timeToChange;
 		public TimeSpan TimeToChange { get => timeToChange; set => timeToChange = value; }
@@ -19,6 +19,10 @@ namespace BattleRoyalClient
 
 		public override TypesGameObject Type { get; protected set; } = TypesGameObject.DeathZone;
 
+		public void ChangeTimeToReduction(TimeSpan timeSpan)
+		{
+
+		}
 		
 	}
 }

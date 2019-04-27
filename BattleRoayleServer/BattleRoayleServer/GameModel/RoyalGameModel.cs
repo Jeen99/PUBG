@@ -25,7 +25,7 @@ namespace BattleRoayleServer
 		private const float lengthOfSide = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
-		private const int minValueGamerInBattle = 1;
+		private const int minValueGamerInBattle = 0;
 
 		//только на чтение
 		public IList<IPlayer> Players { get; private set; }
@@ -42,18 +42,6 @@ namespace BattleRoayleServer
 		public Queue<IMessage> IncomingMessages { get; private set; }
 
 		public event HappenedEndGame Event_HappenedEndGame;
-
-		public GameObjectState State
-		{
-			get
-			{
-				var listState = new List<IMessage>();
-				//отправляем характеристики карты
-				listState.Add(new FieldState(new SizeF(lengthOfSide, lengthOfSide)));
-
-				return new GameObjectState(0, TypesGameObject.Field, listState);
-			}
-		}
 
 		/// <summary>
 		/// Содержит алгоритм наполнения карты игровыми объектами
@@ -638,5 +626,21 @@ namespace BattleRoayleServer
 			}
 		}
 
+		public IMessage FullRoomState
+		{
+			get
+			{
+				List<IMessage> fullStates = new List<IMessage>();
+				foreach (var gameObject in GameObjects)
+				{
+					IMessage msg = gameObject.Value.State;
+					if (msg != null) fullStates.Add(msg);
+				}
+
+				fullStates.Add(new GameObjectState(0, TypesGameObject.Field,
+					new List<IMessage> { new FieldState(new SizeF(lengthOfSide, lengthOfSide)) }));
+				return new RoomState(fullStates);
+			}
+		}
 	}
 }
