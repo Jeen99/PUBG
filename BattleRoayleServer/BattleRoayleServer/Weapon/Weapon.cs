@@ -88,22 +88,19 @@ namespace BattleRoayleServer
 		{
 			get
 			{
-				lock (sinchWorkWithComponent)
+				var states = new List<IMessage>();
+				if (Destroyed) return null;
+				else
 				{
-					var states = new List<IMessage>();
-					if (Destroyed) return null;
-					else
+					foreach (IComponent component in Components)
 					{
-						foreach (IComponent component in Components)
+						var state = component.State;
+						if (state != null)
 						{
-							var state = component.State;
-							if (state != null)
-							{
-								states.Add(state);
-							}
+							states.Add(state);
 						}
-						return new WeaponState(ID, Type, TypeWeapon, states);
 					}
+					return new WeaponState(ID, Type, TypeWeapon, states);
 				}
 			}
 		}

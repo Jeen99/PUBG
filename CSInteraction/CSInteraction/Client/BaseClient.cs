@@ -196,9 +196,9 @@ namespace CSInteraction.Client
                 ObjectMsg = (T)formatter.Deserialize(MemStream);
             }
 			ReceivedMsg.Enqueue(ObjectMsg);
-            //генерируем событие
-			if(EventNewMessage != null)
-            EventNewMessage?.Invoke();
+			//генерируем событие
+			if (EventNewMessage != null)
+			EventNewMessage?.Invoke();
         }
     }
 

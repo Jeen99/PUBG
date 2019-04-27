@@ -15,7 +15,7 @@ namespace BattleRoayleServer
 	{
 		//получение id - не должно переопределясться
 		protected object sinchGetId = new object();
-		protected object sinchWorkWithComponent = new object();
+		//protected object sinchWorkWithComponent = new object();
 		//0 - зарезервированно за картой
 		private static ulong counterID = 1;
 
@@ -58,7 +58,7 @@ namespace BattleRoayleServer
 					return;
 				}
 			
-					Components.UpdateComponents(msg);
+				Components.UpdateComponents(msg);
 			}
 		}
 

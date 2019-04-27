@@ -13,12 +13,12 @@ using Box2DX.Collision;
 using Box2DX.Dynamics;
 using ObservalableExtended;
 using CommonLibrary.CommonElements;
+using System.Threading.Tasks;
 
 namespace BattleRoayleServer
 {
     public class RoyalGameModel : IGameModel, IModelForComponents
 	{
-
 		/// <summary>
 		///ширина одной стороны игровой карты 
 		/// </summary>

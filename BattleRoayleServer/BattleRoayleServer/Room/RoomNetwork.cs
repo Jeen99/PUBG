@@ -17,6 +17,8 @@ namespace BattleRoayleServer
     public class RoomNetwork:INetwork
     {
 		private object AccessSinchClients = new object();
+		private bool roomClosing = false;
+		private Task SenderMessage;
         /// <summary>
         /// Ссылка на игровую логику
         /// </summary>
@@ -37,14 +39,14 @@ namespace BattleRoayleServer
 			Clients = new Dictionary<ulong, INetworkClient>();			
 			this.roomLogic = roomLogic;
 			CreateClients(gamers);
-			roomLogic.HappenedEvents.CollectionChanged += HandlerGameEvent;
 			timerTotalSinch = new Timer(3 * 1000)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
 			};
 			timerTotalSinch.Elapsed += HandlerTotalSinch;
-			//отправляем данные для загрузки комнаты
+			SenderMessage = new Task(HandlerGameEvent);
+			SenderMessage.Start();
 		}
 		/// <summary>
 		/// Вызывается на каждое срабатывание таймера
@@ -108,38 +110,45 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Определяет тип сообщения и запускает соответствующий обработчик
 		/// </summary>
-		private void HandlerGameEvent(object sender, NotifyCollectionChangedEventArgs e)
+		private void HandlerGameEvent()
 		{
-				//возможно стоит отправлять в отдельном потоке
-				IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
-				if (msg == null) return;
-
-				switch (msg.TypeMessage)
+			while (!roomClosing)
+			{
+				if (roomLogic?.HappenedEvents.Count > 0)
 				{
-					//сообщения, которые отправляются только игроку создавшему это событие
-					case TypesMessage.AddWeapon:
-					case TypesMessage.ChangedValueHP:
-					case TypesMessage.ReloadWeapon:
-						Handler_PrivateMsg(msg);
-						break;
-					//сообщения которые отправляеются всем
-					case TypesMessage.DeletedInMap:
-					case TypesMessage.ChangedCurrentWeapon:
-					case TypesMessage.GameObjectState:
-					case TypesMessage.WeaponState:
-					case TypesMessage.ChangedTimeTillReduction:
-					case TypesMessage.ChangeCountPayersInGame:
-						Handler_BroadcastMsg(msg);
-						break;
-					case TypesMessage.EndGame:
-						Handler_EndGame(msg);
-						break;
-					//все остальные события
-					default:
-						Handler_DefaulteMsg(msg);
-						break;
+					//возможно стоит отправлять в отдельном потоке
+					IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
+					if (msg == null) return;
+					#region Выбор типа обработчика
+					switch (msg.TypeMessage)
+					{
+						//сообщения, которые отправляются только игроку создавшему это событие
+						case TypesMessage.AddWeapon:
+						case TypesMessage.ChangedValueHP:
+						case TypesMessage.ReloadWeapon:
+							Handler_PrivateMsg(msg);
+							break;
+						//сообщения которые отправляеются всем
+						case TypesMessage.DeletedInMap:
+						case TypesMessage.ChangedCurrentWeapon:
+						case TypesMessage.GameObjectState:
+						case TypesMessage.WeaponState:
+						case TypesMessage.ChangedTimeTillReduction:
+						case TypesMessage.ChangeCountPayersInGame:
+							Handler_BroadcastMsg(msg);
+							break;
+						case TypesMessage.EndGame:
+							Handler_EndGame(msg);
+							break;
+						//все остальные события
+						default:
+							Handler_DefaulteMsg(msg);
+							break;
 
+					}
+					#endregion
 				}
+			}
 		}
 
 		private void Handler_EndGame(IMessage msg)
@@ -205,11 +214,10 @@ namespace BattleRoayleServer
 						//если область видимости одного игрока находит на другого отправляем ему сообщение
 						if (area.IntersectsWith(Clients[id].VisibleArea))
 						{
-							Clients[id].Client.SendMessage((IMessage)msg);
+							Clients[id].Client.SendMessage(msg);
 						}
 					}
-				}
-			
+				}		
 		}
 
 		public void Start()
@@ -222,17 +230,14 @@ namespace BattleRoayleServer
         {
 			lock (AccessSinchClients)
 			{
+				roomClosing = true;
 				timerTotalSinch.Elapsed -= HandlerTotalSinch;
 				timerTotalSinch.Dispose();
-				roomLogic.HappenedEvents.CollectionChanged -= HandlerGameEvent;
+				SenderMessage.Wait();
+				SenderMessage.Dispose();
 				//считываем все пришедшие сообщения
 				int? countMsg = roomLogic?.HappenedEvents?.Count;
 				if (countMsg == null) return;
-
-				for(int i = 0; i < countMsg; i++)
-				{
-					HandlerGameEvent(null, null);
-				}
 
 				foreach (var id in Clients.Keys)
 				{

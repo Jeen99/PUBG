@@ -181,9 +181,8 @@ namespace CSInteraction.Server
                 ObjectMsg = (T)formatter.Deserialize(MemStream);
             }
 			ReceivedMsg.Enqueue(ObjectMsg);
-            //генерируем событие
-			if(Controler!=null)
-			Controler.HanlderNewMessage();
+			//генерируем событие
+			Controler?.HanlderNewMessage();
         }
 
 		public delegate void EndSession(ServerClient<T> Client);
