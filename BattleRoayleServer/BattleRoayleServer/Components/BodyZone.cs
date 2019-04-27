@@ -67,7 +67,7 @@ namespace BattleRoayleServer
 			timeTillReducton = timeTillReducton.Add(new TimeSpan(0, 0, 0, 0, - msg.TimePassed));
 			if (timeTillReducton.Seconds != leftSecond)
 			{
-				Parent.Model?.AddEvent(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
+				Parent.Model?.AddOutgoingMessage(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
 			}
 
 			if(timeTillReducton.Milliseconds < 0) CheckReduction();
@@ -97,7 +97,7 @@ namespace BattleRoayleServer
 			//устанавливаем новое время до сужения зоны
 			timeTillReducton = new TimeSpan(0, 0, timeRound);
 			//отпрвляем сообщение об изменение зоны
-			Parent.Model?.AddEvent(Parent.State);
+			Parent.Model?.AddOutgoingMessage(Parent.State);
 		}
 
 		public override IMessage State

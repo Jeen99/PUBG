@@ -96,11 +96,11 @@ namespace BattleRoayleServer
 
 				//отправляем сообщение о совершении выстрела
 				if (objectsForDamage[1] == null)
-					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, angle, bullet.Distance));
+					Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Holder.ID, angle, bullet.Distance));
 				else
 				{
 					float newDistance = VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition());
-					Parent.Model.AddEvent(new MakedShot((Parent as Weapon).Holder.ID, angle, newDistance));
+					Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Holder.ID, angle, newDistance));
 				}
 
 				//отправляем ему сообщение о нанесении урона	

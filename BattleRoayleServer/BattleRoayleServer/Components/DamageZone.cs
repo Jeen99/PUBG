@@ -71,7 +71,7 @@ namespace BattleRoayleServer
 				if (bodyZone.Radius < distance)
 				{
 					//игрок получает урон
-					player.Update(new GotDamage(this.Parent.ID, zoneIntervalDamage));
+					(player as GameObject).Update(new GotDamage(this.Parent.ID, zoneIntervalDamage));
 				}
 			}
 		}

@@ -40,7 +40,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			Parent.Model.AddEvent(new DeletedInMap(Parent.ID));
+			Parent.Model.AddOutgoingMessage(new DeletedInMap(Parent.ID));
 		}
 
 		public override void Setup()

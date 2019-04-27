@@ -53,7 +53,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		private void HandlerTotalSinch(object sender, ElapsedEventArgs e)
 		{
-			IMessage stateRoom = roomLogic.RoomState;
+			IMessage stateRoom = roomLogic.RoomModel.RoomState;
 			lock (AccessSinchClients)
 			{			
 				foreach (var id in Clients.Keys)
@@ -114,12 +114,9 @@ namespace BattleRoayleServer
 		{
 			while (!roomClosing)
 			{
-				if (roomLogic?.HappenedEvents.Count > 0)
-				{
-					//возможно стоит отправлять в отдельном потоке
-					IMessage msg = roomLogic?.HappenedEvents?.Dequeue();
-					if (msg == null) return;
-					#region Выбор типа обработчика
+				IMessage msg = roomLogic.RoomModel.GetOutgoingMessage();
+				if (msg == null) continue;
+				#region Выбор типа обработчика
 					switch (msg.TypeMessage)
 					{
 						//сообщения, которые отправляются только игроку создавшему это событие
@@ -147,7 +144,6 @@ namespace BattleRoayleServer
 
 					}
 					#endregion
-				}
 			}
 		}
 
@@ -235,9 +231,6 @@ namespace BattleRoayleServer
 				timerTotalSinch.Dispose();
 				SenderMessage.Wait();
 				SenderMessage.Dispose();
-				//считываем все пришедшие сообщения
-				int? countMsg = roomLogic?.HappenedEvents?.Count;
-				if (countMsg == null) return;
 
 				foreach (var id in Clients.Keys)
 				{
@@ -253,9 +246,9 @@ namespace BattleRoayleServer
 		{
 			lock (AccessSinchClients)
 			{
-				for (int i = 0; i < roomLogic.Players.Count; i++)
+				for (int i = 0; i < roomLogic.RoomModel.Players.Count; i++)
 				{
-					var client = new NetworkClient(roomLogic.Players[i], gamers[i].Client,
+					var client = new NetworkClient(roomLogic.RoomModel, i, gamers[i].Client,
 					   gamers[i].NickName, gamers[i].Password);
 					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
 					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
@@ -275,10 +268,6 @@ namespace BattleRoayleServer
 			}
 		}
 
-		private void Client_Event_GetViewMsg(IMessage msg)
-		{
-			
-		}
 		private void Handler_PlayerTurn(ulong ID, PlayerTurn msg)
 		{
 			if (!Clients.ContainsKey(ID)) return;
@@ -302,7 +291,6 @@ namespace BattleRoayleServer
 			{
 				Clients.Remove(client.Player.ID);	
 			}
-			roomLogic.RemovePlayer(client.Player);
 		}
 
 		/// <summary>

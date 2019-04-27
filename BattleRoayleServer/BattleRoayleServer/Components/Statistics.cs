@@ -64,7 +64,7 @@ namespace BattleRoayleServer
 
 		public override void Dispose()
 		{
-			Parent.Model.AddEvent(new EndGame(Parent.ID, GamerDied, Kills, TimeInBattle));
+			Parent.Model.AddOutgoingMessage(new EndGame(Parent.ID, GamerDied, Kills, TimeInBattle));
 		}
 	}
 }

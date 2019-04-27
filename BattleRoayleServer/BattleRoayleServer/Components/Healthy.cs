@@ -47,13 +47,13 @@ namespace BattleRoayleServer
 			HP -= msg.Damage;
 			if (HP <= 0)
 			{
-				Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
+				Parent.Model?.AddOutgoingMessage(new ChangedValueHP(Parent.ID, HP));
 				Parent.Update( new GamerDied(this.Parent.ID));
 				Parent.SetDestroyed();
 			}
 			else
 			{
-				Parent.Model?.AddEvent(new ChangedValueHP(Parent.ID, HP));
+				Parent.Model?.AddOutgoingMessage(new ChangedValueHP(Parent.ID, HP));
 			}
 		}
 

@@ -94,7 +94,7 @@ namespace BattleRoayleServer
 				currentWeapon = weapon;
 				currentWeapon.Holder = Parent;
 				//отправляем сообщение об этом
-				Parent?.Model?.AddEvent(new ChangedCurrentWeapon(Parent.ID, type));
+				Parent?.Model?.AddOutgoingMessage(new ChangedCurrentWeapon(Parent.ID, type));
 			}
 		}
 

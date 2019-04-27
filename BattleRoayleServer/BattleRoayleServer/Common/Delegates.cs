@@ -28,4 +28,6 @@ namespace BattleRoayleServer
 
 	public delegate void GetViewMsg(ulong ID, IMessage msg);
 
+	public delegate void HappenedEndGame();
+
 }

@@ -13,6 +13,7 @@ namespace BattleRoayleServer
 {
 	public abstract class GameObject : IGameObject
 	{
+		private object sinchUpdateObject = new object();
 		//получение id - не должно переопределясться
 		protected object sinchGetId = new object();
 		//protected object sinchWorkWithComponent = new object();
@@ -57,8 +58,11 @@ namespace BattleRoayleServer
 					Log.AddNewRecord("Получено null сообщение");
 					return;
 				}
-			
-				Components.UpdateComponents(msg);
+
+				lock (sinchUpdateObject)
+				{
+					Components.UpdateComponents(msg);
+				}
 			}
 		}
 
@@ -104,7 +108,7 @@ namespace BattleRoayleServer
 				item.Dispose();
 			}
 
-			Model.AddEvent(new DeletedInMap(ID));	
+			Model.AddOutgoingMessage(new DeletedInMap(ID));	
 		}
 
 		public virtual void Setup()

@@ -25,7 +25,7 @@ namespace BattleRoayleServer
 		private const int widthVisibleArea = 160;
 		private const int heightVisibleArea = 160;
 		private RectangleF visibleArea;
-
+		private IGameModel model;
 		public RectangleF VisibleArea
 		{
 			get
@@ -40,17 +40,18 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public NetworkClient(IPlayer gamerRoomLogic, ServerClient<IMessage> gamer, string nick, string password)
+		public NetworkClient(IGameModel model, int index, ServerClient<IMessage> client, string nick, string password)
 		{
-			this.Player = gamerRoomLogic;
+			this.model = model;
+			this.Player = model.Players[index];
 			visibleArea = new RectangleF(0,0, widthVisibleArea, heightVisibleArea);
 			Nick = nick;
-			Client = gamer;
+			Client = client;
 			Client.Controler = this;
 			Client.EventEndSession += Client_EventEndSession;
 			Password = password;
 			//посылаем сообщение о том, что игрок добавлен в игровую комнату
-			gamer.SendMessage(new AddInBattle(gamerRoomLogic.ID));
+			Client.SendMessage(new AddInBattle(Player.ID));
 
 		}
 		//игрок вышел из игры до завершения игры
@@ -71,7 +72,7 @@ namespace BattleRoayleServer
 					Event_GetViewMsg?.Invoke(Player.ID, msg);
 					break;
 				default:
-					Player.Update(msg);
+					model.AddIncomingMessage(msg);
 					break;
 			}
 					

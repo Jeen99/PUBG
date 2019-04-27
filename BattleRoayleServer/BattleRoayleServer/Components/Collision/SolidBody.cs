@@ -118,7 +118,7 @@ namespace BattleRoayleServer
 			if (position.X != shape.X || position.Y != shape.Y)
 			{
 				shape.Location = new PointF(position.X, position.Y);
-				Parent.Model?.AddEvent(new ObjectMoved(Parent.ID, shape.Location));
+				Parent.Model?.AddOutgoingMessage(new ObjectMoved(Parent.ID, shape.Location));
 			}
 		}
 		

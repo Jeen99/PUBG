@@ -11,6 +11,6 @@ namespace BattleRoayleServer
 		IList<IPlayer> Players { get; }
 		void AddOrUpdateGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
-		void AddEvent(IMessage message);
+		void AddOutgoingMessage(IMessage message);
 	}
 }

@@ -51,7 +51,7 @@ namespace BattleRoayleServer
 		{
 			Reload =  TypesReload.ReloadMagazin;
 			timeReload = new TimeSpan(0, 0, 0, 0, durationReload_Magazin);	
-			Parent?.Model?.AddEvent(new ReloadWeapon((Parent as Weapon).Holder.ID, true));
+			Parent?.Model?.AddOutgoingMessage(new ReloadWeapon((Parent as Weapon).Holder.ID, true));
 			
 		}
 
@@ -145,7 +145,7 @@ namespace BattleRoayleServer
 			//cоздаем новый магазин
 			bulletsInMagazinNow = bulletsInMagazin;
 
-			Parent?.Model?.AddEvent(new ReloadWeapon((Parent as Weapon).Holder.ID, false));
+			Parent?.Model?.AddOutgoingMessage(new ReloadWeapon((Parent as Weapon).Holder.ID, false));
 
 		}
 

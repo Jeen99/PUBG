@@ -18,15 +18,18 @@ namespace BattleRoayleServer
     public interface IGameModel
     {
         IList<IPlayer> Players { get;}
-		Dictionary<ulong, IGameObject> GameObjects { get; }
-		ObservableQueue<IMessage> HappenedEvents { get; }
+		Dictionary<ulong, IGameObject> GameObjects { get; }		
 		GameObjectState State { get; }
 		DeathZone Zone { get; }
+		IMessage RoomState { get; }
+
+		event HappenedEndGame Event_HappenedEndGame;
 
 		void AddOrUpdateGameObject(IGameObject gameObject);
 		void RemoveGameObject(IGameObject gameObject);
 		void Dispose();
-		void RemovePlayer(Gamer player);
 		void MakeStep(int passedTime);
+		IMessage GetOutgoingMessage();
+		void AddIncomingMessage(IMessage message);
 	}
 }

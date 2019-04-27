@@ -170,8 +170,8 @@ namespace BattleRoayleServer
 
 				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
 				Parent.Update(msg);
-				Parent.Model.AddEvent(new DeletedInMap(weapon.ID));
-				Parent.Model?.AddEvent(msg);
+				Parent.Model.AddOutgoingMessage(new DeletedInMap(weapon.ID));
+				Parent.Model?.AddOutgoingMessage(msg);
 				return true;
 			}
 			return false;

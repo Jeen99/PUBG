@@ -11,7 +11,6 @@ using System.Drawing;
 using Box2DX.Common;
 using Box2DX.Collision;
 using Box2DX.Dynamics;
-using ObservalableExtended;
 using CommonLibrary.CommonElements;
 using System.Threading.Tasks;
 
@@ -23,9 +22,12 @@ namespace BattleRoayleServer
 		///ширина одной стороны игровой карты 
 		/// </summary>
 		private const float lengthOfSide = 500;
-		private object sinchDelitePlayer = new object();
-        //только на чтение
-        public IList<IPlayer> Players { get; private set; }
+		private bool roomClosing = false;
+		private Task handlerIncomingMessages;
+		private const int minValueGamerInBattle = 0;
+
+		//только на чтение
+		public IList<IPlayer> Players { get; private set; }
 		/// <summary>
 		/// Коллекция всех игровых объектов в игре
 		/// </summary>
@@ -35,7 +37,10 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Колекция событий произошедших в игре
 		/// </summary>
-		public ObservableQueue<IMessage> HappenedEvents { get; private set; }
+		public Queue<IMessage> OutgoingMessages { get; private set; }
+		public Queue<IMessage> IncomingMessages { get; private set; }
+
+		public event HappenedEndGame Event_HappenedEndGame;
 
 		public GameObjectState State
 		{
@@ -355,16 +360,17 @@ namespace BattleRoayleServer
 				Players.Add(gamer);
 				GameObjects.Add(gamer.ID,gamer);
 			}
-			HappenedEvents.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+			OutgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
 		}
 
-		public void RemovePlayer(Gamer player)
+		private void RemovePlayer(Gamer player)
 		{
-			lock (sinchDelitePlayer)
+			Players.Remove(player);
+			player.SetDestroyed();
+			OutgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+			if( Players.Count <= minValueGamerInBattle)
 			{
-				Players.Remove(player);
-				player.SetDestroyed();
-				HappenedEvents.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+				Event_HappenedEndGame?.Invoke();
 			}
 		}
 		
@@ -386,7 +392,8 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
-			HappenedEvents = new ObservableQueue<IMessage>();
+			OutgoingMessages = new Queue<IMessage>();
+			IncomingMessages = new Queue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -410,6 +417,8 @@ namespace BattleRoayleServer
 				GameObjects[key].Setup();
 			}
 
+			handlerIncomingMessages = new Task(Handler_IncomingMessages);
+			handlerIncomingMessages.Start();
 		}
 
 		//только для тестов
@@ -418,7 +427,8 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			GameObjects = new Dictionary<ulong, IGameObject>();
-			HappenedEvents = new ObservableQueue<IMessage>();
+			OutgoingMessages = new Queue<IMessage>();
+			IncomingMessages = new Queue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0, 0);
@@ -427,8 +437,12 @@ namespace BattleRoayleServer
 			var solver = new RoomContactListener();
 			Field.SetContactListener(solver);
 			CreateFrame();
+
 			Zone = new DeathZone(this, lengthOfSide);
 			GameObjects.Add(Zone.ID, Zone);
+
+			handlerIncomingMessages = new Task(Handler_IncomingMessages);
+			handlerIncomingMessages.Start();
 		}
 
 		private void CreateFrame()
@@ -508,7 +522,7 @@ namespace BattleRoayleServer
 			gameObject.Setup();
 			//посылваем сообщение об добавлении нового объекта
 			//отправляем просто состояние объекта(не вижу смысла создавать специальное сообщение для этого)
-			HappenedEvents.Enqueue(gameObject.State);
+			OutgoingMessages.Enqueue(gameObject.State);
 		}
 
 		public void RemoveGameObject(IGameObject gameObject)
@@ -519,25 +533,40 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
-			lock (sinchDelitePlayer)
+			roomClosing = true;
+			//выполняем все необходимые действия при уничтожении для всех оставшихся игроков
+			for (; Players.Count != 0;)
 			{
-				//выполняем все необходимые действия при уничтожении для всех оставшихся игроков
-				for (; Players.Count != 0;)
-				{
-					(Players[0] as GameObject).Dispose();
-					Players.RemoveAt(0);
-				}
-
-				GameObjects.Clear();
-				Field.Dispose();
-				HappenedEvents.Clear();
+				(Players[0] as GameObject).Dispose();
+				Players.RemoveAt(0);
 			}
+
+			handlerIncomingMessages.Wait();
+			handlerIncomingMessages.Dispose();
+			GameObjects.Clear();
+			Field.Dispose();
 		}
 
-		public void AddEvent(IMessage message)
+		public void AddOutgoingMessage(IMessage message)
 		{
-			HappenedEvents.Enqueue(message);
+			OutgoingMessages.Enqueue(message);
 		}
+
+		public IMessage GetOutgoingMessage()
+		{
+			if (OutgoingMessages.Count == 0)
+			{
+				return null;
+			}
+			else
+				return OutgoingMessages.Dequeue();
+		}
+
+		public void AddIncomingMessage(IMessage message)
+		{
+			IncomingMessages.Enqueue(message);
+		}
+
 		/// <summary>
 		/// Делаем шаг игровой карты
 		/// </summary>
@@ -574,5 +603,38 @@ namespace BattleRoayleServer
 			//обновляем игровую зону
 			Zone.Update(msg);
 		}
+
+		private void Handler_IncomingMessages()
+		{
+			while (!roomClosing)
+			{
+				if (IncomingMessages.Count > 0)
+				{
+					IMessage msg = IncomingMessages.Dequeue();
+					GameObjects[msg.ID]?.Update(msg);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Создает список состяний игровых объектов (только активных)
+		/// </summary>
+		public IMessage RoomState
+		{
+			get
+			{
+				List<IMessage> states = new List<IMessage>();
+				foreach (var gameObject in GameObjects)
+				{
+					if (gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
+					{
+						IMessage msg = gameObject.Value.State;
+						if (msg != null) states.Add(msg);
+					}
+				}
+				return new RoomState(states);
+			}
+		}
+
 	}
 }

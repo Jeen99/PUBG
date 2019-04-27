@@ -18,17 +18,16 @@ namespace BattleRoayleServer
 {
     public class RoyalRoomLogic : IRoomLogic
     {
-        private IGameModel roomContext;
+        public IGameModel RoomModel { get; private set; }
         private Timer timerNewIteration;
 		private QuantTimer quantTimer;
-
-		private const int minValueGamerInBattle = 0;
 
 		public event RoomLogicEndWork EventRoomLogicEndWork;
 
 		public RoyalRoomLogic(int GamersInRoom)
         {
-			roomContext = new RoyalGameModel(GamersInRoom);
+			RoomModel = new RoyalGameModel(GamersInRoom);
+			RoomModel.Event_HappenedEndGame += RoomModel_Event_HappenedEndGame;
 			timerNewIteration = new Timer(16)
 			{
 				SynchronizingObject = null,
@@ -39,102 +38,35 @@ namespace BattleRoayleServer
 			
         }
 
-		private void EndWork()
+		private void RoomModel_Event_HappenedEndGame()
 		{
 			timerNewIteration.Elapsed -= TickQuantTimer;
 			timerNewIteration.Stop();
 			EventRoomLogicEndWork?.Invoke(this);
 		}
 
-		/// <summary>
-		/// Создает список состяний игровых объектов (только активных)
-		/// </summary>
-		public IMessage RoomState
-		{
-			get
-			{
-				List<IMessage> states = new List<IMessage>();
-				foreach (var gameObject in roomContext.GameObjects)
-				{
-					if (gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
-					{
-						IMessage msg = gameObject.Value.State;
-						if (msg != null) states.Add(msg);
-					}
-				}
-				return new RoomState(states);
-			}
-		}
-
 		//возврашает состояние всех объектов (активных и неактивных)
 		public IMessage GetInitializeData()
 		{
 			List<IMessage> states = new List<IMessage>();
-			foreach (var gameObject in roomContext.GameObjects)
+			foreach (var gameObject in RoomModel.GameObjects)
 			{		
 					IMessage msg = gameObject.Value.State;
 					if (msg != null) states.Add(msg);	
 			}
 
-			states.Add(roomContext.State);
+			states.Add(RoomModel.State);
 			
 			return new RoomState(states);
 		}
-
-		/// <summary>
-		/// Посредник между коллецией игроков игровой модели и внешней средой
-		/// </summary>
-		public IList<IPlayer> Players {
-			get
-			{
-				return roomContext.Players;
-			}
-		}
-		/// <summary>
-		/// Посредник между коллецией событий игровой модели и внешней средой
-		/// </summary>
-		public ObservableQueue<IMessage> HappenedEvents {
-			get {
-				return roomContext.HappenedEvents;
-			}
-		}
-
-		public Dictionary<ulong, IGameObject> GameObjects
-		{
-			get
-			{
-				return roomContext.GameObjects;
-			}
-		}
-
-		public void AddPlayer()
-        {
-            throw new NotImplementedException();
-        }
 
         //вызывается при срабатывании таймера
         private void TickQuantTimer(object sender, ElapsedEventArgs e)
         {
 			quantTimer.Tick();
-			roomContext.MakeStep(quantTimer.QuantValue);
-
-			Debug.WriteLine("Прошло времени" + quantTimer.QuantValue);
-			if (roomContext.Players.Count <= minValueGamerInBattle)
-			{
-				EndWork();
-			}
+			RoomModel.MakeStep(quantTimer.QuantValue);
 		}
 		
-        public void RemovePlayer(IPlayer player)
-        {
-			if (player is Gamer)
-			{
-				roomContext.RemovePlayer(player as Gamer);
-				if (roomContext.Players.Count <= minValueGamerInBattle)
-					EndWork();
-			}
-		}
-
         public void Start()
         {
 			timerNewIteration.Start();
@@ -144,7 +76,7 @@ namespace BattleRoayleServer
         {
 			timerNewIteration.Dispose();
 			//осовобождение ресурсво модели
-			roomContext.Dispose();
+			RoomModel.Dispose();
 		}
 
 	}
