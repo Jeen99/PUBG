@@ -55,9 +55,15 @@ namespace BattleRoyalClient
 			BattleModelChanged?.Invoke(typeChange);
 		}
 
-		public void OnChangeGameObject(IModelObject model, StateObject state = StateObject.Change)
+		public void OnChangeGameObject(ulong idObject, StateObject state = StateObject.Change)
 		{
-			GameObjectChanged?.Invoke(model, state);
+			if(gameObjects.ContainsKey(idObject))
+			GameObjectChanged?.Invoke(gameObjects[idObject], state);
+		}
+
+		public void OnChangeGameObject(IModelObject modelObject, StateObject state = StateObject.Change)
+		{
+			GameObjectChanged?.Invoke(modelObject, state);
 		}
 
 		public BattleModel(ulong id)
@@ -68,7 +74,6 @@ namespace BattleRoyalClient
 		public void ChangeCountPlayersInGame(int newCount)
 		{
 			CountPlayersInGame = newCount;
-			CreateChangeModel(TypesChange.CountPlyers);
 		}
 
 		public void CreateTraser(ulong idPlayer, float distance, float angle)
@@ -83,7 +88,6 @@ namespace BattleRoyalClient
 		{
 			if (!gameObjects.ContainsKey(idObject)) return;
 			gameObjects[idObject].Update(angle);
-			OnChangeGameObject(gameObjects[idObject]);
 		}
 
 		public void ChangeCurrentWeaponAtGamer(ulong idGamer, TypesWeapon typeWeapon)
@@ -93,7 +97,6 @@ namespace BattleRoyalClient
 			if (gamer != null)
 			{
 				gamer.CurrentWeapon = typeWeapon;
-				OnChangeGameObject(gamer);
 			}
 		}
 
@@ -101,7 +104,6 @@ namespace BattleRoyalClient
 		{
 			if (deathZone == null) return;
 			deathZone.TimeToChange = time;
-			OnChangeGameObject(deathZone);
 		}
 
 		public IModelObject RemoveObject(ulong idObject)
@@ -111,7 +113,6 @@ namespace BattleRoyalClient
 				IModelObject modelObject = gameObjects[idObject];
 				if (gameObjects.Remove(idObject))
 				{
-					OnChangeGameObject(modelObject, StateObject.Delete);
 					return modelObject;
 				}
 			}
@@ -128,7 +129,6 @@ namespace BattleRoyalClient
 		{
 			if (!gameObjects.ContainsKey(id)) return;
 			gameObjects[id].Update(location);
-			OnChangeGameObject(gameObjects[id]);
 		}
 
 		public bool ContainsObject(ulong idObject)
@@ -140,7 +140,6 @@ namespace BattleRoyalClient
 		{
 			gameObjects.Add(modelObject.ID, modelObject);
 			
-
 			switch (modelObject.Type)
 			{
 				case TypesGameObject.DeathZone:
@@ -148,21 +147,18 @@ namespace BattleRoyalClient
 					break;
 			}
 
-			OnChangeGameObject(modelObject);
 		}
 
 		public void ChanageShapeAtObject(ulong idObject, RectangleF shape)
 		{
 			if (!gameObjects.ContainsKey(idObject)) return;
 			gameObjects[idObject].Update(shape);
-			OnChangeGameObject(gameObjects[idObject]);		
 		}
 
 		public void ChanageShapeAtZoneDeath(PointF location, float radius)
 		{
 			if (deathZone == null) return;
 			deathZone.Update(new RectangleF(location, new SizeF(radius*2, radius*2)));
-			OnChangeGameObject(deathZone);
 		}
 	}
 	public enum TypesChange

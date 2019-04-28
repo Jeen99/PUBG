@@ -67,12 +67,12 @@ namespace BattleRoyalClient
 			int index = (int)weapon;
 			Weapons[index] = weapon;
 			if(character!=null)
-				Event_CharacterChange?.Invoke( TypesChangeCharacter.AddWeapon);
+				OnChangeCharacter(TypesChangeCharacter.AddWeapon);
 		}
 
 		public void ChangeCurrentWeapon(TypesWeapon weapon)
 		{
-			Event_CharacterChange?.Invoke( TypesChangeCharacter.CurrentWepon);
+			OnChangeCharacter(TypesChangeCharacter.CurrentWepon);
 		}
 
 		public void ChangeHP(float newHP)

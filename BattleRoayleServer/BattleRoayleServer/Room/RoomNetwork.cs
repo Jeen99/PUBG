@@ -163,7 +163,8 @@ namespace BattleRoayleServer
 		{
 			lock (AccessSinchClients)
 			{			
-				Clients[msg.ID].SaveStatistics(msg);
+				if(Clients.ContainsKey(msg.ID))
+					Clients[msg.ID].SaveStatistics(msg);
 				Handler_PrivateMsg(msg);
 				//закрываем этого клиента
 			

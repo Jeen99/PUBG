@@ -100,6 +100,7 @@ namespace BattleRoyalClient
 		private void Handler_ChangeCountPayersInGame(IMessage msg)
 		{
 			model.ChangeCountPlayersInGame(msg.Count);
+			model.CreateChangeModel( TypesChange.CountPlyers);
 		}
 
 		private void Handler_AddWeapon(IMessage msg)
@@ -115,6 +116,7 @@ namespace BattleRoyalClient
 		public void Handler_PlayerTurned(IMessage msg)
 		{
 			model.TurnedGameObject(msg.ID, msg.Angle);
+			model.OnChangeGameObject(msg.ID);
 		}
 
 		private void Handler_ChangedCurrentWeapon(IMessage msg)
@@ -122,18 +124,20 @@ namespace BattleRoyalClient
 			model.ChangeCurrentWeaponAtGamer(msg.ID, msg.TypeWeapon);
 			if (msg.ID == model.CharacterController.ID)
 				model.CharacterController.ChangeCurrentWeapon(msg.TypeWeapon);
+
+			model.OnChangeGameObject(msg.ID);
 		}
 
 		private void Handler_ChangedTimeTillReduction(IMessage msg)
 		{
 			model.ChangeTimeTillReductionAtDeathZone(msg.Time);
+			model.OnChangeGameObject(msg.ID);
 		}
 
 		private void Handler_EndGame(IMessage msg)
 		{
 			working = false;
 			client.EventEndSession -= this.Client_EventEndSession;
-
 			view.Dispatcher.Invoke(() =>
 			{
 				Account formAccount = new Account(client, msg);
@@ -147,11 +151,13 @@ namespace BattleRoyalClient
 		{
 
 			IModelObject modelObject = model.RemoveObject(deleteInMap.ID);
-		
+			
 			if (modelObject.Type == TypesGameObject.Grenade)
 			{
 				model.CreateExplosion(modelObject.Location);
 			}
+
+			model.OnChangeGameObject(modelObject, StateObject.Delete);
 		}
 
 		private void Handler_HealthyCharacter(IMessage changedValueHP)
@@ -162,6 +168,7 @@ namespace BattleRoyalClient
 		private void Handler_ObjectMoved(IMessage moved)
 		{
 			model.ChangeLocationAtObject(moved.ID, moved.Location);
+			model.OnChangeGameObject(moved.ID);
 			if(moved.ID == model.CharacterController.ID)
 			{
 				model.CharacterController.ChangeLocation(moved.Location);
@@ -176,7 +183,7 @@ namespace BattleRoyalClient
 				{
 					case TypesMessage.GameObjectState:
 					case TypesMessage.WeaponState:
-						Handler_GameObjectState((GameObjectState)message);
+						Handler_GameObjectState(message);
 						break;				
 				}
 			}
@@ -190,6 +197,7 @@ namespace BattleRoyalClient
 			{
 				GameObject addingObject = FactoryForCreateGameObjects.CreateGameObjects(msg);
 				model.AddGameObject(addingObject);
+				model.OnChangeGameObject(addingObject);
 				if (msg.ID == model.CharacterController.ID)
 				{
 					model.CharacterController.Create(addingObject as Gamer);
@@ -212,6 +220,7 @@ namespace BattleRoyalClient
 							break;
 					}
 				}
+				model.OnChangeGameObject(msg.ID);
 			}
 		}
 

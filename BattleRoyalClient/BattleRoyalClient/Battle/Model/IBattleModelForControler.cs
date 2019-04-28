@@ -15,7 +15,8 @@ namespace BattleRoyalClient
 
 		void ChangeCountPlayersInGame(int newCount);
 		void CreateChangeModel(TypesChange typeChange);
-		void OnChangeGameObject(IModelObject model, StateObject state = StateObject.Change);
+		void OnChangeGameObject(ulong idObject, StateObject state = StateObject.Change);
+		void OnChangeGameObject(IModelObject modelObject, StateObject state = StateObject.Change);
 		void CreateTraser(ulong idPlayer, float distance, float angle);
 		void TurnedGameObject(ulong idObject, float angle);
 		void ChangeCurrentWeaponAtGamer(ulong idGamer, TypesWeapon typeWeapon);
