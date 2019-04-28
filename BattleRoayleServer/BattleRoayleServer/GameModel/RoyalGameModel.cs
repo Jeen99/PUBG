@@ -600,7 +600,8 @@ namespace BattleRoayleServer
 				if (IncomingMessages.Count > 0)
 				{
 					IMessage msg = IncomingMessages.Dequeue();
-					GameObjects[msg.ID]?.Update(msg);
+					if(GameObjects.ContainsKey(msg.ID))
+						GameObjects[msg.ID]?.Update(msg);
 				}
 				else Thread.Sleep(1);
 			}

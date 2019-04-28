@@ -131,8 +131,7 @@ namespace BattleRoyalClient
 
 		private void Handler_EndGame(IMessage msg)
 		{
-			StopHandlerMessages();
-
+			working = false;
 			client.EventEndSession -= this.Client_EventEndSession;
 
 			view.Dispatcher.Invoke(() =>
