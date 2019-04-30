@@ -36,13 +36,7 @@
     <Reference Include="Box2DX, Version=2.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Box2DX.2.0.2.0\lib\net40\Box2DX.dll</HintPath>
     </Reference>
-    <Reference Include="CommonLibrary">
-      <HintPath>..\..\CommonLibrary\bin\Debug\netstandard2.0\CommonLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="ObservalableExtended">
-      <HintPath>..\..\ObservalableExtended\bin\Debug\ObservalableExtended.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -130,9 +124,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CommonLibrary\CommonLibrary.csproj">
+      <Project>{623d822d-8c51-41cd-9e6d-d482e3848c04}</Project>
+      <Name>CommonLibrary</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\CSInteraction\CSInteraction\CSInteraction.csproj">
       <Project>{ca5aa8ca-e6c9-42db-b7ee-1d3028548aab}</Project>
       <Name>CSInteraction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObservalableExtended\ObservalableExtended.csproj">
+      <Project>{3dd3f7b6-4fcd-4bba-994a-65aea4bcb8f3}</Project>
+      <Name>ObservalableExtended</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
