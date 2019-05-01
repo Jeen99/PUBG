@@ -29,6 +29,19 @@ namespace ServerTest
 
 		public TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
+		public event ReceivedMessage Received_ChoiceWeapon;
+		public event ReceivedMessage Received_GamerDied;
+		public event ReceivedMessage Received_GotDamage;
+		public event ReceivedMessage Received_GoTo;
+		public event ReceivedMessage Received_MakeShot;
+		public event ReceivedMessage Received_PlayerTurn;
+		public event ReceivedMessage Received_MakeReloadWeapon;
+		public event ReceivedMessage Received_TryPickUp;
+		public event ReceivedMessage Received_DeletedInMap;
+		public event ReceivedMessage Received_TimeQuantPassed;
+		public event ReceivedMessage Received_AddWeapon;
+		public event ReceivedMessage Received_MakedKill;
+
 		public void Dispose()
 		{
 

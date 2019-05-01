@@ -1,40 +1,40 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using BattleRoayleServer;
-using CSInteraction.ProgramMessage;
+﻿//using System;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using BattleRoayleServer;
+//using CSInteraction.ProgramMessage;
 
-namespace ServerTest.ComponentsTest
-{
-	[TestClass]
-	public class HealthyTest
-	{
-		[TestMethod]
-		public void Test_UpdateComponent_GotDamaged()
-		{
-			Healthy healthy = new Healthy(new StubPlayer());
-			healthy.Setup();
-			healthy.UpdateComponent(new GotDamage(8));
-			Assert.AreEqual(healthy.HP, 92);
-		}
+//namespace ServerTest.ComponentsTest
+//{
+//	[TestClass]
+//	public class HealthyTest
+//	{
+//		[TestMethod]
+//		public void Test_UpdateComponent_GotDamaged()
+//		{
+//			Healthy healthy = new Healthy(new StubPlayer());
+//			healthy.Setup();
+//			healthy.UpdateComponent(new GotDamage(8));
+//			Assert.AreEqual(healthy.HP, 92);
+//		}
 
-		[TestMethod]
-		[ExpectedException(typeof(Exception))]
-		public void Test_ErrorCreateHealthy()
-		{
-			Healthy healthy = new Healthy(null);
-		}
+//		[TestMethod]
+//		[ExpectedException(typeof(Exception))]
+//		public void Test_ErrorCreateHealthy()
+//		{
+//			Healthy healthy = new Healthy(null);
+//		}
 
-		[TestMethod]
-		public void Test_CreateHealthy()
-		{
-			Healthy healthy = new Healthy(new StubPlayer());
-		}
+//		[TestMethod]
+//		public void Test_CreateHealthy()
+//		{
+//			Healthy healthy = new Healthy(new StubPlayer());
+//		}
 
-		[TestMethod]
-		public void Test_HealthyState()
-		{
-			Healthy healthy = new Healthy(new StubPlayer());
-			Assert.IsNotNull(healthy.State);
-		}
-	}
-}
+//		[TestMethod]
+//		public void Test_HealthyState()
+//		{
+//			Healthy healthy = new Healthy(new StubPlayer());
+//			Assert.IsNotNull(healthy.State);
+//		}
+//	}
+//}

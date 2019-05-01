@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using CSInteraction.Common;
+using CommonLibrary.CommonElements;
 
 namespace ServerTest
 {
