@@ -4,8 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
 trigger:
-- develop
-- task*
+- TestCI
 
 pool:
   vmImage: 'VS2017-Win2016'
@@ -21,6 +20,7 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+    
 
 - task: VSBuild@1
   inputs:
