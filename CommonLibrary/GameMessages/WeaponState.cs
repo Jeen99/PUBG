@@ -15,7 +15,7 @@ namespace CommonLibrary.GameMessages
 			TypeWeapon = typeWeapon;
 		}
 
-		public override TypesWeapon TypeWeapon { get; protected set; }
+		public override TypesWeapon TypeWeapon { get; }
 		public override TypesMessage TypeMessage { get; } = TypesMessage.WeaponState;
 	}
 }

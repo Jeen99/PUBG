@@ -9,22 +9,22 @@ using CommonLibrary.CommonElements;
 namespace CommonLibrary.AccountMessages
 {
 	[Serializable]
-	public class DataAccount : IMessage
+	public class DataAccount : Message
 	{
 		/// <summary>
 		/// Количество килов сделннаых игроком
 		/// </summary>
-		public long Kills { get; private set;}
+		public override long Kills { get; }
 
 		/// <summary>
 		/// Количество смертей у игрока
 		/// </summary>
-		public long Deaths { get; private set; }
+		public override long Deaths { get; }
 
 		/// <summary>
 		/// Количество битв проведенных игроком
 		/// </summary>
-		public long Battles { get; private set; }
+		public override long Battles { get; }
 
 		public DataAccount(long kills, long deaths, long battles, TimeSpan gameTime)
 		{
@@ -34,47 +34,9 @@ namespace CommonLibrary.AccountMessages
 			Time = gameTime;
 		}
 
-		public TimeSpan Time { get; private set; }
+		public override TimeSpan Time { get; }
 
-		public string Login => throw new NotImplementedException();
+		public override TypesMessage TypeMessage { get; } = TypesMessage.InitializeAccount;
 
-		public string Password => throw new NotImplementedException();
-
-		public bool Result => throw new NotImplementedException();
-
-		public Direction Direction => throw new NotImplementedException();
-
-		public PointF Location => throw new NotImplementedException();
-
-		public float Angle => throw new NotImplementedException();
-
-		public int Count => throw new NotImplementedException();
-
-		public TypesWeapon TypeWeapon => throw new NotImplementedException();
-
-		public float HP => throw new NotImplementedException();
-
-		public float Distance => throw new NotImplementedException();
-
-		public bool StartOrEnd => throw new NotImplementedException();
-
-		public int TimePassed => throw new NotImplementedException();
-
-		public float Damage => throw new NotImplementedException();
-
-		public RectangleF Shape => throw new NotImplementedException();
-
-		public float Radius => throw new NotImplementedException();
-
-		public SizeF Size => throw new NotImplementedException();
-
-		public TypesGameObject TypeGameObject => throw new NotImplementedException();
-
-
-		public TypesMessage TypeMessage { get; } = TypesMessage.InitializeAccount;
-
-		public ulong ID => throw new NotImplementedException();
-
-		public List<IMessage> InsertCollections => throw new NotImplementedException();
 	}
 }
