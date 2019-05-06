@@ -8,7 +8,7 @@ namespace BattleRoayleServer
 {
 	public class ShotGunBullet : IBullet
 	{
-		public float Distance { get; } = 20;
+		public float Distance { get; } = 40;
 
 		public float Damage { get; } = 20;
 	}

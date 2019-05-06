@@ -12,19 +12,14 @@ namespace BattleRoayleServer
 {
 	public class ShotGun : Weapon
 	{
+		public static SizeF Size { get; protected set; } = new SizeF(18.66f, 4.2f);
+
 		public ShotGun(IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.ShotGun;
-
-			//задаем парамертры модели
-			this.TimeBetweenShot = 500;
-			this.TimeReload = 5000;
-			this.bulletsInMagazin = 3;
-			this.size = new SizeF(18.66f, 4.2f);
-			this.restetution = 0;
-			this.friction = 0;
-			this.density = 0.5f;
-			this.linearDamping = 0.85f;
+			physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0.85f);
+			weaponSetups = new WeaponSetups(500, 5000, 3);		
+			size = new SizeF(18.66f, 4.2f);
 
 			var shot = new Shot(this);
 			Components.Add(shot);

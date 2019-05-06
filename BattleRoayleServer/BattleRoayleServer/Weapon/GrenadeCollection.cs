@@ -11,20 +11,16 @@ namespace BattleRoayleServer
 {
 	public class GrenadeCollection:Weapon
 	{	
-		protected float strengthThrowGrenade = 100;
+		protected static float strengthThrowGrenade = 100;
+
+		public static SizeF Size { get; protected set; } = new SizeF(5.46f, 8.12f);
 
 		public GrenadeCollection(IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.GrenadeCollection;
-			//задаем парамертры модели
-			this.TimeBetweenShot = 50;
-			this.TimeReload = 10000;
-			this.bulletsInMagazin = 4;
-			this.size = new SizeF(5.46f, 8.12f);
-			this.restetution = 0;
-			this.friction = 0;
-			this.density = 0.5f;
-			this.linearDamping = 0.85f;
+			physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0.85f);
+			weaponSetups = new WeaponSetups(500, 10000, 4);		
+			size = new SizeF(5.46f, 8.12f);
 
 			var throwGrenade = new Throw(this, strengthThrowGrenade);
 			Components.Add(throwGrenade);

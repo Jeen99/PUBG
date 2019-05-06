@@ -16,19 +16,19 @@ namespace BattleRoayleServer
 	{
 		private bool IsCreate = false;
 
-		protected float restetution;
-		protected float friction;
-		protected float density;
-		protected float linearDamping;
-		protected SizeF size;
-
-		protected int TimeBetweenShot;
-		protected int TimeReload;
-		protected int bulletsInMagazin;
+		protected PhysicsSetups physicsSetups;
+		protected WeaponSetups weaponSetups;
+		protected SizeF size { get;  set; }
 
 		//чтобы не пересоздавать структуры
 		private ShapeDef circleShape;
 		private ShapeDef sensorDef;
+
+		static Weapon()
+		{
+
+		}
+
 
 		public Weapon(IModelForComponents model) : base(model)
 		{
@@ -45,10 +45,11 @@ namespace BattleRoayleServer
 			{
 				CreateBodyShape();
 
-				var body = new SolidBody(this, new RectangleF(location, size),  new ShapeDef[] { circleShape , sensorDef });
+				var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef });
 				Components.Add(body);
 
-				var magazin = new Magazin(this, this.TypeWeapon, TimeBetweenShot, TimeReload, bulletsInMagazin);
+				var magazin = new Magazin(this, this.TypeWeapon, weaponSetups.timeBetweenShot,
+					 weaponSetups.timeReload, weaponSetups.bulletsInMagazin);
 				Components.Add(magazin);
 
 				IsCreate = true;
@@ -59,17 +60,17 @@ namespace BattleRoayleServer
 		{
 			circleShape = new CircleDef();
 			(circleShape as CircleDef).Radius = size.Width / 2;
-			circleShape.Restitution = restetution;
-			circleShape.Friction = friction;
-			circleShape.Density = density;
+			circleShape.Restitution = physicsSetups.restetution;
+			circleShape.Friction = physicsSetups.friction;
+			circleShape.Density = physicsSetups.density;
 			circleShape.Filter.CategoryBits = (ushort)CollideCategory.Loot;
 			circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
 
 			sensorDef = new CircleDef();
 			(sensorDef as CircleDef).Radius = size.Width / 2;
-			sensorDef.Restitution = restetution;
-			sensorDef.Friction = friction;
-			sensorDef.Density = density;
+			sensorDef.Restitution = physicsSetups.restetution;
+			sensorDef.Friction = physicsSetups.friction;
+			sensorDef.Density = physicsSetups.density;
 			sensorDef.IsSensor = true;
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Loot;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
@@ -79,8 +80,8 @@ namespace BattleRoayleServer
 		{
 			if (circleShape == null || sensorDef == null) CreateBodyShape();
 
-			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef }, 
-				linearDamping, startVelocity);
+			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef },
+				physicsSetups.linearDamping, startVelocity);
 			Components.Add(body);
 		}
 
@@ -103,6 +104,20 @@ namespace BattleRoayleServer
 					return new WeaponState(ID, Type, TypeWeapon, states);
 				}
 			}
+		}
+	}
+
+	public struct WeaponSetups
+	{
+		public readonly int timeBetweenShot;
+		public readonly int timeReload;
+		public readonly int bulletsInMagazin;
+
+		public WeaponSetups(int timeBetweenShot, int timeReload, int bulletsInMagazin)
+		{
+			this.timeBetweenShot = timeBetweenShot;
+			this.timeReload = timeReload;
+			this.bulletsInMagazin = bulletsInMagazin;
 		}
 	}
 }

@@ -14,340 +14,136 @@ using Box2DX.Dynamics;
 using CommonLibrary.CommonElements;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace BattleRoayleServer
 {
-    public class RoyalGameModel : IGameModel, IModelForComponents
+	public class RoyalGameModel : IGameModel, IModelForComponents
 	{
-		/// <summary>
-		///ширина одной стороны игровой карты 
-		/// </summary>
 		private const float lengthOfSide = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
 		private const int minValueGamerInBattle = 0;
+		private Dictionary<ulong, IGameObject> gameObjects;
 
-		//только на чтение
 		public IList<IPlayer> Players { get; private set; }
-		/// <summary>
-		/// Коллекция всех игровых объектов в игре
-		/// </summary>
-        public Dictionary<ulong,IGameObject> GameObjects { get; private set; }
 		public DeathZone Zone { get; private set; }
-        public World Field { get; private set; }
-		/// <summary>
-		/// Колекция событий произошедших в игре
-		/// </summary>
+		public World Field { get; private set; }
+
 		public Queue<IMessage> OutgoingMessages { get; private set; }
 		public Queue<IMessage> IncomingMessages { get; private set; }
 
 		public event HappenedEndGame Event_HappenedEndGame;
 
-		/// <summary>
-		/// Содержит алгоритм наполнения карты игровыми объектами
-		/// </summary>
-		private void CreateStaticGameObject()
+		private void CreateDinamicGameObject(List<RectangleF> occupiedArea)
 		{
-			//статическое задание
-			//скрипт создания игровых объектов
-			//15 камней
-			#region 
-			Stone stone = new Stone(this, new PointF(10, 10), new Size(14,14));
-			GameObjects.Add(stone.ID, stone);
 
-			stone = new Stone(this, new PointF(15, 28), new Size(9, 9));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(56, 210), new Size(15, 15));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(89, 360), new Size(10, 10));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(110, 480), new Size(12, 12));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(130, 240), new Size(15, 15));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(178, 102), new Size(8, 8));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(202, 42), new Size(16, 16));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(248, 208), new Size(11, 11));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(299, 409), new Size(14, 14));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(329, 78), new Size(12, 12));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(347, 289), new Size(15, 15));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(378, 480), new Size(14, 14));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(410, 16), new Size(12, 12));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(436, 247), new Size(10, 10));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(487, 100), new Size(14, 14));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(250, 250), new Size(13, 13));
-			GameObjects.Add(stone.ID, stone);
-
-			stone = new Stone(this, new PointF(127, 30), new Size(15, 15));
-			GameObjects.Add(stone.ID, stone);
-			#endregion
-
-			//12 коробок
-			#region
-			Box box = new Box(this, new PointF(40, 100));
-			GameObjects.Add(box.ID, box);
-			
-			box = new Box(this, new PointF(150, 300));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(86, 423));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(162, 300));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(174, 300));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(300, 425));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(300, 413));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(300, 401));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(368, 148));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(312, 172));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(218, 178));
-			GameObjects.Add(box.ID, box);
-
-			box = new Box(this, new PointF(278, 132));
-			GameObjects.Add(box.ID, box);
-
-			#endregion
-
-			//2 автомата
-			#region
-			AssaultRifle assaultRifle = new AssaultRifle(this, new PointF(250, 210));
-			GameObjects.Add(assaultRifle.ID, assaultRifle);
-
-			assaultRifle = new AssaultRifle(this, new PointF(300, 150));
-			GameObjects.Add(assaultRifle.ID, assaultRifle);
-			#endregion
-
-			//3 шот-гана
-			#region
-			ShotGun shotGun = new ShotGun(this, new PointF(400, 300));
-			GameObjects.Add(shotGun.ID, shotGun);
-
-			shotGun = new ShotGun(this, new PointF(90, 485));
-			GameObjects.Add(shotGun.ID, shotGun);
-
-			shotGun = new ShotGun(this, new PointF(300, 10));
-			GameObjects.Add(shotGun.ID, shotGun);
-			#endregion
-
-			//3 гранат
-			#region
-			GrenadeCollection grenade = new GrenadeCollection(this, new PointF(80, 344));
-			GameObjects.Add(grenade.ID, grenade);
-
-			grenade = new GrenadeCollection(this, new PointF(3, 269));
-			GameObjects.Add(grenade.ID, grenade);
-
-			grenade = new GrenadeCollection(this, new PointF(45, 156));
-			GameObjects.Add(grenade.ID, grenade);
-			#endregion
-
-			//4 пистолета
-			#region
-			Gun gun = new Gun(this, new PointF(10, 10));
-			GameObjects.Add(gun.ID, gun);
-
-			gun = new Gun(this, new PointF(21, 480));
-			GameObjects.Add(gun.ID, gun);
-
-			gun = new Gun(this, new PointF(476, 486));
-			GameObjects.Add(gun.ID, gun);
-
-			gun = new Gun(this, new PointF(490, 5));
-			GameObjects.Add(gun.ID, gun);
-			#endregion
-
-			//12 кустов
-			#region
-			Bush bush = new Bush(this, new PointF(80, 90));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(200, 100));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(100, 200));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(45, 400));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(156, 312));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(420, 118));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(300, 250));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(243, 450));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(245, 341));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(262, 40));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(410,323));
-			GameObjects.Add(bush.ID, bush);
-
-			bush = new Bush(this, new PointF(489, 90));
-			GameObjects.Add(bush.ID, bush);
-
-			#endregion
-			//10 деревьев
-			#region
-			Tree tree = new Tree(this, new PointF(100, 250));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(43, 100));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(89, 363));
-			GameObjects.Add(tree.ID, tree);
-			
-			tree = new Tree(this, new PointF(129, 403));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(168, 60));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(210, 80));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(289, 261));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(320, 56));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(378, 470));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(430, 241));
-			GameObjects.Add(tree.ID, tree);
-
-			tree = new Tree(this, new PointF(476, 412));
-			GameObjects.Add(tree.ID, tree);
-
-			#endregion
-
-		
-		}
-
-		private void CreateDinamicGameObject()
-		{
 			//15 камней
 			for (int i = 0; i < 20; i++)
 			{
-				Stone stone = new Stone(this, VectorMethod.CreateRandPosition(lengthOfSide), new Size(16, 16));
-				GameObjects.Add(stone.ID, stone);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, Stone.Size);
+				Stone stone = new Stone(this, newShape.Location);
+				gameObjects.Add(stone.ID, stone);
 			}
 			//12 коробок
 			for (int i = 0; i < 15; i++)
 			{
-				Box box = new Box(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(box.ID, box);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, Box.Size);
+				Box box = new Box(this, newShape.Location);
+				gameObjects.Add(box.ID, box);
 			}
 
 			//4 автомата
 			for (int i = 0; i < 4; i++)
 			{
-				AssaultRifle assaultRifle = new AssaultRifle(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(assaultRifle.ID, assaultRifle);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, AssaultRifle.Size);
+				AssaultRifle assaultRifle = new AssaultRifle(this, newShape.Location);
+				gameObjects.Add(assaultRifle.ID, assaultRifle);
 			}
 
 			//5 шот-ганов
 			for (int i = 0; i < 5; i++)
 			{
-				ShotGun shotGun = new ShotGun(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(shotGun.ID, shotGun);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, ShotGun.Size);
+				ShotGun shotGun = new ShotGun(this, newShape.Location);
+				gameObjects.Add(shotGun.ID, shotGun);
 			}
 
 			//5 гранат
 			for (int i = 0; i < 5; i++)
 			{
-				GrenadeCollection grenade = new GrenadeCollection(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(grenade.ID, grenade);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
+				GrenadeCollection grenade = new GrenadeCollection(this, newShape.Location);
+				gameObjects.Add(grenade.ID, grenade);
 			}
 
 			//8 пистолетов
 			for (int i = 0; i < 8; i++)
 			{
-				Gun gun = new Gun(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(gun.ID, gun);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
+				Gun gun = new Gun(this, newShape.Location);
+				gameObjects.Add(gun.ID, gun);
 			}
 
 			//12 кустов
 			for (int i = 0; i < 25; i++)
 			{
-				Bush bush = new Bush(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(bush.ID, bush);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
+				Bush bush = new Bush(this, newShape.Location);
+				gameObjects.Add(bush.ID, bush);
 			}
 
 			//10 деревьев
 			for (int i = 0; i < 20; i++)
 			{
-				Tree tree = new Tree(this, VectorMethod.CreateRandPosition(lengthOfSide));
-				GameObjects.Add(tree.ID, tree);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
+				Tree tree = new Tree(this, newShape.Location);
+				gameObjects.Add(tree.ID, tree);
 			}
 		}
 
+		private RectangleF CreateAndAddNewUniqueShape(List<RectangleF> occupiedArea, SizeF sizeObject)
+		{
+			RectangleF newShape;
+			bool haveIntersection;
+			do
+			{
+				haveIntersection = false;
+				newShape = new RectangleF(VectorMethod.CreateRandPosition(lengthOfSide), sizeObject);
+
+				foreach (var shape in occupiedArea)
+				{
+					if (shape.IntersectsWith(newShape))
+					{
+						haveIntersection = true;
+						break;
+					}
+				}
+			} while (haveIntersection);
+
+			occupiedArea.Add(newShape);
+
+			return newShape;
+		}
+
+
 		private void Model_EventGameObjectDeleted(IGameObject gameObject)
 		{
-			GameObjects.Remove(gameObject.ID);
+			gameObjects.Remove(gameObject.ID);
 		}
 
 		/// <summary>
 		/// Создает игроков и добавляет их на карту в список игроков и список игрвовых объектов
 		/// </summary>
-		private void CreatePlayers(int gamersInRoom)
+		private void CreatePlayers(int gamersInRoom, List<RectangleF> occupiedArea)
 		{
 			for (int i = 0; i < gamersInRoom; i++)
 			{
 				//создаем игрока
-				Gamer gamer = new Gamer(this,VectorMethod.CreateRandPosition(lengthOfSide));
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, Gamer.Size);
+				Gamer gamer = new Gamer(this, newShape.Location);
 				Players.Add(gamer);
-				GameObjects.Add(gamer.ID,gamer);
+				gameObjects.Add(gamer.ID,gamer);
 			}
 			OutgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
 		}
@@ -362,25 +158,12 @@ namespace BattleRoayleServer
 				Event_HappenedEndGame?.Invoke();
 			}
 		}
-		
-		private PointF CreatePlayerLocation(int index)
-		{
-			switch (index)
-			{
-				case 0:
-					return new PointF(50, 70);
-				case 1:
-					return new PointF(50, 85);
-				default:
-					return new PointF(0, 0);
-			}
-		}
-
+			
 		public RoyalGameModel(int gamersInRoom)
 		{
 			//инициализируем полей
 			Players = new List<IPlayer>();
-			GameObjects = new Dictionary<ulong, IGameObject>();
+			gameObjects = new Dictionary<ulong, IGameObject>();
 			OutgoingMessages = new Queue<IMessage>();
 			IncomingMessages = new Queue<IMessage>();
 
@@ -393,17 +176,17 @@ namespace BattleRoayleServer
 			CreateFrame();
 
 			Zone = new DeathZone(this, lengthOfSide);
-			GameObjects.Add(Zone.ID, Zone);
+			gameObjects.Add(Zone.ID, Zone);
 
 			//создание и добавление в GameObjects и Field статических объектов карты
-			//CreateStaticGameObject();
-			CreateDinamicGameObject();
-			CreatePlayers(gamersInRoom);
+			List<RectangleF> occupiedArea = new List<RectangleF>();
+			CreateDinamicGameObject(occupiedArea);
+			CreatePlayers(gamersInRoom, occupiedArea);
 
 			//настраиваем игровые объекты
-			foreach (var key in GameObjects.Keys)
+			foreach (var key in gameObjects.Keys)
 			{
-				GameObjects[key].Setup();
+				gameObjects[key].Setup();
 			}
 
 			handlerIncomingMessages = new Task(Handler_IncomingMessages);
@@ -415,7 +198,7 @@ namespace BattleRoayleServer
 		{
 			//инициализируем полей
 			Players = new List<IPlayer>();
-			GameObjects = new Dictionary<ulong, IGameObject>();
+			gameObjects = new Dictionary<ulong, IGameObject>();
 			OutgoingMessages = new Queue<IMessage>();
 			IncomingMessages = new Queue<IMessage>();
 
@@ -428,7 +211,7 @@ namespace BattleRoayleServer
 			CreateFrame();
 
 			Zone = new DeathZone(this, lengthOfSide);
-			GameObjects.Add(Zone.ID, Zone);
+			gameObjects.Add(Zone.ID, Zone);
 
 			handlerIncomingMessages = new Task(Handler_IncomingMessages);
 			handlerIncomingMessages.Start();
@@ -503,9 +286,9 @@ namespace BattleRoayleServer
 
 		public void AddOrUpdateGameObject(IGameObject gameObject)
 		{
-			if (!GameObjects.ContainsKey(gameObject.ID))
+			if (!gameObjects.ContainsKey(gameObject.ID))
 			{
-				GameObjects.Add(gameObject.ID, gameObject);
+				gameObjects.Add(gameObject.ID, gameObject);
 			}
 			
 			gameObject.Setup();
@@ -517,7 +300,7 @@ namespace BattleRoayleServer
 		public void RemoveGameObject(IGameObject gameObject)
 		{
 			gameObject.Dispose();
-			GameObjects.Remove(gameObject.ID);
+			gameObjects.Remove(gameObject.ID);
 		}
 
 		public void Dispose()
@@ -532,7 +315,7 @@ namespace BattleRoayleServer
 
 			handlerIncomingMessages.Wait();
 			handlerIncomingMessages.Dispose();
-			GameObjects.Clear();
+			gameObjects.Clear();
 			Field.Dispose();
 		}
 
@@ -600,8 +383,8 @@ namespace BattleRoayleServer
 				if (IncomingMessages.Count > 0)
 				{
 					IMessage msg = IncomingMessages.Dequeue();
-					if(GameObjects.ContainsKey(msg.ID))
-						GameObjects[msg.ID]?.Update(msg);
+					if(gameObjects.ContainsKey(msg.ID))
+						gameObjects[msg.ID]?.Update(msg);
 				}
 				else Thread.Sleep(1);
 			}
@@ -615,7 +398,7 @@ namespace BattleRoayleServer
 			get
 			{
 				List<IMessage> states = new List<IMessage>();
-				foreach (var gameObject in GameObjects)
+				foreach (var gameObject in gameObjects)
 				{
 					if (gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
 					{
@@ -632,7 +415,7 @@ namespace BattleRoayleServer
 			get
 			{
 				List<IMessage> fullStates = new List<IMessage>();
-				foreach (var gameObject in GameObjects)
+				foreach (var gameObject in gameObjects)
 				{
 					IMessage msg = gameObject.Value.State;
 					if (msg != null) fullStates.Add(msg);

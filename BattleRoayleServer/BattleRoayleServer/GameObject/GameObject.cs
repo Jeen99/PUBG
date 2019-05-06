@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CommonLibrary.CommonElements;
 using CommonLibrary.GameMessages;
+using System.Drawing;
 
 namespace BattleRoayleServer
 {
@@ -188,5 +189,21 @@ namespace BattleRoayleServer
 
 
 		
+	}
+
+	public struct PhysicsSetups
+	{
+		public readonly float restetution;
+		public readonly float friction;
+		public readonly float density;
+		public readonly float linearDamping;
+
+		public PhysicsSetups(float restetution, float friction, float density, float linearDamping)
+		{
+			this.restetution = restetution;
+			this.friction = friction;
+			this.density = density;
+			this.linearDamping = linearDamping;
+		}
 	}
 }

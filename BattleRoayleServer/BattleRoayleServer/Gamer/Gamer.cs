@@ -13,25 +13,23 @@ namespace BattleRoayleServer
 {
 	public class Gamer : GameObject, IPlayer
 	{
-		private readonly float restetution = 0;
-		private readonly float friction = 0;
-		private readonly float density = 0.5f;
-		private readonly SizeF GamerSize = new SizeF(10, 10);
+		protected static PhysicsSetups physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0);
+		public static SizeF Size { get; protected set; } = new SizeF(10, 10);
 
 		public Gamer(IModelForComponents context, PointF location) : base(context)
 		{
 			#region CreateShape
 			ShapeDef CircleDef = new CircleDef();
-			(CircleDef as CircleDef).Radius = GamerSize.Width / 2;
-			CircleDef.Restitution = restetution;
-			CircleDef.Friction = friction;
-			CircleDef.Density = density;
+			(CircleDef as CircleDef).Radius = Size.Width / 2;
+			CircleDef.Restitution = physicsSetups.restetution;
+			CircleDef.Friction = physicsSetups.friction;
+			CircleDef.Density = physicsSetups.density;
 			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
 			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone 
 				| (ushort)CollideCategory.Grenade;
 			#endregion
 
-			body = new SolidBody(this, new RectangleF(location, GamerSize), new ShapeDef[] { CircleDef });
+			body = new SolidBody(this, new RectangleF(location, Size), new ShapeDef[] { CircleDef });
 			Components.Add(body);
 
 			var movement = new Movement(this, 40f);

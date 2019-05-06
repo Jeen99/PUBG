@@ -54,7 +54,7 @@ namespace BattleRoyalClient
 			this.KeyUp += userContoller.User_KeyUp;
 			this.MouseDown += BattleView3d_MouseDown;
 
-			//viewport.MouseWheel += BattleView3d_MouseWheel;
+			viewport.MouseWheel += BattleView3d_MouseWheel;
 			viewport.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm(id));

@@ -11,11 +11,11 @@ namespace BattleRoayleServer
 {
 	public class Bush:GameObject
 	{
-		private readonly SizeF bushSize = new SizeF(15, 15);
+		public static SizeF Size { get; protected set; } = new SizeF(15, 15);
 
 		public Bush(IModelForComponents model, PointF location) : base(model)
 		{
-			TransparentBody bushBody = new TransparentBody(this, new RectangleF(location, bushSize));
+			TransparentBody bushBody = new TransparentBody(this, new RectangleF(location, Size));
 			Components.Add(bushBody);
 		}
 

@@ -10,21 +10,15 @@ using System.Drawing;
 namespace BattleRoayleServer
 {
 	class AssaultRifle:Weapon
-	{
-	
+	{	
+		public static SizeF Size { get; protected set; } = new SizeF(18, 5.52f);
+
 		public AssaultRifle(IModelForComponents model, PointF location) : base(model)
 		{
 			TypeWeapon = TypesWeapon.AssaultRifle;
-
-			//задаем парамертры модели
-			this.TimeBetweenShot = 500;
-			this.TimeReload = 4000;
-			this.bulletsInMagazin = 6;
-			this.size = new SizeF(18, 5.52f);
-			this.restetution = 0;
-			this.friction = 0;
-			this.density = 0.5f;
-			this.linearDamping = 0.85f;
+			physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0.85f);
+			weaponSetups = new WeaponSetups(500, 4000, 6);
+			size = new SizeF(18, 5.52f);
 
 			var shot = new Shot(this);
 			Components.Add(shot);

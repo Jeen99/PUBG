@@ -14,35 +14,32 @@ namespace BattleRoayleServer
 {
 	public class Grenade : GameObject
 	{
-		private readonly float restetution = 0;
-		private readonly float friction = 0;
-		private readonly float density = 0.5f;
-		private readonly float linearDamping = 0.85f;
-		private readonly SizeF sizeGrenade = new SizeF(5,5);
+		protected static PhysicsSetups physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0.85f);
+		public static SizeF Size { get; protected set; } = new SizeF(5,5);
 
 		public Grenade(IModelForComponents model, PointF location, Vec2 startVelocity, IBullet grenadeBullet) : base(model)
 		{
 			#region CreateShape
 			ShapeDef circleShape = new CircleDef();
-			(circleShape as CircleDef).Radius = sizeGrenade.Width / 2;
-			circleShape.Restitution = restetution;
-			circleShape.Friction = friction;
-			circleShape.Density = density;
+			(circleShape as CircleDef).Radius = Size.Width / 2;
+			circleShape.Restitution = physicsSetups.restetution;
+			circleShape.Friction = physicsSetups.friction;
+			circleShape.Density = physicsSetups.density;
 			circleShape.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
 
 			ShapeDef sensorDef = new CircleDef();
 			(sensorDef as CircleDef).Radius = grenadeBullet.Distance;
-			sensorDef.Restitution = restetution;
-			sensorDef.Friction = friction;
-			sensorDef.Density = density;
+			sensorDef.Restitution = physicsSetups.restetution;
+			sensorDef.Friction = physicsSetups.friction;
+			sensorDef.Density = physicsSetups.density;
 			sensorDef.IsSensor = true;
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
 			#endregion
 
-			var body = new SolidBody(this, new RectangleF(location, sizeGrenade), 
-				new ShapeDef[] { circleShape , sensorDef }, linearDamping, startVelocity);
+			var body = new SolidBody(this, new RectangleF(location, Size), 
+				new ShapeDef[] { circleShape , sensorDef }, physicsSetups.linearDamping, startVelocity);
 			Components.Add(body);
 
 			var explosion = new Explosion(this, grenadeBullet);

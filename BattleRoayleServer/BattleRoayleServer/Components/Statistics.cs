@@ -45,6 +45,7 @@ namespace BattleRoayleServer
 		public override void Dispose()
 		{
 			Parent.Model.AddOutgoingMessage(new EndGame(Parent.ID, GamerDied, Kills, TimeInBattle));
+			
 			Parent.Received_TimeQuantPassed -= Handler_TimeQuantPassed;
 			Parent.Received_GamerDied -= Handler_GamerDied;
 			Parent.Received_MakedKill -= Handler_MakedKill;

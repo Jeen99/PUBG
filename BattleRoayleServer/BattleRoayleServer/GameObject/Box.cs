@@ -13,25 +13,23 @@ namespace BattleRoayleServer
 {
 	public class Box:GameObject
 	{
-		private readonly float restetution = 0;
-		private readonly float friction = 0;
-		private readonly float density = 0;
-		private readonly SizeF boxSize = new SizeF(15, 15);
+		protected static PhysicsSetups physicsSetups = new PhysicsSetups(0, 0, 0, 0);
+		public static SizeF Size { get; protected set; } = new SizeF(15, 15);
 
 		public Box(IModelForComponents context, PointF location) : base(context)
 		{
 			#region CreateShape
 			ShapeDef RectangleDef = new PolygonDef();
-			(RectangleDef as PolygonDef).SetAsBox(boxSize.Width / 2, boxSize.Height / 2);
-			RectangleDef.Restitution = restetution;
-			RectangleDef.Friction = friction;
-			RectangleDef.Density = density;
+			(RectangleDef as PolygonDef).SetAsBox(Size.Width / 2, Size.Height / 2);
+			RectangleDef.Restitution = physicsSetups.restetution;
+			RectangleDef.Friction = physicsSetups.friction;
+			RectangleDef.Density = physicsSetups.density;
 			RectangleDef.Filter.CategoryBits = (ushort)CollideCategory.Box;
 			RectangleDef.Filter.MaskBits = (ushort)CollideCategory.Player |
 				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 			#endregion
 
-			var body = new SolidBody(this, new RectangleF(location, boxSize), new ShapeDef[] { RectangleDef });
+			var body = new SolidBody(this, new RectangleF(location, Size), new ShapeDef[] { RectangleDef });
 			Components.Add(body);
 		}
 

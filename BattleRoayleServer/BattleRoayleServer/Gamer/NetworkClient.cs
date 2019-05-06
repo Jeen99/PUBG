@@ -25,6 +25,7 @@ namespace BattleRoayleServer
 		private const int heightVisibleArea = 160;
 		private RectangleF visibleArea;
 		private IGameModel model;
+
 		public RectangleF VisibleArea
 		{
 			get
@@ -43,7 +44,7 @@ namespace BattleRoayleServer
 		{
 			this.model = model;
 			this.Player = model.Players[index];
-			visibleArea = new RectangleF(0,0, widthVisibleArea, heightVisibleArea);
+			visibleArea = new RectangleF(0, 0, widthVisibleArea, heightVisibleArea);
 			Nick = nick;
 			Client = client;
 			Client.Controler = this;
@@ -56,6 +57,7 @@ namespace BattleRoayleServer
 		//игрок вышел из игры до завершения игры
 		private void Client_EventEndSession(ConnectedClient<IMessage> Client)
 		{
+			Client.Close();
 			EventNetorkClientDisconnect?.Invoke(this);
 		}
 

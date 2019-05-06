@@ -8,24 +8,18 @@ using System.Drawing;
 using System.Collections.Concurrent;
 
 namespace BattleRoayleServer
-{
-	
+{	
 	public class Gun : Weapon
 	{
 		
+		public static SizeF Size { get; protected set; } = new SizeF(8.6f, 5.6f);
+
 		public Gun( IModelForComponents model, PointF location): base(model)
 		{
 			TypeWeapon = TypesWeapon.Gun;
-
-			//задаем парамертры модели
-			this.TimeBetweenShot = 500;
-			this.TimeReload = 3000;
-			this.bulletsInMagazin = 8;
-			this.size = new SizeF(8.6f, 5.6f);
-			this.restetution = 0;
-			this.friction = 0;
-			this.density = 0.5f;
-			this.linearDamping = 0.85f;
+			physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0.85f);
+			weaponSetups = new WeaponSetups(500, 3000, 8);
+			size = new SizeF(8.6f, 5.6f);
 
 			var shot = new Shot(this);
 			Components.Add(shot);

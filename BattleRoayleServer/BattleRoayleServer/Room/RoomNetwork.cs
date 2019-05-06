@@ -162,15 +162,17 @@ namespace BattleRoayleServer
 		private void Handler_EndGame(IMessage msg)
 		{
 			lock (AccessSinchClients)
-			{			
-				if(Clients.ContainsKey(msg.ID))
+			{
+				if (Clients.ContainsKey(msg.ID))
+				{
 					Clients[msg.ID].SaveStatistics(msg);
-				Handler_PrivateMsg(msg);
-				//закрываем этого клиента
-			
-				INetworkClient client = Clients[msg.ID];
-				Clients.Remove(msg.ID);
-				client.Dispose();			
+					Handler_PrivateMsg(msg);
+					//закрываем этого клиента
+
+					INetworkClient client = Clients[msg.ID];
+					Clients.Remove(msg.ID);
+					client.Dispose();
+				}
 			}			
 		}
 
@@ -290,10 +292,11 @@ namespace BattleRoayleServer
 
 		private void Client_EventNetorkClientDisconnect(INetworkClient client)
 		{
-			lock (AccessSinchClients)
+			//пока нет действий при отключении клиента
+			/*lock (AccessSinchClients)
 			{
 				Clients.Remove(client.Player.ID);	
-			}
+			}*/
 		}
 
 		/// <summary>

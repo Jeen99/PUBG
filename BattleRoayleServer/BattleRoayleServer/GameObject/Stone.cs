@@ -13,28 +13,27 @@ namespace BattleRoayleServer
 {
 	public class Stone : GameObject
 	{
-		private readonly float restetution = 0;
-		private readonly float friction = 0.1f;
-		private readonly float density = 0;
+		protected static PhysicsSetups physicsSetups = new PhysicsSetups(0, 0.1f, 0, 0);
+		public static SizeF Size { get; protected set; } = new Size(16, 16);
 
 		public override TypesGameObject Type { get; } = TypesGameObject.Stone;
 
         public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
-        public Stone(IModelForComponents roomContext, PointF location, Size size):base(roomContext)
+        public Stone(IModelForComponents roomContext, PointF location):base(roomContext)
 		{
 			#region CreateShape
 			ShapeDef CircleDef = new CircleDef();
-			(CircleDef as CircleDef).Radius = size.Width / 2;
-			CircleDef.Restitution = restetution;
-			CircleDef.Friction = friction;
-			CircleDef.Density = density;
+			(CircleDef as CircleDef).Radius = Size.Width / 2;
+			CircleDef.Restitution = physicsSetups.restetution;
+			CircleDef.Friction = physicsSetups.friction;
+			CircleDef.Density = physicsSetups.density;
 			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Stone;
 			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Player |
 				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 			#endregion
 
-			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { CircleDef });
+			var body = new SolidBody(this, new RectangleF(location, Size), new ShapeDef[] { CircleDef });
 			Components.Add(body);
 		}
 	}
