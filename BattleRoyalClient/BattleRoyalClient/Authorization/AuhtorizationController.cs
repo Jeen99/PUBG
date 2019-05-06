@@ -33,8 +33,9 @@ namespace BattleRoyalClient
 					client = LoadNetworkSettings();
 					client.EventNewMessage += Client_EventNewMessage;
 					client.EventEndSession += Client_EventEndSession;
+					client.ConnectToServer();
 				}
-				if (client.ConnectToServer())
+				if (client.Status == StatusClient.Connect)
 				{
 					client.SendMessage(new RequestOnAutorization(model.NickName, model.Password));
 				}
@@ -60,7 +61,7 @@ namespace BattleRoyalClient
 
 		private void Client_EventNewMessage()
 		{
-			IMessage msg = client.ReceivedMsg.Dequeue();
+			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.ResultAutorization:

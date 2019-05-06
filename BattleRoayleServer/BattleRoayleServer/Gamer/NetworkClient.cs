@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 
 		public string Nick { get; private set; }
 
-		public ServerClient<IMessage> Client { get; private set; }
+		public ConnectedClient<IMessage> Client { get; private set; }
 
 		public string Password { get; private set; }
 
@@ -39,7 +39,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public NetworkClient(IGameModel model, int index, ServerClient<IMessage> client, string nick, string password)
+		public NetworkClient(IGameModel model, int index, ConnectedClient<IMessage> client, string nick, string password)
 		{
 			this.model = model;
 			this.Player = model.Players[index];
@@ -54,14 +54,14 @@ namespace BattleRoayleServer
 
 		}
 		//игрок вышел из игры до завершения игры
-		private void Client_EventEndSession(ServerClient<IMessage> Client)
+		private void Client_EventEndSession(ConnectedClient<IMessage> Client)
 		{
 			EventNetorkClientDisconnect?.Invoke(this);
 		}
 
-		public void HanlderNewMessage()
+		void IController<IMessage>.Hanlder_NewMessage()
 		{
-			IMessage msg = Client.ReceivedMsg.Dequeue();
+			IMessage msg = Client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.LoadedBattleForm:
@@ -78,7 +78,7 @@ namespace BattleRoayleServer
 			Event_GamerIsLoaded(this);
 		}
 
-		public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
+		IController<IMessage> IController<IMessage>.GetNewControler(ConnectedClient<IMessage> client)
 		{
 			throw new Exception("Данный класс не может реализовать данную функцию");
 		}

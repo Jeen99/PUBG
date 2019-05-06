@@ -11,7 +11,7 @@ namespace CSInteraction.Server
             public string IPAdress { get; private set; }
             public int Port { get; private set; }
             private IController<T> BaseControler { get; set; }
-            public List<ServerClient<T>> ConnectedClients { get; private set; }
+            public List<ConnectedClient<T>> ConnectedClients { get; private set; }
 
             private TcpListener ServerPoint;
             private Thread ThreadCheckNewClient;
@@ -23,7 +23,7 @@ namespace CSInteraction.Server
                     IPAdress = ipAdress;
                     Port = port;
                     BaseControler = baseControler;
-                    ConnectedClients = new List<ServerClient<T>>();
+                    ConnectedClients = new List<ConnectedClient<T>>();
                 }
                 else throw new Exception("Не передано исключения по умолчанию");
             }
@@ -55,7 +55,7 @@ namespace CSInteraction.Server
                         if (BaseControler != null)
                         {
                             //добавляем нового клиента
-                            ServerClient<T> Client = new ServerClient<T>(ServerPoint.AcceptTcpClient(), BaseControler);
+                            ConnectedClient<T> Client = new ConnectedClient<T>(ServerPoint.AcceptTcpClient(), BaseControler);
                             Client.EventEndSession += HandlerEndSessionClient;
                             ConnectedClients.Add(Client);
                         }
@@ -65,7 +65,7 @@ namespace CSInteraction.Server
                 }
             }
 
-            private void HandlerEndSessionClient(ServerClient<T> client)
+            private void HandlerEndSessionClient(ConnectedClient<T> client)
             {
                 ConnectedClients.Remove(client);
 				client.EventEndSession -= HandlerEndSessionClient;

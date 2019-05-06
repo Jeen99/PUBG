@@ -16,7 +16,7 @@ namespace BattleRoayleServer
 		/// Обрабатывает ошибки потери соединения с клиентом
 		/// </summary>
 		/// <param name="client"></param>
-		public static void Handler_LostConnectServerClient(ServerClient<IMessage> client)
+		public static void Handler_LostConnectServerClient(ConnectedClient<IMessage> client)
 		{
 			client.Controler = null;
 			logger.AddInLog("Потеря соединения с клиентом", "Клиент разорвал подключение с сервером");

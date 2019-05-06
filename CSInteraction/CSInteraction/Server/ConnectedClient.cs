@@ -10,29 +10,39 @@ using ObservalableExtended;
 
 namespace CSInteraction.Server
 {
-    public class ServerClient<T>
+    public class ConnectedClient<T>
     {
-        private TcpClient Client;
+        private TcpClient streamConnection;
         private BinaryFormatter formatter;
-        private Thread ThreadOfHandlerMsg;
+        private Thread threadOfHandlerMsg;
         public IController<T> Controler { get; set; }
-		public ObservableQueue<T> ReceivedMsg { get; private set; }
-		private Mutex SendMsgSinch = new Mutex();
+		private ObservableQueue<T> receivedMsg;
+		private Mutex sendMsgSinch = new Mutex();
 		
 		//уведомляет о получении нового сообщения от клиента
 		public event EndSession EventEndSession;
 
-        public ServerClient(TcpClient client, IController<T> baseControler)
+        public ConnectedClient(TcpClient client, IController<T> baseControler)
         {
-            Client = client;
+            streamConnection = client;
             formatter = new BinaryFormatter();
             //создаем обработчик сообшений от пользователя
             Controler = baseControler.GetNewControler(this);
-			ReceivedMsg = new ObservableQueue<T>();
+			receivedMsg = new ObservableQueue<T>();
 			//обработка сообщений производитсва в отдельном потоке
-			ThreadOfHandlerMsg = new Thread(StartReadMessage);
-            ThreadOfHandlerMsg.Start();
+			threadOfHandlerMsg = new Thread(StartReadMessage);
+            threadOfHandlerMsg.Start();
         }
+
+		public T GetRecievedMsg()
+		{
+			return receivedMsg.Dequeue();
+		}
+
+		public int GetCountReceivedMsg()
+		{
+			return receivedMsg.Count;
+		}
 
         //закрывает подлючение
         public void Close()
@@ -41,9 +51,9 @@ namespace CSInteraction.Server
             byte[] EndMsg = CreateTitleMessage((byte)InsideTypesMessage.EndSession, 0);
             try
             {
-                if (Client.Connected)
+                if (streamConnection.Connected)
                 {
-                    Client.GetStream().Write(EndMsg, 0, EndMsg.Length);
+                    streamConnection.GetStream().Write(EndMsg, 0, EndMsg.Length);
                 }
             }
             catch (Exception)
@@ -55,12 +65,12 @@ namespace CSInteraction.Server
         }
 
         //отправляет сообщение серверу
-        public bool SendMessage(T msg)
+        public void SendMessage(T msg)
         {
             try
             {
-                SendMsgSinch.WaitOne();
-                if (Client.Connected)
+                sendMsgSinch.WaitOne();
+                if (streamConnection.Connected)
                 {
 
                     byte[] BytesMsg = null;
@@ -71,22 +81,20 @@ namespace CSInteraction.Server
                     }
                     //создаем и отправляем заголовк сообщения
                     byte[] TitleMsg = CreateTitleMessage((byte)InsideTypesMessage.ProgramMessage, BytesMsg.Length);
-                    try
-                    {
-                        Client.GetStream().Write(TitleMsg, 0, TitleMsg.Length);
-                        Client.GetStream().Write(BytesMsg, 0, BytesMsg.Length);
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-                    return true;
+					try
+					{
+						streamConnection.GetStream().Write(TitleMsg, 0, TitleMsg.Length);
+						streamConnection.GetStream().Write(BytesMsg, 0, BytesMsg.Length);
+					}
+					catch (Exception)
+					{
+						EventEndSession?.Invoke(this);
+					}
                 }
-                else return false;
             }
             finally
             {
-                SendMsgSinch.ReleaseMutex();
+                sendMsgSinch.ReleaseMutex();
             }
         }
 
@@ -108,10 +116,10 @@ namespace CSInteraction.Server
         //начинает обработку сообщений поступающих от клиента
         private void StartReadMessage()
         {
-			if (Client.Connected)
+			if (streamConnection.Connected)
 			{
-				NetworkStream StreamOfClient = Client.GetStream();
-				while (Client.Connected && ThreadOfHandlerMsg.ThreadState == ThreadState.Running)
+				NetworkStream StreamOfClient = streamConnection.GetStream();
+				while (streamConnection.Connected && threadOfHandlerMsg.ThreadState == ThreadState.Running)
 				{
 					byte[] TitleMsg = new byte[5];
 					//если пришло сообщение от сервера
@@ -156,17 +164,16 @@ namespace CSInteraction.Server
         }
 
         //обрабатывает завершение соединение
-        public void HandlerEndSession()
+        private void HandlerEndSession()
         {
-            ThreadOfHandlerMsg.Abort();
-            ThreadOfHandlerMsg = null;
-            Client.Close();
+            threadOfHandlerMsg.Abort();
+            streamConnection.Close();
             //уведомляем о завершении соединения
             EventEndSession?.Invoke(this);
         }
 
         //обрабатывает программные сообщения
-        public void HandlerProgramMessage(int length, NetworkStream stream)
+        private void HandlerProgramMessage(int length, NetworkStream stream)
         {
             //читаем сообщение от сервера
             byte[] Msg = new byte[length];
@@ -180,11 +187,11 @@ namespace CSInteraction.Server
                 MemStream.Seek(0, SeekOrigin.Begin);
                 ObjectMsg = (T)formatter.Deserialize(MemStream);
             }
-			ReceivedMsg.Enqueue(ObjectMsg);
+			receivedMsg.Enqueue(ObjectMsg);
 			//генерируем событие
-			Controler?.HanlderNewMessage();
+			Controler?.Hanlder_NewMessage();
         }
 
-		public delegate void EndSession(ServerClient<T> Client);
+		public delegate void EndSession(ConnectedClient<T> Client);
 	}
 }

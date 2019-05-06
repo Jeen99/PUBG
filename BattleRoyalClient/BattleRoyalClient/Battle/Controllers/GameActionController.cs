@@ -43,7 +43,8 @@ namespace BattleRoyalClient
 		{
 			while (working)
 			{
-				if (client.ReceivedMsg.Count == 0)
+				
+				if (client.GetCountReceivedMsg() == 0)
 				{
 					Thread.Sleep(1);
 					continue;
@@ -54,7 +55,7 @@ namespace BattleRoyalClient
 
 		private void Client_EventNewMessage()
 		{
-			IMessage msg = client.ReceivedMsg.Dequeue();
+			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.RoomState:

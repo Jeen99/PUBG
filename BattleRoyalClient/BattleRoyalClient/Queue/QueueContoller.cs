@@ -32,7 +32,7 @@ namespace BattleRoyalClient
 
 		private void Client_EventNewMessage()
 		{
-			IMessage msg = client.ReceivedMsg.Dequeue();
+			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.ChangeCountPlayersInQueue:

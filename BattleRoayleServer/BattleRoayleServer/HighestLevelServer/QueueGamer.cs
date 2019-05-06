@@ -13,7 +13,7 @@ namespace BattleRoayleServer
 
 		public string Password { get; private set; }
 
-		public ServerClient<IMessage> Client { get; private set; }
+		public ConnectedClient<IMessage> Client { get; private set; }
 
 		/// <summary>
 		/// Указывет, что данный игрок сейчас будет добавлне в комнату 
@@ -21,7 +21,7 @@ namespace BattleRoayleServer
 		/// </summary>
 		public bool AddInRoom { get; set;}
 
-        public QueueGamer( ServerClient<IMessage> client, DataOfAccount data)
+        public QueueGamer( ConnectedClient<IMessage> client, DataOfAccount data)
         {
             NickName = data.NickName;
 			Password = data.Password;

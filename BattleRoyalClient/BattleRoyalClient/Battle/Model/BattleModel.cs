@@ -17,13 +17,9 @@ namespace BattleRoyalClient
 
 		//пока задаем прямо в коде
 		public Size SizeMap { get; } = new Size(500, 500);
-
 		private DeathZone deathZone;
-
 		public Dictionary<ulong, GameObject> gameObjects = new Dictionary<ulong, GameObject>();
-
 		public int CountPlayersInGame { get; private set; }
-
 		private PlayerCharacter character;
 
 		public ICharacterForControler CharacterController

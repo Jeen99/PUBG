@@ -5,41 +5,23 @@ using System.Text;
 using CommonLibrary.GameMessages;
 using CommonLibrary;
 using CSInteraction.Server;
+using CSInteraction;
 using CommonLibrary.AccountMessages;
 
 namespace BattleRoayleServer
 {
     public class AccountController: IController<IMessage>
 	{
-		private ServerClient<IMessage> client;
+		private ConnectedClient<IMessage> client;
 		/// <summary>
 		/// Модель игрового меню 
 		/// </summary>
 		private DataOfAccount data;
 
-		public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
+		IController<IMessage> IController<IMessage>.GetNewControler(ConnectedClient<IMessage> client)
         {
 			return new AccountController(client);
 		}
-
-        public void HanlderNewMessage()
-        {
-			IMessage msg = client.ReceivedMsg.Dequeue();
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.RequestJoinToQueue:
-					Handler_JoinToQueue();
-					break;
-				case TypesMessage.LoadedAccountForm:
-					Handler_LoadedAccountForm();
-					break;
-				default:
-					//записываем в лог, сообщение что не смогли обработать сообщение
-					Log.Handler_ErrorHandlingClientMsg(this.ToString(), 
-						msg.TypeMessage.ToString());
-					break;
-			}
-        }
 
 		private void Handler_LoadedAccountForm()
 		{
@@ -58,12 +40,12 @@ namespace BattleRoayleServer
 			new QueueController(client, data);
 		}
 
-		public AccountController(ServerClient<IMessage> client)
+		public AccountController(ConnectedClient<IMessage> client)
 		{
 			this.client = client;
 		}
 
-		public AccountController(ServerClient<IMessage> client, string login, string password)
+		public AccountController(ConnectedClient<IMessage> client, string login, string password)
 		{
 			this.client = client;
 			client.Controler = this;
@@ -94,6 +76,25 @@ namespace BattleRoayleServer
 		public void Dispose()
 		{
 			//ничего не делаем
+		}
+
+		void IController<IMessage>.Hanlder_NewMessage()
+		{
+			IMessage msg = client.GetRecievedMsg();
+			switch (msg.TypeMessage)
+			{
+				case TypesMessage.RequestJoinToQueue:
+					Handler_JoinToQueue();
+					break;
+				case TypesMessage.LoadedAccountForm:
+					Handler_LoadedAccountForm();
+					break;
+				default:
+					//записываем в лог, сообщение что не смогли обработать сообщение
+					Log.Handler_ErrorHandlingClientMsg(this.ToString(),
+						msg.TypeMessage.ToString());
+					break;
+			}
 		}
 	}
 }

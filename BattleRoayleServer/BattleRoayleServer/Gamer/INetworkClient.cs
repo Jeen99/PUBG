@@ -13,7 +13,7 @@ namespace BattleRoayleServer
     {
         string Nick { get; }
 
-        ServerClient<IMessage> Client { get; }
+        ConnectedClient<IMessage> Client { get; }
 		RectangleF VisibleArea { get; }
 		string Password { get; }
 		event GamerIsLoaded Event_GamerIsLoaded;

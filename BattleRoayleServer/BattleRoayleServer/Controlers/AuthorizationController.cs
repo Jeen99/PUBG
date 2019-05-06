@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using CommonLibrary;
 using CommonLibrary.AutorizationMessages;
+using CSInteraction;
 using CSInteraction.Server;
 
 namespace BattleRoayleServer
 {
     public class AuthorizationController:IController<IMessage>
     {
-        private ServerClient<IMessage> client;
+        private ConnectedClient<IMessage> client;
         public AuthorizationController()
         {
             client = null;
         }
 
-        public AuthorizationController(ServerClient<IMessage> client)
+        public AuthorizationController(ConnectedClient<IMessage> client)
         {
             this.client = client;
 			client.Controler = this;
@@ -24,25 +25,10 @@ namespace BattleRoayleServer
 			client.EventEndSession += Log.Handler_LostConnectServerClient;
         }
 
-        public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
+        IController<IMessage> IController<IMessage>.GetNewControler(ConnectedClient<IMessage> client)
         {
             return new AuthorizationController(client);
         }
-
-		public void HanlderNewMessage()
-		{
-			IMessage msg = client.ReceivedMsg.Dequeue();
-			switch (msg.TypeMessage)
-			{
-				case TypesMessage.RequestOnAutorization:
-					Handler_AuthorizationMsg(msg);
-					break;
-				default:
-					//записываем в лог, сообщение что не смогли обработать сообщение
-					Log.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
-					break;
-			}
-		}
 
 		public void Handler_AuthorizationMsg(IMessage msg)
 		{
@@ -67,5 +53,21 @@ namespace BattleRoayleServer
 		{
 			//ничего не делаем
 		}
+
+		void IController<IMessage>.Hanlder_NewMessage()
+		{
+			IMessage msg = client.GetRecievedMsg();
+			switch (msg.TypeMessage)
+			{
+				case TypesMessage.RequestOnAutorization:
+					Handler_AuthorizationMsg(msg);
+					break;
+				default:
+					//записываем в лог, сообщение что не смогли обработать сообщение
+					Log.Handler_ErrorHandlingClientMsg(this.ToString(), msg.TypeMessage.ToString());
+					break;
+			}
+		}
+
 	}
 }

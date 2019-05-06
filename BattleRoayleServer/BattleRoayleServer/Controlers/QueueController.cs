@@ -10,34 +10,34 @@ namespace BattleRoayleServer
 {
 	public class QueueController : IController<IMessage>
 	{
-		private ServerClient<IMessage> client;
+		private ConnectedClient<IMessage> client;
 		/// <summary>
 		/// Модель игрока в игроовой очереди
 		/// </summary>
 		private QueueGamer gamer;
 
-		public IController<IMessage> GetNewControler(ServerClient<IMessage> client)
+		IController<IMessage> IController<IMessage>.GetNewControler(ConnectedClient<IMessage> client)
 		{
 			throw new NotImplementedException();
 		}
 
-		public QueueController(ServerClient<IMessage> client, DataOfAccount data)
+		public QueueController(ConnectedClient<IMessage> client, DataOfAccount data)
 		{
 			this.client = client;
 			client.Controler = this;
-			client.EventEndSession += Client_EventEndSession;
+			client.EventEndSession += Handler_EndSession;
 			client.SendMessage(new RequestJoinToQueue());
 			gamer = new QueueGamer(client, data);
 		}
 
-		private void Client_EventEndSession(ServerClient<IMessage> Client)
+		private void Handler_EndSession(ConnectedClient<IMessage> Client)
 		{
 			Program.QueueOfServer.DeleteOfQueue(gamer);
 		}
 
-		public void HanlderNewMessage()
+		void IController<IMessage>.Hanlder_NewMessage()
 		{
-			IMessage msg = client.ReceivedMsg.Dequeue();
+			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.RequestExitOfQueue:
@@ -83,7 +83,7 @@ namespace BattleRoayleServer
 		public void Dispose()
 		{
 			//отвязываем дополнительный обраотчик
-			client.EventEndSession += Client_EventEndSession;
+			client.EventEndSession -= Handler_EndSession;
 		}
 	}
 }
