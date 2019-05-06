@@ -8,6 +8,7 @@ using CommonLibrary.CommonElements;
 
 namespace CommonLibrary
 {
+	[Serializable]
 	public class Message : IMessage
 	{
 		public virtual long Kills => throw new NotImplementedException();
