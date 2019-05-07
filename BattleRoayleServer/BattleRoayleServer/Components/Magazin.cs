@@ -70,6 +70,11 @@ namespace BattleRoayleServer
 				else
 					Create_ReloadMagazin();
 
+				bulletsInMagazinNow--;
+				Weapon parentAsWeapon = Parent as Weapon;
+				Parent?.Model?.AddOutgoingMessage(new ChangeBulletInWeapon(parentAsWeapon.Holder.ID,
+					parentAsWeapon.TypeWeapon, bulletsInMagazinNow));
+
 				return CreateBullet();
 			}
 			else
@@ -117,7 +122,6 @@ namespace BattleRoayleServer
 		private void Handler_ReloadBetweenShots()
 		{
 			Reload = TypesReload.Not;
-			bulletsInMagazinNow--;
 		}
 
 		private void Handler_ReloadMagazin(IMessage msg)

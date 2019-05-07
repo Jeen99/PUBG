@@ -13,7 +13,19 @@ namespace BattleRoyalClient
 		private BattleModel parent;
 
 		public Gamer character;	
-		public TypesWeapon[] Weapons { get; private set; }
+		public WeaponCharacter[] weapons { get; private set; }
+
+
+		public int CountWeapons()
+		{
+			return weapons.Length;
+		}
+
+		public IWeaponCharacterForView GetWeapon(uint index)
+		{
+			return weapons[index];
+		}
+
 		public PointF Location
 		{ get {
 				if (character != null)
@@ -40,10 +52,15 @@ namespace BattleRoyalClient
 			}
 		}
 
+		public void OnChangeCharacter(TypesChangeCharacter typeChange, object data)
+		{
+			if(character!=null)
+				Event_CharacterChange?.Invoke(typeChange, data);
+		}
 
 		public void OnChangeCharacter(TypesChangeCharacter typeChange)
 		{
-			if(character!=null)
+			if (character != null)
 				Event_CharacterChange?.Invoke(typeChange);
 		}
 
@@ -56,18 +73,22 @@ namespace BattleRoyalClient
 		public void Create(Gamer gamer)
 		{
 			character = gamer;
-			Weapons = new TypesWeapon[4] { TypesWeapon.Not,
-				TypesWeapon.Not, TypesWeapon.Not, TypesWeapon.Not };
+			weapons = new WeaponCharacter[4] 
+			{
+				new WeaponCharacter(TypesWeapon.Not),
+				new WeaponCharacter(TypesWeapon.Not),
+				new WeaponCharacter(TypesWeapon.Not),
+				new WeaponCharacter(TypesWeapon.Not)
+			};
 			_HP = 100f;
 			OnChangeCharacter(TypesChangeCharacter.All);
 		}
 
 		public void AddWeapon(TypesWeapon weapon)
 		{
-			int index = (int)weapon;
-			Weapons[index] = weapon;
-			if(character!=null)
-				OnChangeCharacter(TypesChangeCharacter.AddWeapon);
+			uint index = (uint)weapon;
+			weapons[index].TypesWeapon = weapon;
+			OnChangeCharacter(TypesChangeCharacter.AddWeapon, index);
 		}
 
 		public void ChangeCurrentWeapon(TypesWeapon weapon)
@@ -86,18 +107,32 @@ namespace BattleRoyalClient
 			OnChangeCharacter(TypesChangeCharacter.Location);
 		}
 
+		public void ChangeBulletInWeapon(TypesWeapon type, int countBullets)
+		{
+			for (uint i = 0; i < weapons.Length; i++)
+			{
+				if (weapons[i].TypesWeapon == type)
+				{
+					weapons[i].CountBullets = countBullets;
+					OnChangeCharacter(TypesChangeCharacter.BulletInWeapon, i);
+					break;
+				}
+			}
+		}
+
 		
 	}
 
+	
 	public enum TypesChangeCharacter
 	{
 		CurrentWepon,
 		AddWeapon,
 		HP,
 		Location,
+		BulletInWeapon,
 		All
 		
 	}
-	public delegate void CharacterChange(TypesChangeCharacter typeChange);
-	public delegate void CharacterAddWeapon(int index);
+	public delegate void CharacterChange(TypesChangeCharacter typeChange, object data = null);
 }

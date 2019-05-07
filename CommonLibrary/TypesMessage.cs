@@ -46,6 +46,7 @@ namespace CommonLibrary
 		LoadedQueueForm,
 		RequestJoinToQueue,
 		MagazinState,
-		GamerDied
+		GamerDied,
+		ChangeBulletInWeapon
 	}
 }

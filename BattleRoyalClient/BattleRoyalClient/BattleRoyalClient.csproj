@@ -79,6 +79,7 @@
     <Compile Include="Battle\3DModels\Model3D.cs" />
     <Compile Include="Battle\3DModels\Model3DGamer.cs" />
     <Compile Include="Battle\VisualConteyner.cs" />
+    <Compile Include="Battle\WeaponCharacter.cs" />
     <Compile Include="GameObjects\Box.cs" />
     <Compile Include="GameObjects\Bush.cs" />
     <Compile Include="GameObjects\DeathZone.cs" />

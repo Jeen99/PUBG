@@ -9,8 +9,9 @@ namespace BattleRoyalClient
 		float HP { get; }
 		ulong ID { get; }
 		PointF Location { get; }
-		TypesWeapon[] Weapons { get; }
+		IWeaponCharacterForView GetWeapon(uint index);
 
+		int CountWeapons();
 		event CharacterChange Event_CharacterChange;
 	}
 }

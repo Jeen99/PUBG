@@ -11,17 +11,20 @@ namespace CommonLibrary.GameMessages
 {
 	[Serializable]
 	public class AddWeapon : Message
-	{	
+	{
 		public override ulong ID { get; }
 
 		public override TypesWeapon TypeWeapon { get; }
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.AddWeapon;
 
-		public AddWeapon(ulong iD, TypesWeapon typeWeapon)
+		public override List<IMessage> InsertCollections { get; }
+
+		public AddWeapon(ulong iD, TypesWeapon typeWeapon, List<IMessage> insertCollections)
 		{
 			ID = iD;
 			TypeWeapon = typeWeapon;
+			InsertCollections = insertCollections;
 		}
 	}
 }

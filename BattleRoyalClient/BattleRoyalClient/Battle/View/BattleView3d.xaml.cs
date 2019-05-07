@@ -54,7 +54,7 @@ namespace BattleRoyalClient
 			this.KeyUp += userContoller.User_KeyUp;
 			this.MouseDown += BattleView3d_MouseDown;
 
-			viewport.MouseWheel += BattleView3d_MouseWheel;
+			//viewport.MouseWheel += BattleView3d_MouseWheel;
 			viewport.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm(id));
@@ -79,14 +79,14 @@ namespace BattleRoyalClient
 			CountPlayers.Text = battleContoller.Model.CountPlayersInGame.ToString();
 		}
 
-		private void Handler_ChangeCharacter(TypesChangeCharacter typeChange)
+		private void Handler_ChangeCharacter(TypesChangeCharacter typeChange, object data)
 		{
 			this.Dispatcher.Invoke(() =>
 			{
 				switch (typeChange)
 				{
 					case TypesChangeCharacter.AddWeapon:
-						Handler_CharacterChangeAddWeapon();
+						Handler_CharacterChangeAddWeapon((uint)data);
 						break;
 					case TypesChangeCharacter.All:
 						Handler_CharacterChangeHP();
@@ -103,6 +103,9 @@ namespace BattleRoyalClient
 					case TypesChangeCharacter.Location:
 						Handler_CharacterChangeLocation();
 						Handler_IndicatorDeadZone();
+						break;
+					case TypesChangeCharacter.BulletInWeapon:
+						Handler_CharacterChangeBulletInWeapon((uint)data);
 						break;
 				}
 			});
@@ -147,25 +150,53 @@ namespace BattleRoyalClient
 			}
 		}
 
-		private void Handler_CharacterChangeAddWeapon()
+		private void Handler_CharacterChangeAddWeapon(uint index)
 		{
-			for (int i = 0; i < battleContoller.Model.CharacterView.Weapons.Length; i++)
+			var weapon = battleContoller.Model.CharacterView.GetWeapon(index);
+			switch (weapon.TypesWeapon)
 			{
-				switch (battleContoller.Model.CharacterView.Weapons[i])
-				{
-					case TypesWeapon.Gun:
-						Gun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.Gun.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-					case TypesWeapon.ShotGun:
-						ShotGun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.ShotGun.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-					case TypesWeapon.AssaultRifle:
-						AssaultRifle.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.AssaultRifle.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-					case TypesWeapon.GrenadeCollection:
-						GrenadeCollection.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.GrenadeCollection.ToString() + "ForInventory.png", UriKind.Relative));
-						break;
-				}
+				case TypesWeapon.Gun:
+					Gun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.Gun.ToString() + "ForInventory.png", UriKind.Relative));
+					SetupLabelForBullet(BulletsInGun, weapon);
+					break;
+				case TypesWeapon.ShotGun:
+					ShotGun.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.ShotGun.ToString() + "ForInventory.png", UriKind.Relative));
+					SetupLabelForBullet(BulletsInShotGun, weapon);
+					break;
+				case TypesWeapon.AssaultRifle:
+					AssaultRifle.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.AssaultRifle.ToString() + "ForInventory.png", UriKind.Relative));
+					SetupLabelForBullet(BulletsInAssaultRifle, weapon);
+					break;
+				case TypesWeapon.GrenadeCollection:
+					GrenadeCollection.Source = new BitmapImage(new Uri(pathResources + TypesWeapon.GrenadeCollection.ToString() + "ForInventory.png", UriKind.Relative));
+					SetupLabelForBullet(BulletsInGrenadeCollection, weapon);
+					break;
+			}
+		}
+
+		private void SetupLabelForBullet(TextBlock labelForBullets, IWeaponCharacterForView weapon)
+		{
+			labelForBullets.Height = 16;
+			labelForBullets.Text = "Пуль в магазине: " + weapon.CountBullets;
+		}
+
+		private void Handler_CharacterChangeBulletInWeapon(uint index)
+		{
+			var weapon = battleContoller.Model.CharacterView.GetWeapon(index);
+			switch (weapon.TypesWeapon)
+			{
+				case TypesWeapon.Gun:
+					BulletsInGun.Text = "Пуль в магазине: " + weapon.CountBullets;
+					break;
+				case TypesWeapon.ShotGun:
+					BulletsInShotGun.Text = "Пуль в магазине: " + weapon.CountBullets;
+					break;
+				case TypesWeapon.AssaultRifle:
+					BulletsInAssaultRifle.Text = "Пуль в магазине: " + weapon.CountBullets;
+					break;
+				case TypesWeapon.GrenadeCollection:
+					BulletsInGrenadeCollection.Text = "Пуль в магазине: " + weapon.CountBullets;
+					break;
 			}
 		}
 

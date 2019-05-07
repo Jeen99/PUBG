@@ -40,7 +40,7 @@ namespace BattleRoayleServer
 			Clients = new Dictionary<ulong, INetworkClient>();			
 			this.roomLogic = roomLogic;
 			CreateClients(gamers);
-			timerTotalSinch = new Timer(3 * 1000)
+			timerTotalSinch = new Timer(5 * 1000)
 			{
 				SynchronizingObject = null,
 				AutoReset = true
@@ -120,6 +120,7 @@ namespace BattleRoayleServer
 				case TypesMessage.AddWeapon:
 				case TypesMessage.ChangedValueHP:
 				case TypesMessage.ReloadWeapon:
+				case TypesMessage.ChangeBulletInWeapon:
 					Handler_PrivateMsg(msg);
 					break;
 				//сообщения которые отправляеются всем
@@ -129,6 +130,7 @@ namespace BattleRoayleServer
 				case TypesMessage.WeaponState:
 				case TypesMessage.ChangedTimeTillReduction:
 				case TypesMessage.ChangeCountPayersInGame:
+				case TypesMessage.ObjectMoved:
 					Handler_BroadcastMsg(msg);
 					break;
 				case TypesMessage.EndGame:
@@ -227,7 +229,7 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			//timerTotalSinch.Start();
+			timerTotalSinch.Start();
 		}
 
         public void Dispose()

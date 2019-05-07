@@ -6,6 +6,7 @@ namespace BattleRoyalClient
 	interface ICharacterForControler
 	{
 		ulong ID { get; }
+		void ChangeBulletInWeapon(TypesWeapon type, int countBullets);
 		void ChangeCurrentWeapon(TypesWeapon weapon);
 		void AddWeapon(TypesWeapon weapon);
 		void ChangeHP(float newHP);

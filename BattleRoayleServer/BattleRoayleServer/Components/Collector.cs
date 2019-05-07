@@ -152,7 +152,7 @@ namespace BattleRoayleServer
 				weapon.Components.GetComponent<SolidBody>().Dispose();
 				weapon.Components.Remove<SolidBody>();
 
-				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon);
+				var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon, weapon.State.InsertCollections);
 				Parent.Update(msg);
 				Parent.Model.AddOutgoingMessage(new DeletedInMap(weapon.ID));
 				Parent.Model?.AddOutgoingMessage(msg);

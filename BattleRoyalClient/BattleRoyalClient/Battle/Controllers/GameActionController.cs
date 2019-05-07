@@ -95,7 +95,15 @@ namespace BattleRoyalClient
 				case TypesMessage.ChangeCountPayersInGame:
 					Handler_ChangeCountPayersInGame(msg);
 					break;
+				case TypesMessage.ChangeBulletInWeapon:
+					Handler_ChangeBulletInWeapon(msg);
+					break;
 			}
+		}
+
+		private void Handler_ChangeBulletInWeapon(IMessage msg)
+		{
+			model.CharacterController.ChangeBulletInWeapon(msg.TypeWeapon, msg.Count);
 		}
 
 		private void Handler_ChangeCountPayersInGame(IMessage msg)
@@ -107,6 +115,15 @@ namespace BattleRoyalClient
 		private void Handler_AddWeapon(IMessage msg)
 		{
 			model.CharacterController.AddWeapon(msg.TypeWeapon);
+			foreach (IMessage message in msg.InsertCollections)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesMessage.MagazinState:
+						Handler_MagazinState(msg, message);
+						break;
+				}
+			}
 		}
 
 		private void Handler_MakedShot(IMessage msg)
@@ -219,10 +236,47 @@ namespace BattleRoyalClient
 						case TypesMessage.CurrentWeaponState:
 							model.ChangeCurrentWeaponAtGamer(msg.ID, message.TypeWeapon);
 							break;
+						case TypesMessage.CollectorState:
+							Handler_CollectorState(message);
+							break;
+						case TypesMessage.HealthyState:
+							model.CharacterController.ChangeHP(message.HP);
+							break;
 					}
 				}
 				model.OnChangeGameObject(msg.ID);
 			}
+		}
+
+		private void Handler_CollectorState(IMessage msg)
+		{
+			foreach (IMessage message in msg.InsertCollections)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesMessage.WeaponState:
+						Handler_WeaponInCollector(message);
+						break;
+				}
+			}
+		}
+
+		private void Handler_WeaponInCollector(IMessage msg)
+		{
+			foreach (IMessage message in msg.InsertCollections)
+			{
+				switch (message.TypeMessage)
+				{
+					case TypesMessage.MagazinState:
+						Handler_MagazinState(msg, message);
+						break;
+				}
+			}
+		}
+
+		private void Handler_MagazinState(IMessage msgParent, IMessage msg)
+		{
+			model.CharacterController.ChangeBulletInWeapon(msgParent.TypeWeapon, msg.Count);
 		}
 
 		private void StopHandlerMessages()

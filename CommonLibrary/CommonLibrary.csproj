@@ -55,6 +55,7 @@
     <Compile Include="GameMessages\AddWeapon.cs" />
     <Compile Include="GameMessages\BodyState.cs" />
     <Compile Include="GameMessages\BodyZoneState.cs" />
+    <Compile Include="GameMessages\ChangeBulletInWeapon.cs" />
     <Compile Include="GameMessages\ChangeCountPayersInGame.cs" />
     <Compile Include="GameMessages\ChangedCurrentWeapon.cs" />
     <Compile Include="GameMessages\ChangedTimeTillReduction.cs" />
