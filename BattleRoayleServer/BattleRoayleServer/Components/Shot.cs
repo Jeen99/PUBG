@@ -10,6 +10,7 @@ using Box2DX.Collision;
 using Box2DX.Common;
 using Box2DX.Dynamics;
 using System.Diagnostics;
+using System.Drawing;
 
 namespace BattleRoayleServer
 {
@@ -50,63 +51,91 @@ namespace BattleRoayleServer
 					Log.AddNewRecord("Ошибка получения держателя оружия");
 					return;
 				}
+				Vec2 position = (Vec2)BodyHolder.Body.GetPosition();
 
 				//получаем патрон
 				IBullet bullet = magazin.GetBullet();
 				if (bullet == null) return;
-								
-				Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
-				if (position == null)
-				{
-					Log.AddNewRecord("Ошибка получения позиции игрока");
-					return;
-				}
-					
-				var segment = new Segment();
-				//начальная точка выстрела
-				segment.P1 = position;
+
 				//определяем угол
 				float angle = VectorMethod.DefineAngle(position, new Vec2(msg.Location.X, msg.Location.Y));
 
-				var sweepVector = VectorMethod.RotateVector(angle, bullet.Distance);
-				//конечная точка выстрела
-				segment.P2 = new Vec2
+				var rayOfShot = CreateRayForShot(position, angle, bullet.Distance);
+
+				var attackedObject = DefineDamagedSolidBody(rayOfShot, (Parent as Weapon).Holder.ID);
+
+				if (attackedObject == null)
 				{
-					X = position.X + sweepVector.X,
-					Y = position.Y + sweepVector.Y
-				};
-				//получаем только первый встетившийся на пути пули объект
-				Shape[] objectsForDamage = new Shape[2];
-
-				BodyHolder?.Body?.GetWorld().Raycast(segment, objectsForDamage, objectsForDamage.Length, true, null);
-
-				//отправляем сообщение о совершении выстрела
-				if (objectsForDamage[1] == null)
-					Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Holder.ID, angle, bullet.Distance));
+					NotAttacked(angle, bullet.Distance);
+				}
 				else
 				{
-					float newDistance = VectorMethod.DefineDistance(segment.P1, objectsForDamage[1].GetBody().GetPosition());
-					Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Holder.ID, angle, newDistance));
+					HaveAttacked(attackedObject, position, angle, bullet);
 				}
-
-				//отправляем ему сообщение о нанесении урона	
-				SolidBody attacked = (SolidBody)objectsForDamage[1]?.GetBody().GetUserData();
-				if (attacked == null) return;
-
-				var damageMsg = new GotDamage(BodyHolder.Parent.ID, bullet.Damage);
-				attacked.Parent.Update(damageMsg);
-
-				//определяем убили ли мы противника
-				Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();
-				if (healthyAttacked == null) return;
-				//если убили засчитываем фраг
-				if (healthyAttacked.HP < bullet.Damage) BodyHolder.Parent?.Update(new MakedKill(BodyHolder.Parent.ID));
-				
 			}
 			catch (Exception e)
 			{
 				Log.AddNewRecord(e.ToString());
 			}
+		}
+
+		private Segment CreateRayForShot(Vec2 positionGamer, float angle, float distance)
+		{
+			var segment = new Segment();
+			//начальная точка выстрела
+			segment.P1 = positionGamer;
+
+			var sweepVector = VectorMethod.RotateVector(angle, distance);
+			//конечная точка выстрела
+			segment.P2 = new Vec2
+			{
+				X = positionGamer.X + sweepVector.X,
+				Y = positionGamer.Y + sweepVector.Y
+			};
+
+			return segment;
+		}
+
+		private SolidBody DefineDamagedSolidBody(Segment rayShot, ulong IDParent)
+		{
+			//получаем только первый встетившийся на пути пули объект
+			var listObjects = Parent.Model.GetMetedObjects(rayShot);
+			foreach (var item in listObjects)
+			{
+				if (item.Parent.ID == IDParent)
+				{
+					continue;
+				}
+				else if (item.Parent.Type == TypesGameObject.Weapon) continue;
+				else return item;
+
+			}
+			return null;
+		}
+
+		private void NotAttacked(float angle, float distance)
+		{
+			Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Holder.ID, angle, distance));
+		}
+
+		private void HaveAttacked(SolidBody attacked, Vec2 position, float angle, IBullet bullet)
+		{
+			PointF locationObject = attacked.Shape.Location;
+			ulong idParent = (Parent as Weapon).Holder.ID;
+
+			float newDistance = VectorMethod.DefineDistance(position, new Vec2(locationObject.X, locationObject.Y));
+			Parent.Model.AddOutgoingMessage(new MakedShot(idParent, angle, newDistance));
+
+			if (attacked == null) return;
+
+			var damageMsg = new GotDamage(idParent, bullet.Damage);
+			attacked.Parent.Update(damageMsg);
+
+			//определяем убили ли мы противника
+			Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();
+			if (healthyAttacked == null) return;
+			//если убили засчитываем фраг
+			if (healthyAttacked.HP < bullet.Damage) (Parent as Weapon).Holder.Update(new MakedKill(idParent));
 		}
 	}
 }

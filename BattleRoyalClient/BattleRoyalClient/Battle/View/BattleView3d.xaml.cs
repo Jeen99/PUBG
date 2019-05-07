@@ -52,10 +52,10 @@ namespace BattleRoyalClient
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
-			this.MouseDown += BattleView3d_MouseDown;
+			viewport.MouseDown += BattleView3d_MouseDown;
 
 			//viewport.MouseWheel += BattleView3d_MouseWheel;
-			viewport.MouseMove += BattleView3d_MouseMove;
+			this.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 			client.SendMessage(new LoadedBattleForm(id));
 

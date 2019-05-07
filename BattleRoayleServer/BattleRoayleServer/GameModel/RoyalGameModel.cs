@@ -37,7 +37,6 @@ namespace BattleRoayleServer
 
 		private void CreateDinamicGameObject(List<RectangleF> occupiedArea)
 		{
-
 			//15 камней
 			for (int i = 0; i < 20; i++)
 			{
@@ -425,6 +424,29 @@ namespace BattleRoayleServer
 					new List<IMessage> { new FieldState(new SizeF(lengthOfSide, lengthOfSide)) }));
 				return new RoomState(fullStates);
 			}
+		}
+
+		public List<SolidBody> GetMetedObjects(Segment ray)
+		{
+			//получаем только первый встетившийся на пути пули объект
+			Shape[] metedShapes = new Shape[10];
+			Field.Raycast(ray, metedShapes, metedShapes.Length, true, null);
+
+			List<SolidBody> metedObects = new List<SolidBody>();
+			for (int i = 0; i < metedShapes.Length; i++)
+			{
+				if (metedShapes[i] != null)
+				{
+					var gameObject = (SolidBody)metedShapes[i].GetBody()?.GetUserData();
+					if (gameObject != null)
+					{
+						metedObects.Add(gameObject);
+					}
+				}
+				else break;
+			}
+
+			return metedObects;
 		}
 	}
 }
