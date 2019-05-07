@@ -78,7 +78,7 @@ namespace BattleRoyalClient
 				case StatesAutorizationModel.IncorrectData:
 					MessageBox.Show("Неправильный логин или пароль!");
 					break;
-				case StatesAutorizationModel.NoAutorization:
+				case StatesAutorizationModel.ErrorConnect:
 					MessageBox.Show("Не удалось подключиться к серверу!");
 					break;
 			}

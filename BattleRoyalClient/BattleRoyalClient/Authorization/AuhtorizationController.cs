@@ -33,8 +33,11 @@ namespace BattleRoyalClient
 					client = LoadNetworkSettings();
 					client.EventNewMessage += Client_EventNewMessage;
 					client.EventEndSession += Client_EventEndSession;
-					client.ConnectToServer();
+					
 				}
+
+				client.ConnectToServer();
+
 				if (client.Status == StatusClient.Connect)
 				{
 					client.SendMessage(new RequestOnAutorization(model.NickName, model.Password));

@@ -118,11 +118,8 @@ namespace BattleRoyalClient
 					break;
 				}
 			}
-		}
-
-		
+		}	
 	}
-
 	
 	public enum TypesChangeCharacter
 	{
