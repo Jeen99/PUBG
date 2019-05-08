@@ -16,11 +16,11 @@ namespace BattleRoyalClient
 	class GameActionController
 	{
 		private IBattleModelForController model;
-		private BaseClient<IMessage> client;
+		public BaseClient<IMessage> Client { get; private set }
 
 		public GameActionController(BaseClient<IMessage> client, IBattleModelForController model)
 		{
-			this.client = client;
+			this.Client = client;
 			this.model = model;
 			client.EventEndSession += Client_EventEndSession;
 			client.EventNewMessage += Client_EventNewMessage;
@@ -28,32 +28,13 @@ namespace BattleRoyalClient
 
 		private void Client_EventNewMessage()
 		{
-			IMessage msg = client.GetRecievedMsg();
+			IMessage msg = Client.GetRecievedMsg();
 			model.AddOutgoingMsg(msg);
-		}
-
-		private void Handler_EndGame(IMessage msg)
-		{
-			/*view.Dispatcher.Invoke(() =>
-			{
-				Account formAccount = new Account(client, msg);
-				formAccount.Show();
-				view.Transition = true;
-				view.Close();
-			});*/
 		}
 
 		private void Client_EventEndSession()
 		{
 			model.AddOutgoingMsg(new ConnectionBroken());
-			/*view.Dispatcher.Invoke(() =>
-			{
-				client = null;
-				Autorization authorization = new Autorization();
-				authorization.Show();
-				view.Transition = true;
-				view.Close();
-			});*/
 		}
 
 	}

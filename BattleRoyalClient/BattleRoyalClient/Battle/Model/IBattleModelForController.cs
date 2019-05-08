@@ -23,6 +23,6 @@ namespace BattleRoyalClient
 	delegate void BattleModelChangedHandler(TypesChange typeChange);
 	delegate void GameObjectChangedHandler(IModelObject model, StateObject state);
 	delegate void ChangeCountPlayers();
-	delegate void ModelEndGame();
+	delegate void ModelEndGame(IMessage msgEndGame);
 	delegate void ServerDisconnect();
 }

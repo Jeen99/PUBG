@@ -16,9 +16,7 @@ using CommonLibrary.CommonElements;
 using CommonLibrary.GameMessages;
 using CommonLibrary;
 using CSInteraction.Client;
-using System.Collections.Concurrent;
 using BattleRoyalClient.Battle;
-using System.Diagnostics;
 using System.Drawing;
 using Point = System.Windows.Point;
 using Brushes = System.Windows.Media.Brushes;
@@ -52,7 +50,9 @@ namespace BattleRoyalClient
 
 			model.GameObjectChanged += Model_GameObjectChanged;
 			model.CharacterView.Event_CharacterChange += Handler_ChangeCharacter;
-			model.BattleModelChanged += Handler_BattleModelChanged; ;
+			model.BattleModelChanged += Handler_BattleModelChanged;
+			model.HappenedDisconnectServer += Model_HappenedDisconnectServer;
+			model.HappenedModelEndGame += Model_HappenedModelEndGame1; ;
 
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
@@ -64,6 +64,29 @@ namespace BattleRoyalClient
 
 			userContoller.Handler_BattleFormLoad(id);
 
+		}
+
+		private void Model_HappenedModelEndGame1(IMessage msgEndGame)
+		{
+			Dispatcher.Invoke(() =>
+			{
+				Account formAccount = new Account(battleContoller.Client, msgEndGame);
+				formAccount.Show();
+				Transition = true;
+				Close();
+			});
+		}
+
+		private void Model_HappenedDisconnectServer()
+		{
+			Dispatcher.Invoke(() =>
+			{
+				Autorization authorization = new Autorization();
+				authorization.Show();
+				MessageBox.Show("Потеря соединения с сервером");
+				Transition = true;
+				Close();
+			});
 		}
 
 		private void Handler_BattleModelChanged(TypesChange typeChange)
