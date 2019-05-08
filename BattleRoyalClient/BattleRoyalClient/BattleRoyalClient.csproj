@@ -74,7 +74,7 @@
       <DependentUpon>BattleView3d.xaml</DependentUpon>
     </Compile>
     <Compile Include="Battle\Controllers\GameActionController.cs" />
-    <Compile Include="Battle\Model\IBattleModelForControler.cs" />
+    <Compile Include="Battle\Model\IBattleModelForController.cs" />
     <Compile Include="Battle\View\IBattleView.cs" />
     <Compile Include="Battle\3DModels\Model3D.cs" />
     <Compile Include="Battle\3DModels\Model3DGamer.cs" />

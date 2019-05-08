@@ -32,6 +32,8 @@ namespace BattleRoyalClient
 	{
 		public bool Transition { get; set; }
 		protected static readonly string pathResources = "/Resources/";
+
+		private IBattleModelForView model;
 		private GameActionController battleContoller;
 		private UserActionController userContoller;
 
@@ -42,22 +44,25 @@ namespace BattleRoyalClient
 			this.InitializeComponent();
 
 			this.visual = new VisualConteyner(this.models);
+			BattleModel battleModel = new BattleModel(id);
+			model = battleModel;
 
-			battleContoller = new GameActionController(id, client, this);
-			userContoller = new UserActionController(client, battleContoller, this);
+			battleContoller = new GameActionController(client, battleModel);
+			userContoller = new UserActionController(client, battleModel, this);
 
-			battleContoller.Model.GameObjectChanged += Model_GameObjectChanged;
-			battleContoller.Model.CharacterView.Event_CharacterChange += Handler_ChangeCharacter;
-			battleContoller.Model.BattleModelChanged += Handler_BattleModelChanged; ;
+			model.GameObjectChanged += Model_GameObjectChanged;
+			model.CharacterView.Event_CharacterChange += Handler_ChangeCharacter;
+			model.BattleModelChanged += Handler_BattleModelChanged; ;
+
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
 			viewport.MouseDown += BattleView3d_MouseDown;
-
 			//viewport.MouseWheel += BattleView3d_MouseWheel;
 			this.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
-			client.SendMessage(new LoadedBattleForm(id));
+
+			userContoller.Handler_BattleFormLoad(id);
 
 		}
 
@@ -76,7 +81,7 @@ namespace BattleRoyalClient
 
 		private void Handler_ChangeCountPlyers()
 		{
-			CountPlayers.Text = battleContoller.Model.CountPlayersInGame.ToString();
+			CountPlayers.Text = model.CountPlayersInGame.ToString();
 		}
 
 		private void Handler_ChangeCharacter(TypesChangeCharacter typeChange, object data)
@@ -115,7 +120,7 @@ namespace BattleRoyalClient
 		{
 			var cameraPosition = camera.Position;
 			//меняем положение камеры
-			var character = battleContoller.Model.CharacterView;
+			var character = model.CharacterView;
 			cameraPosition.X = character.Location.X;
 			cameraPosition.Y = character.Location.Y;
 			camera.Position = cameraPosition;
@@ -123,7 +128,7 @@ namespace BattleRoyalClient
 
 		private void Handler_CharacterChangeHP()
 		{
-			this.HP.Value = battleContoller.Model.CharacterView.HP;
+			this.HP.Value = model.CharacterView.HP;
 		}
 
 		private void Handler_CharacterChangeCurrentWeapon()
@@ -133,7 +138,7 @@ namespace BattleRoyalClient
 			BorderShotGun.BorderBrush = Brushes.Black;
 			BorderAssaultRifle.BorderBrush = Brushes.Black;
 			BorderGrenadeCollection.BorderBrush = Brushes.Black;
-			switch (battleContoller.Model.CharacterView.Character.CurrentWeapon)
+			switch (model.CharacterView.Character.CurrentWeapon)
 			{
 				case TypesWeapon.Gun:
 					BorderGun.BorderBrush = Brushes.Green;
@@ -152,7 +157,7 @@ namespace BattleRoyalClient
 
 		private void Handler_CharacterChangeAddWeapon(uint index)
 		{
-			var weapon = battleContoller.Model.CharacterView.GetWeapon(index);
+			var weapon = model.CharacterView.GetWeapon(index);
 			switch (weapon.TypesWeapon)
 			{
 				case TypesWeapon.Gun:
@@ -182,7 +187,7 @@ namespace BattleRoyalClient
 
 		private void Handler_CharacterChangeBulletInWeapon(uint index)
 		{
-			var weapon = battleContoller.Model.CharacterView.GetWeapon(index);
+			var weapon = model.CharacterView.GetWeapon(index);
 			switch (weapon.TypesWeapon)
 			{
 				case TypesWeapon.Gun:
@@ -228,7 +233,7 @@ namespace BattleRoyalClient
 			switch (gameObject.Type)
 			{
 				case TypesGameObject.DeathZone:
-					if (!IndicatorDeadZone.IsEnabled && battleContoller.Model.DeathZone.Location != PointF.Empty)	// включаем индикатор
+					if (!IndicatorDeadZone.IsEnabled && model.DeathZone.Location != PointF.Empty)	// включаем индикатор
 					{
 						IndicatorDeadZone.IsEnabled = true;
 					}
@@ -295,10 +300,10 @@ namespace BattleRoyalClient
 
 		private void Handler_IndicatorDeadZone()
 		{
-			if (battleContoller.Model.CharacterView.Character == null) return;
+			if (model.CharacterView.Character == null) return;
 
-			var centre = battleContoller.Model.CharacterView.Location;
-			var zone = battleContoller.Model.DeathZone.Location;
+			var centre = model.CharacterView.Location;
+			var zone = model.DeathZone.Location;
 			//угол между игроком и зоной	
 			float angle = (float)(Math.Atan2(zone.X - centre.X, zone.Y - centre.Y) / Math.PI * 180);
 

@@ -16,22 +16,19 @@ namespace BattleRoyalClient
 	{
 		private BaseClient<IMessage> client;
 		private Direction direction;
-		private GameActionController gameController;
-		private BattleView3d view;
+		private IBattleModelForController model;
 		private ulong idPlayer;
 
-		public UserActionController(BaseClient<IMessage> client, GameActionController controller, BattleView3d view)
+		public UserActionController(BaseClient<IMessage> client, IBattleModelForController model, BattleView3d view)
 		{
 			this.client = client;
-			gameController = controller;
-			idPlayer = gameController.Model.CharacterView.ID;
-			this.view = view;
+			this.model = model;
 			this.direction = new Direction();
 		}
 
 		public void User_KeyDown(object sender, KeyEventArgs e)
 		{
-			if (gameController.Loaded)
+			if (model.ModelIsLoaded)
 			{
 				switch (e.Key)
 				{
@@ -94,7 +91,7 @@ namespace BattleRoyalClient
 
 		public void User_KeyUp(object sender, KeyEventArgs e)
 		{
-			if (gameController.Loaded)
+			if (model.ModelIsLoaded)
 			{
 				if (e.KeyboardDevice.IsKeyUp(Key.Up) &&
 				e.KeyboardDevice.IsKeyUp(Key.Right))
@@ -114,7 +111,7 @@ namespace BattleRoyalClient
 
 		public void MakeShot(PointF pointOfClick)
 		{
-			if (gameController.Loaded)
+			if (model.ModelIsLoaded)
 			{
 				client.SendMessage(new MakeShot(idPlayer, pointOfClick));
 			}
@@ -122,13 +119,18 @@ namespace BattleRoyalClient
 
 		public void UserTurn(float angle)
 		{
-			if (gameController.Loaded)
+			if (model.ModelIsLoaded)
 			{
 				//отправляем сообщение
 				IMessage msg = new PlayerTurn(idPlayer, angle);
 				client.SendMessage(msg);
-				gameController.Handler_PlayerTurned(msg);
+				model.AddOutgoingMsg(msg);
 			}
+		}
+
+		public void Handler_BattleFormLoad(ulong idGamer)
+		{
+			client.SendMessage(new LoadedBattleForm(model.IDPlayer));
 		}
 	}
 }

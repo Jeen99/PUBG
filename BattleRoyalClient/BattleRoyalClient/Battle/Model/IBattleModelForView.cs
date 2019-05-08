@@ -10,6 +10,8 @@ namespace BattleRoyalClient
 	{
 		event BattleModelChangedHandler BattleModelChanged;
 		event GameObjectChangedHandler GameObjectChanged;
+		event ModelEndGame HappenedModelEndGame;
+		event ServerDisconnect HappenedDisconnectServer;
 		ICharacterForView CharacterView { get; }
 		IDeathZoneForView DeathZone { get; }
 		int CountPlayersInGame { get; }

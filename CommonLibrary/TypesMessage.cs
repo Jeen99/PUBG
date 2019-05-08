@@ -47,6 +47,7 @@ namespace CommonLibrary
 		RequestJoinToQueue,
 		MagazinState,
 		GamerDied,
-		ChangeBulletInWeapon
+		ChangeBulletInWeapon,
+		ConnectionBroken
 	}
 }
