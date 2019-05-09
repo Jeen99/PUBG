@@ -16,7 +16,7 @@ namespace BattleRoyalClient
 	class GameActionController
 	{
 		private IBattleModelForController model;
-		public BaseClient<IMessage> Client { get; private set }
+		public BaseClient<IMessage> Client { get; private set; }
 
 		public GameActionController(BaseClient<IMessage> client, IBattleModelForController model)
 		{

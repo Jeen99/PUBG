@@ -101,13 +101,13 @@ namespace BattleRoyalClient
 					Handler_ChangeBulletInWeapon(msg);
 					break;
 				case TypesMessage.BodyState:
-					Handler_BodyState(msg);
+					Handler_BodyState(msgParent, msg);
 					break;
 				case TypesMessage.BodyZoneState:
 					Handler_BodyZoneState(msg);
 					break;
 				case TypesMessage.CurrentWeaponState:
-					Handler_CurrentWeaponState(msg);
+					Handler_CurrentWeaponState(msgParent, msg);
 					break;
 				case TypesMessage.CollectorState:
 					Handler_CollectorState(msg);
@@ -116,7 +116,7 @@ namespace BattleRoyalClient
 					Handler_ChangeHP(msg);
 					break;
 				case TypesMessage.MagazinState:
-					Handler_MagazinState(msg, msgParent);
+					Handler_MagazinState(msgParent, msg);
 					break;
 				case TypesMessage.ConnectionBroken:
 					Handler_ConnectionBroken(msg);
@@ -162,7 +162,7 @@ namespace BattleRoyalClient
 		private void Handler_EndGame(IMessage msg)
 		{
 			StopHandlerMessages();
-			CreateEventEndGame();
+			CreateEventEndGame(msg);
 		}
 
 		private void Handler_GameObjectState(IMessage msg)
@@ -223,9 +223,9 @@ namespace BattleRoyalClient
 			CreateChangeModel(TypesChange.CountPlyers);
 		}
 
-		private void Handler_BodyState(IMessage msg)
+		private void Handler_BodyState(IMessage msgParent, IMessage msg)
 		{
-			ChanageShapeAtObject(msg.ID, msg.Shape);
+			ChanageShapeAtObject(msgParent.ID, msg.Shape);
 		}
 
 		private void Handler_ChangeBulletInWeapon(IMessage msg)
@@ -248,9 +248,9 @@ namespace BattleRoyalClient
 			}
 		}
 
-		private void Handler_CurrentWeaponState(IMessage msg)
+		private void Handler_CurrentWeaponState(IMessage msgParent, IMessage msg)
 		{
-			ChangeCurrentWeaponAtGamer(msg.ID, msg.TypeWeapon);
+			ChangeCurrentWeaponAtGamer(msgParent.ID, msg.TypeWeapon);
 			CreateChangeModel( TypesChange.CurrentWeapon);
 		}
 
@@ -290,9 +290,9 @@ namespace BattleRoyalClient
 			BattleModelChanged?.Invoke(typeChange);
 		}
 
-		private void CreateEventEndGame()
+		private void CreateEventEndGame(IMessage msg)
 		{
-			HappenedModelEndGame?.Invoke();
+			HappenedModelEndGame?.Invoke(msg);
 		}
 
 		private void CreateChangeGameObject(ulong idObject, StateObject state = StateObject.Change)
