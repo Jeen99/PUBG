@@ -54,9 +54,8 @@ namespace BattleRoayleServer
 			//ничего не делаем
 		}
 
-		void IController<IMessage>.Hanlder_NewMessage()
+		void IController<IMessage>.Hanlder_NewMessage(IMessage msg)
 		{
-			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.RequestOnAutorization:

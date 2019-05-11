@@ -61,9 +61,8 @@ namespace BattleRoayleServer
 			EventNetorkClientDisconnect?.Invoke(this);
 		}
 
-		void IController<IMessage>.Hanlder_NewMessage()
+		void IController<IMessage>.Hanlder_NewMessage(IMessage msg)
 		{
-			IMessage msg = Client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.LoadedBattleForm:
@@ -75,6 +74,7 @@ namespace BattleRoayleServer
 			}
 					
 		}
+
 		public void Handler_LoadedBattleForm()
 		{
 			Event_GamerIsLoaded(this);

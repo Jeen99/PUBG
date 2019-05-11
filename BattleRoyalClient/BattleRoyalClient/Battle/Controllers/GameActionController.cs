@@ -26,9 +26,8 @@ namespace BattleRoyalClient
 			client.EventNewMessage += Client_EventNewMessage;
 		}
 
-		private void Client_EventNewMessage()
+		private void Client_EventNewMessage(IMessage msg)
 		{
-			IMessage msg = Client.GetRecievedMsg();
 			model.AddOutgoingMsg(msg);
 		}
 

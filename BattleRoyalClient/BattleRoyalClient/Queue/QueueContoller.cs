@@ -30,9 +30,8 @@ namespace BattleRoyalClient
 			client.SendMessage(new LoadedQueueForm());
 		}
 
-		private void Client_EventNewMessage()
+		private void Client_EventNewMessage(IMessage msg)
 		{
-			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.ChangeCountPlayersInQueue:

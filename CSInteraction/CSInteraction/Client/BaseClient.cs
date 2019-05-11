@@ -72,21 +72,10 @@ namespace CSInteraction.Client
 			else throw new Exception("Невозможно выполнить операцию до создания подключения");
 		}
 
-		public T GetRecievedMsg()
-		{
-			if (client != null)
-				return client.GetRecievedMsg();
-			else throw new Exception("Невозможно выполнить операцию до создания подключения");
-		}
 
-		public int GetCountReceivedMsg()
+		void IController<T>.Hanlder_NewMessage(T msg)
 		{
-			return client.GetCountReceivedMsg();
-		}
-
-		void IController<T>.Hanlder_NewMessage()
-		{
-			EventNewMessage?.Invoke();
+			EventNewMessage?.Invoke(msg);
 		}
 
 		IController<T> IController<T>.GetNewControler(ConnectedClient<T> client)
@@ -103,10 +92,12 @@ namespace CSInteraction.Client
 		{
 			EventEndSession?.Invoke();
 		}
+
+		public delegate void NewMessage(T msg);
+		public delegate void EndSession();
 	}
 
-    public delegate void NewMessage();
-    public delegate void EndSession();
+    
 
     public enum StatusClient
     {

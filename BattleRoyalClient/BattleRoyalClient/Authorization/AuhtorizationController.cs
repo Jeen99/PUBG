@@ -62,9 +62,8 @@ namespace BattleRoyalClient
 			client = null;
 		}
 
-		private void Client_EventNewMessage()
+		private void Client_EventNewMessage(IMessage msg)
 		{
-			IMessage msg = client.GetRecievedMsg();
 			switch (msg.TypeMessage)
 			{
 				case TypesMessage.ResultAutorization:
