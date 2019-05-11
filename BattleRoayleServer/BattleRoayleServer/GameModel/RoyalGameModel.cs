@@ -15,6 +15,7 @@ using CommonLibrary.CommonElements;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using ObservalableExtended;
 
 namespace BattleRoayleServer
 {
@@ -30,8 +31,8 @@ namespace BattleRoayleServer
 		public DeathZone Zone { get; private set; }
 		public World Field { get; private set; }
 
-		public Queue<IMessage> OutgoingMessages { get; private set; }
-		public Queue<IMessage> IncomingMessages { get; private set; }
+		public ObservableQueue<IMessage> OutgoingMessages { get; private set; }
+		public ObservableQueue<IMessage> IncomingMessages { get; private set; }
 
 		public event HappenedEndGame Event_HappenedEndGame;
 
@@ -163,8 +164,8 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			gameObjects = new Dictionary<ulong, IGameObject>();
-			OutgoingMessages = new Queue<IMessage>();
-			IncomingMessages = new Queue<IMessage>();
+			OutgoingMessages = new ObservableQueue<IMessage>();
+			IncomingMessages = new ObservableQueue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -198,8 +199,8 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			gameObjects = new Dictionary<ulong, IGameObject>();
-			OutgoingMessages = new Queue<IMessage>();
-			IncomingMessages = new Queue<IMessage>();
+			OutgoingMessages = new ObservableQueue<IMessage>();
+			IncomingMessages = new ObservableQueue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0, 0);

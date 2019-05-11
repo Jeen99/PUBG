@@ -8,38 +8,41 @@ using System.Collections.Specialized;
 
 namespace ObservalableExtended
 {
-	public class ObservableQueue<T> : List<T>, INotifyCollectionChanged
+	public class ObservableQueue<T> : INotifyCollectionChanged
 	{
-		private object sinchAccess = new object();
-
+		private readonly object sinchAccess = new object();
+		private Queue<T> insideQueue;
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
-		public void Enqueue(T newElement)
+		public  void Enqueue(T newElement)
 		{
 			lock (sinchAccess)
 			{
-				Add(newElement);
-				
+				insideQueue.Enqueue(newElement);			
 			}
 			
 			CollectionChanged?.Invoke(this,
-			new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, Count));
+			new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, insideQueue.Count));
 		}
 
 		public T Dequeue()
 		{
 			lock (sinchAccess)
 			{
-				if (Count > 0)
-				{
-					T FirstElement = this[0];
-					this.RemoveAt(0);
-					return FirstElement;
-					
-				}
-				else return default(T);
+				return insideQueue.Dequeue();
 			}
 		}
 
+		public int Count
+		{
+			get
+			{
+				//блокировка сделана, чтобы данные были актуальны
+				lock (sinchAccess)
+				{
+					return insideQueue.Count;
+				}
+			}
+		}
 	}
 }

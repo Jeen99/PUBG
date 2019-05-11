@@ -9,6 +9,7 @@ using System.Collections.Concurrent;
 using CommonLibrary.CommonElements;
 using System.Windows.Media.Imaging;
 using CommonLibrary;
+using ObservalableExtended;
 
 namespace BattleRoyalClient
 {
@@ -26,7 +27,7 @@ namespace BattleRoyalClient
 
 		private Task taskForHandlerIncomingMsg;
 		private DeathZone deathZone;
-		private Queue<IMessage> queueIncomingMsg = new Queue<IMessage>();
+		private ObservableQueue<IMessage> queueIncomingMsg = new ObservableQueue<IMessage>();
 		private PlayerCharacter character;
 		private bool workingTaskForHandlerIncomingMsg = true;
 
