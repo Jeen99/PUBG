@@ -53,7 +53,7 @@ namespace BattleRoayleServer
 			Vec2 impulse = new Vec2(dX, dY);
 
 			//создаем объект гранаты
-			Grenade grenade = new Grenade(Parent.Model, 
+			var grenade = BuilderGameObject.CreateGrenade(Parent.Model, 
 				(Parent as Weapon).Holder.Components.GetComponent<SolidBody>().Shape.Location, impulse, grenadeBullet);
 			Parent.Model.AddOrUpdateGameObject(grenade);
 		}

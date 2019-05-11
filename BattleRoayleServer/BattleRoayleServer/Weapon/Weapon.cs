@@ -12,34 +12,24 @@ using CommonLibrary.GameMessages;
 
 namespace BattleRoayleServer
 {
-	public abstract class Weapon : GameObject, IWeapon, ICollectorItem
+	public class Weapon : GameObject, IWeapon
 	{
-		private bool IsCreate = false;
-
-		protected PhysicsSetups physicsSetups;
-		protected WeaponSetups weaponSetups;
-		protected SizeF size { get;  set; }
-
-		//чтобы не пересоздавать структуры
-		private ShapeDef circleShape;
-		private ShapeDef sensorDef;
-
 		static Weapon()
 		{
 
 		}
 
-
-		public Weapon(IModelForComponents model) : base(model)
+		public Weapon(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject, TypesWeapon typeWeapon) 
+			: base(model, typeGameObject, typeBehaveObject)
 		{
-
+			TypeWeapon = typeWeapon;
 		}
 
 		public TypesWeapon TypeWeapon { get; protected set; }
 
 		public IGameObject Holder { get; set; }
 
-		public virtual void Setup(PointF location)
+		/*public virtual void Setup(PointF location)
 		{
 			if (!IsCreate)
 			{
@@ -83,7 +73,7 @@ namespace BattleRoayleServer
 			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef },
 				physicsSetups.linearDamping, startVelocity);
 			Components.Add(body);
-		}
+		}*/
 
 		public override IMessage State
 		{

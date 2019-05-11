@@ -21,14 +21,14 @@ namespace BattleRoayleServer
 {
 	public class RoyalGameModel : IGameModel, IModelForComponents
 	{
-		private const float lengthOfSide = 500;
+		public static readonly float LengthOfSideMap = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
 		private const int minValueGamerInBattle = 0;
 		private Dictionary<ulong, IGameObject> gameObjects;
 
 		public IList<IPlayer> Players { get; private set; }
-		public DeathZone Zone { get; private set; }
+		public GameObject DeathZone { get; private set; }
 		public World Field { get; private set; }
 
 		public ObservableQueue<IMessage> OutgoingMessages { get; private set; }
@@ -41,63 +41,63 @@ namespace BattleRoayleServer
 			//15 камней
 			for (int i = 0; i < 20; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, Stone.Size);
-				Stone stone = new Stone(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeStone);
+				var stone = BuilderGameObject.CreateStone(this, newShape.Location);
 				gameObjects.Add(stone.ID, stone);
 			}
 			//12 коробок
 			for (int i = 0; i < 15; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, Box.Size);
-				Box box = new Box(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeBox);
+				var box = BuilderGameObject.CreateBox(this, newShape.Location);
 				gameObjects.Add(box.ID, box);
 			}
 
 			//4 автомата
 			for (int i = 0; i < 4; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, AssaultRifle.Size);
-				AssaultRifle assaultRifle = new AssaultRifle(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeAssaulRiffle);
+				var assaultRifle = BuilderGameObject.CreateAssaultRiffle(this, newShape.Location);
 				gameObjects.Add(assaultRifle.ID, assaultRifle);
 			}
 
 			//5 шот-ганов
 			for (int i = 0; i < 5; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, ShotGun.Size);
-				ShotGun shotGun = new ShotGun(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeShotGun);
+				var shotGun = BuilderGameObject.CreateShotGun(this, newShape.Location);
 				gameObjects.Add(shotGun.ID, shotGun);
 			}
 
 			//5 гранат
 			for (int i = 0; i < 5; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
-				GrenadeCollection grenade = new GrenadeCollection(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGrenadeCollection);
+				var grenade = BuilderGameObject.CreateGrenadeCollection(this, newShape.Location);
 				gameObjects.Add(grenade.ID, grenade);
 			}
 
 			//8 пистолетов
 			for (int i = 0; i < 8; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
-				Gun gun = new Gun(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGun);
+				var gun = BuilderGameObject.CreateGun(this, newShape.Location);
 				gameObjects.Add(gun.ID, gun);
 			}
 
 			//12 кустов
 			for (int i = 0; i < 25; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
-				Bush bush = new Bush(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeBush);
+				var bush = BuilderGameObject.CreateBush(this, newShape.Location);
 				gameObjects.Add(bush.ID, bush);
 			}
 
 			//10 деревьев
 			for (int i = 0; i < 20; i++)
 			{
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, GrenadeCollection.Size);
-				Tree tree = new Tree(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeTree);
+				var tree = BuilderGameObject.CreateTree(this, newShape.Location);
 				gameObjects.Add(tree.ID, tree);
 			}
 		}
@@ -109,7 +109,7 @@ namespace BattleRoayleServer
 			do
 			{
 				haveIntersection = false;
-				newShape = new RectangleF(VectorMethod.CreateRandPosition(lengthOfSide), sizeObject);
+				newShape = new RectangleF(VectorMethod.CreateRandPosition(LengthOfSideMap), sizeObject);
 
 				foreach (var shape in occupiedArea)
 				{
@@ -140,8 +140,8 @@ namespace BattleRoayleServer
 			for (int i = 0; i < gamersInRoom; i++)
 			{
 				//создаем игрока
-				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, Gamer.Size);
-				Gamer gamer = new Gamer(this, newShape.Location);
+				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGamer);
+				var gamer = BuilderGameObject.CreateGamer(this, newShape.Location);
 				Players.Add(gamer);
 				gameObjects.Add(gamer.ID,gamer);
 			}
@@ -169,14 +169,14 @@ namespace BattleRoayleServer
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
-			frameField.UpperBound.Set(lengthOfSide, lengthOfSide);
+			frameField.UpperBound.Set(LengthOfSideMap, LengthOfSideMap);
 			Field = new World(frameField, new Vec2(0, 0), false);
 			var solver = new RoomContactListener();
 			Field.SetContactListener(solver);
 			CreateFrame();
 
-			Zone = new DeathZone(this, lengthOfSide);
-			gameObjects.Add(Zone.ID, Zone);
+			DeathZone = BuilderGameObject.CreateDeathZone(this);
+			gameObjects.Add(DeathZone.ID, DeathZone);
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			List<RectangleF> occupiedArea = new List<RectangleF>();
@@ -204,14 +204,14 @@ namespace BattleRoayleServer
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0, 0);
-			frameField.UpperBound.Set(lengthOfSide, lengthOfSide);
+			frameField.UpperBound.Set(LengthOfSideMap, LengthOfSideMap);
 			Field = new World(frameField, new Vec2(0, 0), false);
 			var solver = new RoomContactListener();
 			Field.SetContactListener(solver);
 			CreateFrame();
 
-			Zone = new DeathZone(this, lengthOfSide);
-			gameObjects.Add(Zone.ID, Zone);
+			DeathZone = BuilderGameObject.CreateDeathZone(this);
+			gameObjects.Add(DeathZone.ID, DeathZone);
 
 			handlerIncomingMessages = new Task(Handler_IncomingMessages);
 			handlerIncomingMessages.Start();
@@ -230,7 +230,7 @@ namespace BattleRoayleServer
 			pDefBottom.Density = 0;
 			pDefBottom.Filter.CategoryBits = (ushort)CollideCategory.Box;
 			pDefBottom.Filter.MaskBits = (ushort)CollideCategory.Player;
-			pDefBottom.SetAsBox(lengthOfSide, 1);
+			pDefBottom.SetAsBox(LengthOfSideMap, 1);
 
 			var frame  = Field.CreateBody(bDefBottom);
 			frame.CreateShape(pDefBottom);
@@ -246,14 +246,14 @@ namespace BattleRoayleServer
 			pDefLeft.Density = 0;
 			pDefLeft.Filter.CategoryBits = (ushort)CollideCategory.Box;
 			pDefLeft.Filter.MaskBits = (ushort)CollideCategory.Player;
-			pDefLeft.SetAsBox(1, lengthOfSide);
+			pDefLeft.SetAsBox(1, LengthOfSideMap);
 
 			frame = Field.CreateBody(bDefLeft);
 			frame.CreateShape(pDefLeft);
 
 			//top
 			BodyDef bDefTop = new BodyDef();
-			bDefTop.Position.Set(0, lengthOfSide - 1);
+			bDefTop.Position.Set(0, LengthOfSideMap - 1);
 			bDefTop.Angle = 0;
 
 			PolygonDef pDefTop = new PolygonDef();
@@ -262,14 +262,14 @@ namespace BattleRoayleServer
 			pDefTop.Density = 0;
 			pDefTop.Filter.CategoryBits = (ushort)CollideCategory.Box;
 			pDefTop.Filter.MaskBits = (ushort)CollideCategory.Player;
-			pDefTop.SetAsBox(lengthOfSide, 1);
+			pDefTop.SetAsBox(LengthOfSideMap, 1);
 
 			frame = Field.CreateBody(bDefTop);
 			frame.CreateShape(pDefTop);
 
 			//right
 			BodyDef bDefRight = new BodyDef();
-			bDefRight.Position.Set(lengthOfSide - 1, 0);
+			bDefRight.Position.Set(LengthOfSideMap - 1, 0);
 			bDefRight.Angle = 0;
 
 			PolygonDef pDefRight = new PolygonDef();
@@ -278,7 +278,7 @@ namespace BattleRoayleServer
 			pDefRight.Density = 0;
 			pDefRight.Filter.CategoryBits = (ushort)CollideCategory.Box;
 			pDefRight.Filter.MaskBits = (ushort)CollideCategory.Player;
-			pDefRight.SetAsBox(1, lengthOfSide);
+			pDefRight.SetAsBox(1, LengthOfSideMap);
 
 			frame = Field.CreateBody(bDefRight);
 			frame.CreateShape(pDefRight);
@@ -355,7 +355,7 @@ namespace BattleRoayleServer
 					SolidBody solidBody = (SolidBody)list.GetUserData();
 					if (!solidBody.Parent.Destroyed)
 					{
-						if (solidBody.Parent.TypesBehave == TypesBehaveObjects.Active)
+						if (solidBody.Parent.TypeBehave == TypesBehaveObjects.Active)
 						{
 							//запускаем  обработку всех событий на этом объекте
 							solidBody.Parent.Update(msg);
@@ -373,7 +373,7 @@ namespace BattleRoayleServer
 				}
 			}
 			//обновляем игровую зону
-			Zone.Update(msg);
+			DeathZone.Update(msg);
 		}
 
 		private void Handler_IncomingMessages()
@@ -400,7 +400,7 @@ namespace BattleRoayleServer
 				List<IMessage> states = new List<IMessage>();
 				foreach (var gameObject in gameObjects)
 				{
-					if (gameObject.Value.TypesBehave == TypesBehaveObjects.Active)
+					if (gameObject.Value.TypeBehave == TypesBehaveObjects.Active)
 					{
 						IMessage msg = gameObject.Value.State;
 						if (msg != null) states.Add(msg);
@@ -422,7 +422,7 @@ namespace BattleRoayleServer
 				}
 
 				fullStates.Add(new GameObjectState(0, TypesGameObject.Field,
-					new List<IMessage> { new FieldState(new SizeF(lengthOfSide, lengthOfSide)) }));
+					new List<IMessage> { new FieldState(new SizeF(LengthOfSideMap, LengthOfSideMap)) }));
 				return new RoomState(fullStates);
 			}
 		}

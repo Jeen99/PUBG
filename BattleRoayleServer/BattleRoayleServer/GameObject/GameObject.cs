@@ -12,12 +12,12 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	public abstract class GameObject : IGameObject
+	public class GameObject : IGameObject
 	{
-		private object sinchUpdateObject = new object();
+		private readonly object sinchUpdateObject = new object();
 		//получение id - не должно переопределясться
-		protected object sinchGetId = new object();
-		//protected object sinchWorkWithComponent = new object();
+		protected readonly object sinchGetId = new object();
+		
 		//0 - зарезервированно за картой
 		private static ulong counterID = 1;
 
@@ -95,13 +95,15 @@ namespace BattleRoayleServer
 
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
+		public GameObject Parent { get; set; } 
 
-		public GameObject(IModelForComponents model)
+		public GameObject(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject)
 		{
 			//иницализация всех полей
 			ID = GetID();
 			Model = model;
-			//коллекцию компонентов каждый объект реализует сам
+			Type = typeGameObject;
+			TypeBehave = typeBehaveObject;
 		}
 
 		/// <summary>
@@ -125,7 +127,7 @@ namespace BattleRoayleServer
 			}
 		}
 
-		public abstract TypesBehaveObjects TypesBehave{ get; }
+		public TypesBehaveObjects TypeBehave{ get; private set; }
 
 		/// <summary>
 		/// Создаем список состояний компонентов игрового объекта
@@ -154,7 +156,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Тип игрового объекта
 		/// </summary>
-		public abstract TypesGameObject Type { get;}
+		public TypesGameObject Type { get; private set; }
 
 		/// <summary>
 		/// Освобождает все ресурысы объекта
@@ -186,9 +188,6 @@ namespace BattleRoayleServer
 		/// Возвращает true, если объект уничтожен
 		/// </summary>
 		public bool Destroyed { get; protected set; }
-
-
-		
 	}
 
 	public struct PhysicsSetups

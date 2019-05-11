@@ -13,39 +13,10 @@ namespace BattleRoayleServer
 {
 	public class Gamer : GameObject, IPlayer
 	{
-		protected static PhysicsSetups physicsSetups = new PhysicsSetups(0, 0, 0.5f, 0);
-		public static SizeF Size { get; protected set; } = new SizeF(10, 10);
-
-		public Gamer(IModelForComponents context, PointF location) : base(context)
+		public Gamer(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject) 
+			: base(model, typeGameObject, typeBehaveObject)
 		{
-			#region CreateShape
-			ShapeDef CircleDef = new CircleDef();
-			(CircleDef as CircleDef).Radius = Size.Width / 2;
-			CircleDef.Restitution = physicsSetups.restetution;
-			CircleDef.Friction = physicsSetups.friction;
-			CircleDef.Density = physicsSetups.density;
-			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
-			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone 
-				| (ushort)CollideCategory.Grenade;
-			#endregion
-
-			body = new SolidBody(this, new RectangleF(location, Size), new ShapeDef[] { CircleDef });
-			Components.Add(body);
-
-			var movement = new Movement(this, 40f);
-			Components.Add(movement);
-
-			var collector = new Collector(this);
-			Components.Add(collector);
-
-			var currentWeapon = new CurrentWeapon(this);
-			Components.Add(currentWeapon);
-
-			var healthy = new Healthy(this);
-			Components.Add(healthy);
-
-			var statistics = new Statistics(this);
-			Components.Add(statistics);
+			
 		}
 
 		/// <summary>
@@ -53,21 +24,19 @@ namespace BattleRoayleServer
 		/// </summary>
 		private SolidBody body;
 
-		public override TypesGameObject Type { get; } = TypesGameObject.Player;
-
-		public override TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Active;
-
 		public PointF Location
 		{
 			get
 			{
-				return body.Shape.Location;
+				if (body != null) return body.Shape.Location;
+				else return PointF.Empty;
 			}
 		}
 
 		public override void Setup()
 		{
 			base.Setup();
+			body = Components.GetComponent<SolidBody>();
 			Received_PlayerTurn += Handler_Received_PlayerTurn;
 		}
 

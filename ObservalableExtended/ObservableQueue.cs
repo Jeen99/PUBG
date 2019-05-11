@@ -12,6 +12,12 @@ namespace ObservalableExtended
 	{
 		private readonly object sinchAccess = new object();
 		private Queue<T> insideQueue;
+
+		public ObservableQueue()
+		{
+			insideQueue = new Queue<T>();
+		}
+
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
 		public  void Enqueue(T newElement)
@@ -44,5 +50,7 @@ namespace ObservalableExtended
 				}
 			}
 		}
+
+
 	}
 }

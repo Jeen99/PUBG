@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CommonLibrary.CommonElements;
 
 namespace BattleRoayleServer
 {
 	public abstract class Modifier : GameObject
 	{
-		public Modifier(IModelForComponents model) : base(model)
+		public Modifier(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject) 
+			: base(model, typeGameObject, typeBehaveObject)
 		{
+
 		}
-		public IGameObject Holder { get; set; }
-    }
+	}
 }

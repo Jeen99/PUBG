@@ -1,17 +1,19 @@
 ﻿using CommonLibrary;
 using CommonLibrary.CommonElements;
+using System.Drawing;
 
 namespace BattleRoayleServer
 {
 	public interface IGameObject
 	{
 		DictionaryComponent Components { get; }
+		GameObject Parent { get; set; }
 		bool Destroyed { get; }
 		ulong ID { get; }
 		IModelForComponents Model { get; }
 		IMessage State { get; }
 		TypesGameObject Type { get; }
-		TypesBehaveObjects TypesBehave { get; }
+		TypesBehaveObjects TypeBehave { get; }
 
 		#region Cобытия для уведомления клиентов о получении нового сообытия
 		event ReceivedMessage Received_ChoiceWeapon;

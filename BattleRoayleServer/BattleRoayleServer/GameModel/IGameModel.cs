@@ -17,8 +17,8 @@ namespace BattleRoayleServer
 {
     public interface IGameModel
     {
-        IList<IPlayer> Players { get;}	
-		DeathZone Zone { get; }
+        IList<IPlayer> Players { get;}
+		GameObject DeathZone { get; }
 		IMessage RoomState { get; }
 		IMessage FullRoomState { get; }
 
