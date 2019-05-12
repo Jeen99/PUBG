@@ -40,7 +40,7 @@ namespace BattleRoayleServer
 			//return Components[Type.GetType(type)];
 			foreach (var item in this.Components.Keys)
 			{
-				if (item.ToString() == type)
+				if (item.Name == type)
 					return Components[item];
 			}
 			throw new IndexOutOfRangeException($"Элемент с классом {type} не содержится в Dictionary");
