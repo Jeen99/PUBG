@@ -18,7 +18,6 @@ namespace BattleRoayleServer
 		public Explosion(IGameObject parent, IBullet grenadeBullet) : base(parent)
 		{
 			this.grenadeBullet = grenadeBullet;
-			//добавил минуту, чтобы не было ошибки при вычитании
 			timeTillExplosion = new TimeSpan(0, 0, 0, 4, 500);
 		}
 
@@ -36,7 +35,8 @@ namespace BattleRoayleServer
 		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			timeTillExplosion = timeTillExplosion.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
-			if(timeTillExplosion.Milliseconds < 0) MakeExplosion();
+			if(timeTillExplosion.TotalMilliseconds <= 0)
+				MakeExplosion();
 		}
 
 		private void MakeExplosion()

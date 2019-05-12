@@ -104,7 +104,7 @@ namespace BattleRoayleServer
 			if (Reload != TypesReload.Not)
 			{
 					timeReload = timeReload.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
-					if (timeReload.Milliseconds < 0)
+					if (timeReload.TotalMilliseconds < 0)
 					{
 						switch (Reload)
 						{
