@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
 using System.Drawing;
 using Box2DX.Common;
+using CommonLibrary.GameMessages;
 
 namespace ServerTest.ComponentsTest
 {
@@ -43,7 +44,7 @@ namespace ServerTest.ComponentsTest
 			var A = solid.Body.GetPosition();
 			Assert.AreNotEqual(A, compareVec);
 
-			//solid.UpdateComponent(new TimeQuantPassed(quantTime));
+			player1.Update(new TimeQuantPassed(quantTime));
 			Assert.AreNotEqual(solid.Shape, compareVec);
 		}
 	}

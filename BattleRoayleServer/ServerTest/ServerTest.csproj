@@ -54,8 +54,14 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\MockComponent.cs" />
+    <Compile Include="Common\MockPlayer.cs" />
+    <Compile Include="Common\MockRoyalGameModel.cs" />
+    <Compile Include="Common\MockWeapon.cs" />
+    <Compile Include="Common\StubComponent.cs" />
     <Compile Include="Common\StubPlayer.cs" />
     <Compile Include="Common\StubWeapon.cs" />
+    <Compile Include="Common\VectorMethodTests.cs" />
     <Compile Include="ComponentsTest\CollectorTest.cs" />
     <Compile Include="ComponentsTest\CurrentWeaponTest.cs" />
     <Compile Include="ComponentsTest\HealthyTest.cs" />
