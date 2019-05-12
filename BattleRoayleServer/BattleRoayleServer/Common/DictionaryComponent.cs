@@ -8,20 +8,15 @@ using CommonLibrary;
 
 namespace BattleRoayleServer
 {
-	public class DictionaryComponent : IEnumerable
+	public class DictionaryComponent : Dictionary<Type, IComponent>, IEnumerable
 	{
-		private Dictionary<Type, IComponent> Components;    // возможно за место Type использовать _Type
-
-		public DictionaryComponent()
-		{
-			Components = new Dictionary<Type, IComponent>();
-		}
+		// возможно за место Type использовать _Type
 
 		public T GetComponent<T>()
 		{
 			try
 			{
-				return (T)Components[typeof(T)];
+				return (T)this[typeof(T)];
 			}
 			catch (Exception)
 			{
@@ -31,17 +26,17 @@ namespace BattleRoayleServer
 
 		public IComponent GetComponent(Type type)
 		{
-			return Components[type];
+			return this[type];
 		}
 
 		public IComponent GetComponent(string type)
 		{
 			// было бы неплохо возвращать объект с нужным типом
 			//return Components[Type.GetType(type)];
-			foreach (var item in this.Components.Keys)
+			foreach (var item in this.Keys)
 			{
 				if (item.Name == type)
-					return Components[item];
+					return this[item];
 			}
 			throw new IndexOutOfRangeException($"Элемент с классом {type} не содержится в Dictionary");
 		}
@@ -52,9 +47,9 @@ namespace BattleRoayleServer
 
 			try
 			{
-				foreach (var key in Components.Keys)
+				foreach (var key in this.Keys)
 				{
-					var component = Components[key];
+					var component = this[key];
 					if (component is T)
 					{
 						list.Add((T)component);
@@ -71,29 +66,25 @@ namespace BattleRoayleServer
 
 		public void Add(IComponent comp)
 		{
-			Components[comp.GetType()] = comp;
+			this[comp.GetType()] = comp;
 		}
 
 		public bool Remove(IComponent comp)
 		{
-			return Components.Remove(comp.GetType());
+			return this.Remove(comp.GetType());
 		}
 
 		public bool Remove<T>()
 		{
-			return Components.Remove(typeof(T));
+			return this.Remove(typeof(T));
 		}
 
-		public void Clear()
-		{
-			Components.Clear();
-		}
-
-		public IEnumerator GetEnumerator()
+		// из-за скрытия возможно некоректная работа при использов интерфейса
+		public new IEnumerator GetEnumerator()
 		{ 
-				foreach (var item in Components.Keys)
+				foreach (var item in this.Keys)
 				{
-					yield return Components[item];
+					yield return this[item];
 				}		
 		}
 
