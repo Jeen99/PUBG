@@ -54,8 +54,14 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\MockComponent.cs" />
+    <Compile Include="Common\MockPlayer.cs" />
+    <Compile Include="Common\MockRoyalGameModel.cs" />
+    <Compile Include="Common\MockWeapon.cs" />
+    <Compile Include="Common\StubComponent.cs" />
     <Compile Include="Common\StubPlayer.cs" />
     <Compile Include="Common\StubWeapon.cs" />
+    <Compile Include="Common\VectorMethodTests.cs" />
     <Compile Include="ComponentsTest\CollectorTest.cs" />
     <Compile Include="ComponentsTest\CurrentWeaponTest.cs" />
     <Compile Include="ComponentsTest\HealthyTest.cs" />
@@ -82,6 +88,10 @@
     <ProjectReference Include="..\..\CSInteraction\CSInteraction\CSInteraction.csproj">
       <Project>{ca5aa8ca-e6c9-42db-b7ee-1d3028548aab}</Project>
       <Name>CSInteraction</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\ObservalableExtended\ObservalableExtended.csproj">
+      <Project>{3dd3f7b6-4fcd-4bba-994a-65aea4bcb8f3}</Project>
+      <Name>ObservalableExtended</Name>
     </ProjectReference>
     <ProjectReference Include="..\BattleRoayleServer\BattleRoayleServer.csproj">
       <Project>{13541e0b-3412-4d56-9f3b-90965cd517cf}</Project>

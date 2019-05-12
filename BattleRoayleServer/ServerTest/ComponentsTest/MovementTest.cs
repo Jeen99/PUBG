@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using System.Drawing;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
+using CommonLibrary.GameMessages;
+using CommonLibrary.CommonElements;
+using ServerTest.Common;
 
 namespace ServerTest.ComponentsTest
 {
@@ -29,7 +29,11 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_UpdateComponent_GoTo()
 		{
-			var player = new StubPlayer();
+			var model = new RoyalGameModel();
+			//var model = new MockRoyalGameModel();
+			//model.Field = new Box2DX.Dynamics.World()
+			var player = new Gamer(model, new System.Drawing.PointF());
+
 			var body = new SolidBody(player);
 			player.Components.Add(body);
 			player.Setup();
@@ -37,15 +41,14 @@ namespace ServerTest.ComponentsTest
 			float speed = 8;
 			Movement movement = new Movement(player, speed);
 			movement.Setup();
-			movement.UpdateComponent(new GoTo(new Direction(DirectionHorisontal.Left, DirectionVertical.Down)));
-			
+			player.Update(new GoTo(player.ID, new Direction(DirectionHorisontal.Left, DirectionVertical.Down)));
 
 			var vector = body.Body.GetLinearVelocity();
 			if (vector.X != -speed || vector.Y != -speed)
 			{
-				Assert.IsNotNull(null);
+				Assert.Fail();
 			}
 		}
-		
+
 	}
 }

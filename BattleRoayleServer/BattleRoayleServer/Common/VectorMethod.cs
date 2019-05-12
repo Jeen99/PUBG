@@ -10,7 +10,7 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	static class VectorMethod
+	public static class VectorMethod
 	{
 		private static Random random = new Random();
 		public static Vec2 RotateVector(float angle, float distance)

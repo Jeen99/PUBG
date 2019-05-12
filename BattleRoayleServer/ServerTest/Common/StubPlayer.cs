@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BattleRoayleServer;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
+using CommonLibrary;
+using CommonLibrary.CommonElements;
 
 namespace ServerTest
 {
@@ -27,6 +27,23 @@ namespace ServerTest
 
 		public TypesWeapon TypeWeapon { get; } = TypesWeapon.Gun;
 
+		IMessage IGameObject.State => throw new NotImplementedException();
+
+		TypesGameObject IGameObject.Type => throw new NotImplementedException();
+#pragma warning disable CS0067
+		public event ReceivedMessage Received_ChoiceWeapon;
+		public event ReceivedMessage Received_GamerDied;
+		public event ReceivedMessage Received_GotDamage;
+		public event ReceivedMessage Received_GoTo;
+		public event ReceivedMessage Received_MakeShot;
+		public event ReceivedMessage Received_PlayerTurn;
+		public event ReceivedMessage Received_MakeReloadWeapon;
+		public event ReceivedMessage Received_TryPickUp;
+		public event ReceivedMessage Received_DeletedInMap;
+		public event ReceivedMessage Received_TimeQuantPassed;
+		public event ReceivedMessage Received_AddWeapon;
+		public event ReceivedMessage Received_MakedKill;
+#pragma warning restore CS0067
 		public void Dispose()
 		{
 			return;
@@ -49,6 +66,5 @@ namespace ServerTest
 				item.Setup();
 			}
 		}
-
 	}
 }

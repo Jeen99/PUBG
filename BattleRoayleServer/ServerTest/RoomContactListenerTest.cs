@@ -1,12 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using System.Threading;
-using Box2DX.Collision;
 using Box2DX.Common;
-using Box2DX.Dynamics;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
 using System.Drawing;
 
 namespace ServerTest

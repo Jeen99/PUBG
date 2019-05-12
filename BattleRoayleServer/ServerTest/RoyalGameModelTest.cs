@@ -2,7 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
 using System.Drawing;
-using CSInteraction.ProgramMessage;
+using CSInteraction;
+using CommonLibrary.GameMessages;
 
 namespace ServerTest
 {
@@ -18,7 +19,7 @@ namespace ServerTest
 		[TestMethod]
 		public void Test_AddGameObject()
 		{
-			IGameModel model = new RoyalGameModel();
+			var model = new RoyalGameModel();
 			int count = model.GameObjects.Count;
 			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
 			stone.Setup();
@@ -29,9 +30,9 @@ namespace ServerTest
 		[TestMethod]
 		public void Test_RemoveGameObject()
 		{
-			IGameModel model = new RoyalGameModel();
+			var model = new RoyalGameModel();
 			int count = model.GameObjects.Count;
-			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
+			var stone = new Stone(model, new PointF(30, 20), new Size(10, 10));
 			stone.Setup();
 
 			model.AddOrUpdateGameObject(stone);
@@ -41,12 +42,21 @@ namespace ServerTest
 		}
 
 		[TestMethod]
-		public void Test_AddEvent()
+		public void Test_AddIncomingMessage()
 		{
-			IModelForComponents model = new RoyalGameModel();
-			int count = (model as IGameModel).HappenedEvents.Count;
-			model.AddEvent(new ObjectMoved(10, new PointF(10,50)));
-			Assert.AreEqual(count + 1, (model as IGameModel).HappenedEvents.Count);
+			var model = new RoyalGameModel();
+			int count = model.IncomingMessages.Count;
+			model.AddIncomingMessage(new ObjectMoved(10, new PointF(10, 50)));
+			Assert.AreEqual(count + 1, model.IncomingMessages.Count);
+		}
+
+		[TestMethod]
+		public void Test_AddOutgoingMessage()
+		{
+			var model = new RoyalGameModel();
+			int count = model.OutgoingMessages.Count;
+			model.AddIncomingMessage(new ObjectMoved(10, new PointF(10, 50)));
+			Assert.AreEqual(count + 1, model.IncomingMessages.Count);
 		}
 
 	}
