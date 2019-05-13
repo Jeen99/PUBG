@@ -25,7 +25,7 @@ namespace BattleRoayleServer
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
 		private const int minValueGamerInBattle = 0;
-		private Dictionary<ulong, IGameObject> gameObjects;
+		public Dictionary<ulong, IGameObject> gameObjects;
 
 		public IList<IPlayer> Players { get; private set; }
 		public IGameObject DeathZone { get; private set; }
