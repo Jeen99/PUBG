@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BattleRoayleServer;
+using Box2DX.Collision;
 using Box2DX.Dynamics;
 using CommonLibrary;
 using CommonLibrary.CommonElements;
@@ -13,8 +14,6 @@ namespace ServerTest.Common
 	class MockRoyalGameModel : IGameModel, IModelForComponents
 	{
 		public IList<IPlayer> Players => throw new NotImplementedException();
-
-		public DeathZone Zone => throw new NotImplementedException();
 
 		public IMessage RoomState => throw new NotImplementedException();
 
@@ -27,6 +26,8 @@ namespace ServerTest.Common
 #pragma warning restore CS0067
 		public Queue<IMessage> IncomingMessages { get; set; } = new Queue<IMessage>();
 		public Queue<IMessage> OutgoingMessages { get; set; } = new Queue<IMessage>();
+
+		public IGameObject DeathZone => throw new NotImplementedException();
 
 		public void AddIncomingMessage(IMessage message)
 		{
@@ -59,6 +60,11 @@ namespace ServerTest.Common
 		}
 
 		public void RemoveGameObject(IGameObject gameObject)
+		{
+			throw new NotImplementedException();
+		}
+
+		public List<SolidBody> GetMetedObjects(Segment ray)
 		{
 			throw new NotImplementedException();
 		}

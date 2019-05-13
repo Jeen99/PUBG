@@ -41,17 +41,9 @@ namespace ServerTest.ComponentsTest
 			//создаем коллекцию объектов для теста
 			var Room = new RoyalGameModel();
 
-			var gun = new Gun(Room, new PointF(50, 70));
-			gun.Setup();
-			Room.GameObjects.Add(gun.ID, gun);
-
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-
-			var player2 = new Gamer(Room, new PointF(35, 75));
-			player2.Setup();
-			Room.GameObjects.Add(player2.ID, player2);
+			var gun = BuilderGameObject.CreateGun(Room, new PointF(50, 70));
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
+			var player2 = BuilderGameObject.CreateGamer(Room, new PointF(35, 75));
 
 			Room.Field.Step(1f / 60f, 6, 3);
 			//поднимаем оружие

@@ -28,10 +28,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_UpdateComponent_TimeQuantPassed()
 		{
 			var Room = new RoyalGameModel();
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 
 			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			RectangleF compareShape = solid.Shape;

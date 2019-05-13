@@ -182,7 +182,10 @@ namespace BattleRoayleServer
 			handlerIncomingMessages.Start();
 		}
 
-		//только для тестов
+		
+		/// <summary>
+		/// только для тестов
+		/// </summary>
 		public RoyalGameModel()
 		{
 			//инициализируем полей

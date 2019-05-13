@@ -32,7 +32,7 @@ namespace ServerTest.ComponentsTest
 			var model = new RoyalGameModel();
 			//var model = new MockRoyalGameModel();
 			//model.Field = new Box2DX.Dynamics.World()
-			var player = new Gamer(model, new System.Drawing.PointF());
+			var player = BuilderGameObject.CreateGamer(model, new System.Drawing.PointF());
 
 			var body = new SolidBody(player);
 			player.Components.Add(body);

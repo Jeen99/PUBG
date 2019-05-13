@@ -4,6 +4,7 @@ using BattleRoayleServer;
 using CommonLibrary.GameMessages;
 using System.Drawing;
 using ServerTest.Common;
+using CommonLibrary.CommonElements;
 
 namespace ServerTest.ComponentsTest
 {
@@ -14,9 +15,11 @@ namespace ServerTest.ComponentsTest
 		public void Test_SendMessage()
 		{
 			var model = new MockRoyalGameModel();
-			DeathZone zone = new DeathZone(model, 500);
+			GameObject zone = new GameObject(model, TypesGameObject.DeathZone, TypesBehaveObjects.Passive);
+			BodyZone bodyZone = new BodyZone(zone, 400);
+			zone.Components.Add(bodyZone);
 			zone.Setup();
-			BodyZone bodyZone = zone.Components.GetComponent<BodyZone>();
+			//model.AddOrUpdateGameObject(zone);
 
 			PointF startLocation = bodyZone.Location;
 			float radius = bodyZone.Radius;
@@ -31,10 +34,11 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_ChangeLocation()
 		{
-			var model = new RoyalGameModel();
-			DeathZone zone = new DeathZone(model, 500);
+			var model = new MockRoyalGameModel();
+			GameObject zone = new GameObject(model, TypesGameObject.DeathZone, TypesBehaveObjects.Passive);
+			BodyZone bodyZone = new BodyZone(zone, 500);
+			zone.Components.Add(bodyZone);
 			zone.Setup();
-			BodyZone bodyZone = zone.Components.GetComponent<BodyZone>();
 
 			PointF startLocation = bodyZone.Location;
 			float radius = bodyZone.Radius;

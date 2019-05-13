@@ -60,13 +60,9 @@ namespace ServerTest.ComponentsTest
 		{
 			var Room = new RoyalGameModel();
 
-			var gun = new Gun(Room, new PointF(50, 70));
-			gun.Setup();
-			Room.GameObjects.Add(gun.ID, gun);
+			var gun = BuilderGameObject.CreateGun(Room, new PointF(50, 70));
 
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 			Room.Players.Add(player1);
 
 			Room.Field.Step(1f / 60f, 6, 3);
@@ -85,15 +81,9 @@ namespace ServerTest.ComponentsTest
 		public void Test_Dispose()
 		{
 			var Room = new RoyalGameModel();
-			var gun = new Gun(Room, new PointF(50, 70));
-			gun.Setup();
-			Room.GameObjects.Add(gun.ID, gun);
+			var gun = BuilderGameObject.CreateGun(Room, new PointF(50, 70));
 
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
-
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие

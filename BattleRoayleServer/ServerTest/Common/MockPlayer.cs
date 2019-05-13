@@ -28,6 +28,10 @@ namespace ServerTest.Common
 
 		public PointF Location => throw new NotImplementedException();
 
+		public TypesBehaveObjects TypeBehave => TypesBehaveObjects.Active;
+
+		public IGameObject Parent { get; set; }
+
 		public event ReceivedMessage Received_ChoiceWeapon;
 		public event ReceivedMessage Received_GamerDied;
 		public event ReceivedMessage Received_GotDamage;

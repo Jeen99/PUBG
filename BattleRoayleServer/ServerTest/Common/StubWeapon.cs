@@ -29,6 +29,10 @@ namespace ServerTest
 
 		public TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
+		public TypesBehaveObjects TypeBehave { get; }
+
+		public IGameObject Parent { get; set; }
+
 #pragma warning disable CS0067
 		public event ReceivedMessage Received_ChoiceWeapon;
 		public event ReceivedMessage Received_GamerDied;

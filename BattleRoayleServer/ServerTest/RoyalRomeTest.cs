@@ -22,10 +22,10 @@ namespace ServerTest
 			//создаем комнату с одним игроком
 			rooms.AddRoom(new List<QueueGamer>() {
 				new QueueGamer(
-					new ServerClient<IMessage>(new TcpClient(), new AuthorizationController()),
+					new ConnectedClient<IMessage>(new TcpClient(), new AuthorizationController()),
 					new  DataOfAccount("", "", 0, 0, 0, new TimeSpan())),
 				new QueueGamer(
-					new ServerClient<IMessage>(new TcpClient(), new AuthorizationController()),
+					new ConnectedClient<IMessage>(new TcpClient(), new AuthorizationController()),
 					new  DataOfAccount("", "", 0, 0, 0, new TimeSpan()))
 			});
 

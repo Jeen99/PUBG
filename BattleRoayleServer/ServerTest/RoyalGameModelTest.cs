@@ -20,25 +20,25 @@ namespace ServerTest
 		public void Test_AddGameObject()
 		{
 			var model = new RoyalGameModel();
-			int count = model.GameObjects.Count;
-			var stone = new Stone((IModelForComponents)model, new PointF(30, 20), new Size(10, 10));
+			int count = model.gameObjects.Count;
+			var stone = BuilderGameObject.CreateStone(model, new PointF(30, 20));
 			stone.Setup();
 
 			model.AddOrUpdateGameObject(stone);
-			Assert.AreEqual(count + 1, model.GameObjects.Count);
+			Assert.AreEqual(count + 1, model.gameObjects.Count);
 		}
 		[TestMethod]
 		public void Test_RemoveGameObject()
 		{
 			var model = new RoyalGameModel();
-			int count = model.GameObjects.Count;
-			var stone = new Stone(model, new PointF(30, 20), new Size(10, 10));
+			int count = model.gameObjects.Count;
+			var stone = BuilderGameObject.CreateStone(model, new PointF(30, 20));
 			stone.Setup();
 
 			model.AddOrUpdateGameObject(stone);
-			Assert.AreEqual(count + 1, model.GameObjects.Count);
+			Assert.AreEqual(count + 1, model.gameObjects.Count);
 			model.RemoveGameObject(stone);
-			Assert.AreEqual(count, model.GameObjects.Count);
+			Assert.AreEqual(count, model.gameObjects.Count);
 		}
 
 		[TestMethod]
@@ -55,8 +55,8 @@ namespace ServerTest
 		{
 			var model = new RoyalGameModel();
 			int count = model.OutgoingMessages.Count;
-			model.AddIncomingMessage(new ObjectMoved(10, new PointF(10, 50)));
-			Assert.AreEqual(count + 1, model.IncomingMessages.Count);
+			model.AddOutgoingMessage(new ObjectMoved(10, new PointF(10, 50)));
+			Assert.AreEqual(count + 1, model.OutgoingMessages.Count);
 		}
 
 	}

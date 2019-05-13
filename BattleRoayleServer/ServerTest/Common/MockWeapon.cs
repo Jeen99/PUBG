@@ -11,16 +11,8 @@ namespace ServerTest.Common
 {
 	internal class MockWeapon : Weapon
 	{
-		public MockWeapon(IModelForComponents model) : base(model)
+		public MockWeapon(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject, TypesWeapon typeWeapon) : base(model, typeGameObject, typeBehaveObject, typeWeapon)
 		{
 		}
-
-		public MockWeapon() : base(new MockRoyalGameModel())
-		{
-		}
-
-		public override TypesBehaveObjects TypesBehave => throw new NotImplementedException();
-
-		public override TypesGameObject Type => throw new NotImplementedException();
 	}
 }

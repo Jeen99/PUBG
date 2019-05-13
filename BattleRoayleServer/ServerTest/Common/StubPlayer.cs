@@ -30,6 +30,10 @@ namespace ServerTest
 		IMessage IGameObject.State => throw new NotImplementedException();
 
 		TypesGameObject IGameObject.Type => throw new NotImplementedException();
+
+		public TypesBehaveObjects TypeBehave => throw new NotImplementedException();
+
+		public IGameObject Parent { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 #pragma warning disable CS0067
 		public event ReceivedMessage Received_ChoiceWeapon;
 		public event ReceivedMessage Received_GamerDied;
