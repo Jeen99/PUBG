@@ -65,7 +65,7 @@ namespace BattleRoayleServer
 			if (Program.QueueOfServer.DeleteOfQueue(gamer))
 			{
 				//удаление прошло успешно
-				client.SendMessage(new ResultRequestExit(false));
+				client.SendMessage(new ResultRequestExit(true));
 				new AccountController(gamer);
 			}
 			else

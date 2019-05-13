@@ -15,7 +15,6 @@ namespace BattleRoyalClient
 		public Gamer character;	
 		public WeaponCharacter[] weapons { get; private set; }
 
-
 		public int CountWeapons()
 		{
 			return weapons.Length;

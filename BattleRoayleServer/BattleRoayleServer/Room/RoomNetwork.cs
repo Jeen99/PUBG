@@ -229,7 +229,7 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			timerTotalSinch.Start();
+			//timerTotalSinch.Start();
 		}
 
         public void Dispose()

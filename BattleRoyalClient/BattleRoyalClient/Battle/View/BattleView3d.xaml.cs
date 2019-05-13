@@ -26,7 +26,7 @@ namespace BattleRoyalClient
 	/// <summary>
 	/// Логика взаимодействия для BattleViev3d.xaml
 	/// </summary>
-	public partial class BattleView3d : Window, IBattleView
+	public partial class BattleView3d : Window
 	{
 		public bool Transition { get; set; }
 		protected static readonly string pathResources = "/Resources/";
@@ -42,11 +42,12 @@ namespace BattleRoyalClient
 			this.InitializeComponent();
 
 			this.visual = new VisualConteyner(this.models);
-			BattleModel battleModel = new BattleModel(id);
+			BattleModel battleModel = StorageModels.BattleModel;
 			model = battleModel;
 
 			battleContoller = new GameActionController(client, battleModel);
 			userContoller = new UserActionController(client, battleModel, this);
+			userContoller.InitializeModel(id);
 
 			model.GameObjectChanged += Model_GameObjectChanged;
 			model.CharacterView.Event_CharacterChange += Handler_ChangeCharacter;
@@ -62,7 +63,7 @@ namespace BattleRoyalClient
 			this.MouseMove += BattleView3d_MouseMove;
 			this.Closed += Battle_Closed;
 
-			userContoller.Handler_BattleFormLoad(id);
+			userContoller.Handler_BattleFormLoad();
 
 		}
 
@@ -319,6 +320,7 @@ namespace BattleRoyalClient
 			{
 				Environment.Exit(0);
 			}
+			userContoller.ViewClose();
 		}
 
 		private void Handler_IndicatorDeadZone()

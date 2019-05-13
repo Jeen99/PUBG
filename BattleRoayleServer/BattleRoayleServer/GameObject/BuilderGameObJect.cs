@@ -37,6 +37,7 @@ namespace BattleRoayleServer
 		
 		private static float strengthThrowGrenade = 100;
 		private static float SpeedGamer = 40f;
+		private static float RadiusExplosionGrenade = 20;
 
 		public static GameObject CreateBox(IModelForComponents model, PointF location)
 		{
@@ -85,7 +86,7 @@ namespace BattleRoayleServer
 			circleShape.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
 
-			ShapeDef sensorDef = CreateBaseCircleDef(setupsGrenade, SizeGreanade);
+			ShapeDef sensorDef = CreateBaseCircleDef(setupsGrenade, new SizeF(RadiusExplosionGrenade, RadiusExplosionGrenade));
 			sensorDef.IsSensor = true;
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BattleRoyalClient.Authorization
+namespace BattleRoyalClient
 {
     /// <summary>
 	/// Сохраняет и загружает авторизационне данные

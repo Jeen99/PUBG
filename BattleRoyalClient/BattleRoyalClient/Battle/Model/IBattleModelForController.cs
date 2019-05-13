@@ -14,6 +14,10 @@ namespace BattleRoyalClient
 		void AddOutgoingMsg(IMessage msg);
 		bool ModelIsLoaded { get; }
 		ulong IDPlayer { get; }
+
+		void ClearModel();
+		void Initialize(ulong id);
+		
 	}
 
 	enum StateObject { Change, Delete };

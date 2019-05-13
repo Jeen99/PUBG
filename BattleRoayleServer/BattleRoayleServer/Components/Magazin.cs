@@ -51,7 +51,7 @@ namespace BattleRoayleServer
 		{
 			Reload =  TypesReload.ReloadMagazin;
 			timeReload = new TimeSpan(0, 0, 0, 0, durationReload_Magazin);	
-			Parent?.Model?.AddOutgoingMessage(new ReloadWeapon((Parent as Weapon).Holder.ID, true));
+			Parent?.Model?.AddOutgoingMessage(new ReloadWeapon(Parent.Parent.ID, true));
 			
 		}
 
@@ -71,9 +71,7 @@ namespace BattleRoayleServer
 					Create_ReloadMagazin();
 
 				bulletsInMagazinNow--;
-				Weapon parentAsWeapon = Parent as Weapon;
-				Parent?.Model?.AddOutgoingMessage(new ChangeBulletInWeapon(parentAsWeapon.Holder.ID,
-					parentAsWeapon.TypeWeapon, bulletsInMagazinNow));
+				SendChangeBulletInWeaponMsg();
 
 				return CreateBullet();
 			}
@@ -130,8 +128,16 @@ namespace BattleRoayleServer
 			//cоздаем новый магазин
 			bulletsInMagazinNow = bulletsInMagazin;
 
-			Parent?.Model?.AddOutgoingMessage(new ReloadWeapon((Parent as Weapon).Holder.ID, false));
+			SendChangeBulletInWeaponMsg();
 
+			Parent?.Model?.AddOutgoingMessage(new ReloadWeapon((Parent as Weapon).Parent.ID, false));
+
+		}
+		private void SendChangeBulletInWeaponMsg()
+		{
+			Weapon parentAsWeapon = Parent as Weapon;
+			Parent?.Model?.AddOutgoingMessage(new ChangeBulletInWeapon(parentAsWeapon.Parent.ID,
+					parentAsWeapon.TypeWeapon, bulletsInMagazinNow));
 		}
 
 		public override void Setup()

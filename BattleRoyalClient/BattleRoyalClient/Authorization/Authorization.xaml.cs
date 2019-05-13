@@ -1,5 +1,4 @@
-﻿using BattleRoyalClient.Authorization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,26 +20,81 @@ namespace BattleRoyalClient
 	public partial class Autorization : Window
 	{
 		private AuthorizationController controller;
+		private IAuthorizationModerForView model = StorageModels.AutorizationModel;
 		/// <summary>
 		/// Если true, то происходит переход из формы в форму и приложение закрывать не надо
 		/// </summary>
-		public bool Transition { get; set; }
+		public bool transition = false;
+
 		public Autorization()
 		{
 			InitializeComponent();
-			controller = new AuthorizationController(this);
-			controller.Model.AutorizationModelChange += Model_AutorizationModelChange;
+			controller = new AuthorizationController(StorageModels.AutorizationModel);
+			model.AutorizationModelChange += Model_AutorizationModelChange; ;
 			SignIn.Click += SignIn_Click;
-			this.Closed += Autorization_Closed;
+			Closed += Autorization_Closed;
 
-			string login;
-			string pass;
+			controller.ViewIsLoad();
+		}
 
-			if (AuthorizationData.LoadAuthorizationData(out login, out pass))
+		private void Model_AutorizationModelChange(TypesChangeAutorizationModel type)
+		{
+			Dispatcher.Invoke(() =>
 			{
-				this.Login.Text = login;
-				this.Password.Text = pass;
-				CheckSaveAccountData.IsChecked = true;
+				switch (type)
+				{
+					case TypesChangeAutorizationModel.NickName:
+						ChangeNickName();
+						break;
+					case TypesChangeAutorizationModel.Password:
+						ChangePassword();
+						break;
+					case TypesChangeAutorizationModel.State:
+						ChangeState();
+						break;
+					case TypesChangeAutorizationModel.SaveAutorizationData:
+						ChangeSaveAutorizationData();
+						break;
+					case TypesChangeAutorizationModel.All:
+						ChangeNickName();
+						ChangePassword();
+						ChangeSaveAutorizationData();
+						break;
+				}
+			});
+		}
+
+		private void ChangeNickName()
+		{
+			this.Login.Text = model.NickName;
+		}
+
+		private void ChangePassword()
+		{
+			this.Password.Text = model.Password;
+		}
+
+		private void ChangeSaveAutorizationData()
+		{
+			CheckSaveAccountData.IsChecked = model.SaveAutorizationData;
+		}
+
+		private void ChangeState()
+		{
+			switch (model.State)
+			{
+				case StatesAutorizationModel.IncorrectData:
+					MessageBox.Show("Неправильный логин или пароль!");
+					break;
+				case StatesAutorizationModel.ErrorConnect:
+					MessageBox.Show("Не удалось подключиться к серверу!");
+					break;
+				case StatesAutorizationModel.SuccessAutorization:			
+					Account account = new Account(controller.Client);
+					account.Show();
+					transition = true;
+					Close();
+					break;
 			}
 		}
 
@@ -58,8 +112,8 @@ namespace BattleRoyalClient
 
 		private void SignIn_Click(object sender, RoutedEventArgs e)
 		{
-			controller.NickName = this.Login.Text;
-			controller.Password = this.Password.Text;
+			controller.ChangeNickName(this.Login.Text);
+			controller.ChangePassword(this.Password.Text);
 			CheckSaveAccountData_Checked(sender, e);
 
 			controller.SignIn();
@@ -67,21 +121,10 @@ namespace BattleRoyalClient
 
 		private void Autorization_Closed(object sender, EventArgs e)
 		{
-			if(!Transition)
+			if (!transition)
 				Environment.Exit(0);
-		}
 
-		private void Model_AutorizationModelChange()
-		{
-			switch(controller.Model.State)
-			{
-				case StatesAutorizationModel.IncorrectData:
-					MessageBox.Show("Неправильный логин или пароль!");
-					break;
-				case StatesAutorizationModel.ErrorConnect:
-					MessageBox.Show("Не удалось подключиться к серверу!");
-					break;
-			}
+			controller.ViewIsClose();
 		}
 	}
 }

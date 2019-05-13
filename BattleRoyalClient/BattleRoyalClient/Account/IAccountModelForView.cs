@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace BattleRoyalClient
 {
-	interface IAccountModel
+	interface IAccountModelForView
 	{
 		long Kills { get; }
 		long Deaths { get; }
 		long Battles { get; }
 		TimeSpan GameTime { get; }
-		event ChangeModel AutorizationModelChange;
+		StatesAccountModel State { get; }
+		event ChangeAccountModel AccountModelChange;
 	}
 }

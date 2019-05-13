@@ -95,7 +95,7 @@ namespace BattleRoayleServer
 
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
-		public GameObject Parent { get; set; } 
+		public IGameObject Parent { get; set; } 
 
 		public GameObject(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject)
 		{

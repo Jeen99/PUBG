@@ -72,7 +72,7 @@ namespace BattleRoayleServer
 			if (weapon != null)
 			{
 				currentWeapon = weapon;
-				currentWeapon.Holder = Parent;
+				currentWeapon.Parent = Parent;
 				//отправляем сообщение об этом
 				Parent?.Model?.AddOutgoingMessage(new ChangedCurrentWeapon(Parent.ID, type));
 			}

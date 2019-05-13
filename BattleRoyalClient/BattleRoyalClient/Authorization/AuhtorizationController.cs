@@ -11,44 +11,32 @@ namespace BattleRoyalClient
 {
 	public class AuthorizationController
 	{
-		private AuthorizationModel model;
-		//чтобы не обрабатывать большо одного нажатия кнопки одновременно
+		private IAuthorizationModelForController model;
+		//чтобы не обрабатывать больше одного нажатия кнопки одновременно
 		private bool PerfomConnect = false;
-		private BaseClient<IMessage> client;
-		private BattleRoyalClient.Autorization view;
+		public BaseClient<IMessage> Client { get; private set; }
 
-		public IAuthorizationModel Model {
-			get
-			{
-				return model;
-			}
-		}
 		public void SignIn()
 		{
 			if(!PerfomConnect)
 			{
 				PerfomConnect = true;
-				if (client == null)
+				if (Client == null)
 				{
-					client = LoadNetworkSettings();
-					client.EventNewMessage += Client_EventNewMessage;
-					client.EventEndSession += Client_EventEndSession;
-					
+					Client = LoadNetworkSettings();
+					Client.EventNewMessage += Client_EventNewMessage;
+					Client.EventEndSession += Client_EventEndSession;				
 				}
 
-				client.ConnectToServer();
+				Client.ConnectToServer();
 
-				if (client.Status == StatusClient.Connect)
+				if (Client.Status == StatusClient.Connect)
 				{
-					client.SendMessage(new RequestOnAutorization(model.NickName, model.Password));
+					Client.SendMessage(new RequestOnAutorization(model.NickName, model.Password));
 				}
 				else
 				{
-					model.State = StatesAutorizationModel.ErrorConnect;
-					view.Dispatcher.Invoke(() =>
-					{
-						model.CreateModelChange();
-					});
+					model.HappenedLossConnectToServer();
 				}
 				PerfomConnect = false;
 			}
@@ -57,44 +45,30 @@ namespace BattleRoyalClient
 		private void Client_EventEndSession()
 		{
 			//попробуем создать новый клиент
-			if (client != null)
-				client.Close();
-			client = null;
+			if (Client != null)
+				Client.Close();
+			Client = null;
 		}
 
 		private void Client_EventNewMessage(IMessage msg)
 		{
-			switch (msg.TypeMessage)
+			
+			switch(msg.TypeMessage)
 			{
 				case TypesMessage.ResultAutorization:
 					Handler_ResultAutorization(msg);
 					break;
 			}
+			model.Update(msg);
 		}
 
 		private void Handler_ResultAutorization(IMessage msg)
 		{
 			if (msg.Result)
 			{
-				view.Dispatcher.Invoke(() =>
-				{
-					client.EventNewMessage -= this.Client_EventNewMessage;
-					client.EventEndSession -= this.Client_EventEndSession;
-					Account account = new Account(client);
-					account.Show();
-					view.Transition = true;
-					view.Close();
-				});
-			}
-			else
-			{
-				model.State = StatesAutorizationModel.IncorrectData;
-				view.Dispatcher.Invoke(() =>
-				{
-					model.CreateModelChange();
-				});
-			}
-			
+				Client.EventNewMessage -= this.Client_EventNewMessage;
+				Client.EventEndSession -= this.Client_EventEndSession;
+			}		
 		}
 
 		/// <summary>
@@ -104,23 +78,35 @@ namespace BattleRoyalClient
 		{
 			return new BaseClient<IMessage>("127.0.0.1", 11000);
 		}
-		public AuthorizationController(Autorization view)
+
+		public AuthorizationController(IAuthorizationModelForController model)
 		{
-			model = new AuthorizationModel();
-			this.view = view;
+			this.model = model;
 		}
 
-		public string NickName
+		public void ChangeNickName(string nickName)
 		{
-			get { return model.NickName; }
-			set { model.NickName = value; }
+			model.NickName = nickName;
 		}
 
-		public string Password
+		public void ChangePassword(string nickName)
 		{
-			get { return model.Password; }
-			set { model.Password = value; }
+			model.Password = nickName;
 		}
 
+		public void MarkSaveAutorizationData()
+		{
+			model.ChangeSaveAutorizationData();
+		}
+
+		public void ViewIsLoad()
+		{
+			model.Load();
+		}
+
+		public void ViewIsClose()
+		{
+			model.SaveAndClearModel();
+		}
 	}
 }
