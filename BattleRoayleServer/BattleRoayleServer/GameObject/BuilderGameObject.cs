@@ -11,7 +11,7 @@ using System.Drawing;
 
 namespace BattleRoayleServer
 {
-	static class BuilderGameObject
+	public static class BuilderGameObject
 	{
 		public static SizeF SizeBox { get; } = new SizeF(15, 15);
 		public static SizeF SizeBush { get; } = new SizeF(15, 15);
@@ -52,6 +52,8 @@ namespace BattleRoayleServer
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeBox), new ShapeDef[] { shapeBox });
 			gameObject.Components.Add(body);
 
+			model.AddOrUpdateGameObject(gameObject);
+
 			return gameObject;
 		}
 
@@ -61,6 +63,8 @@ namespace BattleRoayleServer
 
 			TransparentBody bushBody = new TransparentBody(gameObject, new RectangleF(location, SizeBush));
 			gameObject.Components.Add(bushBody);
+
+			model.AddOrUpdateGameObject(gameObject);
 
 			return gameObject;
 		}
@@ -74,6 +78,8 @@ namespace BattleRoayleServer
 
 			DamageZone damageZone = new DamageZone(gameObject);
 			gameObject.Components.Add(damageZone);
+
+			model.AddOrUpdateGameObject(gameObject);
 
 			return gameObject;  
 		}
@@ -97,6 +103,8 @@ namespace BattleRoayleServer
 			var explosion = new Explosion(gameObject, grenadeBullet);
 			gameObject.Components.Add(explosion);
 
+			model.AddOrUpdateGameObject(gameObject);
+
 			return gameObject;
 		}
 
@@ -110,6 +118,8 @@ namespace BattleRoayleServer
 
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeStone), new ShapeDef[] { CircleDef });
 			gameObject.Components.Add(body);
+
+			model.AddOrUpdateGameObject(gameObject);
 
 			return gameObject;
 		}
@@ -126,22 +136,30 @@ namespace BattleRoayleServer
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeStone), new ShapeDef[] { CircleDef });
 			gameObject.Components.Add(body);
 
+			model.AddOrUpdateGameObject(gameObject);
+
 			return gameObject;
 		}
 
 		public static GameObject CreateGun(IModelForComponents model, PointF location)
 		{
-			return CreateShotWeapon(model, setupsWeapon, weaponSetupsGun, SizeGun, TypesWeapon.Gun, location);
+			GameObject gameObject = CreateShotWeapon(model, setupsWeapon, weaponSetupsGun, SizeGun, TypesWeapon.Gun, location);
+			model.AddOrUpdateGameObject(gameObject);
+			return gameObject;
 		}
 
 		public static GameObject CreateAssaultRiffle(IModelForComponents model, PointF location)
 		{
-			return CreateShotWeapon(model, setupsWeapon, weaponSetupsAssaultRiffle, SizeAssaulRiffle, TypesWeapon.AssaultRifle, location);
+			GameObject gameObject = CreateShotWeapon(model, setupsWeapon, weaponSetupsAssaultRiffle, SizeAssaulRiffle, TypesWeapon.AssaultRifle, location);
+			model.AddOrUpdateGameObject(gameObject);
+			return gameObject;
 		}
 
 		public static GameObject CreateShotGun(IModelForComponents model, PointF location)
 		{
-			return CreateShotWeapon(model, setupsWeapon, weaponSetupsShotGun, SizeShotGun, TypesWeapon.ShotGun, location);
+			GameObject gameObject = CreateShotWeapon(model, setupsWeapon, weaponSetupsShotGun, SizeShotGun, TypesWeapon.ShotGun, location);
+			model.AddOrUpdateGameObject(gameObject);
+			return gameObject;
 		}
 
 		public static GameObject CreateGrenadeCollection(IModelForComponents model, PointF location)
@@ -152,6 +170,8 @@ namespace BattleRoayleServer
 
 			var throwGrenade = new Throw(gameObject, strengthThrowGrenade);
 			gameObject.Components.Add(throwGrenade);
+
+			model.AddOrUpdateGameObject(gameObject);
 
 			return gameObject;
 		}
@@ -182,6 +202,9 @@ namespace BattleRoayleServer
 			var statistics = new Statistics(gameObject);
 			gameObject.Components.Add(statistics);
 
+			model.AddOrUpdateGameObject(gameObject);
+			model.Players.Add(gameObject);
+
 			return gameObject;
 		}
 
@@ -206,6 +229,8 @@ namespace BattleRoayleServer
 			}
 			body.Body.SetLinearVelocity(startVelocity);
 			weapon.Components.Add(body);
+
+			weapon.Model.AddOrUpdateGameObject(weapon);
 		}
 
 		private static Weapon CreateShotWeapon(IModelForComponents model, PhysicsSetups physicsSetupsWeapon, 
