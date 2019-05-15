@@ -25,7 +25,6 @@ namespace BattleRoayleServer
 		public static SizeF SizeGamer { get; } = new SizeF(10, 10);
 
 		private static PhysicsSetups setupsStillObject = new PhysicsSetups(0, 0, 0, 0);
-		private static PhysicsSetups setupsGrenade = new PhysicsSetups(0, 0, 0.5f, 0.85f);
 		private static PhysicsSetups setupsStoneAndTree = new PhysicsSetups(0, 0.1f, 0, 0);
 		private static PhysicsSetups setupsWeapon = new PhysicsSetups(0, 0, 0.5f, 0.85f);
 		private static PhysicsSetups setupsGamer = new PhysicsSetups(0, 0, 0.5f, 0);
@@ -82,17 +81,17 @@ namespace BattleRoayleServer
 		public static GameObject CreateGrenade(IModelForComponents model, PointF location, Vec2 startVelocity, IBullet grenadeBullet)
 		{
 			var gameObject = new GameObject(model, TypesGameObject.Grenade, TypesBehaveObjects.Active);
-			ShapeDef circleShape = CreateBaseCircleDef(setupsGrenade, SizeGreanade);
+			ShapeDef circleShape = CreateBaseCircleDef(setupsWeapon, SizeGreanade);
 			circleShape.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
 
-			ShapeDef sensorDef = CreateBaseCircleDef(setupsGrenade, new SizeF(RadiusExplosionGrenade, RadiusExplosionGrenade));
+			ShapeDef sensorDef = CreateBaseCircleDef(setupsWeapon, new SizeF(RadiusExplosionGrenade, RadiusExplosionGrenade));
 			sensorDef.IsSensor = true;
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
 
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeGreanade),
-				new ShapeDef[] { circleShape, sensorDef }, setupsGrenade.linearDamping, startVelocity);
+				new ShapeDef[] { circleShape, sensorDef }, setupsWeapon.linearDamping, startVelocity);
 			gameObject.Components.Add(body);
 
 			var explosion = new Explosion(gameObject, grenadeBullet);
@@ -239,7 +238,8 @@ namespace BattleRoayleServer
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Loot;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
 
-			var body = new SolidBody(weapon, new RectangleF(location, sizeWeapon), new ShapeDef[] { circleShape, sensorDef });
+			var body = new SolidBody(weapon, new RectangleF(location, sizeWeapon), new ShapeDef[] { circleShape, sensorDef },
+				physicsSetupsWeapon.linearDamping, Vec2.Zero);
 			weapon.Components.Add(body);
 
 			return body;

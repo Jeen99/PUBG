@@ -95,6 +95,8 @@
     <Compile Include="TypesMessage.cs" />
     <Compile Include="InternalForClient\СonnectionBroken.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

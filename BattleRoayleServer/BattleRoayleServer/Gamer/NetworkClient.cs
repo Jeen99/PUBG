@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 
 		public string Nick { get; private set; }
 
-		public ConnectedClient<IMessage> Client { get; private set; }
+		public ConnectedClient<IMessage> client;
 
 		public string Password { get; private set; }
 
@@ -46,12 +46,12 @@ namespace BattleRoayleServer
 			this.Player = model.Players[index];
 			visibleArea = new RectangleF(0, 0, widthVisibleArea, heightVisibleArea);
 			Nick = nick;
-			Client = client;
-			Client.Controler = this;
-			Client.EventEndSession += Client_EventEndSession;
+			this.client = client;
+			this.client.Controler = this;
+			this.client.EventEndSession += Client_EventEndSession;
 			Password = password;
 			//посылаем сообщение о том, что игрок добавлен в игровую комнату
-			Client.SendMessage(new AddInBattle(Player.ID));
+			this.client.SendMessage(new AddInBattle(Player.ID));
 
 		}
 		//игрок вышел из игры до завершения игры
@@ -92,10 +92,10 @@ namespace BattleRoayleServer
 
 		public void Dispose()
 		{
-			Client.EventEndSession -= Client_EventEndSession;
+			client.EventEndSession -= Client_EventEndSession;
 			//отправляем игроку сообщение о переходе в окно аккаунта
 			//переходим в окно аккаунта
-			new AccountController(Client, Nick, Password);
+			new AccountController(client, Nick, Password);
 		}
 
 		/// <summary>
@@ -107,6 +107,11 @@ namespace BattleRoayleServer
 			if (msg.Result) deaths = 1;
 			else deaths = 0;
 			BDAccounts.AddToStatistic(new DataOfAccount(Nick, Password, msg.Kills, deaths, 1, msg.Time));
+		}
+
+		public void SendMessgaeToClient(IMessage msg)
+		{
+			client.SendMessage(msg);
 		}
 	}
 }

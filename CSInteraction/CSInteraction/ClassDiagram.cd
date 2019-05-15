@@ -1,38 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="CSInteraction.Client.BaseClient&lt;T&gt;">
-    <Position X="2.75" Y="2" Width="1.5" />
-    <Members>
-      <Method Name="BaseClient" Hidden="true" />
-      <Method Name="Close" Hidden="true" />
-      <Event Name="EventEndSession" Hidden="true" />
-      <Method Name="SendMessage" Hidden="true" />
-    </Members>
-    <TypeIdentifier>
-      <HashCode>BQAAAAAEACAAAAAACCAAAAIBCAAAAAAAAAAARICAAAA=</HashCode>
-      <FileName>Client\BaseClient.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
   <Class Name="CSInteraction.Server.Server&lt;T&gt;">
-    <Position X="8.5" Y="2" Width="1.5" />
+    <Position X="5" Y="2.25" Width="1.5" />
+    <Members>
+      <Field Name="ServerPoint" Hidden="true" />
+      <Field Name="ThreadCheckNewClient" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAIAAAgABAAAAIACAAAgAAAAACQAAAAAAA=</HashCode>
       <FileName>Server\Server.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="CSInteraction.Server.ConnectedClient&lt;T&gt;">
-    <Position X="4.75" Y="2.25" Width="2.25" />
+    <Position X="3" Y="2.25" Width="1.75" />
     <Members>
-      <Method Name="Close" Hidden="true" />
       <Method Name="CreateTitleMessage" Hidden="true" />
-      <Event Name="EventEndSession" Hidden="true" />
       <Field Name="formatter" Hidden="true" />
       <Method Name="HandlerEndSession" Hidden="true" />
       <Method Name="HandlerProgramMessage" Hidden="true" />
       <Method Name="ReadData" Hidden="true" />
-      <Field Name="receivedMsg" Hidden="true" />
-      <Method Name="SendMessage" Hidden="true" />
       <Field Name="sendMsgSinch" Hidden="true" />
       <Method Name="StartReadMessage" Hidden="true" />
       <Field Name="streamConnection" Hidden="true" />
@@ -46,9 +32,42 @@
       </Delegate>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>BAACIEEAAAABCAAAAKAAAAAAAAAAAFAABAAAAIDAAAA=</HashCode>
+      <HashCode>AAACIEEAAAABCAAAAKAAAAAAAAAAABAABAAAAIDAAAA=</HashCode>
       <FileName>Server\ConnectedClient.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="CSInteraction.Client.BaseClient&lt;T&gt;">
+    <Position X="1.25" Y="2.25" Width="1.5" />
+    <Members>
+      <Field Name="client" Hidden="true" />
+      <Method Name="Handler_EndSession" Hidden="true" />
+      <Method Name="IController&lt;T&gt;.GetNewControler" Hidden="true" />
+      <Method Name="IController&lt;T&gt;.Hanlder_NewMessage" Hidden="true" />
+    </Members>
+    <NestedTypes>
+      <Delegate Name="CSInteraction.Client.BaseClient&lt;T&gt;.NewMessage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Client\BaseClient.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Delegate Name="CSInteraction.Client.BaseClient&lt;T&gt;.EndSession" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Client\BaseClient.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AQAAAAAEADAAAAAAACAAAAIACAAAAAAAAQAABISAAAA=</HashCode>
+      <FileName>Client\BaseClient.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="CSInteraction.Server.IController&lt;T&gt;">
+    <Position X="5.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAABAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Server\IControler.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
