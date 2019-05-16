@@ -3,8 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
 using System.Drawing;
 using Box2DX.Common;
-using CSInteraction.ProgramMessage;
 using System.Diagnostics;
+using CommonLibrary.GameMessages;
 
 namespace ServerTest.ComponentsTest
 {
@@ -16,13 +16,11 @@ namespace ServerTest.ComponentsTest
 		{
 
 			RoyalGameModel model = new RoyalGameModel();
-			Grenade grenade = new Grenade(model, new PointF(50,50), new Vec2(0,10), new GrenadeBullet());
+			var grenade = BuilderGameObject.CreateGrenade(model, new PointF(50, 50), new Vec2(0, 10), new GrenadeBullet());
 			SolidBody bodyGrenade = grenade.Components.GetComponent<SolidBody>();
 			PointF start = bodyGrenade.Shape.Location;
-			grenade.Setup();
-			model.GameObjects.Add(grenade.ID, grenade);
 			//прошла 1 секунда
-			model.Field.Step(1f, 6,3);
+			model.Field.Step(1f, 6, 3);
 			grenade.Update(new TimeQuantPassed(1000));
 			PointF step1 = bodyGrenade.Shape.Location;
 			Assert.AreNotEqual(start, step1);
@@ -47,22 +45,19 @@ namespace ServerTest.ComponentsTest
 		public void Test_ThrowGrenadeAndDamage()
 		{
 			RoyalGameModel model = new RoyalGameModel();
-			Gamer player = new Gamer(model, new PointF(70,100));
-			Healthy healthy= player.Components.GetComponent<Healthy>();
+			Gamer player = BuilderGameObject.CreateGamer(model, new PointF(70, 100));
+			Healthy healthy = player.Components.GetComponent<Healthy>();
 			float startHp = healthy.HP;
-			model.AddOrUpdateGameObject(player);
-			model.Players.Add(player);
-			player.Setup();
+			//player.Setup();
 
-			Grenade grenade = new Grenade(model, new PointF(50, 50), new Vec2(20, 50), new GrenadeBullet());
-			grenade.Setup();
+			var grenade = BuilderGameObject.CreateGrenade(model, new PointF(50, 50), new Vec2(20, 50), new GrenadeBullet());
 			SolidBody bodyGrenade = grenade.Components.GetComponent<SolidBody>();
 			PointF startStep = bodyGrenade.Shape.Location;
 
 			//смотрим как движется граната
-			for (int i = 0; i < 45; i++)
+			for (int i = 0; i < 44; i++)
 			{
-				model.Field.Step(0.1f, 6, 3);	
+				model.Field.Step(0.1f, 6, 3);
 				grenade.Update(new TimeQuantPassed(100));
 				player.Update(new TimeQuantPassed(100));
 				PointF endStep = bodyGrenade.Shape.Location;
@@ -70,11 +65,10 @@ namespace ServerTest.ComponentsTest
 				Assert.AreEqual(startHp, healthy.HP);
 			}
 
-			model.Field.Step(0.1f, 6, 3);	
+			model.Field.Step(0.1f, 6, 3);
 			grenade.Update(new TimeQuantPassed(100));
 			player.Update(new TimeQuantPassed(100));
 			Assert.AreEqual(startHp - 50, healthy.HP);
-			Assert.AreEqual(model.GameObjects.Count, 1);
 		}
 	}
 }

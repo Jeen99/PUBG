@@ -11,7 +11,7 @@ namespace ServerTest
 {
 	class StubWeapon : IWeapon
 	{
-		public IGameObject Holder { get ; set ; }
+		public IGameObject Holder { get; set; }
 
 		public TypesWeapon TypeWeapon { get; } = TypesWeapon.Gun;
 
@@ -29,6 +29,24 @@ namespace ServerTest
 
 		public TypesBehaveObjects TypesBehave { get; } = TypesBehaveObjects.Passive;
 
+		public TypesBehaveObjects TypeBehave { get; }
+
+		public IGameObject Parent { get; set; }
+
+#pragma warning disable CS0067
+		public event ReceivedMessage Received_ChoiceWeapon;
+		public event ReceivedMessage Received_GamerDied;
+		public event ReceivedMessage Received_GotDamage;
+		public event ReceivedMessage Received_GoTo;
+		public event ReceivedMessage Received_MakeShot;
+		public event ReceivedMessage Received_PlayerTurn;
+		public event ReceivedMessage Received_MakeReloadWeapon;
+		public event ReceivedMessage Received_TryPickUp;
+		public event ReceivedMessage Received_DeletedInMap;
+		public event ReceivedMessage Received_TimeQuantPassed;
+		public event ReceivedMessage Received_AddWeapon;
+		public event ReceivedMessage Received_MakedKill;
+#pragma warning restore CS0067
 		public void Dispose()
 		{
 
@@ -36,7 +54,7 @@ namespace ServerTest
 
 		public void Update(IMessage msg)
 		{
-			
+
 		}
 
 		public void SetDestroyed()

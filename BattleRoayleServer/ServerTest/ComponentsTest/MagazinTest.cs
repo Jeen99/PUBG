@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using CSInteraction.Common;
-using System.Threading;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
+using ServerTest.Common;
 
 namespace ServerTest.ComponentsTest
 {
@@ -33,7 +33,14 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_GetBullet()
 		{
-			Magazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300, 8);
+			var model = new MockRoyalGameModel();
+			var player = new MockPlayer()
+			{
+				Model = model
+			};
+			var weapon = new Weapon(model, TypesGameObject.Weapon, TypesBehaveObjects.Active, TypesWeapon.Gun);
+			(weapon as Weapon).Parent = player;
+			Magazin magazin = new Magazin(weapon, TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();
 
 			//делаем 8 выстрелов
@@ -41,23 +48,31 @@ namespace ServerTest.ComponentsTest
 			{
 				Assert.IsNotNull(magazin.GetBullet());
 				Assert.IsNull(magazin.GetBullet());
-				magazin.UpdateComponent(new TimeQuantPassed(51));
+				magazin.Parent.Update(new TimeQuantPassed(51));
 			}
 			//перезаряжаем 
 			Assert.IsNull(magazin.GetBullet());
-			magazin.UpdateComponent(new TimeQuantPassed(301));
+			magazin.Parent.Update(new TimeQuantPassed(301));
 			Assert.IsNotNull(magazin.GetBullet());
 		}
 
 		[TestMethod]
 		public void Test_UpdateComponent_MakeReload()
 		{
-			Magazin magazin = new Magazin(new StubWeapon(), TypesWeapon.Gun, 50, 300, 8);
+			var model = new MockRoyalGameModel();
+			var player = new MockPlayer()
+			{
+				Model = model
+			};
+			var weapon = new Weapon(model, TypesGameObject.Weapon, TypesBehaveObjects.Active, TypesWeapon.Gun);
+			(weapon as Weapon).Parent = player;
+
+			Magazin magazin = new Magazin(weapon, TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();
 
-			magazin.UpdateComponent(new MakeReloadWeapon());
+			weapon.Update(new MakeReloadWeapon(weapon.ID));
 			Assert.IsNull(magazin.GetBullet());
-			magazin.UpdateComponent(new TimeQuantPassed(301));
+			weapon.Update(new TimeQuantPassed(301));
 			Assert.IsNotNull(magazin.GetBullet());
 		}
 	}

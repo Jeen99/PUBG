@@ -1,12 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using System.Threading;
-using Box2DX.Collision;
 using Box2DX.Common;
-using Box2DX.Dynamics;
-using CSInteraction.Common;
-using CSInteraction.ProgramMessage;
 using System.Drawing;
 
 namespace ServerTest
@@ -18,15 +12,8 @@ namespace ServerTest
 		public void TestRoomContactListener_Add()
 		{
 			var Room = new RoyalGameModel();
-
-			var box = new Box(Room, new PointF(55, 70));
-			box.Setup();
-			Room.GameObjects.Add(box.ID, box);
-
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
+			var box = BuilderGameObject.CreateBox(Room, new PointF(55, 70));
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 
 			SolidBody solid = (SolidBody)player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
@@ -38,14 +25,11 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel();
 
-			var box = new Box(Room, new PointF(55, 70));
+			var box = BuilderGameObject.CreateBox(Room, new PointF(55, 70));
 			box.Setup();
 			Room.AddOrUpdateGameObject(box);
 
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 
 			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			solid.Body.SetLinearVelocity(new Vec2(0, 40f));
@@ -60,14 +44,11 @@ namespace ServerTest
 		{
 			var Room = new RoyalGameModel();
 
-			var box = new Box(Room, new PointF(55, 70));
+			var box = BuilderGameObject.CreateBox(Room, new PointF(55, 70));
 			box.Setup();
 			Room.AddOrUpdateGameObject(box);
 
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 
 			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1f / 60f, 6, 3);

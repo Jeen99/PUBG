@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
 using System.Drawing;
 using Box2DX.Common;
-using CSInteraction.ProgramMessage;
+using CommonLibrary.GameMessages;
 
 namespace ServerTest.ComponentsTest
 {
@@ -28,10 +28,7 @@ namespace ServerTest.ComponentsTest
 		public void Test_UpdateComponent_TimeQuantPassed()
 		{
 			var Room = new RoyalGameModel();
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 
 			SolidBody solid = player1.Components.GetComponent<SolidBody>();
 			RectangleF compareShape = solid.Shape;
@@ -44,7 +41,7 @@ namespace ServerTest.ComponentsTest
 			var A = solid.Body.GetPosition();
 			Assert.AreNotEqual(A, compareVec);
 
-			solid.UpdateComponent(new TimeQuantPassed(quantTime));
+			player1.Update(new TimeQuantPassed(quantTime));
 			Assert.AreNotEqual(solid.Shape, compareVec);
 		}
 	}

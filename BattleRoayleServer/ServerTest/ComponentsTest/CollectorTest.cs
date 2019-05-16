@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using CSInteraction.Common;
 using System.Drawing;
-using CSInteraction.ProgramMessage;
 using System.Diagnostics;
+using CommonLibrary.CommonElements;
+using CommonLibrary.GameMessages;
 
 namespace ServerTest.ComponentsTest
 {
@@ -18,6 +18,7 @@ namespace ServerTest.ComponentsTest
 			player.Components.Add(new SolidBody(player));
 			Collector collector = new Collector(player);
 		}
+
 		[TestMethod]
 		[ExpectedException(typeof(Exception))]
 		public void Test_ErrorSetupCollector()
@@ -50,6 +51,7 @@ namespace ServerTest.ComponentsTest
 			player.Components.Add(new SolidBody(player));
 			Collector collector = new Collector(player);
 			player.Setup();
+
 			Assert.IsNotNull(collector.State);
 		}
 
@@ -58,22 +60,20 @@ namespace ServerTest.ComponentsTest
 		{
 			var Room = new RoyalGameModel();
 
-			var gun = new Gun(Room, new PointF(50, 70));
-			gun.Setup();
-			Room.GameObjects.Add(gun.ID, gun);
+			var gun = BuilderGameObject.CreateGun(Room, new PointF(50, 70));
 
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 			Room.Players.Add(player1);
 
 			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие
-			player1.Update(new TryPickUp());
+			player1.Update(new TryPickUp(player1.ID));
 			player1.Update(new TimeQuantPassed(1));
 			var collector = player1.Components.GetComponent<Collector>();
-			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
+
+			var received_gun = collector.GetWeapon(TypesWeapon.Gun);
+			Assert.AreEqual(gun ,received_gun);
 
 		}
 
@@ -81,19 +81,13 @@ namespace ServerTest.ComponentsTest
 		public void Test_Dispose()
 		{
 			var Room = new RoyalGameModel();
-			var gun = new Gun(Room, new PointF(50, 70));
-			gun.Setup();
-			Room.GameObjects.Add(gun.ID, gun);
+			var gun = BuilderGameObject.CreateGun(Room, new PointF(50, 70));
 
-			var player1 = new Gamer(Room, new PointF(50, 70));
-			player1.Setup();
-			Room.GameObjects.Add(player1.ID, player1);
-			Room.Players.Add(player1);
-
+			var player1 = BuilderGameObject.CreateGamer(Room, new PointF(50, 70));
 			Room.Field.Step(1f / 60f, 6, 3);
 
 			//поднимаем оружие
-			player1.Update(new TryPickUp());
+			player1.Update(new TryPickUp(player1.ID));
 			player1.Update(new TimeQuantPassed(1));
 			var collector = player1.Components.GetComponent<Collector>();
 			Assert.IsNotNull(collector.GetWeapon(TypesWeapon.Gun));
@@ -102,7 +96,7 @@ namespace ServerTest.ComponentsTest
 			int objectsInMap = Room.Field.GetBodyCount();
 
 			//уничтожаем игрока 
-			player1.Update(new GotDamage(100));
+			player1.Update(new GotDamage(player1.ID, 100));
 			player1.Dispose();
 
 			Assert.AreEqual(objectsInMap, Room.Field.GetBodyCount());

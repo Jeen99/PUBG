@@ -25,7 +25,7 @@ namespace BattleRoayleServer
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
 		private const int minValueGamerInBattle = 1;
-		private Dictionary<ulong, IGameObject> gameObjects;
+		public Dictionary<ulong, IGameObject> gameObjects;
 
 		public IList<IPlayer> Players { get; private set; }
 		public IGameObject DeathZone { get; private set; }
@@ -43,14 +43,12 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeStone);
 				var stone = BuilderGameObject.CreateStone(this, newShape.Location);
-				gameObjects.Add(stone.ID, stone);
 			}
 			//12 коробок
 			for (int i = 0; i < 15; i++)
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeBox);
 				var box = BuilderGameObject.CreateBox(this, newShape.Location);
-				gameObjects.Add(box.ID, box);
 			}
 
 			//4 автомата
@@ -58,7 +56,6 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeAssaulRiffle);
 				var assaultRifle = BuilderGameObject.CreateAssaultRiffle(this, newShape.Location);
-				gameObjects.Add(assaultRifle.ID, assaultRifle);
 			}
 
 			//5 шот-ганов
@@ -66,7 +63,6 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeShotGun);
 				var shotGun = BuilderGameObject.CreateShotGun(this, newShape.Location);
-				gameObjects.Add(shotGun.ID, shotGun);
 			}
 
 			//5 гранат
@@ -74,7 +70,6 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGrenadeCollection);
 				var grenade = BuilderGameObject.CreateGrenadeCollection(this, newShape.Location);
-				gameObjects.Add(grenade.ID, grenade);
 			}
 
 			//8 пистолетов
@@ -82,7 +77,6 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGun);
 				var gun = BuilderGameObject.CreateGun(this, newShape.Location);
-				gameObjects.Add(gun.ID, gun);
 			}
 
 			//12 кустов
@@ -90,7 +84,6 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeBush);
 				var bush = BuilderGameObject.CreateBush(this, newShape.Location);
-				gameObjects.Add(bush.ID, bush);
 			}
 
 			//10 деревьев
@@ -98,7 +91,6 @@ namespace BattleRoayleServer
 			{
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeTree);
 				var tree = BuilderGameObject.CreateTree(this, newShape.Location);
-				gameObjects.Add(tree.ID, tree);
 			}
 		}
 
@@ -142,8 +134,6 @@ namespace BattleRoayleServer
 				//создаем игрока
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGamer);
 				var gamer = BuilderGameObject.CreateGamer(this, newShape.Location);
-				Players.Add(gamer);
-				gameObjects.Add(gamer.ID,gamer);
 			}
 			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
 		}
@@ -176,7 +166,6 @@ namespace BattleRoayleServer
 			CreateFrame();
 
 			DeathZone = BuilderGameObject.CreateDeathZone(this);
-			gameObjects.Add(DeathZone.ID, DeathZone);
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			List<RectangleF> occupiedArea = new List<RectangleF>();
@@ -193,7 +182,10 @@ namespace BattleRoayleServer
 			handlerIncomingMessages.Start();
 		}
 
-		//только для тестов
+		
+		/// <summary>
+		/// только для тестов
+		/// </summary>
 		public RoyalGameModel()
 		{
 			//инициализируем полей
@@ -211,7 +203,6 @@ namespace BattleRoayleServer
 			CreateFrame();
 
 			DeathZone = BuilderGameObject.CreateDeathZone(this);
-			gameObjects.Add(DeathZone.ID, DeathZone);
 
 			handlerIncomingMessages = new Task(Handler_IncomingMessages);
 			handlerIncomingMessages.Start();

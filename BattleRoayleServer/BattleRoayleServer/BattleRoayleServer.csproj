@@ -68,7 +68,7 @@
     <Compile Include="Components\Statistics.cs" />
     <Compile Include="Components\Throw.cs" />
     <Compile Include="GameModel\IModelForComponents.cs" />
-    <Compile Include="GameObject\BuilderGameObJect.cs" />
+    <Compile Include="GameObject\BuilderGameObject.cs" />
     <Compile Include="GameObject\IGameObject.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />

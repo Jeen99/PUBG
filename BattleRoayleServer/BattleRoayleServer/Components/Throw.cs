@@ -55,7 +55,6 @@ namespace BattleRoayleServer
 			//создаем объект гранаты
 			var grenade = BuilderGameObject.CreateGrenade(Parent.Model, 
 				(Parent as Weapon).Parent.Components.GetComponent<SolidBody>().Shape.Location, impulse, grenadeBullet);
-			Parent.Model.AddOrUpdateGameObject(grenade);
 		}
 
 		public override void Dispose()

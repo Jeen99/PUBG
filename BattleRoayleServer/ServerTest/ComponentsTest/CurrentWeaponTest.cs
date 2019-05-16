@@ -1,8 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BattleRoayleServer;
-using CSInteraction.ProgramMessage;
-using CSInteraction.Common;
 
 namespace ServerTest.ComponentsTest
 {
