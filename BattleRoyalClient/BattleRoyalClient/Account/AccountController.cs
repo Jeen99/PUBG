@@ -13,25 +13,19 @@ namespace BattleRoyalClient
 {
 	class AccountController
 	{
-		private AccountModel model;
-		public IAccountModel Model {
-			get
-			{
-				return model;
-			}
-		}
-		private BaseClient<IMessage> client;
+		private IAccountModelForController model;
+		
+		public BaseClient<IMessage> Client { get; private set; }
 		private bool OnClick = false;
-		private Account view;
 
-		public AccountController(BaseClient<IMessage> client, Account view)
+		public AccountController(BaseClient<IMessage> client, IAccountModelForController model)
 		{
-			this.client = client;
-			this.view = view;
+			this.Client = client;
+			this.model = model;
 			model = new AccountModel();
 			client.EventEndSession += Client_EventEndSession;
 			client.EventNewMessage += Client_EventNewMessage;
-			this.client.SendMessage(new LoadedAccountForm());
+			this.Client.SendMessage(new LoadedAccountForm());
 		}
 
 		public void InQueue(object sender, EventArgs e)
@@ -39,59 +33,35 @@ namespace BattleRoyalClient
 			if (!OnClick)
 			{
 				OnClick = true;
-				client.SendMessage(new RequestJoinToQueue());
+				Client.SendMessage(new RequestJoinToQueue());
 				OnClick = false;
 			}
 		}
 
 		private void Client_EventNewMessage(IMessage msg)
-		{
+		{			
 			switch (msg.TypeMessage)
 			{
-				case TypesMessage.InitializeAccount:
-					Handle_DataAccount((DataAccount)msg);
-					break;
 				case TypesMessage.RequestJoinToQueue:
 					Handler_JoinedToQueue();
 					break;
 			}
+			model.Update(msg);
 		}
 		private void Handler_JoinedToQueue()
 		{
-			view.Dispatcher.Invoke(() =>
-			{
-				client.EventEndSession -= this.Client_EventEndSession;
-				client.EventNewMessage -= this.Client_EventNewMessage;
-				Queue formQueue = new Queue(client);
-				formQueue.Show();
-				view.Transition = true;
-				view.Close();
-				
-			});
+			Client.EventEndSession -= this.Client_EventEndSession;
+			Client.EventNewMessage -= this.Client_EventNewMessage;
 		}
-		private void Handle_DataAccount(DataAccount msg)
-		{
-			model.Kills = msg.Kills;
-			model.Deaths = msg.Deaths;
-			model.Battles = msg.Battles;
-			model.GameTime = msg.Time;
-			view.Dispatcher.Invoke(() =>
-			{
-				model.CreateChangeModel();
-			});
-		}
-		
-
+	
 		private void Client_EventEndSession()
 		{
-			view.Dispatcher.Invoke(() =>
-			{
-				client = null;
-				Autorization authorization = new Autorization();
-				authorization.Show();
-				view.Transition = true;
-				view.Close();
-			});
+			model.HappenedLossConnectToServer();
+		}
+
+		public void ViewIsClose()
+		{
+			model.ClearModel();
 		}
 	}
 }

@@ -127,9 +127,19 @@ namespace BattleRoyalClient
 			}
 		}
 
-		public void Handler_BattleFormLoad(ulong idGamer)
-		{
+		public void Handler_BattleFormLoad()
+		{			
 			client.SendMessage(new LoadedBattleForm(model.IDPlayer));
+		}
+
+		public void ViewClose()
+		{
+			model.ClearModel();
+		}
+
+		public void InitializeModel(ulong idGamer)
+		{
+			model.Initialize(idGamer);
 		}
 	}
 }

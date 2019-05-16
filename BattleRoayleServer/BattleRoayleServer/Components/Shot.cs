@@ -45,7 +45,7 @@ namespace BattleRoayleServer
 		{
 			try
 			{
-				SolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
+				SolidBody BodyHolder = (Parent as Weapon).Parent?.Components?.GetComponent<SolidBody>();
 				if (BodyHolder == null)
 				{
 					Log.AddNewRecord("Ошибка получения держателя оружия");
@@ -62,7 +62,7 @@ namespace BattleRoayleServer
 
 				var rayOfShot = CreateRayForShot(position, angle, bullet.Distance);
 
-				var attackedObject = DefineDamagedSolidBody(rayOfShot, (Parent as Weapon).Holder.ID);
+				var attackedObject = DefineDamagedSolidBody(rayOfShot, (Parent as Weapon).Parent.ID);
 
 				if (attackedObject == null)
 				{
@@ -115,13 +115,13 @@ namespace BattleRoayleServer
 
 		private void NotAttacked(float angle, float distance)
 		{
-			Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Holder.ID, angle, distance));
+			Parent.Model.AddOutgoingMessage(new MakedShot((Parent as Weapon).Parent.ID, angle, distance));
 		}
 
 		private void HaveAttacked(SolidBody attacked, Vec2 position, float angle, IBullet bullet)
 		{
 			PointF locationObject = attacked.Shape.Location;
-			ulong idParent = (Parent as Weapon).Holder.ID;
+			ulong idParent = (Parent as Weapon).Parent.ID;
 
 			float newDistance = VectorMethod.DefineDistance(position, new Vec2(locationObject.X, locationObject.Y));
 			Parent.Model.AddOutgoingMessage(new MakedShot(idParent, angle, newDistance));
@@ -135,7 +135,7 @@ namespace BattleRoayleServer
 			Healthy healthyAttacked = attacked.Parent.Components.GetComponent<Healthy>();
 			if (healthyAttacked == null) return;
 			//если убили засчитываем фраг
-			if (healthyAttacked.HP < bullet.Damage) (Parent as Weapon).Holder.Update(new MakedKill(idParent));
+			if (healthyAttacked.HP < bullet.Damage) (Parent as Weapon).Parent.Update(new MakedKill(idParent));
 		}
 	}
 }

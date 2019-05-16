@@ -45,18 +45,18 @@ namespace ServerTest
 		public void Test_AddIncomingMessage()
 		{
 			var model = new RoyalGameModel();
-			int count = model.IncomingMessages.Count;
+			int count = model.incomingMessages.Count;
 			model.AddIncomingMessage(new ObjectMoved(10, new PointF(10, 50)));
-			Assert.AreEqual(count + 1, model.IncomingMessages.Count);
+			Assert.AreEqual(count + 1, model.incomingMessages.Count);
 		}
 
 		[TestMethod]
 		public void Test_AddOutgoingMessage()
 		{
 			var model = new RoyalGameModel();
-			int count = model.OutgoingMessages.Count;
+			int count = model.outgoingMessages.Count;
 			model.AddOutgoingMessage(new ObjectMoved(10, new PointF(10, 50)));
-			Assert.AreEqual(count + 1, model.OutgoingMessages.Count);
+			Assert.AreEqual(count + 1, model.outgoingMessages.Count);
 		}
 
 	}

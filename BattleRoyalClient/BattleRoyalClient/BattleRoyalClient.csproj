@@ -57,7 +57,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Account\IAccountModelForController.cs" />
     <Compile Include="Authorization\AuthorizationData.cs" />
+    <Compile Include="Authorization\IAuthorizationModelForController.cs" />
     <Compile Include="Battle\3DModels\Model3DVisualEffect.cs" />
     <Compile Include="Battle\Character\ICharacterForView.cs" />
     <Compile Include="Battle\Character\ICharacterForControler.cs" />
@@ -68,7 +70,6 @@
     </Compile>
     <Compile Include="Battle\Controllers\GameActionController.cs" />
     <Compile Include="Battle\Model\IBattleModelForController.cs" />
-    <Compile Include="Battle\View\IBattleView.cs" />
     <Compile Include="Battle\3DModels\Model3D.cs" />
     <Compile Include="Battle\3DModels\Model3DGamer.cs" />
     <Compile Include="Battle\VisualConteyner.cs" />
@@ -96,7 +97,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Recources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Queue\IQueueModel.cs" />
+    <Compile Include="Queue\IQueueModelForController.cs" />
+    <Compile Include="Queue\IQueueModelForView.cs" />
     <Compile Include="Queue\Queue.xaml.cs">
       <DependentUpon>Queue.xaml</DependentUpon>
     </Compile>
@@ -106,6 +108,7 @@
     <Compile Include="ResultsBattle\ResultsBattle.xaml.cs">
       <DependentUpon>ResultsBattle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="StorageModels.cs" />
     <Page Include="Account\Account.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -142,8 +145,8 @@
   <ItemGroup>
     <Compile Include="Authorization\AuhtorizationController.cs" />
     <Compile Include="Authorization\AuthorizationModel.cs" />
-    <Compile Include="Authorization\IAuthorizationModel.cs" />
-    <Compile Include="Account\IAccountModel.cs" />
+    <Compile Include="Authorization\IAuthorizationModelForView.cs" />
+    <Compile Include="Account\IAccountModelForView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

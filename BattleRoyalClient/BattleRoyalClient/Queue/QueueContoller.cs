@@ -11,98 +11,54 @@ namespace BattleRoyalClient
 {
     class QueueContoller
     {
-		private QueueModel model;
-		private BaseClient<IMessage> client;
-		private Queue view;
+		private IQueueModelForController model;
+		public BaseClient<IMessage> Client { get; private set; }
 
-		public IQueueModel Model
+		public QueueContoller(BaseClient<IMessage> client, IQueueModelForController model)
 		{
-			get { return model; }
-		}
-
-		public QueueContoller(BaseClient<IMessage> client, Queue view)
-		{
-			this.client = client;
-			this.view = view;
-			model = new QueueModel();
+			this.Client = client;
+			this.model = model;
 			client.EventEndSession += Client_EventEndSession;
 			client.EventNewMessage += Client_EventNewMessage;
 			client.SendMessage(new LoadedQueueForm());
 		}
 
 		private void Client_EventNewMessage(IMessage msg)
-		{
+		{			
 			switch (msg.TypeMessage)
 			{
-				case TypesMessage.ChangeCountPlayersInQueue:
-					Handler_ChangeCountPlayersInQueue((ChangeCountPlayersInQueue)msg);
+				case TypesMessage.AddInBattle:
+					DeleteHandlers();
 					break;
 				case TypesMessage.ResultRequestExit:
-					Handler_ResultRequestExit(msg);
-					break;
-				case TypesMessage.AddInBattle:
-					Handler_AddInBattle(msg);
+					if (msg.Result)
+					{
+						DeleteHandlers();
+					}
 					break;
 			}
+
+			model.Update(msg);
 		}
 
-		private void Handler_AddInBattle(IMessage msg)
+		private void DeleteHandlers()
 		{
-			view.Dispatcher.Invoke(()=>
-			{
-				client.EventEndSession -= this.Client_EventEndSession;
-				client.EventNewMessage -= this.Client_EventNewMessage;
-				BattleView3d battleForm = new BattleView3d(msg.ID, client);
-				battleForm.Show();
-				view.Transition = true;
-				view.Close();
-			});
-		}
-
-		private void Handler_ResultRequestExit(IMessage msg)
-		{
-			if (msg.Result)
-			{
-				view.Dispatcher.Invoke(() =>
-				{
-					client.EventEndSession -= this.Client_EventEndSession;
-					client.EventNewMessage -= this.Client_EventNewMessage;
-					Account formAccount = new Account(client);
-					formAccount.Show();
-					view.Transition = true;
-					view.Close();
-				});
-			}
-			else
-			{
-				//если попытка выхода закончилась неудачей, значит игрок уже добавлен в игровую комнату
-			}
-		}	
-
-		private void Handler_ChangeCountPlayersInQueue(ChangeCountPlayersInQueue msg)
-		{
-			model.PlaysersInQueue = msg.Count;
-			view.Dispatcher.Invoke(() =>
-			{
-				model.CreateChangeModel();
-			});
+			Client.EventEndSession -= this.Client_EventEndSession;
+			Client.EventNewMessage -= this.Client_EventNewMessage;
 		}
 
 		public void Handler_SignOutOfQueue(object sender, EventArgs e)
 		{
-			client.SendMessage(new RequestExitOfQueue());
+			Client.SendMessage(new RequestExitOfQueue());
 		}
 
 		private void Client_EventEndSession()
 		{
-			view.Dispatcher.Invoke(() =>
-			{
-				client = null;
-				Autorization authorization = new Autorization();
-				authorization.Show();
-				view.Transition = true;
-				view.Close();
-			});
+			model.HappenedLossConnectToServer();
+		}
+		public void ViewClose()
+		{
+			model.ClearModel();
 		}
 	}
 }

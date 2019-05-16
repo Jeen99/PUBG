@@ -24,15 +24,15 @@ namespace BattleRoayleServer
 		public static readonly float LengthOfSideMap = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
-		private const int minValueGamerInBattle = 0;
+		private const int minValueGamerInBattle = 1;
 		public Dictionary<ulong, IGameObject> gameObjects;
 
 		public IList<IPlayer> Players { get; private set; }
 		public IGameObject DeathZone { get; private set; }
 		public World Field { get; private set; }
 
-		public ObservableQueue<IMessage> OutgoingMessages { get; private set; }
-		public ObservableQueue<IMessage> IncomingMessages { get; private set; }
+		public ObservableQueue<IMessage> outgoingMessages;
+		public ObservableQueue<IMessage> incomingMessages;
 
 		public event HappenedEndGame Event_HappenedEndGame;
 
@@ -135,14 +135,14 @@ namespace BattleRoayleServer
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGamer);
 				var gamer = BuilderGameObject.CreateGamer(this, newShape.Location);
 			}
-			OutgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
 		}
 
 		private void RemovePlayer(Gamer player)
 		{
 			Players.Remove(player);
 			player.SetDestroyed();
-			OutgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
 			if( Players.Count <= minValueGamerInBattle)
 			{
 				Event_HappenedEndGame?.Invoke();
@@ -154,8 +154,8 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			gameObjects = new Dictionary<ulong, IGameObject>();
-			OutgoingMessages = new ObservableQueue<IMessage>();
-			IncomingMessages = new ObservableQueue<IMessage>();
+			outgoingMessages = new ObservableQueue<IMessage>();
+			incomingMessages = new ObservableQueue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
@@ -191,8 +191,8 @@ namespace BattleRoayleServer
 			//инициализируем полей
 			Players = new List<IPlayer>();
 			gameObjects = new Dictionary<ulong, IGameObject>();
-			OutgoingMessages = new ObservableQueue<IMessage>();
-			IncomingMessages = new ObservableQueue<IMessage>();
+			outgoingMessages = new ObservableQueue<IMessage>();
+			incomingMessages = new ObservableQueue<IMessage>();
 
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0, 0);
@@ -285,7 +285,7 @@ namespace BattleRoayleServer
 			gameObject.Setup();
 			//посылваем сообщение об добавлении нового объекта
 			//отправляем просто состояние объекта(не вижу смысла создавать специальное сообщение для этого)
-			OutgoingMessages.Enqueue(gameObject.State);
+			outgoingMessages.Enqueue(gameObject.State);
 		}
 
 		public void RemoveGameObject(IGameObject gameObject)
@@ -312,22 +312,22 @@ namespace BattleRoayleServer
 
 		public void AddOutgoingMessage(IMessage message)
 		{
-			OutgoingMessages.Enqueue(message);
+			outgoingMessages.Enqueue(message);
 		}
 
 		public IMessage GetOutgoingMessage()
 		{
-			if (OutgoingMessages.Count == 0)
+			if (outgoingMessages.Count == 0)
 			{
 				return null;
 			}
 			else
-				return OutgoingMessages.Dequeue();
+				return outgoingMessages.Dequeue();
 		}
 
 		public void AddIncomingMessage(IMessage message)
 		{
-			IncomingMessages.Enqueue(message);
+			incomingMessages.Enqueue(message);
 		}
 
 		/// <summary>
@@ -371,9 +371,9 @@ namespace BattleRoayleServer
 		{
 			while (!roomClosing)
 			{
-				if (IncomingMessages.Count > 0)
+				if (incomingMessages.Count > 0)
 				{
-					IMessage msg = IncomingMessages.Dequeue();
+					IMessage msg = incomingMessages.Dequeue();
 					if(gameObjects.ContainsKey(msg.ID))
 						gameObjects[msg.ID]?.Update(msg);
 				}

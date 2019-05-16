@@ -7,7 +7,7 @@
     <Position X="20.49" Y="0.5" Height="0.542" Width="4.221" />
   </Comment>
   <Comment CommentText="Реализация игрового объекта игрока">
-    <Position X="2.896" Y="0.5" Height="0.344" Width="2.388" />
+    <Position X="0.881" Y="0.5" Height="0.344" Width="2.388" />
   </Comment>
   <Comment CommentText="Иерархия компонентов игры">
     <Position X="11.115" Y="0.5" Height="0.344" Width="2.106" />
@@ -30,74 +30,50 @@
   <Comment CommentText="Классы отчечающие за логирование ошибок">
     <Position X="0.906" Y="20.333" Height="0.302" Width="2.992" />
   </Comment>
-  <Class Name="BattleRoayleServer.GameObjectState" Collapsed="true">
-    <Position X="7.25" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAEAAA=</HashCode>
-      <FileName>GameObject\GameObjectState.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="BattleRoayleServer.GameObject">
-    <Position X="4.75" Y="1" Width="1.5" />
+    <Position X="4" Y="1" Width="2.75" />
     <Members>
       <Field Name="counterID" Hidden="true" />
       <Field Name="sinchGetId" Hidden="true" />
-      <Field Name="sinchWorkWithComponent" Hidden="true" />
+      <Field Name="sinchUpdateObject" Hidden="true" />
     </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAkIAQAiAAgAAgAAAAAACAAYAABAAAAIA=</HashCode>
+      <HashCode>gAQAAAAECCAAhIAQgSAAwIggAAQIAAAAgQqQhAAAAIA=</HashCode>
       <FileName>GameObject\GameObject.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="BattleRoayleServer.ComponentState">
-    <Position X="14" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Components\ComponentState.cs</FileName>
-    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.Component">
-    <Position X="11.75" Y="1.75" Width="1.5" />
+    <Position X="11.75" Y="6.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAAYAAAAAAAAAAAAAAABAAAAAA=</HashCode>
-      <FileName>Components\Component.cs</FileName>
+      <HashCode>AAAAAAAACCAAAAAAAAAAQAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Components\AbstractComponent\Component.cs</FileName>
     </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.RoyalRoom">
     <Position X="4.25" Y="13.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAgAAAACAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AQAAAAAAACAAAAAgAAAACAAAAAgAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Room\RoyalRoom.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.RoyalRoomLogic">
-    <Position X="9.75" Y="13.5" Width="1.5" />
+    <Position X="12.25" Y="12" Width="1.5" />
+    <Members>
+      <Method Name="RoomModel_Event_HappenedEndGame" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAABCAQQAAAABAAAIAAAAAgAAAAAAgABgAQAAI=</HashCode>
+      <HashCode>AAAAAAAABCAAQAAAAAAAgAAAgAAAAQAAAAAAAAAAAAI=</HashCode>
       <FileName>Room\RoyalRoomLogic.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="BattleRoayleServer.RoyalField">
-    <Position X="0.5" Y="17.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAACAACAAIBAAAAAAAAABAAAAAAABAAAAAAAAAAAAAg=</HashCode>
-      <FileName>GameModel\RoyalField.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.CellField">
-    <Position X="2.5" Y="17.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAEAAAIBAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GameModel\CellField.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="BattleRoayleServer.Gamer">
-    <Position X="2.25" Y="2.75" Width="1.5" />
+    <Position X="7.25" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAACCAAAAAAAAIACAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Gamer\Gamer.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -105,126 +81,71 @@
   <Class Name="BattleRoayleServer.SolidBody">
     <Position X="14" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAGAAAIACJAIAEAAAAAAACAAQAAAAIAAAA=</HashCode>
-      <FileName>Components\SolidBody.cs</FileName>
+      <HashCode>AAAEAAAACCAAAAAIAAABAAAAAAAAAABAAAAABAAABAA=</HashCode>
+      <FileName>Components\Collision\SolidBody.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.CircleBody">
-    <Position X="16.5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAIAAAgACACIAAIAAAAIAEAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Components\CircleBody.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BattleRoayleServer.RectangleBody" Collapsed="true">
-    <Position X="16.5" Y="4.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAgACACoAAIAAAAIAEAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Components\RectangleBody.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BattleRoayleServer.StartMoveGamer">
-    <Position X="23.25" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ComponentMsg\StartMoveGamer.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.Movement" Collapsed="true">
     <Position X="11" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAAIgAAAQAAAQAAAAAAIAAAAAA=</HashCode>
+      <HashCode>AAAAIAAACCAAAAAAAAAAAgAAAQAAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>Components\Movement.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BattleRoayleServer.EndMoveGamer">
-    <Position X="21.5" Y="2.75" Width="1.5" />
+  <Class Name="BattleRoayleServer.Weapon">
+    <Position X="7.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ComponentMsg\EndMoveGamer.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.TimeQuantPassed">
-    <Position X="19.75" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ComponentMsg\TimeQuantPassed.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.Weapon" Collapsed="true">
-    <Position X="7.25" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAEA=</HashCode>
       <FileName>Weapon\Weapon.cs</FileName>
     </TypeIdentifier>
-  </Class>
-  <Class Name="BattleRoayleServer.Gun">
-    <Position X="7" Y="4.5" Width="1.5" />
-    <InheritanceLine Type="BattleRoayleServer.Weapon" ManuallyRouted="true" FixedToPoint="true">
-      <Path>
-        <Point X="8" Y="4.191" />
-        <Point X="8" Y="4.346" />
-        <Point X="7.75" Y="4.346" />
-        <Point X="7.75" Y="4.5" />
-      </Path>
-    </InheritanceLine>
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAA=</HashCode>
-      <FileName>Weapon\Gun.cs</FileName>
-    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.Shot" Collapsed="true">
     <Position X="12.25" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAACAAAAAAAAAAIAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAIAAACiAACAAAACAAEAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Components\Shot.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.Collector" Collapsed="true">
     <Position X="10" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAAIAAAAQAAAAAAAAAAEAAAAAQ=</HashCode>
+      <HashCode>AAIAAAQACCAEAAEMAAAAAAAAAQAAAAAAAAAAFAABAAQ=</HashCode>
       <FileName>Components\Collector.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BattleRoayleServer.Modifier">
-    <Position X="4" Y="5.25" Width="1.5" />
+  <Class Name="BattleRoayleServer.Modifier" Collapsed="true">
+    <Position X="7.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAYAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Modifier\Modifier.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.NetworkClient">
-    <Position X="8" Y="13.5" Width="1.5" />
+    <Position X="9" Y="15.25" Width="2.5" />
+    <Members>
+      <Method Name="Client_EventEndSession" Hidden="true" />
+      <Method Name="IController&lt;IMessage&gt;.GetNewControler" Hidden="true" />
+      <Method Name="IController&lt;IMessage&gt;.Hanlder_NewMessage" Hidden="true" />
+      <Field Name="visibleArea" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAgAAGAAAAAAABIBAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAACAwAQCEAQAAIAEAABBAAQACAAAABUAIABA=</HashCode>
       <FileName>Gamer\NetworkClient.cs</FileName>
-    </TypeIdentifier>
-    <Lollipop Position="0.2" />
-  </Class>
-  <Class Name="BattleRoayleServer.ObjectPickUp">
-    <Position X="25" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ComponentMsg\ObjectPickUp.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.Magazin" Collapsed="true">
     <Position X="9.75" Y="4.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAAAAAIAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>EAABBAAACCAIAEAoAAAABAAAAIIAEAABCAAABAABAgA=</HashCode>
       <FileName>Components\Magazin.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.AuthorizationController">
     <Position X="15" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAgAAAAAAAAABAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAgAAAEAAAAAAAAAAgAAAAAAAAABAAAABA=</HashCode>
       <FileName>Controlers\AuthorizationController.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -232,21 +153,21 @@
   <Class Name="BattleRoayleServer.BDAccounts">
     <Position X="21" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAACAAAAAAABAAAAAAAAAAAAAAAggAAAAA=</HashCode>
+      <HashCode>AAAAAAEAAAABCAABAAAABAAAAAAAAIAgAAAAgooAAAA=</HashCode>
       <FileName>DataBase\BDAccounts.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.DataOfAccount">
     <Position X="19" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAQgAAAAAAgAAAAAAAAAECIAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAEAIAAQgAAAAABgAAAAAAgAAECAAIAgAAAAAA=</HashCode>
       <FileName>DataBase\DataOfAccount.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.AccountController">
     <Position X="17" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAGAAAAAAARAAAAAAAQAAAQBACAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAgAAAEAAAAAAAQAAAAAAAQAAAQBACAABA=</HashCode>
       <FileName>Controlers\AccountController.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -254,7 +175,7 @@
   <Class Name="BattleRoayleServer.QueueRoyalBattle">
     <Position X="26" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAIAAAAAAIAAAAAQAAAAAAAAAAAQAAAEAAAAEAACA=</HashCode>
+      <HashCode>AAAAIAAAAAAJAAAAAQAAAAAAAAAAAQAAAEAAAAAAACA=</HashCode>
       <FileName>HighestLevelServer\QueueRoyalBattle.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -266,23 +187,23 @@
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.QuantTimer" Collapsed="true">
-    <Position X="9.75" Y="14.25" Width="1.5" />
+    <Position X="9.75" Y="12" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAACAAAAAAQAAAAAAAAAAAAAEAIAAAAAAAQAA=</HashCode>
       <FileName>Common\QuantTimer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BattleRoayleServer.Handler_StandartExceptions">
+  <Class Name="BattleRoayleServer.Log">
     <Position X="2.5" Y="21" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAAAAAAAAAAAAACIAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>HandlerException\Handler_StandartExceptions.cs</FileName>
+      <HashCode>AIAAAAAAAAAAAAACIAAAAAAAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>HandlerException\Log.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BattleRoayleServer.ConsoleLogger">
     <Position X="0.5" Y="22.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>HandlerException\ConsoleLogger.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
@@ -290,88 +211,111 @@
   <Class Name="BattleRoayleServer.QueueController" Collapsed="true">
     <Position X="24.25" Y="11.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAGAAAAAAABAAAAACAAAAAABACAAAA=</HashCode>
+      <HashCode>AgAAAAAAADAgAAAEAAAAAAAAAAAAACAAAAAABACAABA=</HashCode>
       <FileName>Controlers\QueueController.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.RoyalGameModel">
-    <Position X="2.25" Y="10" Width="1.5" />
+    <Position X="3" Y="25.25" Width="2.75" />
+    <Members>
+      <Method Name="CreateAndAddNewUniqueShape" Hidden="true" />
+      <Method Name="CreateDinamicGameObject" Hidden="true" />
+      <Method Name="CreateFrame" Hidden="true" />
+      <Method Name="CreatePlayers" Hidden="true" />
+      <Method Name="Handler_IncomingMessages" Hidden="true" />
+      <Field Name="handlerIncomingMessages" Hidden="true" />
+      <Field Name="LengthOfSideMap" Hidden="true" />
+      <Method Name="Model_EventGameObjectDeleted" Hidden="true" />
+      <Field Name="roomClosing" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAAgAAAEAAAAgAAAAAAAAIAAAAAgAAAAIAAAAAAAgAA=</HashCode>
+      <HashCode>QAAhCAACACAQhAAASBEgAQAQCAAgAAEAAEIRAAAAiGA=</HashCode>
       <FileName>GameModel\RoyalGameModel.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
   <Class Name="BattleRoayleServer.RoomNetwork">
-    <Position X="6.25" Y="13.5" Width="1.5" />
+    <Position X="5" Y="20" Width="3.25" />
+    <Members>
+      <Field Name="AccessSinchClients" Hidden="true" />
+      <Field Name="roomClosing" Hidden="true" />
+      <Field Name="roomLogic" Hidden="true" />
+      <Field Name="SenderMessage" Hidden="true" />
+      <Field Name="timerTotalSinch" Hidden="true" />
+    </Members>
     <TypeIdentifier>
-      <HashCode>AAIAAAAAACAAAAAAACAAAAAAIAACAAABAAAAAAAAAAg=</HashCode>
+      <HashCode>QAIAQAAIACAEQAAAACAgAIAQQAAAAAABIQIgAAAAACg=</HashCode>
       <FileName>Room\RoomNetwork.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
+  <Class Name="BattleRoayleServer.BuilderGameObject">
+    <Position X="13" Y="16.5" Width="3" />
+    <Members>
+      <Method Name="CreateBaseCircleDef" Hidden="true" />
+      <Method Name="CreateBaseRectangleDef" Hidden="true" />
+      <Method Name="CreateBodyWeapon" Hidden="true" />
+      <Method Name="CreateMagazin" Hidden="true" />
+      <Method Name="CreateShotWeapon" Hidden="true" />
+      <Method Name="CreateStandartComponentForWeapon" Hidden="true" />
+      <Field Name="RadiusExplosionGrenade" Hidden="true" />
+      <Field Name="setupsGamer" Hidden="true" />
+      <Field Name="setupsStillObject" Hidden="true" />
+      <Field Name="setupsStoneAndTree" Hidden="true" />
+      <Field Name="setupsWeapon" Hidden="true" />
+      <Field Name="SpeedGamer" Hidden="true" />
+      <Field Name="strengthThrowGrenade" Hidden="true" />
+      <Field Name="weaponSetupsAssaultRiffle" Hidden="true" />
+      <Field Name="weaponSetupsGrenadeCollection" Hidden="true" />
+      <Field Name="weaponSetupsGun" Hidden="true" />
+      <Field Name="weaponSetupsShotGun" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>EBAEkAAYJgAAEUACCABRCBAQAgAAjCJIYAACTAAAgAI=</HashCode>
+      <FileName>GameObject\BuilderGameObJect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Interface Name="BattleRoayleServer.IRoomLogic" Collapsed="true">
     <Position X="9.75" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAQAAAAABAAAIAAAAAgAAAAAAgAAAAQAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAAAAAAgAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
       <FileName>Room\IRoomLogic.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.IPlayer">
-    <Position X="2.25" Y="1" Width="1.5" />
+    <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAACAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAgAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Gamer\IPlayer.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BattleRoayleServer.IComponentMsg">
-    <Position X="19.5" Y="1.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>ComponentMsg\IComponentMsg.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.IGameModel">
     <Position X="0.5" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAgAAAEAAAAAAAAAAAAAIAAAAAgAAAAAAAAAAAAgAA=</HashCode>
+      <HashCode>AAAgAAACACAQAAAASAEgAAAAAAAgAAAAAAAAAAAACEA=</HashCode>
       <FileName>GameModel\IGameModel.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BattleRoayleServer.IField">
-    <Position X="0.5" Y="15.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
-      <FileName>GameModel\IField.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.INetwork">
     <Position X="6.25" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAAACAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
       <FileName>Room\INetwork.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.IRoom">
     <Position X="4.25" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAACAAAAAgAAAACAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <HashCode>AAAAAAAAACAAAAAgAAAACAAAAAgAAAAAAAAAAAAAAEA=</HashCode>
       <FileName>Room\IRoom.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.INetworkClient">
     <Position X="8" Y="11.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAIBAAAAACAAAAAAAAAAA=</HashCode>
+      <HashCode>AAQAAAAAACAAAACAAAAAIAEAABBAAAACAAAAAQAAAAA=</HashCode>
       <FileName>Gamer\INetworkClient.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Interface Name="BattleRoayleServer.IComponentEvent">
-    <Position X="20.25" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAA=</HashCode>
-      <FileName>GameEventMsg\IComponentEvent.cs</FileName>
     </TypeIdentifier>
   </Interface>
   <Interface Name="BattleRoayleServer.ILogger">
@@ -381,60 +325,11 @@
       <FileName>HandlerException\ILogger.cs</FileName>
     </TypeIdentifier>
   </Interface>
-  <Interface Name="BattleRoayleServer.IFieldObject">
-    <Position X="14" Y="6" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAGAAAAACJAQAAAAAAAAACAAQAAAAAAAAA=</HashCode>
-      <FileName>GameModel\IFieldObject.cs</FileName>
-    </TypeIdentifier>
-  </Interface>
-  <Enum Name="TypesGameObject" Collapsed="true">
-    <Position X="7.25" Y="2" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAQAAAAA=</HashCode>
-      <FileName>GameObject\TypesGameObject.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="BattleRoayleServer.TypesComponentMsg" Collapsed="true">
-    <Position X="21.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAIAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAACAAg=</HashCode>
-      <FileName>ComponentMsg\TypesComponentMsg.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="BattleRoayleServer.Directions" Collapsed="true">
-    <Position X="23.5" Y="1.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAQAAAAIAAABAAAAAAAAgAAAAoAAAACAAAAAAAgAA=</HashCode>
-      <FileName>Common\Directions.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="BattleRoayleServer.TypesComponentEvent">
-    <Position X="22.25" Y="6.25" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GameEventMsg\TypesComponentEvent.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="BattleRoayleServer.TypesWeapon" Collapsed="true">
-    <Position X="7.25" Y="2.75" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AECAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
-      <FileName>Weapon\Weapon.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="BattleRoayleServer.TypesSolid" Collapsed="true">
-    <Position X="11.75" Y="1" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
-      <FileName>Components\SolidBody.cs</FileName>
-    </TypeIdentifier>
-  </Enum>
-  <Enum Name="BattleRoayleServer.TypesSolidBody" Collapsed="true">
+  <Enum Name="BattleRoayleServer.TypesBody" Collapsed="true">
     <Position X="0.5" Y="1" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>GameModel\IFieldObject.cs</FileName>
+      <FileName>Components\Collision\SolidBody.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

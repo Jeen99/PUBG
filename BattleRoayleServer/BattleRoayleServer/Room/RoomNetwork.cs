@@ -45,14 +45,14 @@ namespace BattleRoayleServer
 				SynchronizingObject = null,
 				AutoReset = true
 			};
-			timerTotalSinch.Elapsed += HandlerTotalSinch;
+			timerTotalSinch.Elapsed += Handler_TotalSinch;
 			SenderMessage = new Task(MethodForSenderMessage);
 			SenderMessage.Start();
 		}
 		/// <summary>
 		/// Вызывается на каждое срабатывание таймера
 		/// </summary>
-		private void HandlerTotalSinch(object sender, ElapsedEventArgs e)
+		private void Handler_TotalSinch(object sender, ElapsedEventArgs e)
 		{
 			IMessage stateRoom = roomLogic.RoomModel.RoomState;
 			lock (AccessSinchClients)
@@ -60,7 +60,7 @@ namespace BattleRoayleServer
 				foreach (var id in Clients.Keys)
 				{
 					//отсеиваем лишние данные и отправляем оставшееся
-					Clients[id].Client.SendMessage(Filter_StateRoom(id, (RoomState)stateRoom));
+					Clients[id].SendMessgaeToClient(Filter_StateRoom(id, (RoomState)stateRoom));
 				}
 			}
 		}
@@ -182,7 +182,7 @@ namespace BattleRoayleServer
 		{		
 			foreach (var id in Clients.Keys)
 			{
-				Clients[id].Client.SendMessage(msg);
+				Clients[id].SendMessgaeToClient(msg);
 			}	
 		}
 
@@ -190,7 +190,7 @@ namespace BattleRoayleServer
 		{		
 			if (Clients.ContainsKey(msg.ID))
 			{
-				Clients[msg.ID].Client.SendMessage((IMessage)msg);
+				Clients[msg.ID].SendMessgaeToClient((IMessage)msg);
 			}	
 		}
 
@@ -207,7 +207,7 @@ namespace BattleRoayleServer
 						//если область видимости одного игрока находит на другого отправляем ему сообщение
 						if (Clients[id].VisibleArea.Contains(message.Location.X, message.Location.Y))
 						{
-							Clients[id].Client.SendMessage((IMessage)msg);
+							Clients[id].SendMessgaeToClient((IMessage)msg);
 						}
 					}
 				}
@@ -220,7 +220,7 @@ namespace BattleRoayleServer
 					//если область видимости одного игрока находит на другого отправляем ему сообщение
 					if (area.IntersectsWith(Clients[id].VisibleArea))
 					{
-						Clients[id].Client.SendMessage(msg);
+						Clients[id].SendMessgaeToClient(msg);
 					}
 				}
 			}		
@@ -229,7 +229,7 @@ namespace BattleRoayleServer
 		public void Start()
         {
 			//запускаем таймер
-			timerTotalSinch.Start();
+			//timerTotalSinch.Start();
 		}
 
         public void Dispose()
@@ -237,7 +237,7 @@ namespace BattleRoayleServer
 			lock (AccessSinchClients)
 			{
 				roomClosing = true;
-				timerTotalSinch.Elapsed -= HandlerTotalSinch;
+				timerTotalSinch.Elapsed -= Handler_TotalSinch;
 				timerTotalSinch.Dispose();
 				SenderMessage.Wait();
 				SenderMessage.Dispose();
@@ -266,8 +266,8 @@ namespace BattleRoayleServer
 				{
 					var client = new NetworkClient(roomLogic.RoomModel, i, gamers[i].Client,
 					   gamers[i].NickName, gamers[i].Password);
-					client.Event_GamerIsLoaded += HandlerEvent_GamerIsLoaded;
-					client.EventNetorkClientDisconnect += Client_EventNetorkClientDisconnect;
+					client.Event_GamerIsLoaded += Handler_GamerIsLoaded;
+					client.EventNetorkClientDisconnect += Handler_NetworkClientDisconnect;
 					Clients.Add(client.Player.ID, client);
 				}
 			}
@@ -286,13 +286,13 @@ namespace BattleRoayleServer
 				{
 					if (area.IntersectsWith(Clients[id].VisibleArea))
 					{
-						Clients[id].Client.SendMessage(msg);
+						Clients[id].SendMessgaeToClient(msg);
 					}
 				}
 			}
 		}
 
-		private void Client_EventNetorkClientDisconnect(INetworkClient client)
+		private void Handler_NetworkClientDisconnect(INetworkClient client)
 		{
 			//пока нет действий при отключении клиента
 			/*lock (AccessSinchClients)
@@ -304,10 +304,10 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Отправляет загрузившимуся клиенту данные обо всех объектах на карте
 		/// </summary>
-		private void HandlerEvent_GamerIsLoaded(INetworkClient client)
+		private void Handler_GamerIsLoaded(INetworkClient client)
 		{
 			IMessage msg = roomLogic.RoomModel.FullRoomState;
-			client.Client.SendMessage(Filter_StateRoom(client.Player.ID, msg));
+			client.SendMessgaeToClient(Filter_StateRoom(client.Player.ID, msg));
 		}
 
 		public void Stop()

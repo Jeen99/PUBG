@@ -26,7 +26,7 @@ namespace ServerTest.ComponentsTest
 
 			zone.Update(new TimeQuantPassed(100));
 
-			Assert.AreEqual(1, model.OutgoingMessages.Count);
+			Assert.AreEqual(1, model.outgoingMessages.Count);
 			Assert.AreEqual(startLocation, bodyZone.Location);
 			Assert.AreEqual(radius, bodyZone.Radius);
 		}
@@ -45,7 +45,7 @@ namespace ServerTest.ComponentsTest
 
 			zone.Update(new TimeQuantPassed(30001));
 
-			//Assert.AreEqual(2, model.OutgoingMessages.Count);
+			Assert.AreEqual(model.outgoingMessages.Count, 2);
 			Assert.AreNotEqual(startLocation, bodyZone.Location);
 			Assert.AreEqual(250, bodyZone.Radius);
 
@@ -53,7 +53,7 @@ namespace ServerTest.ComponentsTest
 			startLocation = bodyZone.Location;
 			radius = bodyZone.Radius;
 			zone.Update(new TimeQuantPassed(30001));
-			Assert.AreEqual(model.OutgoingMessages.Count, 4);
+			Assert.AreEqual(model.outgoingMessages.Count, 4);
 			Assert.AreNotEqual(startLocation, bodyZone.Location);
 			Assert.AreEqual(radius * 0.6f, bodyZone.Radius);
 		}

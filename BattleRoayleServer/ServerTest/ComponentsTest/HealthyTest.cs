@@ -48,12 +48,12 @@ namespace ServerTest.ComponentsTest
 
 			//Act (выполнение)
 			player.Update_GotDamage(new GotDamage(player.ID, DamageHP));
-			IMessage msg = model.OutgoingMessages.Dequeue();
+			IMessage msg = model.outgoingMessages.Dequeue();
 
 			//Assert (проверка)
 			Assert.IsTrue((msg as ChangedValueHP).HP == expectedHP);
 			Assert.AreEqual(expectedHP, healthy.HP);
-			Assert.AreEqual(0, model.OutgoingMessages.Count);
+			Assert.AreEqual(0, model.outgoingMessages.Count);
 		}
 
 		[TestMethod]
@@ -74,13 +74,13 @@ namespace ServerTest.ComponentsTest
 
 			//Act (выполнение)
 			player.Update_GotDamage(new GotDamage(player.ID, DamageHP));
-			IMessage msg = model.OutgoingMessages.Dequeue();
+			IMessage msg = model.outgoingMessages.Dequeue();
 
 			//Assert (проверка)
 			Assert.IsTrue(player.Destroyed);
 			Assert.IsTrue((msg as ChangedValueHP).HP == expectedHP);
 			Assert.AreEqual(expectedHP, healthy.HP);
-			Assert.AreEqual(0, model.OutgoingMessages.Count);
+			Assert.AreEqual(0, model.outgoingMessages.Count);
 		}
 	}
 }

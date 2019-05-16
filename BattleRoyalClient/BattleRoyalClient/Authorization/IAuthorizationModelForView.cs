@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace BattleRoyalClient
 {
-	public interface IAuthorizationModel
+	public interface IAuthorizationModerForView
 	{
 		string NickName { get; }
 		string Password { get; }
+		bool SaveAutorizationData { get; }
 		StatesAutorizationModel State { get; }
-		event ChangeModel AutorizationModelChange;
+		event ChangeAutorizationModel AutorizationModelChange;
 	}
 }

@@ -24,14 +24,14 @@ namespace ServerTest.Common
 #pragma warning disable CS0067
 		public event HappenedEndGame Event_HappenedEndGame;
 #pragma warning restore CS0067
-		public Queue<IMessage> IncomingMessages { get; set; } = new Queue<IMessage>();
-		public Queue<IMessage> OutgoingMessages { get; set; } = new Queue<IMessage>();
+		public Queue<IMessage> incomingMessages = new Queue<IMessage>();
+		public Queue<IMessage> outgoingMessages = new Queue<IMessage>();
 
 		public IGameObject DeathZone => throw new NotImplementedException();
 
 		public void AddIncomingMessage(IMessage message)
 		{
-			IncomingMessages.Enqueue(message);
+			incomingMessages.Enqueue(message);
 		}
 
 		public void AddOrUpdateGameObject(IGameObject gameObject)
@@ -41,7 +41,7 @@ namespace ServerTest.Common
 
 		public void AddOutgoingMessage(IMessage message)
 		{
-			OutgoingMessages.Enqueue(message);
+			outgoingMessages.Enqueue(message);
 		}
 
 		public void Dispose()

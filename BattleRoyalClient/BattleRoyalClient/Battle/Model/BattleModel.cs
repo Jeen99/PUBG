@@ -21,15 +21,15 @@ namespace BattleRoyalClient
 		public event ServerDisconnect HappenedDisconnectServer;
 
 		public Dictionary<ulong, GameObject> gameObjects = new Dictionary<ulong, GameObject>();
-		public int CountPlayersInGame { get; private set; }	
-		public Size SizeMap { get; } = new Size(500, 500);
+		public int CountPlayersInGame { get; private set; } = 0;
+		public Size SizeMap { get; private set; } = Size.Empty;
 		public bool ModelIsLoaded { get; private set; } = false;
 
 		private Task taskForHandlerIncomingMsg;
 		private DeathZone deathZone;
 		private ObservableQueue<IMessage> queueIncomingMsg = new ObservableQueue<IMessage>();
 		private PlayerCharacter character;
-		private bool workingTaskForHandlerIncomingMsg = true;
+		private bool workingTaskForHandlerIncomingMsg = false;
 
 		public ICharacterForView CharacterView { get => character; }
 		public IDeathZoneForView DeathZone { get => deathZone; }
@@ -40,10 +40,32 @@ namespace BattleRoyalClient
 			queueIncomingMsg.Enqueue(msg);
 		}
 
-		public BattleModel(ulong id)
+		public BattleModel()
+		{
+			
+		}
+
+		public void ClearModel()
+		{
+			CountPlayersInGame = 0;
+			SizeMap = Size.Empty;
+			ModelIsLoaded = false;
+			workingTaskForHandlerIncomingMsg = false;
+			queueIncomingMsg.Clear();
+			gameObjects.Clear();
+			character = null;
+
+			BattleModelChanged = null;
+			GameObjectChanged = null;
+			HappenedModelEndGame = null;
+			HappenedDisconnectServer = null;
+		}
+
+		public void Initialize(ulong id)
 		{
 			character = new PlayerCharacter(id, this);
 			taskForHandlerIncomingMsg = new Task(Handler_IncomingMsg);
+			workingTaskForHandlerIncomingMsg = true;
 			taskForHandlerIncomingMsg.Start();
 		}
 
@@ -284,8 +306,6 @@ namespace BattleRoyalClient
 			HappenedDisconnectServer?.Invoke();
 		}
 
-
-
 		private void CreateChangeModel(TypesChange typeChange)
 		{
 			BattleModelChanged?.Invoke(typeChange);
@@ -306,8 +326,6 @@ namespace BattleRoyalClient
 		{
 			GameObjectChanged?.Invoke(modelObject, state);
 		}
-
-
 
 		private void ChangeCountPlayersInGame(int newCount)
 		{
@@ -396,9 +414,8 @@ namespace BattleRoyalClient
 		private void StopHandlerMessages()
 		{
 			workingTaskForHandlerIncomingMsg = false;
-			taskForHandlerIncomingMsg.Wait();
-			taskForHandlerIncomingMsg.Dispose();
 		}
+
 	}
 
 	public enum TypesChange

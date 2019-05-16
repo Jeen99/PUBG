@@ -27,54 +27,6 @@ namespace BattleRoayleServer
 
 		public TypesWeapon TypeWeapon { get; protected set; }
 
-		public IGameObject Holder { get; set; }
-
-		/*public virtual void Setup(PointF location)
-		{
-			if (!IsCreate)
-			{
-				CreateBodyShape();
-
-				var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef });
-				Components.Add(body);
-
-				var magazin = new Magazin(this, this.TypeWeapon, weaponSetups.timeBetweenShot,
-					 weaponSetups.timeReload, weaponSetups.bulletsInMagazin);
-				Components.Add(magazin);
-
-				IsCreate = true;
-			}
-		}
-
-		private void CreateBodyShape()
-		{
-			circleShape = new CircleDef();
-			(circleShape as CircleDef).Radius = size.Width / 2;
-			circleShape.Restitution = physicsSetups.restetution;
-			circleShape.Friction = physicsSetups.friction;
-			circleShape.Density = physicsSetups.density;
-			circleShape.Filter.CategoryBits = (ushort)CollideCategory.Loot;
-			circleShape.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone;
-
-			sensorDef = new CircleDef();
-			(sensorDef as CircleDef).Radius = size.Width / 2;
-			sensorDef.Restitution = physicsSetups.restetution;
-			sensorDef.Friction = physicsSetups.friction;
-			sensorDef.Density = physicsSetups.density;
-			sensorDef.IsSensor = true;
-			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Loot;
-			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
-		}
-
-		public void CreateNewBody(PointF location, Vec2 startVelocity)
-		{
-			if (circleShape == null || sensorDef == null) CreateBodyShape();
-
-			var body = new SolidBody(this, new RectangleF(location, size), new ShapeDef[] { circleShape, sensorDef },
-				physicsSetups.linearDamping, startVelocity);
-			Components.Add(body);
-		}*/
-
 		public override IMessage State
 		{
 			get

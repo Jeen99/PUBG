@@ -22,28 +22,88 @@ namespace BattleRoyalClient
     public partial class Queue : Window
     {
 		private QueueContoller contoller;
+		private IQueueModelForView model;
 		/// <summary>
 		/// Если true, то происходит переход из формы в форму и приложение закрывать не надо
 		/// </summary>
-		public bool Transition { get; set; }
+		public bool transition;
 		public Queue(BaseClient<IMessage> client)
         {
             InitializeComponent();
-			contoller = new QueueContoller(client, this);
-			contoller.Model.QueueModelChange += Model_QueueModelChange;
+			model = StorageModels.QueueModel;
+			model.QueueModelChange += Model_QueueModelChange;
+			contoller = new QueueContoller(client, StorageModels.QueueModel);
+			
 			SignOut.Click += contoller.Handler_SignOutOfQueue;
 			this.Closed += Queue_Closed;
         }
 
-		private void Queue_Closed(object sender, EventArgs e)
+		private void Model_QueueModelChange(TypesChangeQueueModel type)
 		{
-			if(!Transition)
-			Environment.Exit(0);
+			Dispatcher.Invoke(() =>
+			{
+				switch (type)
+				{
+					case TypesChangeQueueModel.CountPlayersInQueue:
+						Handler_ChangeCountPlayersInQueue();
+						break;
+					case TypesChangeQueueModel.State:
+						Handler_ChangeState();
+						break;
+				}
+			});
 		}
 
-		private void Model_QueueModelChange()
+		private void Queue_Closed(object sender, EventArgs e)
 		{
-			Players.Text = contoller.Model.PlaysersInQueue.ToString();
+			if(!transition)
+				Environment.Exit(0);
+			contoller.ViewClose();
+		}
+
+		private void Handler_ChangeState()
+		{
+			switch (model.State)
+			{
+				case StatesQueueModel.ExitedOfQueue:
+					Handler_ChangeStateIntoExitedOfQueue();
+					break;
+				case StatesQueueModel.ErrorConnect:
+					Handler_ChangeStateIntoErrorConnect();
+					break;
+				case StatesQueueModel.SuccessJoinedToBattle:
+					Handler_ChangeStateIntoSuccessJoinedToBattle();
+					break;
+			}
+		}
+
+		private void Handler_ChangeStateIntoExitedOfQueue()
+		{
+			Account formAccount = new Account(contoller.Client);
+			formAccount.Show();
+			transition = true;
+			Close();
+		}
+
+		private void Handler_ChangeStateIntoErrorConnect()
+		{
+			Autorization authorization = new Autorization();
+			authorization.Show();
+			transition = true;
+			Close();
+		}
+
+		private void Handler_ChangeStateIntoSuccessJoinedToBattle()
+		{
+			BattleView3d battleForm = new BattleView3d(model.IDInBattle, contoller.Client);
+			battleForm.Show();
+			transition = true;
+			Close();
+		}
+
+		private void Handler_ChangeCountPlayersInQueue()
+		{
+			Players.Text = model.PlayersInQueue.ToString();
 		}
 	}
 }

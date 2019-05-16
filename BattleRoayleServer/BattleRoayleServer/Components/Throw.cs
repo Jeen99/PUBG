@@ -35,7 +35,7 @@ namespace BattleRoayleServer
 
 		private void Handler_MakeShot(IMessage msg)
 		{
-			SolidBody BodyHolder = (Parent as Weapon).Holder?.Components?.GetComponent<SolidBody>();
+			SolidBody BodyHolder = (Parent as Weapon).Parent?.Components?.GetComponent<SolidBody>();
 			if (BodyHolder == null)
 				return;
 			//получаем гранату
@@ -54,7 +54,7 @@ namespace BattleRoayleServer
 
 			//создаем объект гранаты
 			var grenade = BuilderGameObject.CreateGrenade(Parent.Model, 
-				(Parent as Weapon).Holder.Components.GetComponent<SolidBody>().Shape.Location, impulse, grenadeBullet);
+				(Parent as Weapon).Parent.Components.GetComponent<SolidBody>().Shape.Location, impulse, grenadeBullet);
 		}
 
 		public override void Dispose()

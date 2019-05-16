@@ -51,6 +51,10 @@ namespace ObservalableExtended
 			}
 		}
 
+		public void Clear()
+		{
+			insideQueue.Clear();
+		}
 
 	}
 }

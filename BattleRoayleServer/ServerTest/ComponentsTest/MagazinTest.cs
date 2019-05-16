@@ -39,7 +39,7 @@ namespace ServerTest.ComponentsTest
 				Model = model
 			};
 			var weapon = new Weapon(model, TypesGameObject.Weapon, TypesBehaveObjects.Active, TypesWeapon.Gun);
-			(weapon as Weapon).Holder = player;
+			(weapon as Weapon).Parent = player;
 			Magazin magazin = new Magazin(weapon, TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();
 
@@ -65,7 +65,7 @@ namespace ServerTest.ComponentsTest
 				Model = model
 			};
 			var weapon = new Weapon(model, TypesGameObject.Weapon, TypesBehaveObjects.Active, TypesWeapon.Gun);
-			(weapon as Weapon).Holder = player;
+			(weapon as Weapon).Parent = player;
 
 			Magazin magazin = new Magazin(weapon, TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();

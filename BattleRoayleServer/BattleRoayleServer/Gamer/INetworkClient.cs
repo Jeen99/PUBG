@@ -13,13 +13,13 @@ namespace BattleRoayleServer
     {
         string Nick { get; }
 
-        ConnectedClient<IMessage> Client { get; }
 		RectangleF VisibleArea { get; }
 		string Password { get; }
 		event GamerIsLoaded Event_GamerIsLoaded;
 		//event NetworkClientEndWork EventNetworkClientEndWork;
 		event NetorkClientDisconnect EventNetorkClientDisconnect;
 
+		void SendMessgaeToClient(IMessage msg);
 		void SaveStatistics(IMessage msg);
 		void Dispose();
 	    IPlayer Player { get; }
