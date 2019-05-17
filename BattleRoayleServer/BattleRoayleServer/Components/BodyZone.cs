@@ -52,7 +52,7 @@ namespace BattleRoayleServer
 				Parent.Model?.AddOutgoingMessage(new ChangedTimeTillReduction(Parent.ID, timeTillReducton));
 			}
 
-			if(timeTillReducton.Milliseconds < 0)
+			if(timeTillReducton.TotalMilliseconds < 0)
 				CheckReduction();
 		}
 

@@ -24,7 +24,7 @@ namespace BattleRoayleServer
 		public static readonly float LengthOfSideMap = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
-		private const int minValueGamerInBattle = 1;
+		private const int minValueGamerInBattle = 0;
 		public Dictionary<ulong, IGameObject> gameObjects;
 
 		public IList<IPlayer> Players { get; private set; }
@@ -171,12 +171,6 @@ namespace BattleRoayleServer
 			List<RectangleF> occupiedArea = new List<RectangleF>();
 			CreateDinamicGameObject(occupiedArea);
 			CreatePlayers(gamersInRoom, occupiedArea);
-
-			//настраиваем игровые объекты
-			foreach (var key in gameObjects.Keys)
-			{
-				gameObjects[key].Setup();
-			}
 
 			handlerIncomingMessages = new Task(Handler_IncomingMessages);
 			handlerIncomingMessages.Start();

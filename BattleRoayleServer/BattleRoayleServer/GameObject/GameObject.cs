@@ -79,6 +79,27 @@ namespace BattleRoayleServer
 			}
 		}
 
+		public virtual void Setup()
+		{
+			Received_ChoiceWeapon = null;
+			Received_GamerDied = null;
+			Received_GotDamage = null;
+			Received_GoTo = null;
+			Received_MakeShot = null;
+			Received_PlayerTurn = null;
+			Received_MakeReloadWeapon = null;
+			Received_TryPickUp = null;
+			Received_DeletedInMap = null;
+			Received_TimeQuantPassed = null;
+			Received_AddWeapon = null;
+			Received_MakedKill = null;
+
+			foreach (IComponent item in Components)
+			{
+				item.Setup();
+			}
+		}
+
 		private ulong GetID()
 		{
 			lock (sinchGetId)
@@ -169,14 +190,6 @@ namespace BattleRoayleServer
 			}
 
 			Model.AddOutgoingMessage(new DeletedInMap(ID));	
-		}
-
-		public virtual void Setup()
-		{
-			foreach (IComponent item in Components)
-			{
-				item.Setup();
-			}
 		}
 
 		public virtual void SetDestroyed()
