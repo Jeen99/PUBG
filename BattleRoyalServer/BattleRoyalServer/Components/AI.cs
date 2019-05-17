@@ -76,11 +76,11 @@ namespace BattleRoyalServer
 			Direction direction = new Direction();
 
 			// движение по оси X
-			if (delta.X >= offset_relative_to_center)
+			if (delta.X >= 0 && offset_relative_to_center - delta.X <= 0)
 			{
 				direction.Horisontal = DirectionHorisontal.Right;
 			}
-			else if (delta.X <= offset_relative_to_center)
+			else if (delta.X <= 0 && offset_relative_to_center - delta.X >= 0)
 			{
 				direction.Horisontal = DirectionHorisontal.Left;
 			}
@@ -89,11 +89,11 @@ namespace BattleRoyalServer
 				direction.Horisontal = DirectionHorisontal.None;
 			}
 			// движение по оси Y
-			if (delta.Y >= offset_relative_to_center)
+			if (delta.Y >= 0 && offset_relative_to_center - delta.Y <= 0)
 			{
 				direction.Vertical = DirectionVertical.Up;
 			}
-			else if (delta.Y <= offset_relative_to_center)
+			else if (delta.Y <= 0 && offset_relative_to_center - delta.Y >= 0)
 			{
 				direction.Vertical = DirectionVertical.Down;
 			}
