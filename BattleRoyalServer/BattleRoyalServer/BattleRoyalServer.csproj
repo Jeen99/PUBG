@@ -67,7 +67,9 @@
   <ItemGroup>
     <Compile Include="Common\Delegates.cs" />
     <Compile Include="Common\DictionaryComponent.cs" />
+    <Compile Include="Common\GetRandom.cs" />
     <Compile Include="Common\VectorMethod.cs" />
+    <Compile Include="Components\AI.cs" />
     <Compile Include="Components\BodyZone.cs" />
     <Compile Include="Components\Collector.cs" />
     <Compile Include="Components\Collision\TransparentBody.cs" />

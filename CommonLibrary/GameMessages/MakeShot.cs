@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
-using CommonLibrary.CommonElements;
 
 namespace CommonLibrary.GameMessages
 {
@@ -21,6 +20,19 @@ namespace CommonLibrary.GameMessages
 		{
 			ID = iD;
 			Location = location;
+		}
+
+		public MakeShot(ulong iD, float angle)
+		{
+			ID = iD;
+
+			double radian = angle * (System.Math.PI / 180);
+
+			Location = new PointF()
+			{
+				X = (float)(System.Math.Cos(radian)),
+				Y = (float)(System.Math.Sin(radian))
+			};
 		}
 	}
 }

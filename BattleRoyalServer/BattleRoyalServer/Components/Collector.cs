@@ -114,7 +114,6 @@ namespace BattleRoyalServer
 		private void Handler_TimeQuantPassed(IMessage msg)
 		{
 			//пока только для оружия
-
 			for (int i = 0; i < weapons.Length; i++)
 			{
 				if (weapons[i] != null)
@@ -160,10 +159,21 @@ namespace BattleRoyalServer
 			return false;
 		}
 
+		public void AddWeapon(Weapon weapon)
+		{
+			weapons[(int)weapon.TypeWeapon] = weapon;
+			//удаляем компонент, отвечающий за  тело оружия
+			weapon.Components.GetComponent<SolidBody>()?.Dispose();
+			weapon.Components.Remove<SolidBody>();
+
+			var msg = new AddWeapon(Parent.ID, weapon.TypeWeapon, weapon.State.InsertCollections);
+			Parent.Update(msg);
+			//Parent.Model?.AddEvent(msg);//ЗАЧЕМ?
+		}
+
 		
 		public override void Setup()
 		{
-
 			this.body = Parent.Components?.GetComponent<SolidBody>();
 			if (body == null)
 			{

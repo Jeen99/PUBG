@@ -178,7 +178,7 @@ namespace BattleRoyalServer
 
 		public static Gamer CreateGamer(IModelForComponents model, PointF location)
 		{
-			var gameObject = new Gamer(model, TypesGameObject.Player, TypesBehaveObjects.Active);
+			var gameObject = new Gamer(model, TypesBehaveObjects.Active, true);
 			ShapeDef CircleDef = CreateBaseCircleDef(setupsGamer, SizeGamer);
 			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
 			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone
@@ -204,6 +204,40 @@ namespace BattleRoyalServer
 
 			model.AddOrUpdateGameObject(gameObject);
 			model.Players.Add(gameObject);
+
+			return gameObject;
+		}
+
+		public static GameObject CreateBot(IModelForComponents model, PointF location)
+		{
+			var gameObject = new Gamer(model, TypesBehaveObjects.Active, false);
+
+			ShapeDef CircleDef = CreateBaseCircleDef(setupsGamer, SizeGamer);
+			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
+			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone
+				| (ushort)CollideCategory.Grenade;
+
+			var body = new SolidBody(gameObject, new RectangleF(location, SizeGamer), new ShapeDef[] { CircleDef });
+			gameObject.Components.Add(body);
+
+			var movement = new Movement(gameObject, SpeedGamer);
+			gameObject.Components.Add(movement);
+
+			var collector = new Collector(gameObject);
+			gameObject.Components.Add(collector);
+
+			var currentWeapon = new CurrentWeapon(gameObject);
+			gameObject.Components.Add(currentWeapon);
+
+			var healthy = new Healthy(gameObject);
+			gameObject.Components.Add(healthy);
+
+			var AI = new AI(gameObject);
+			gameObject.Components.Add(AI);
+
+			model.AddOrUpdateGameObject(gameObject);
+			model.Players.Add(gameObject);
+			#warning Возможно, нет необходимости добавлять в список Игроков
 
 			return gameObject;
 		}

@@ -13,10 +13,10 @@ namespace BattleRoyalServer
 {
 	public class Gamer : GameObject, IPlayer
 	{
-		public Gamer(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject) 
-			: base(model, typeGameObject, typeBehaveObject)
+		public Gamer(IModelForComponents model, TypesBehaveObjects typeBehaveObject, bool isClient) 
+			: base(model, TypesGameObject.Player, typeBehaveObject)
 		{
-			
+			IsClient = isClient;
 		}
 
 		/// <summary>
@@ -32,6 +32,8 @@ namespace BattleRoyalServer
 				else return PointF.Empty;
 			}
 		}
+
+		public bool IsClient { get; private set; }
 
 		public override void Setup()
 		{

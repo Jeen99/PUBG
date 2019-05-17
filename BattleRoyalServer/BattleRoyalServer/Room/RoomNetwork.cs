@@ -262,13 +262,18 @@ namespace BattleRoyalServer
 		{
 			lock (AccessSinchClients)
 			{
+#warning Добавлять только реальных клиентов
 				for (int i = 0; i < roomLogic.RoomModel.Players.Count; i++)
 				{
-					var client = new NetworkClient(roomLogic.RoomModel, i, gamers[i].Client,
-					   gamers[i].NickName, gamers[i].Password);
-					client.Event_GamerIsLoaded += Handler_GamerIsLoaded;
-					client.EventNetorkClientDisconnect += Handler_NetworkClientDisconnect;
-					Clients.Add(client.Player.ID, client);
+					if (roomLogic.RoomModel.Players[i].IsClient)
+					{
+						var client = new NetworkClient(roomLogic.RoomModel, i, gamers[i].Client,
+														gamers[i].NickName, gamers[i].Password);
+
+						client.Event_GamerIsLoaded += Handler_GamerIsLoaded;
+						client.EventNetorkClientDisconnect += Handler_NetworkClientDisconnect;
+						Clients.Add(client.Player.ID, client);
+					}
 				}
 			}
 		}

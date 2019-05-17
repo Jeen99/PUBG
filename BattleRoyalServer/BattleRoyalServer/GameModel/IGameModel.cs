@@ -21,6 +21,7 @@ namespace BattleRoyalServer
 		IGameObject DeathZone { get; }
 		IMessage RoomState { get; }
 		IMessage FullRoomState { get; }
+		ushort countRealGamers { get; }
 
 		event HappenedEndGame Event_HappenedEndGame;
 

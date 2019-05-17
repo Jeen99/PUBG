@@ -16,6 +16,7 @@ namespace BattleRoyalServer
         /// </summary>
         /// <remarks>Координаты нужны для определния области, в которой игок видит игровые объекты</remarks>
         PointF Location { get; }
+		bool IsClient { get; }
 
 		//event PlayerDeleted EventPlayerDeleted;
 
