@@ -108,6 +108,9 @@ namespace BattleRoyalClient
 				case TypesMessage.ChangedCurrentWeapon:
 					Handler_ChangedCurrentWeapon(msg);
 					break;
+				case TypesMessage.ReloadWeapon:
+					Handler_Reload(msg);
+					break;
 				case TypesMessage.PlayerTurn:
 					Handler_PlayerTurned(msg);
 					break;
@@ -206,6 +209,12 @@ namespace BattleRoyalClient
 				CreateChangeGameObject(msg.ID);
 			}
 		}
+
+		private void Handler_Reload(IMessage msg)
+		{
+			character.ChangeReloadState(msg.StartOrEnd);
+		}
+
 
 		private void Handler_MakedShot(IMessage msg)
 		{

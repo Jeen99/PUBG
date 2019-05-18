@@ -117,13 +117,19 @@ namespace BattleRoyalClient
 					break;
 				}
 			}
-		}	
+		}
+
+		internal void ChangeReloadState(bool startOrEnd)
+		{
+			OnChangeCharacter(TypesChangeCharacter.ReloadState, startOrEnd);
+		}
 	}
 	
 	public enum TypesChangeCharacter
 	{
 		CurrentWepon,
 		AddWeapon,
+		ReloadState,
 		HP,
 		Location,
 		BulletInWeapon,
