@@ -31,7 +31,7 @@ namespace CommonLibrary.GameMessages
 			Location = new PointF()
 			{
 				X = (float)(System.Math.Cos(radian)),
-				Y = (float)(System.Math.Sin(radian))
+				Y = -(float)(System.Math.Sin(radian))
 			};
 		}
 	}

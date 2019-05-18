@@ -54,15 +54,16 @@ namespace BattleRoyalServer
 			Move();
 		}
 
-		private void Shoot(float angle)
+		private void Shoot(Vec2 pos)
 		{
+			Log.AddNewRecord("Стрельба", pos.ToString());
 			//рандомная стрельба
 			Random rand = GetRandom.Random;
 			int count = rand.Next(min_count_of_shoots, max_count_of_shoots);
 
 			for (int i = 0; i < count; i++)
 			{
-				Parent.Update(new MakeShot(Parent.ID, angle));
+				Parent.Update(new MakeShot(Parent.ID, new PointF(pos.X, pos.Y)));
 			}
 		}
 
@@ -116,25 +117,24 @@ namespace BattleRoyalServer
 
 			Segment segment = new Segment();
 			segment.P1 = position;          // исходное место обзора
-			segment.P2 = new Vec2();        // конечное
+			//segment.P2 = new Vec2();        // конечное
 
-			Shape[] objectsForDamage = new Shape[2];
 
-			for (int angle = 0; angle < 360; angle++)
+			foreach (var bodyEnemy in solidBody.CoveredObjects)
 			{
-				var sweepVector = VectorMethod.RotateVector(angle, max_view_distance);
-				segment.P2.X = position.X + sweepVector.X;
-				segment.P2.Y = position.Y + sweepVector.Y;
+				if (bodyEnemy.Parent.Type == TypesGameObject.Weapon)
+					Parent.Update(new TryPickUp(Parent.ID));
 
-				solidBody?.Body?.GetWorld().Raycast(segment, objectsForDamage, 2, true, null);
-
-				if (objectsForDamage[1] != null)    // получаем самый первый встретившийся объект
+				if (bodyEnemy.Parent.Type == TypesGameObject.Player && bodyEnemy.Parent != Parent)
 				{
-					Parent.Update(new GoTo(Parent.ID, new Direction()));      // останавливаем перед выстрелом
-					Shoot(angle);                                       // и стреляем
-					break;
+					Parent.Update(new GoTo(Parent.ID, new Direction()));
+					segment.P2 = new Vec2(bodyEnemy.Shape.Location.X, bodyEnemy.Shape.Y);        // конечное
+					var angle = VectorMethod.DefineAngle(segment.P1, segment.P2);
+					Parent.Update(new PlayerTurn(Parent.ID, angle));
+					Shoot(segment.P2);
 				}
 			}
+
 		}
 	}
 }

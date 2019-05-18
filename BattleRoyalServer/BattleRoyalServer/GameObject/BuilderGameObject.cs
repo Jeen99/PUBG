@@ -217,7 +217,12 @@ namespace BattleRoyalServer
 			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone
 				| (ushort)CollideCategory.Grenade;
 
-			var body = new SolidBody(gameObject, new RectangleF(location, SizeGamer), new ShapeDef[] { CircleDef });
+			ShapeDef sensorDef = CreateBaseCircleDef(setupsGamer, new SizeF(40, 40));
+			sensorDef.IsSensor = true;
+			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
+			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+
+			var body = new SolidBody(gameObject, new RectangleF(location, SizeGamer), new ShapeDef[] { CircleDef, sensorDef });
 			gameObject.Components.Add(body);
 
 			var movement = new Movement(gameObject, SpeedGamer);
