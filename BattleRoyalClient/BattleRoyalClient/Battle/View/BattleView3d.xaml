@@ -24,8 +24,6 @@
                     <Model3DGroup x:Name="models">
                         <!--Источники света-->
                         <AmbientLight Color="#FFF"/>
-                        <DirectionalLight Color="#FFF" Direction="-1, -1, -1"/>
-                        <DirectionalLight Color="#FFF" Direction="1, -1, -1"/>
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
