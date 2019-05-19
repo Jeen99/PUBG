@@ -193,14 +193,6 @@ namespace BattleRoyalClient
 				return;
 			}
 			this.visualReload.Visibility = Visibility.Collapsed;
-
-			//this.visualReload.IsEnabled = reloadState;
-			//if (reloadState)
-			//{
-			//	this.visualReload.Visibility = Visibility.Collapsed;
-			//	return;
-			//}
-			//this.visualReload.Visibility = Visibility.Visible;
 		}
 
 		private void Handler_CharacterChangeAddWeapon(uint index)
