@@ -14,10 +14,28 @@ namespace BattleRoayleServer
         public static QueueRoyalBattle QueueOfServer { get; private set; }
         public static Rooms RoomsOfRoyaleBattle { get; private set; }
 
-        static void Main(string[] args)
+#if DEBUG
+		public static int MAX_PLAYERS_IN_ROOM = 1;
+		public static int COUNT_PLAYERS_FOR_DISPOSE_ROOM = 1;
+#endif
+
+		static void Main(string[] args)
         {
-            //создаем сервер обрабатывающий запросы на подключение и первичную обработку сообщений от пользователей
-            switch (StartMessage())
+#if DEBUG
+			Console.WriteLine("Кол-во игроков в комнате? Игроков для освобождения комнаты?");
+			string [] inputParam = Console.ReadLine().Split(' ');
+
+			if (inputParam.Length == 2)
+			{
+				MAX_PLAYERS_IN_ROOM = Convert.ToInt32(inputParam[0]);
+				COUNT_PLAYERS_FOR_DISPOSE_ROOM = Convert.ToInt32(inputParam[1]);
+			}
+
+			AutomaticLoadServer();
+			QueueOfServer = new QueueRoyalBattle(MAX_PLAYERS_IN_ROOM);
+#else
+			//создаем сервер обрабатывающий запросы на подключение и первичную обработку сообщений от пользователей
+			switch (StartMessage())
             {
                 case 1:
                     AutomaticLoadServer();
@@ -26,11 +44,11 @@ namespace BattleRoayleServer
                     UserLoadServer();
                     break;
             }
-            //создаем очередь, обрабатывающая игроков, ожидающих боя 
-            QueueOfServer = new QueueRoyalBattle();
-            
-            //создаем класс, который будет хранит все игровые комнаты, активные в данный момент
-            RoomsOfRoyaleBattle = new Rooms();
+			//создаем очередь, обрабатывающая игроков, ожидающих боя 
+			QueueOfServer = new QueueRoyalBattle();
+#endif
+			//создаем класс, который будет хранит все игровые комнаты, активные в данный момент
+			RoomsOfRoyaleBattle = new Rooms();
         }
         static private int StartMessage()
         {
