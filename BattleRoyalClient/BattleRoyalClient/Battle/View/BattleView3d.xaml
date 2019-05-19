@@ -15,6 +15,8 @@
             <ColumnDefinition Width="500"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+
+       
         <Viewport3D x:Name="viewport" ClipToBounds="True" Grid.Row="0" Grid.Column="0">
             <Viewport3D.Camera>
                 <PerspectiveCamera x:Name="camera" FarPlaneDistance="1000" NearPlaneDistance="0.1" Position="0, 0, 200" LookDirection="0, 0, -1" UpDirection="0, 1, 0"/>
@@ -24,12 +26,26 @@
                     <Model3DGroup x:Name="models">
                         <!--Источники света-->
                         <AmbientLight Color="#FFF"/>
-                        <DirectionalLight Color="#FFF" Direction="-1, -1, -1"/>
-                        <DirectionalLight Color="#FFF" Direction="1, -1, -1"/>
                     </Model3DGroup>
                 </ModelVisual3D.Content>
             </ModelVisual3D>
         </Viewport3D>
+        <Image x:Name="visualReload" Source="../../Resources/Reload.png" Height="30" Width="30" Margin="235,195,235,276" IsEnabled="False" Visibility="Collapsed">
+            <Image.RenderTransform>
+                <RotateTransform x:Name="rotate"  CenterX="15" CenterY="15"/>
+            </Image.RenderTransform>
+            <Image.Triggers>
+                <EventTrigger RoutedEvent="Loaded">
+                    <BeginStoryboard>
+                        <Storyboard RepeatBehavior="Forever">
+                            <DoubleAnimation Storyboard.TargetName="rotate"
+                                     Storyboard.TargetProperty="Angle"
+                                     By="360" Duration="0:0:1"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+            </Image.Triggers>
+        </Image>
 
         <StackPanel Orientation="Vertical" Grid.Row="1" Grid.ColumnSpan="2">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="20, 0, 0, 0">

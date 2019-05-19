@@ -136,6 +136,9 @@ namespace BattleRoyalClient
 					case TypesChangeCharacter.BulletInWeapon:
 						Handler_CharacterChangeBulletInWeapon((uint)data);
 						break;
+					case TypesChangeCharacter.ReloadState:
+						Handler_ChangeCharacterReloadState((bool)data);
+						break;
 				}
 			});
 		}
@@ -157,6 +160,8 @@ namespace BattleRoyalClient
 
 		private void Handler_CharacterChangeCurrentWeapon()
 		{
+			Handler_ChangeCharacterReloadState(false);		// отключаем отображение перезарядки
+
 			//снимаем выделение
 			BorderGun.BorderBrush = Brushes.Black;
 			BorderShotGun.BorderBrush = Brushes.Black;
@@ -177,6 +182,17 @@ namespace BattleRoyalClient
 					BorderGrenadeCollection.BorderBrush = Brushes.Green;
 					break;
 			}
+		}
+
+		private void Handler_ChangeCharacterReloadState(bool reloadState)
+		{
+			this.visualReload.IsEnabled = reloadState;
+			if (reloadState)
+			{
+				this.visualReload.Visibility = Visibility.Visible;
+				return;
+			}
+			this.visualReload.Visibility = Visibility.Collapsed;
 		}
 
 		private void Handler_CharacterChangeAddWeapon(uint index)
