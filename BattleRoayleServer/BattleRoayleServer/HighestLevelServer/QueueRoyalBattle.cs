@@ -17,7 +17,7 @@ namespace BattleRoayleServer
 		/// <summary>
 		/// Количество игроков необходимых для создания комнаты
 		/// </summary>
-		private const int _gamersInRoom = 1;
+		private readonly int _gamersInRoom = 1;
 		/// <summary>
 		/// true = идет процесс создания комнаты
 		/// </summary>
@@ -25,6 +25,13 @@ namespace BattleRoayleServer
 
         public QueueRoyalBattle()
         {
+			queueOfGamer = new ObservableCollection<QueueGamer>();
+			queueOfGamer.CollectionChanged += QueueOfGamer_CollectionChanged;
+		}
+
+		public QueueRoyalBattle(int MaxCountClients)
+		{
+			_gamersInRoom = MaxCountClients;
 			queueOfGamer = new ObservableCollection<QueueGamer>();
 			queueOfGamer.CollectionChanged += QueueOfGamer_CollectionChanged;
 		}

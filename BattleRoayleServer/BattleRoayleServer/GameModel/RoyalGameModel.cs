@@ -24,7 +24,11 @@ namespace BattleRoayleServer
 		public static readonly float LengthOfSideMap = 500;
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
-		private const int minValueGamerInBattle = 0;
+#if DEBUG
+		private readonly int minValueGamerInBattle = Program.COUNT_PLAYERS_FOR_DISPOSE_ROOM;
+#else
+		private const int minValueGamerInBattle = 1;
+#endif
 		public Dictionary<ulong, IGameObject> gameObjects;
 
 		public IList<IPlayer> Players { get; private set; }
