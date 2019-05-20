@@ -31,7 +31,7 @@ namespace ServerTest
 
 		public TypesBehaveObjects TypeBehave { get; }
 
-		public IGameObject Parent { get; set; }
+		public IGameObject Owner { get; set; }
 
 #pragma warning disable CS0067
 		public event ReceivedMessage Received_ChoiceWeapon;

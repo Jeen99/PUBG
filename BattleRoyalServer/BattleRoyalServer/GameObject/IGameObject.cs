@@ -7,7 +7,7 @@ namespace BattleRoyalServer
 	public interface IGameObject
 	{
 		DictionaryComponent Components { get; }
-		IGameObject Parent { get; set; }
+		IGameObject Owner { get; set; }
 		bool Destroyed { get; }
 		ulong ID { get; }
 		IModelForComponents Model { get; }

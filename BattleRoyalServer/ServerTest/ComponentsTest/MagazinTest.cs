@@ -4,6 +4,7 @@ using BattleRoyalServer;
 using CommonLibrary.CommonElements;
 using CommonLibrary.GameMessages;
 using ServerTest.Common;
+using CommonLibrary;
 
 namespace ServerTest.ComponentsTest
 {
@@ -39,7 +40,7 @@ namespace ServerTest.ComponentsTest
 				Model = model
 			};
 			var weapon = new Weapon(model, TypesGameObject.Weapon, TypesBehaveObjects.Active, TypesWeapon.Gun);
-			(weapon as Weapon).Parent = player;
+			(weapon as Weapon).Owner = player;
 			Magazin magazin = new Magazin(weapon, TypesWeapon.Gun, 50, 300, 8);
 			magazin.Setup();
 
@@ -59,21 +60,46 @@ namespace ServerTest.ComponentsTest
 		[TestMethod]
 		public void Test_UpdateComponent_MakeReload()
 		{
+			TypesWeapon typesWeapon = TypesWeapon.Gun;
+			int bullet_In_Magazine = 8;
+			int duration_Magazine = 300;
+			int duration_betweenShots = 50;
+
 			var model = new MockRoyalGameModel();
 			var player = new MockPlayer()
 			{
 				Model = model
 			};
 			var weapon = new Weapon(model, TypesGameObject.Weapon, TypesBehaveObjects.Active, TypesWeapon.Gun);
-			(weapon as Weapon).Parent = player;
+			weapon.Owner = player;
 
-			Magazin magazin = new Magazin(weapon, TypesWeapon.Gun, 50, 300, 8);
-			magazin.Setup();
+			Magazin magazin = new Magazin(weapon, typesWeapon, duration_betweenShots, duration_Magazine, bullet_In_Magazine);
+			weapon.Components.Add(magazin);
+			weapon.Setup();
 
-			weapon.Update(new MakeReloadWeapon(weapon.ID));
-			Assert.IsNull(magazin.GetBullet());
-			weapon.Update(new TimeQuantPassed(301));
 			Assert.IsNotNull(magazin.GetBullet());
+			player.Update_MakeReloadWeapon(new MakeReloadWeapon(weapon.ID));	// игров собирается выполнить перезарядку
+			Assert.IsNull(magazin.GetBullet());
+
+			weapon.Update(new TimeQuantPassed(duration_Magazine - 1));
+			Assert.IsNull(magazin.GetBullet());
+
+			weapon.Update(new TimeQuantPassed(1));
+			Assert.IsNotNull(magazin.GetBullet());
+
+			var outMgs = model.outgoingMessages;
+
+			Assert.IsTrue(outMgs.Dequeue().Count == 7);
+
+			var msg_startReload = outMgs.Dequeue();
+			var msg_ChangeBullet_1 = outMgs.Dequeue();
+			var mgs_endReload = outMgs.Dequeue();
+			var msg_ChangeBullet_2 = outMgs.Dequeue();
+
+			Assert.IsTrue(msg_startReload.StartOrEnd == true);
+			Assert.IsTrue(msg_ChangeBullet_1.Count == 8);
+			Assert.IsTrue(mgs_endReload.StartOrEnd == false);
+			Assert.IsTrue(msg_ChangeBullet_2.Count == 7);
 		}
 	}
 }
