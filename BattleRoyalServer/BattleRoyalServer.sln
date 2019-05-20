@@ -7,13 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleRoyalServer", "Battle
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSInteraction", "..\CSInteraction\CSInteraction\CSInteraction.csproj", "{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleRoyalClient", "..\BattleRoyalClient\BattleRoyalClient\BattleRoyalClient.csproj", "{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerTest", "ServerTest\ServerTest.csproj", "{99B07718-5F5E-4B6C-ACE1-39D8B21803CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObservalableExtended", "..\ObservalableExtended\ObservalableExtended.csproj", "{3DD3F7B6-4FCD-4BBA-994A-65AEA4BCB8F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLibrary", "..\CommonLibrary\CommonLibrary.csproj", "{623D822D-8C51-41CD-9E6D-D482E3848C04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BattleRoyalClient", "..\BattleRoyalClient\BattleRoyalClient\BattleRoyalClient.csproj", "{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +29,6 @@ Global
 		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA5AA8CA-E6C9-42DB-B7EE-1D3028548AAB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Release|Any CPU.Build.0 = Release|Any CPU
 		{99B07718-5F5E-4B6C-ACE1-39D8B21803CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{99B07718-5F5E-4B6C-ACE1-39D8B21803CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99B07718-5F5E-4B6C-ACE1-39D8B21803CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{623D822D-8C51-41CD-9E6D-D482E3848C04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{623D822D-8C51-41CD-9E6D-D482E3848C04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{623D822D-8C51-41CD-9E6D-D482E3848C04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{344FBC0A-193E-4EC0-A4A0-8FF63E83BC16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
