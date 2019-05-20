@@ -116,7 +116,7 @@ namespace BattleRoyalServer
 
 		public DictionaryComponent Components { get; } = new DictionaryComponent();
 
-		public IGameObject Parent { get; set; } 
+		public IGameObject Owner { get; set; } 
 
 		public GameObject(IModelForComponents model, TypesGameObject typeGameObject, TypesBehaveObjects typeBehaveObject)
 		{

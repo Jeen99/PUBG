@@ -96,7 +96,7 @@ namespace BattleRoyalServer
 			{
 				if (weapons[i] != null)
 				{
-					weapons[i].Parent = null;
+					weapons[i].Owner = null;
 					BuilderGameObject.CreateNewBodyForWeapon(weapons[i], CreateRandVec2(), position);
 				}			
 			}

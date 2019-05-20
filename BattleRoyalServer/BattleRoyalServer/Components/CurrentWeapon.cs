@@ -71,8 +71,10 @@ namespace BattleRoyalServer
 			var weapon = inventory.GetWeapon(type);
 			if (weapon != null)
 			{
+				currentWeapon?.Components.GetComponent<Magazin>().Dispose();
 				currentWeapon = weapon;
-				currentWeapon.Parent = Parent;
+				currentWeapon.Owner = Parent;
+				currentWeapon.Components.GetComponent<Magazin>().Setup();
 				//отправляем сообщение об этом
 				Parent?.Model?.AddOutgoingMessage(new ChangedCurrentWeapon(Parent.ID, type));
 			}

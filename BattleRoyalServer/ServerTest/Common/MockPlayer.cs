@@ -30,7 +30,7 @@ namespace ServerTest.Common
 
 		public TypesBehaveObjects TypeBehave => TypesBehaveObjects.Active;
 
-		public IGameObject Parent { get; set; }
+		public IGameObject Owner { get; set; }
 
 		public event ReceivedMessage Received_ChoiceWeapon;
 		public event ReceivedMessage Received_GamerDied;
