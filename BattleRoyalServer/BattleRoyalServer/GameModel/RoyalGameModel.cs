@@ -169,7 +169,7 @@ namespace BattleRoyalServer
 			Field.SetContactListener(solver);
 			CreateFrame();
 
-			DeathZone = BuilderGameObject.CreateDeathZone(this);
+			DeathZone = BuilderGameObject.CreateDeathZone(this, LengthOfSideMap);
 
 			//создание и добавление в GameObjects и Field статических объектов карты
 			List<RectangleF> occupiedArea = new List<RectangleF>();
@@ -200,7 +200,7 @@ namespace BattleRoyalServer
 			Field.SetContactListener(solver);
 			CreateFrame();
 
-			DeathZone = BuilderGameObject.CreateDeathZone(this);
+			DeathZone = BuilderGameObject.CreateDeathZone(this, LengthOfSideMap);
 
 			handlerIncomingMessages = new Task(Handler_IncomingMessages);
 			handlerIncomingMessages.Start();

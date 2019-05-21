@@ -69,11 +69,11 @@ namespace BattleRoyalServer
 			return gameObject;
 		}
 
-		public static GameObject CreateDeathZone(IModelForComponents model)
+		public static GameObject CreateDeathZone(IModelForComponents model, float diameter)
 		{
 			var gameObject = new GameObject(model, TypesGameObject.DeathZone, TypesBehaveObjects.Active);
 
-			BodyZone bodyZone = new BodyZone(gameObject, RoyalGameModel.LengthOfSideMap);
+			BodyZone bodyZone = new BodyZone(gameObject, diameter);
 			gameObject.Components.Add(bodyZone);
 
 			DamageZone damageZone = new DamageZone(gameObject);
