@@ -72,6 +72,7 @@
     <Compile Include="ComponentsTest\BodyZoneTest.cs" />
     <Compile Include="ComponentsTest\ThrowTest.cs" />
     <Compile Include="DictionaryComponentsTest.cs" />
+    <Compile Include="GameObject\BuilderGameObjectTests.cs" />
     <Compile Include="RoomContactListenerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoyalGameModelTest.cs" />

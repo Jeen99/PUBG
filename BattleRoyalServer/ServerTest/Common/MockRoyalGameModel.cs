@@ -13,11 +13,11 @@ namespace ServerTest.Common
 {
 	class MockRoyalGameModel : IGameModel, IModelForComponents
 	{
-		public IList<IPlayer> Players => throw new NotImplementedException();
+		public IList<IPlayer> Players { get; set; } = new List<IPlayer>();
 
-		public IMessage RoomState => throw new NotImplementedException();
+		public IMessage RoomState { get; set; }
 
-		public IMessage FullRoomState => throw new NotImplementedException();
+		public IMessage FullRoomState { get; set; }
 
 		public World Field { get; set; }
 
@@ -27,7 +27,7 @@ namespace ServerTest.Common
 		public Queue<IMessage> incomingMessages = new Queue<IMessage>();
 		public Queue<IMessage> outgoingMessages = new Queue<IMessage>();
 
-		public IGameObject DeathZone => throw new NotImplementedException();
+		public IGameObject DeathZone { get; set; }
 
 		public void AddIncomingMessage(IMessage message)
 		{
