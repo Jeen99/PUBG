@@ -1,0 +1,31 @@
+﻿<Window x:Class="BattleRoyalClient.ResultsBattle"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BattleRoyalClient"
+        mc:Ignorable="d"
+        Title="Результаты битвы" Height="300" Width="500">
+    <StackPanel>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 0">
+            <TextBlock x:Name="Reason" TextAlignment="Center" FontWeight="SemiBold" FontSize="20" Margin="5">Статистика</TextBlock>
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Сделано киллов: </TextBlock>
+            <TextBlock  x:Name="Kills" FontSize="16" Margin="5"></TextBlock>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Времени жизни:</TextBlock>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Минут</TextBlock>
+            <TextBlock x:Name="Minutes" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Секунд</TextBlock>
+            <TextBlock x:Name="Seconds" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+        </StackPanel>
+    </StackPanel>
+</Window>

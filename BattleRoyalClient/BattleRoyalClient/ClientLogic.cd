@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Comment CommentText="Логика формы AutorizationController">
+    <Position X="1.218" Y="1.667" Height="0.333" Width="2.878" />
+  </Comment>
+  <Comment CommentText="Логика формы Account">
+    <Position X="5.729" Y="1.667" Height="0.333" Width="2.721" />
+  </Comment>
+  <Comment CommentText="Логика формы Queue">
+    <Position X="10.531" Y="1.573" Height="0.291" Width="2.804" />
+  </Comment>
+  <Class Name="BattleRoyalClient.AuthorizationModel" Collapsed="true">
+    <Position X="1" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAAAAAAAAAAAAECAAAABAAAQAA=</HashCode>
+      <FileName>Authorization\AuthorizationModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BattleRoyalClient.AccountController" Collapsed="true">
+    <Position X="5.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAAAAAIAAAAAAQAAACAAAAAQAAAQgABAAIAAA=</HashCode>
+      <FileName>Account\AccountController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BattleRoyalClient.AccountModel" Collapsed="true">
+    <Position X="7.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABCAAAAAAACAAIAAAAAAAAAAEiAAAAAAAAQAA=</HashCode>
+      <FileName>Account\AccountModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="BattleRoyalClient.QueueContoller" Collapsed="true">
+    <Position X="10.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAACABAAAAAAAQAAAQgARgAIAAA=</HashCode>
+      <FileName>Queue\QueueContoller.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BattleRoyalClient.QueueModel" Collapsed="true">
+    <Position X="12" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAABAECAAAAAAAABAA=</HashCode>
+      <FileName>Queue\QueueModel.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="BattleRoyalClient.IAuthorizationModel" Collapsed="true">
+    <Position X="2.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAECAAAABAAAQAA=</HashCode>
+      <FileName>Authorization\IAuthorizationModel.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="BattleRoyalClient.StatesAutorizationModel" Collapsed="true">
+    <Position X="1" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAIAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Authorization\AuthorizationModel.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
