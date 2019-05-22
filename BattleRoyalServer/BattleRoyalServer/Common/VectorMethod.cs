@@ -23,7 +23,7 @@ namespace BattleRoyalServer
 
 			// для корректного расчета, иначе sin(90град) != 1.0
 			float deltaX = (float) Math.Round(Math.Cos(rad), 7);
-			float deltaY = (float) Math.Round(-Math.Sin(rad), 7);
+			float deltaY = (float) Math.Round(Math.Sin(rad), 7);
 
 			return new Vec2()
 			{
