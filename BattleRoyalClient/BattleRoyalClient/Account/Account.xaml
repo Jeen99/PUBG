@@ -1,0 +1,41 @@
+﻿<Window x:Class="BattleRoyalClient.Account"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BattleRoyalClient"
+        mc:Ignorable="d"
+        Title="Аккаунт" Height="450" Width="800">
+    <StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="60, 10, 0, 0">
+            <TextBlock TextAlignment="Center" FontSize="18" Margin="5">Статистика</TextBlock>
+            <TextBlock  x:Name="NickName" FontSize="18" Margin="5"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Сделано киллов</TextBlock>
+            <TextBlock  x:Name="Kills" FontSize="16" Margin="5"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Смертей</TextBlock>
+            <TextBlock x:Name="Deaths" FontSize="16" Margin="5"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Всего проведено битв</TextBlock>
+            <TextBlock x:Name="Battles" FontSize="16" Margin="5"></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Времени проведено в игре:</TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="10, 0, 0, 0">
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Дней</TextBlock>
+            <TextBlock x:Name="Days" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Часов</TextBlock>
+            <TextBlock x:Name="Hours" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Минут</TextBlock>
+            <TextBlock x:Name="Minutes" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+            <TextBlock TextAlignment="Left" FontSize="16" Margin="5">Секунд</TextBlock>
+            <TextBlock x:Name="Seconds" FontSize="16" Margin="5, 5, 40, 5"></TextBlock>
+        </StackPanel>
+        <Button x:Name="InQueue" Height="40" Width="200" FontSize="20" Margin="0,50,0,0" HorizontalAlignment="Center">В бой</Button>
+    </StackPanel>
+</Window>
