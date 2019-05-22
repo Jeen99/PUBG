@@ -47,7 +47,7 @@ namespace BattleRoyalServer
 			Vec2 position = (Vec2)BodyHolder.Body?.GetPosition();
 			//определяем импульс
 			float dX = msg.Location.X - position.X;
-			float dY = -(msg.Location.Y - position.Y);
+			float dY = (msg.Location.Y - position.Y);
 			//нельзя бросить дальше дальности броска
 			if (System.Math.Sqrt(dX * dX + dY * dY) > strength) return;
 			Vec2 impulse = new Vec2(dX, dY);

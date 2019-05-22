@@ -17,7 +17,7 @@ namespace ServerTest
 
 			SolidBody solid = (SolidBody)player1.Components.GetComponent<SolidBody>();
 			Room.Field.Step(1 / 60, 6, 3);
-			Assert.AreEqual(solid.CoveredObjects.Count, 1);
+			Assert.AreEqual(1, solid.CoveredObjects.Count);
 		}
 
 		[TestMethod]

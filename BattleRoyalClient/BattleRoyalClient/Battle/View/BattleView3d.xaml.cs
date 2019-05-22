@@ -322,7 +322,7 @@ namespace BattleRoyalClient
 			var centre = new Point(viewport.ActualHeight / 2, viewport.ActualHeight / 2);
 			double scale = (30000 / camera.Position.Z) / 50;
 			var inScale = (point - centre) / scale;
-			return new PointF((float)(camera.Position.X + inScale.X), (float)(camera.Position.Y + inScale.Y));
+			return new PointF((float)(camera.Position.X + inScale.X), (float)(camera.Position.Y - inScale.Y));
 		}
 
 		private void BattleView3d_MouseDown(object sender, MouseButtonEventArgs e)

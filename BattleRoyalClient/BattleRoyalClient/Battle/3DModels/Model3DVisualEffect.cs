@@ -35,7 +35,7 @@ namespace BattleRoyalClient.Battle
 		public override void CreateImage()
 		{
 			base.CreateImage();
-			Rotation(-modelObject.Angle);
+			Rotation(modelObject.Angle);
 			timerVisisble.Start();
 		}
 	}
