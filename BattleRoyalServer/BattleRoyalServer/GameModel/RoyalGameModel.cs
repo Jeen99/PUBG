@@ -164,7 +164,7 @@ namespace BattleRoyalServer
 			AABB frameField = new AABB();
 			frameField.LowerBound.Set(0,0);
 			frameField.UpperBound.Set(LengthOfSideMap, LengthOfSideMap);
-			Field = new World(frameField, new Vec2(0, 0), false);
+			Field = new World(frameField, new Vec2(0, 0), true);
 			var solver = new RoomContactListener();
 			Field.SetContactListener(solver);
 			CreateFrame();
@@ -334,7 +334,7 @@ namespace BattleRoyalServer
 		/// <param name="passedTime">в миллесекундах</param>
 		public void MakeStep(int passedTime)
 		{
-			Field.Step((float)passedTime / 1000, 8, 3);
+			Field.Step((float)passedTime / 1000, 8, 1);
 			IMessage msg = new TimeQuantPassed(passedTime);
 
 			for (Body list = Field.GetBodyList(); list != null; list = list.GetNext())

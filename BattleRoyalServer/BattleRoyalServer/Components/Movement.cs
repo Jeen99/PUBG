@@ -61,6 +61,7 @@ namespace BattleRoyalServer
 					dY -= speed;
 					break;
 			}
+			body.Body?.WakeUp();
 			body.Body?.SetLinearVelocity(new Vec2(dX, dY));
 		}
 

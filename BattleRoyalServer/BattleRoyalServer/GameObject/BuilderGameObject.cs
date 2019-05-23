@@ -50,6 +50,7 @@ namespace BattleRoyalServer
 				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeBox), new ShapeDef[] { shapeBox });
+			body.Body.AllowSleeping(true);
 			gameObject.Components.Add(body);
 
 			model.AddOrUpdateGameObject(gameObject);
@@ -98,6 +99,7 @@ namespace BattleRoyalServer
 
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeGreanade),
 				new ShapeDef[] { circleShape, sensorDef }, setupsWeapon.linearDamping, startVelocity);
+			body.Body.AllowSleeping(true);
 			gameObject.Components.Add(body);
 
 			var explosion = new Explosion(gameObject, grenadeBullet);
@@ -117,6 +119,7 @@ namespace BattleRoyalServer
 				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeStone), new ShapeDef[] { CircleDef });
+			body.Body.AllowSleeping(true);
 			gameObject.Components.Add(body);
 
 			model.AddOrUpdateGameObject(gameObject);
@@ -134,6 +137,7 @@ namespace BattleRoyalServer
 				(ushort)CollideCategory.Grenade | (ushort)CollideCategory.Loot;
 
 			var body = new SolidBody(gameObject, new RectangleF(location, SizeStone), new ShapeDef[] { CircleDef });
+			body.Body.AllowSleeping(true);
 			gameObject.Components.Add(body);
 
 			model.AddOrUpdateGameObject(gameObject);
@@ -265,6 +269,7 @@ namespace BattleRoyalServer
 
 			var body = new SolidBody(weapon, new RectangleF(location, sizeWeapon), new ShapeDef[] { circleShape, sensorDef },
 				physicsSetupsWeapon.linearDamping, Vec2.Zero);
+			body.Body.AllowSleeping(true);
 			weapon.Components.Add(body);
 
 			return body;
