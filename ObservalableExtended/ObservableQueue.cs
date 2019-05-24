@@ -1,59 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Collections.Specialized;
 
 namespace ObservalableExtended
 {
 	public class ObservableQueue<T> : INotifyCollectionChanged
 	{
-		private readonly object sinchAccess = new object();
-		private Queue<T> insideQueue;
+		private readonly object _sinchAccess = new object();
+		private Queue<T> _insideQueue;
 
 		public ObservableQueue()
 		{
-			insideQueue = new Queue<T>();
+			_insideQueue = new Queue<T>();
 		}
 
 		public event NotifyCollectionChangedEventHandler CollectionChanged;
 
 		public  void Enqueue(T newElement)
 		{
-			lock (sinchAccess)
+			lock (_sinchAccess)
 			{
-				insideQueue.Enqueue(newElement);			
+				_insideQueue.Enqueue(newElement);
 			}
 			
 			CollectionChanged?.Invoke(this,
-			new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, insideQueue.Count));
+			new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newElement, _insideQueue.Count));
 		}
 
 		public T Dequeue()
 		{
-			lock (sinchAccess)
+			lock (_sinchAccess)
 			{
-				return insideQueue.Dequeue();
+				return _insideQueue.Dequeue();
 			}
 		}
 
-		public int Count
-		{
-			get
-			{
-				//блокировка сделана, чтобы данные были актуальны
-				lock (sinchAccess)
-				{
-					return insideQueue.Count;
-				}
-			}
-		}
+		public int Count => _insideQueue.Count;
 
 		public void Clear()
 		{
-			insideQueue.Clear();
+			lock (_sinchAccess)
+			{
+				_insideQueue.Clear();
+			}
 		}
 
 	}
