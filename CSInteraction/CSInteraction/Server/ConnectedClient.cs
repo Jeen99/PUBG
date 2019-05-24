@@ -57,10 +57,8 @@ namespace CSInteraction.Server
         {
             try
             {
-                sendMsgSinch.WaitOne();
                 if (streamConnection.Connected)
                 {
-
                     byte[] BytesMsg = null;
                     using (MemoryStream TempStream = new MemoryStream())
                     {
@@ -69,18 +67,17 @@ namespace CSInteraction.Server
                     }
                     //создаем и отправляем заголовк сообщения
                     byte[] TitleMsg = CreateTitleMessage((byte)InsideTypesMessage.ProgramMessage, BytesMsg.Length);
-					try
-					{
-						streamConnection.GetStream().Write(TitleMsg, 0, TitleMsg.Length);
-						streamConnection.GetStream().Write(BytesMsg, 0, BytesMsg.Length);
-					}
-					catch (Exception)
-					{
-						EventEndSession?.Invoke(this);
-					}
+					sendMsgSinch.WaitOne();
+
+					streamConnection.GetStream().Write(TitleMsg, 0, TitleMsg.Length);
+					streamConnection.GetStream().Write(BytesMsg, 0, BytesMsg.Length);
                 }
             }
-            finally
+			catch (IOException ex)
+			{
+				EventEndSession?.Invoke(this);
+			}
+			finally
             {
                 sendMsgSinch.ReleaseMutex();
             }
