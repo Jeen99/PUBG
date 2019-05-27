@@ -15,8 +15,9 @@ namespace BattleRoyalClient
 	class UserActionController
 	{
 		private BaseClient<IMessage> client;
-		private Direction direction;
 		private IBattleModelForController model;
+		private Direction direction;
+		private float _angle = 0;
 
 		public UserActionController(BaseClient<IMessage> client, IBattleModelForController model, BattleView3d view)
 		{
@@ -104,10 +105,12 @@ namespace BattleRoyalClient
 
 		public void UserTurn(float angle)
 		{
-
-			//отправляем сообщение
 			IMessage msg = new PlayerTurn(model.IDPlayer, angle);
-			client.SendMessage(msg);
+			if (Math.Abs(_angle - angle) > 10)
+			{
+				_angle = angle;
+				client.SendMessage(msg); //отправляем сообщение
+			}
 			model.AddOutgoingMsg(msg);
 		}
 
