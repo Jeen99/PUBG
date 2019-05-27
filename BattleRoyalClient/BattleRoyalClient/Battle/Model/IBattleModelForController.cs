@@ -29,4 +29,5 @@ namespace BattleRoyalClient
 	delegate void ChangeCountPlayers();
 	delegate void ModelEndGame(IMessage msgEndGame);
 	delegate void ServerDisconnect();
+	delegate void ModelLoaded();
 }

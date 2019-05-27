@@ -48,23 +48,29 @@ namespace BattleRoyalClient
 			battleContoller = new GameActionController(client, battleModel);
 			userContoller = new UserActionController(client, battleModel, this);
 			userContoller.InitializeModel(id);
+			model.ModelLoaded += SetupUserController;
 
 			model.GameObjectChanged += Model_GameObjectChanged;
 			model.CharacterView.Event_CharacterChange += Handler_ChangeCharacter;
 			model.BattleModelChanged += Handler_BattleModelChanged;
 			model.HappenedDisconnectServer += Model_HappenedDisconnectServer;
-			model.HappenedModelEndGame += Model_HappenedModelEndGame1; ;
+			model.HappenedModelEndGame += Model_HappenedModelEndGame1;
 
+			this.Closed += Battle_Closed;
+
+			userContoller.Handler_BattleFormLoad();
+		}
+
+		private void SetupUserController()
+		{
 			// обработчик клавишь
 			this.KeyDown += userContoller.User_KeyDown;
 			this.KeyUp += userContoller.User_KeyUp;
 			viewport.MouseDown += BattleView3d_MouseDown;
 			//viewport.MouseWheel += BattleView3d_MouseWheel;
 			this.MouseMove += BattleView3d_MouseMove;
-			this.Closed += Battle_Closed;
 
-			userContoller.Handler_BattleFormLoad();
-
+			model.ModelLoaded -= SetupUserController;
 		}
 
 		private void Model_HappenedModelEndGame1(IMessage msgEndGame)

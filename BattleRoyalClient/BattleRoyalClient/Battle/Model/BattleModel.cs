@@ -19,6 +19,7 @@ namespace BattleRoyalClient
 		public event GameObjectChangedHandler GameObjectChanged;
 		public event ModelEndGame HappenedModelEndGame;
 		public event ServerDisconnect HappenedDisconnectServer;
+		public event ModelLoaded ModelLoaded;
 
 		public Dictionary<ulong, GameObject> gameObjects = new Dictionary<ulong, GameObject>();
 		public int CountPlayersInGame { get; private set; } = 0;
@@ -150,11 +151,17 @@ namespace BattleRoyalClient
 			}
 		}
 
+		private void MarkModelAsLoaded()
+		{
+			ModelIsLoaded = true;
+			ModelLoaded?.Invoke();
+		}
+
 		private void Handler_RoomState(IMessage msg)
 		{
 			ProcessInternalMsg(msg);
 			//обработано первое сообщение RoomState - значит комната загружена
-			ModelIsLoaded = true;
+			MarkModelAsLoaded();
 		}
 
 		private void Handler_ObjectMoved(IMessage msg)

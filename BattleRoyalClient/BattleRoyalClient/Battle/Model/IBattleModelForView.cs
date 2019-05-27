@@ -8,6 +8,7 @@ namespace BattleRoyalClient
 {
 	interface IBattleModelForView
 	{
+		event ModelLoaded ModelLoaded;
 		event BattleModelChangedHandler BattleModelChanged;
 		event GameObjectChangedHandler GameObjectChanged;
 		event ModelEndGame HappenedModelEndGame;
