@@ -32,30 +32,42 @@ namespace BattleRoyalClient
 				switch (e.Key)
 				{
 					case Key.Left:
+					case Key.A:
 						direction.Horisontal = DirectionHorisontal.Left;
+						client.SendMessage(new GoTo(model.IDPlayer, direction));
 						break;
 					case Key.Right:
+					case Key.D:
 						direction.Horisontal = DirectionHorisontal.Right;
+						client.SendMessage(new GoTo(model.IDPlayer, direction));
 						break;
 					case Key.Up:
+					case Key.W:
 						direction.Vertical = DirectionVertical.Up;
+						client.SendMessage(new GoTo(model.IDPlayer, direction));
 						break;
 					case Key.Down:
+					case Key.S:
 						direction.Vertical = DirectionVertical.Down;
+						client.SendMessage(new GoTo(model.IDPlayer, direction));
 						break;
 					case Key.F:
 						client.SendMessage(new TryPickUp(model.IDPlayer));
 						break;
-					case Key.Oem1:
+					case Key.D1:
+					case Key.NumPad1:
 						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.Gun));
 						break;
-					case Key.Oem2:
+					case Key.D2:
+					case Key.NumPad2:
 						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.ShotGun));
 						break;
-					case Key.Oem3:
+					case Key.D3:
+					case Key.NumPad3:
 						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.AssaultRifle));
 						break;
-					case Key.Oem4:
+					case Key.D4:
+					case Key.NumPad4:
 						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.GrenadeCollection));
 						break;
 					case Key.R:
@@ -64,26 +76,6 @@ namespace BattleRoyalClient
 					case Key.Escape:
 						client.Close();
 						break;
-					case Key.NumPad1:
-						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.Gun));
-						break;
-					case Key.NumPad2:
-						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.ShotGun));
-						break;
-					case Key.NumPad3:
-						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.AssaultRifle));
-						break;
-					case Key.NumPad4:
-						client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.GrenadeCollection));
-						break;
-				}
-
-				if (e.Key == Key.Up ||
-					e.Key == Key.Down ||
-					e.Key == Key.Left ||
-					e.Key == Key.Right)
-				{
-					client.SendMessage(new GoTo(model.IDPlayer, direction));
 				}
 			}
 		}
@@ -92,15 +84,15 @@ namespace BattleRoyalClient
 		{
 			if (model.ModelIsLoaded)
 			{
-				if (e.KeyboardDevice.IsKeyUp(Key.Up) &&
-				e.KeyboardDevice.IsKeyUp(Key.Right))
+				if (e.KeyboardDevice.IsKeyUp(Key.Left) && e.KeyboardDevice.IsKeyUp(Key.A) 
+				&& e.KeyboardDevice.IsKeyUp(Key.Right) && e.KeyboardDevice.IsKeyUp(Key.D))
 				{
 					direction.Horisontal = DirectionHorisontal.None;
 					client.SendMessage(new GoTo(model.IDPlayer, direction));
 				}
 
-				if (e.KeyboardDevice.IsKeyUp(Key.Up) &&
-					e.KeyboardDevice.IsKeyUp(Key.Down))
+				if (e.KeyboardDevice.IsKeyUp(Key.Up)  && e.KeyboardDevice.IsKeyUp(Key.W)
+				&& e.KeyboardDevice.IsKeyUp(Key.Down) && e.KeyboardDevice.IsKeyUp(Key.S))
 				{
 					direction.Vertical = DirectionVertical.None;
 					client.SendMessage(new GoTo(model.IDPlayer, direction));
