@@ -11,9 +11,11 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class AddInBattle : Message
 	{
-		public override ulong ID { get; }
+		public override ulong ID { get; set; }
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.AddInBattle;
+
+		public AddInBattle() {}
 
 		public AddInBattle(ulong iD)
 		{

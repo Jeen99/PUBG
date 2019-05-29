@@ -12,9 +12,11 @@ namespace CommonLibrary.GameMessages
 	public class LoadedBattleForm : Message
 	{
 
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.LoadedBattleForm;
+
+		public LoadedBattleForm()  { }
 
 		public LoadedBattleForm(ulong iD)
 		{

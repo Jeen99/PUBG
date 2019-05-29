@@ -13,13 +13,10 @@ namespace CommonLibrary.GameMessages
 	{
 		public override int Count { get; }
 
-		public override ulong ID { get; }
-
 		public override TypesMessage TypeMessage { get; } = TypesMessage.ChangeCountPayersInGame;
 
-		public ChangeCountPlayersInGame(ulong iD, int count)
+		public ChangeCountPlayersInGame(int count)
 		{
-			ID = iD;
 			Count = count;
 		}
 	}

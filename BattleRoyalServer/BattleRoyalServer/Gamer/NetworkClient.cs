@@ -69,6 +69,7 @@ namespace BattleRoyalServer
 					Handler_LoadedBattleForm();
 					break;
 				default:
+					msg.ID = Player.ID;
 					model.AddIncomingMessage(msg);
 					break;
 			}

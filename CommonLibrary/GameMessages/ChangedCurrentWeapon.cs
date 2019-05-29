@@ -12,13 +12,18 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class ChangedCurrentWeapon : Message
 	{
+		public ChangedCurrentWeapon(TypesWeapon newCurrentWeapon)
+		{
+			TypeWeapon = newCurrentWeapon;
+		}
+
 		public ChangedCurrentWeapon(ulong iD, TypesWeapon newCurrentWeapon)
 		{
 			ID = iD;
 			TypeWeapon = newCurrentWeapon;
 		}
 
-		public override ulong ID { get; }
+		public override ulong ID { get; set;}
 
 		public override TypesWeapon TypeWeapon { get; }
 

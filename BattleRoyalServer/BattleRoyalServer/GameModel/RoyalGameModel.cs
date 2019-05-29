@@ -139,14 +139,14 @@ namespace BattleRoyalServer
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGamer);
 				var gamer = BuilderGameObject.CreateGamer(this, newShape.Location);
 			}
-			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(Players.Count));
 		}
 
 		private void RemovePlayer(Gamer player)
 		{
 			Players.Remove(player);
 			player.SetDestroyed();
-			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(0, Players.Count));
+			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(Players.Count));
 			if( Players.Count <= minValueGamerInBattle)
 			{
 				Event_HappenedEndGame?.Invoke();

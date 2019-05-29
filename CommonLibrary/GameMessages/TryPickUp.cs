@@ -11,9 +11,13 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class TryPickUp : Message
 	{
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.TryPickUp;
+
+		public TryPickUp()
+		{
+		}
 
 		public TryPickUp(ulong iD)
 		{

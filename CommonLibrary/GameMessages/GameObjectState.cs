@@ -13,7 +13,7 @@ namespace CommonLibrary.GameMessages
 	{
 		public override TypesGameObject TypeGameObject { get; }
 
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override List<IMessage> InsertCollections { get; }
 

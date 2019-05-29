@@ -20,7 +20,7 @@ namespace CommonLibrary.GameMessages
 
 		public override TimeSpan Time { get; }
 
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.ChangedTimeTillReduction;
 	}

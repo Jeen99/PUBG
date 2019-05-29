@@ -33,44 +33,44 @@ namespace BattleRoyalClient
 				case Key.Left:
 				case Key.A:
 					direction.Horisontal = DirectionHorisontal.Left;
-					client.SendMessage(new GoTo(model.IDPlayer, direction));
+					client.SendMessage(new GoTo(direction));
 					break;
 				case Key.Right:
 				case Key.D:
 					direction.Horisontal = DirectionHorisontal.Right;
-					client.SendMessage(new GoTo(model.IDPlayer, direction));
+					client.SendMessage(new GoTo(direction));
 					break;
 				case Key.Up:
 				case Key.W:
 					direction.Vertical = DirectionVertical.Up;
-					client.SendMessage(new GoTo(model.IDPlayer, direction));
+					client.SendMessage(new GoTo(direction));
 					break;
 				case Key.Down:
 				case Key.S:
 					direction.Vertical = DirectionVertical.Down;
-					client.SendMessage(new GoTo(model.IDPlayer, direction));
+					client.SendMessage(new GoTo(direction));
 					break;
 				case Key.D1:
 				case Key.NumPad1:
-					client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.Gun));
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.Gun));
 					break;
 				case Key.D2:
 				case Key.NumPad2:
-					client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.ShotGun));
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.ShotGun));
 					break;
 				case Key.D3:
 				case Key.NumPad3:
-					client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.AssaultRifle));
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.AssaultRifle));
 					break;
 				case Key.D4:
 				case Key.NumPad4:
-					client.SendMessage(new ChoiceWeapon(model.IDPlayer, TypesWeapon.GrenadeCollection));
+					client.SendMessage(new ChoiceWeapon(TypesWeapon.GrenadeCollection));
 					break;
 				case Key.R:
-					client.SendMessage(new MakeReloadWeapon(model.IDPlayer));
+					client.SendMessage(new MakeReloadWeapon());
 					break;
 				case Key.F:
-					client.SendMessage(new TryPickUp(model.IDPlayer));
+					client.SendMessage(new TryPickUp());
 					break;
 				case Key.Escape:
 					client.Close();
@@ -85,38 +85,40 @@ namespace BattleRoyalClient
 			&& e.KeyboardDevice.IsKeyUp(Key.Right) && e.KeyboardDevice.IsKeyUp(Key.D))
 			{
 				direction.Horisontal = DirectionHorisontal.None;
-				client.SendMessage(new GoTo(model.IDPlayer, direction));
+				client.SendMessage(new GoTo(direction));
 			}
 
 			if (e.KeyboardDevice.IsKeyUp(Key.Up)  && e.KeyboardDevice.IsKeyUp(Key.W)
 			&& e.KeyboardDevice.IsKeyUp(Key.Down) && e.KeyboardDevice.IsKeyUp(Key.S))
 			{
 				direction.Vertical = DirectionVertical.None;
-				client.SendMessage(new GoTo(model.IDPlayer, direction));
+				client.SendMessage(new GoTo(direction));
 			}
 		}
 
 		public void MakeShot(PointF pointOfClick)
 		{
 
-			client.SendMessage(new MakeShot(model.IDPlayer, pointOfClick));
+			client.SendMessage(new MakeShot(pointOfClick));
 
 		}
 
 		public void UserTurn(float angle)
 		{
-			IMessage msg = new PlayerTurn(model.IDPlayer, angle);
+			IMessage msg = new PlayerTurn(angle);
 			if (Math.Abs(_angle - angle) > 10)
 			{
 				_angle = angle;
 				client.SendMessage(msg); //отправляем сообщение
 			}
+
+			msg.ID = model.IDPlayer;
 			model.AddOutgoingMsg(msg);
 		}
 
 		public void Handler_BattleFormLoad()
 		{			
-			client.SendMessage(new LoadedBattleForm(model.IDPlayer));
+			client.SendMessage(new LoadedBattleForm());
 		}
 
 		public void ViewClose()

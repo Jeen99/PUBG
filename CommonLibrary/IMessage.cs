@@ -34,7 +34,7 @@ namespace CommonLibrary
 		SizeF Size { get; }
 		TypesGameObject TypeGameObject { get; }
 		List<IMessage> InsertCollections { get; }
-		ulong ID { get; }
+		ulong ID { get; set; }
 
 		TypesMessage TypeMessage { get; }
 	}

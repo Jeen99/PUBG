@@ -12,11 +12,16 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class ChoiceWeapon : Message
 	{
-		public override ulong ID { get;}
+		public override ulong ID { get; set; }
 
 		public override TypesWeapon TypeWeapon { get; }
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.ChoiceWeapon;
+
+		public ChoiceWeapon(TypesWeapon selectedWeapon)
+		{
+			TypeWeapon = selectedWeapon;
+		}
 
 		public ChoiceWeapon(ulong iD, TypesWeapon selectedWeapon)
 		{

@@ -13,7 +13,7 @@ namespace CommonLibrary.GameMessages
 	{
 		public override float Damage { get; }
 
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.GotDamage;
 

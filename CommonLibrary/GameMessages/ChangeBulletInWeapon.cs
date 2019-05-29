@@ -13,7 +13,13 @@ namespace CommonLibrary
 		public override TypesMessage TypeMessage { get; } = TypesMessage.ChangeBulletInWeapon;
 		public override TypesWeapon TypeWeapon { get; }
 		public override int Count { get; }
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
+
+		public ChangeBulletInWeapon(TypesWeapon typeWeapon, int count)
+		{
+			TypeWeapon = typeWeapon;
+			Count = count;
+		}
 
 		public ChangeBulletInWeapon(ulong iD, TypesWeapon typeWeapon, int count)
 		{

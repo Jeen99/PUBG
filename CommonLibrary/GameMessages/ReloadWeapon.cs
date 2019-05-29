@@ -11,7 +11,7 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class ReloadWeapon : Message
 	{
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override bool StartOrEnd { get; }
 

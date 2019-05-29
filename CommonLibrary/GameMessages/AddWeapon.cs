@@ -12,7 +12,7 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class AddWeapon : Message
 	{
-		public override ulong ID { get; }
+		public override ulong ID { get; set; }
 
 		public override TypesWeapon TypeWeapon { get; }
 

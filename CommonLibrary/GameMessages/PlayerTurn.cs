@@ -13,9 +13,14 @@ namespace CommonLibrary.GameMessages
 	{
 		public override float Angle { get; }
 
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.PlayerTurn;
+
+		public PlayerTurn(float angle)
+		{
+			Angle = angle;
+		}
 
 		public PlayerTurn(ulong iD, float angle)
 		{

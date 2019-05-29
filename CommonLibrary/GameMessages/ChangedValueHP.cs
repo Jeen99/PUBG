@@ -17,7 +17,7 @@ namespace CommonLibrary.GameMessages
 			HP = newValueHP;
 		}
 
-		public override ulong ID { get; }
+		public override ulong ID { get; set; }
 
 		public override float HP { get; }
 

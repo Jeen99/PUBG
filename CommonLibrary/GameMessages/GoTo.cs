@@ -14,9 +14,14 @@ namespace CommonLibrary.GameMessages
 
 		public override Direction Direction { get; }
 
-		public override ulong ID { get; }
+		public override ulong ID { get; set; }
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.GoTo;
+
+		public GoTo(Direction selectedDirection)
+		{
+			Direction = selectedDirection;
+		}
 
 		public GoTo(ulong iD, Direction selectedDirection)
 		{

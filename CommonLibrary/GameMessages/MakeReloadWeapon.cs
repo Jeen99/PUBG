@@ -11,9 +11,11 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class MakeReloadWeapon : Message
 	{
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.MakeReloadWeapon;
+
+		public MakeReloadWeapon() {}
 
 		public MakeReloadWeapon(ulong iD)
 		{

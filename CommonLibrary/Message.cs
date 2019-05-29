@@ -55,7 +55,11 @@ namespace CommonLibrary
 
 		public virtual List<IMessage> InsertCollections => throw new NotImplementedException();
 
-		public virtual ulong ID => throw new NotImplementedException();
+		public virtual ulong ID
+		{
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
+		}
 
 		public virtual TypesMessage TypeMessage => throw new NotImplementedException();
 	}

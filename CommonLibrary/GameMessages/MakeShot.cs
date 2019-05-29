@@ -11,11 +11,16 @@ namespace CommonLibrary.GameMessages
 	[Serializable]
 	public class MakeShot : Message
 	{
-		public override ulong ID { get; }
+		public override ulong ID { get;  set;}
 
 		public override PointF Location { get; }
 
 		public override TypesMessage TypeMessage { get; } = TypesMessage.MakeShot;
+
+		public MakeShot(PointF location)
+		{
+			Location = location;
+		}
 
 		public MakeShot(ulong iD, PointF location)
 		{
