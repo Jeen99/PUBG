@@ -42,7 +42,7 @@ namespace BattleRoyalClient
 			this.InitializeComponent();
 
 			this.visual = new VisualConteyner(this.models);
-			BattleModel battleModel = StorageModels.BattleModel;
+			BattleModel battleModel = new BattleModel();
 			model = battleModel;
 
 			battleContoller = new GameActionController(client, battleModel);
