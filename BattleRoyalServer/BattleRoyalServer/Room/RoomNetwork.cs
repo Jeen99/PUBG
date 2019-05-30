@@ -262,7 +262,6 @@ namespace BattleRoyalServer
 		{
 			lock (AccessSinchClients)
 			{
-#warning Добавлять только реальных клиентов
 				for (int i = 0; i < roomLogic.RoomModel.Players.Count; i++)
 				{
 					if (roomLogic.RoomModel.Players[i].IsClient)
@@ -272,6 +271,11 @@ namespace BattleRoyalServer
 
 						client.Event_GamerIsLoaded += Handler_GamerIsLoaded;
 						client.EventNetorkClientDisconnect += Handler_NetworkClientDisconnect;
+						Clients.Add(client.Player.ID, client);
+					}
+					else
+					{
+						var client = new NetworkFakeClient(roomLogic.RoomModel, i);
 						Clients.Add(client.Player.ID, client);
 					}
 				}

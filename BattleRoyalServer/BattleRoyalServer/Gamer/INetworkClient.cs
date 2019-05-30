@@ -11,17 +11,18 @@ namespace BattleRoyalServer
 {
     public interface INetworkClient
     {
-        string Nick { get; }
+	    IPlayer Player { get; }
+	    RectangleF VisibleArea { get; }
 
-		RectangleF VisibleArea { get; }
-		string Password { get; }
-		event GamerIsLoaded Event_GamerIsLoaded;
-		//event NetworkClientEndWork EventNetworkClientEndWork;
-		event NetorkClientDisconnect EventNetorkClientDisconnect;
+		string Nick { get; }
+        string Password { get; }
 
 		void SendMessgaeToClient(IMessage msg);
 		void SaveStatistics(IMessage msg);
 		void Dispose();
-	    IPlayer Player { get; }
+
+	    event GamerIsLoaded Event_GamerIsLoaded;
+	    //event NetworkClientEndWork EventNetworkClientEndWork;
+	    event NetorkClientDisconnect EventNetorkClientDisconnect;
 	}
 }

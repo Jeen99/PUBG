@@ -89,6 +89,8 @@
     <Compile Include="GameObject\IGameObject.cs" />
     <Compile Include="GameObject\TypesBehaveObjects.cs" />
     <Compile Include="Gamer\NetworkClient.cs" />
+    <Compile Include="Gamer\NetworkFakeClient.cs" />
+    <Compile Include="Gamer\VisibleArea.cs" />
     <Compile Include="HandlerException\ConsoleLogger.cs" />
     <Compile Include="HandlerException\Log.cs" />
     <Compile Include="HandlerException\ILogger.cs" />
