@@ -24,6 +24,8 @@ namespace BattleRoyalClient
 		protected GeometryModel3D geometryModel;
 		protected IModelObject modelObject;
 
+		static  Random random = new Random();
+
 		protected static readonly string pathResources = "Resources/";
 
 		public Model3D(Model3DGroup models, IModelObject modelObject)
@@ -56,6 +58,13 @@ namespace BattleRoyalClient
 			
 			
 			var location = modelObject.Location3D;
+
+			if (modelObject.Type == TypesGameObject.Tree)
+			{
+
+				location.Z += random.NextDouble();
+			}
+
 			translateTransform = new TranslateTransform3D(new Vector3D(location.X, location.Y, location.Z));
 			var Axis = new Vector3D(0, 0, 1);
 			rotationTransform = new RotateTransform3D(new AxisAngleRotation3D(Axis, modelObject.Angle), 0.5, 0.5, 0.5);
