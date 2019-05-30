@@ -28,8 +28,8 @@ namespace BattleRoyalServer
 		private BodyZone  _targetZone;
 		private readonly Direction _directionMove = new Direction();
 
-		private TimeSpan _timerUpdateDirection = new TimeSpan(0,0,0, TimeUpdateDirection);
-		private TimeSpan _timerExamineOfEnvironment = new TimeSpan(0, 0, 0, TimeUpdateExamineOfEnvironment);
+		private TimeSpan _timerUpdateDirection = new TimeSpan(0,0,0, 0);
+		private TimeSpan _timerExamineOfEnvironment = new TimeSpan(0, 0, 0, 0);
 
 		public AI(IGameObject parent) : base(parent)
 		{
