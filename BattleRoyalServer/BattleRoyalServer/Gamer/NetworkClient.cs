@@ -16,42 +16,29 @@ namespace BattleRoyalServer
 		public event NetorkClientDisconnect EventNetorkClientDisconnect;
 
 		public string Nick { get; private set; }
-
-		public ConnectedClient<IMessage> client;
-
 		public string Password { get; private set; }
 
-		private const int widthVisibleArea = 160;
-		private const int heightVisibleArea = 160;
-		private RectangleF visibleArea;
-		private IGameModel model;
+		private readonly ConnectedClient<IMessage> _client;
 
-		public RectangleF VisibleArea
-		{
-			get
-			{
-				//определяем положение, чтобы игрок был примерно в центре видимой области
-				var location = new PointF(Player.Location.X - widthVisibleArea/2, Player.Location.Y - heightVisibleArea / 2);
-				if (location.X != visibleArea.X || location.Y != visibleArea.Y)
-				{
-					visibleArea.Location = location;
-				}
-				return visibleArea;
-			}
-		}
+		private readonly VisibleArea _visibleArea;
+		public RectangleF VisibleArea => _visibleArea.Area;
+
+		private readonly IGameModel _model;
 
 		public NetworkClient(IGameModel model, int index, ConnectedClient<IMessage> client, string nick, string password)
 		{
-			this.model = model;
+			this._model = model;
 			this.Player = model.Players[index];
-			visibleArea = new RectangleF(0, 0, widthVisibleArea, heightVisibleArea);
+			this._visibleArea = new VisibleArea(Player);
+
 			Nick = nick;
-			this.client = client;
-			this.client.Controler = this;
-			this.client.EventEndSession += Client_EventEndSession;
 			Password = password;
+
+			this._client = client;
+			this._client.Controler = this;
+			this._client.EventEndSession += Client_EventEndSession;
 			//посылаем сообщение о том, что игрок добавлен в игровую комнату
-			this.client.SendMessage(new AddInBattle(Player.ID));
+			this._client.SendMessage(new AddInBattle(Player.ID));
 
 		}
 		//игрок вышел из игры до завершения игры
@@ -70,10 +57,9 @@ namespace BattleRoyalServer
 					break;
 				default:
 					msg.ID = Player.ID;
-					model.AddIncomingMessage(msg);
+					_model.AddIncomingMessage(msg);
 					break;
 			}
-					
 		}
 
 		public void Handler_LoadedBattleForm()
@@ -93,10 +79,10 @@ namespace BattleRoyalServer
 
 		public void Dispose()
 		{
-			client.EventEndSession -= Client_EventEndSession;
+			_client.EventEndSession -= Client_EventEndSession;
 			//отправляем игроку сообщение о переходе в окно аккаунта
 			//переходим в окно аккаунта
-			new AccountController(client, Nick, Password);
+			new AccountController(_client, Nick, Password);
 		}
 
 		/// <summary>
@@ -105,14 +91,13 @@ namespace BattleRoyalServer
 		public void SaveStatistics(IMessage msg)
 		{
 			int deaths;
-			if (msg.Result) deaths = 1;
-			else deaths = 0;
+			deaths = msg.Result ? 1 : 0;
 			BDAccounts.AddToStatistic(new DataOfAccount(Nick, Password, msg.Kills, deaths, 1, msg.Time));
 		}
 
 		public void SendMessgaeToClient(IMessage msg)
 		{
-			client.SendMessage(msg);
+			_client.SendMessage(msg);
 		}
 	}
 }

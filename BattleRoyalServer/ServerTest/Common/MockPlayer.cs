@@ -32,6 +32,8 @@ namespace ServerTest.Common
 
 		public IGameObject Owner { get; set; }
 
+		public bool IsClient { get; set; } = true;
+
 		public event ReceivedMessage Received_ChoiceWeapon;
 		public event ReceivedMessage Received_GamerDied;
 		public event ReceivedMessage Received_GotDamage;

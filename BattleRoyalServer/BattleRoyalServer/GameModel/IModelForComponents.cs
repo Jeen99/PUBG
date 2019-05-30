@@ -9,6 +9,7 @@ namespace BattleRoyalServer
 	public interface IModelForComponents
 	{
 		World Field { get; }
+		IGameObject DeathZone { get; }
 		IList<IPlayer> Players { get; }
 		List<SolidBody> GetMetedObjects(Segment ray);
 		void AddOrUpdateGameObject(IGameObject gameObject);

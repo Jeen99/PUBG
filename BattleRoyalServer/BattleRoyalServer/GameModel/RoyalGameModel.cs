@@ -25,15 +25,17 @@ namespace BattleRoyalServer
 		private bool roomClosing = false;
 		private Task handlerIncomingMessages;
 #if DEBUG
-		private readonly int minValueGamerInBattle = Program.COUNT_PLAYERS_FOR_DISPOSE_ROOM;
+		private readonly int minGamerInBattle = Program.COUNT_PLAYERS_FOR_DISPOSE_ROOM;
 #else
-		private const int minValueGamerInBattle = 1;
+		private const int minGamerInBattle = 1;
 #endif
 		public Dictionary<ulong, IGameObject> gameObjects;
-
+		#warning Необходимо переделать список, чтобы можно было хранить еще и Бота
 		public IList<IPlayer> Players { get; private set; }
 		public IGameObject DeathZone { get; private set; }
 		public World Field { get; private set; }
+
+		public ushort countRealGamers { get; private set; } = 0;
 
 		public ObservableQueue<IMessage> outgoingMessages;
 		public ObservableQueue<IMessage> incomingMessages;
@@ -138,21 +140,33 @@ namespace BattleRoyalServer
 				//создаем игрока
 				RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGamer);
 				var gamer = BuilderGameObject.CreateGamer(this, newShape.Location);
+				countRealGamers++;
+			}
+			
+			if (gamersInRoom <= 2)
+			{
+				BuilderGameObject.CreateGun(this, new PointF(10, 10));
+				GameObject gamer = BuilderGameObject.CreateBot(this, new PointF(10, 10));
+				gamer.Update(new TryPickUp(gamer.ID)); 
 			}
 			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(Players.Count));
 		}
 
-		private void RemovePlayer(Gamer player)
+		private void RemovePlayer(IPlayer player)
 		{
+			if (player.IsClient)
+				countRealGamers--;
+
 			Players.Remove(player);
-			player.SetDestroyed();
+			//player.SetDestroyed();
 			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(Players.Count));
-			if( Players.Count <= minValueGamerInBattle)
+
+			if(countRealGamers == minGamerInBattle && Players.Count == minGamerInBattle || countRealGamers == 0)
 			{
 				Event_HappenedEndGame?.Invoke();
 			}
 		}
-			
+
 		public RoyalGameModel(int gamersInRoom)
 		{
 			//инициализируем полей
@@ -354,7 +368,7 @@ namespace BattleRoyalServer
 					else
 					{
 						RemoveGameObject(solidBody.Parent);
-						if (solidBody.Parent is Gamer)
+						if (solidBody.Parent.Type == TypesGameObject.Player)
 						{
 							RemovePlayer(solidBody.Parent as Gamer);
 						}

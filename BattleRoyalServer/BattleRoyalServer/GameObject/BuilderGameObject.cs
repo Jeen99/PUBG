@@ -34,9 +34,10 @@ namespace BattleRoyalServer
 		private static WeaponSetups weaponSetupsShotGun = new WeaponSetups(500, 5000, 3);
 		private static WeaponSetups weaponSetupsGrenadeCollection = new WeaponSetups(500, 10000, 4);
 		
-		private static float strengthThrowGrenade = 100;
-		private static float SpeedGamer = 40f;
-		private static float RadiusExplosionGrenade = 20;
+		private static readonly float strengthThrowGrenade = 100;
+		private static readonly float SpeedGamer = 40f;
+		private static readonly int RadiusExplosionGrenade = 20;
+		private static readonly int max_view_distance_for_AI = 70;
 
 		public static GameObject CreateBox(IModelForComponents model, PointF location)
 		{
@@ -182,7 +183,7 @@ namespace BattleRoyalServer
 
 		public static Gamer CreateGamer(IModelForComponents model, PointF location)
 		{
-			var gameObject = new Gamer(model, TypesGameObject.Player, TypesBehaveObjects.Active);
+			var gameObject = new Gamer(model, TypesBehaveObjects.Active, true);
 			ShapeDef CircleDef = CreateBaseCircleDef(setupsGamer, SizeGamer);
 			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
 			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone
@@ -205,6 +206,44 @@ namespace BattleRoyalServer
 
 			var statistics = new Statistics(gameObject);
 			gameObject.Components.Add(statistics);
+
+			model.AddOrUpdateGameObject(gameObject);
+			model.Players.Add(gameObject);
+
+			return gameObject;
+		}
+
+		public static GameObject CreateBot(IModelForComponents model, PointF location)
+		{
+			var gameObject = new Gamer(model, TypesBehaveObjects.Active, false);
+
+			ShapeDef CircleDef = CreateBaseCircleDef(setupsGamer, SizeGamer);
+			CircleDef.Filter.CategoryBits = (ushort)CollideCategory.Player;
+			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone
+				| (ushort)CollideCategory.Grenade;
+
+			ShapeDef sensorDef = CreateBaseCircleDef(setupsGamer, new SizeF(max_view_distance_for_AI, max_view_distance_for_AI));
+			sensorDef.IsSensor = true;
+			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
+			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+
+			var body = new SolidBody(gameObject, new RectangleF(location, SizeGamer), new ShapeDef[] { CircleDef, sensorDef });
+			gameObject.Components.Add(body);
+
+			var movement = new Movement(gameObject, SpeedGamer);
+			gameObject.Components.Add(movement);
+
+			var collector = new Collector(gameObject);
+			gameObject.Components.Add(collector);
+
+			var currentWeapon = new CurrentWeapon(gameObject);
+			gameObject.Components.Add(currentWeapon);
+
+			var healthy = new Healthy(gameObject);
+			gameObject.Components.Add(healthy);
+
+			var AI = new AI(gameObject);
+			gameObject.Components.Add(AI);
 
 			model.AddOrUpdateGameObject(gameObject);
 			model.Players.Add(gameObject);

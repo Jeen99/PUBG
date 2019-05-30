@@ -29,6 +29,8 @@ namespace ServerTest.Common
 
 		public IGameObject DeathZone { get; set; }
 
+		public ushort countRealGamers { get; set; } = 0;
+
 		public void AddIncomingMessage(IMessage message)
 		{
 			incomingMessages.Enqueue(message);

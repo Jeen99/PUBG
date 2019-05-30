@@ -62,6 +62,7 @@
     <Compile Include="Common\StubPlayer.cs" />
     <Compile Include="Common\StubWeapon.cs" />
     <Compile Include="Common\VectorMethodTests.cs" />
+    <Compile Include="ComponentsTest\AITests.cs" />
     <Compile Include="ComponentsTest\CollectorTest.cs" />
     <Compile Include="ComponentsTest\CurrentWeaponTest.cs" />
     <Compile Include="ComponentsTest\HealthyTest.cs" />
