@@ -30,7 +30,6 @@ namespace BattleRoyalServer
 		private const int minGamerInBattle = 1;
 #endif
 		public Dictionary<ulong, IGameObject> gameObjects;
-		#warning Необходимо переделать список, чтобы можно было хранить еще и Бота
 		public IList<IPlayer> Players { get; private set; }
 		public IGameObject DeathZone { get; private set; }
 		public World Field { get; private set; }
@@ -143,11 +142,16 @@ namespace BattleRoyalServer
 				countRealGamers++;
 			}
 			
-			if (gamersInRoom <= 2)
+			if (gamersInRoom <= 7)
 			{
-				BuilderGameObject.CreateGun(this, new PointF(10, 10));
-				GameObject gamer = BuilderGameObject.CreateBot(this, new PointF(10, 10));
-				gamer.Update(new TryPickUp(gamer.ID)); 
+				for (int i = 0; Players.Count != 8; i++)
+				{
+					RectangleF newShape = CreateAndAddNewUniqueShape(occupiedArea, BuilderGameObject.SizeGamer);
+
+					BuilderGameObject.CreateGun(this, newShape.Location);
+					GameObject gamer = BuilderGameObject.CreateBot(this, newShape.Location);
+					gamer.Update(new TryPickUp());
+				}
 			}
 			outgoingMessages.Enqueue(new ChangeCountPlayersInGame(Players.Count));
 		}
