@@ -12,7 +12,6 @@ namespace BattleRoyalServer
 {
 	public class AI : Component
 	{
-		private static readonly int max_view_distance = 30;
 		private static readonly int min_count_of_shoots = 0;
 		private static readonly int max_count_of_shoots = 5;
 		private static readonly int min_offset_relative_to_center = 5;
@@ -50,13 +49,12 @@ namespace BattleRoyalServer
 
 		private void Handler_AI(IMessage msg)
 		{
-			SearchEnemy();
+			ExamineOfEnvironment();
 			Move();
 		}
 
 		private void Shoot(Vec2 pos)
 		{
-			Log.AddNewRecord("Стрельба", pos.ToString());
 			//рандомная стрельба
 			Random rand = GetRandom.Random;
 			int count = rand.Next(min_count_of_shoots, max_count_of_shoots);
@@ -106,7 +104,7 @@ namespace BattleRoyalServer
 			Parent.Update(new GoTo(Parent.ID, direction));
 		}
 
-		private void SearchEnemy()
+		private void ExamineOfEnvironment()		// изучение окружения
 		{
 			Vec2 position = (Vec2)solidBody.Body?.GetPosition();
 			if (position == null)

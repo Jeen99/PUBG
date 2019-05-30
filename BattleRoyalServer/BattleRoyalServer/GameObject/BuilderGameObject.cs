@@ -34,9 +34,10 @@ namespace BattleRoyalServer
 		private static WeaponSetups weaponSetupsShotGun = new WeaponSetups(500, 5000, 3);
 		private static WeaponSetups weaponSetupsGrenadeCollection = new WeaponSetups(500, 10000, 4);
 		
-		private static float strengthThrowGrenade = 100;
-		private static float SpeedGamer = 40f;
-		private static float RadiusExplosionGrenade = 20;
+		private static readonly float strengthThrowGrenade = 100;
+		private static readonly float SpeedGamer = 40f;
+		private static readonly int RadiusExplosionGrenade = 20;
+		private static readonly int max_view_distance_for_AI = 70;
 
 		public static GameObject CreateBox(IModelForComponents model, PointF location)
 		{
@@ -217,7 +218,7 @@ namespace BattleRoyalServer
 			CircleDef.Filter.MaskBits = (ushort)CollideCategory.Box | (ushort)CollideCategory.Stone
 				| (ushort)CollideCategory.Grenade;
 
-			ShapeDef sensorDef = CreateBaseCircleDef(setupsGamer, new SizeF(40, 40));
+			ShapeDef sensorDef = CreateBaseCircleDef(setupsGamer, new SizeF(max_view_distance_for_AI, max_view_distance_for_AI));
 			sensorDef.IsSensor = true;
 			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
 			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
@@ -242,7 +243,6 @@ namespace BattleRoyalServer
 
 			model.AddOrUpdateGameObject(gameObject);
 			model.Players.Add(gameObject);
-			#warning Возможно, нет необходимости добавлять в список Игроков
 
 			return gameObject;
 		}

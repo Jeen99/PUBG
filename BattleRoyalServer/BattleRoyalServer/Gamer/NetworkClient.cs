@@ -90,8 +90,7 @@ namespace BattleRoyalServer
 		public void SaveStatistics(IMessage msg)
 		{
 			int deaths;
-			if (msg.Result) deaths = 1;
-			else deaths = 0;
+			deaths = msg.Result ? 1 : 0;
 			BDAccounts.AddToStatistic(new DataOfAccount(Nick, Password, msg.Kills, deaths, 1, msg.Time));
 		}
 
