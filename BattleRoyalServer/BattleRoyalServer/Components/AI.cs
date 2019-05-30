@@ -15,13 +15,21 @@ namespace BattleRoyalServer
 		private static readonly int min_count_of_shoots = 0;
 		private static readonly int max_count_of_shoots = 5;
 		private static readonly int min_offset_relative_to_center = 5;
-		private static readonly int max_offset_relative_to_center = 35;
+		private static readonly int max_offset_relative_to_center = 135;
+		private static readonly int timeUpdateDircetion = 5;
+		private static readonly int timeUpdateExamineOfEnvironment = 1;
 
-		private readonly int offset_relative_to_center = 
+		private int offset_X_To_Center = 
+			GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
+		private int offset_Y_To_Center =
 			GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
 
-		private SolidBody solidBody;
-		private BodyZone triger;
+		private SolidBody _solidBody;
+		private BodyZone  _targetZone;
+		private Direction _directionMove = new Direction();
+
+		private TimeSpan _timerUpdateDircetion = new TimeSpan(0,0,0, timeUpdateDircetion);
+		private TimeSpan _timerExamineOfEnvironment = new TimeSpan(0, 0, 0, timeUpdateExamineOfEnvironment);
 
 		public AI(IGameObject parent) : base(parent)
 		{
@@ -29,11 +37,16 @@ namespace BattleRoyalServer
 
 		public override void Setup()
 		{
-			solidBody = Parent?.Components.GetComponent<SolidBody>();
-			// убрать зависимость от DeathZone и BodyZone!!
-			triger = Parent.Model.DeathZone.Components.GetComponent<BodyZone>();
+			if (Parent == null)
+			{
+				Log.AddNewRecord("Не обнаружен родитель для комронента бот");
+				return;
+			}
 
-			if (solidBody == null)
+			_solidBody = Parent.Components.GetComponent<SolidBody>();
+			_targetZone = Parent.Model.DeathZone.Components.GetComponent<BodyZone>(); // убрать зависимость от DeathZone и BodyZone!!
+
+			if (_solidBody == null)
 			{
 				Log.AddNewRecord("Ошибка получения SolidBody Бота");
 				return;
@@ -49,7 +62,21 @@ namespace BattleRoyalServer
 
 		private void Handler_AI(IMessage msg)
 		{
-			ExamineOfEnvironment();
+			_timerUpdateDircetion = _timerUpdateDircetion.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
+			_timerExamineOfEnvironment = _timerExamineOfEnvironment.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
+
+			if (_timerUpdateDircetion.TotalMilliseconds <= 0.0f)
+			{
+				_timerUpdateDircetion = new TimeSpan(0, 0, 0, timeUpdateDircetion);
+				offset_X_To_Center = GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
+				offset_Y_To_Center = GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
+			}
+
+			if (_timerExamineOfEnvironment.TotalMilliseconds <= 0.0f)
+			{
+				_timerExamineOfEnvironment = new TimeSpan(0, 0, 0, timeUpdateExamineOfEnvironment);
+				ExamineOfEnvironment();
+			}
 			Move();
 		}
 
@@ -68,71 +95,68 @@ namespace BattleRoyalServer
 		private void Move()
 		{
 			// движение бота в центр смертельной зоны
-			PointF currentPos = solidBody.Shape.Location;
-			PointF trigerPos = triger.Location;
+			PointF currentPos = _solidBody.Shape.Location;
+			PointF trigerPos = _targetZone.Location;
 
 			Vector delta = new Vector(trigerPos.X - currentPos.X, trigerPos.Y - currentPos.Y);
-			Direction direction = new Direction();
 
 			// движение по оси X
-			if (delta.X >= 0 && offset_relative_to_center - delta.X <= 0)
+			if (delta.X >= 0 && offset_X_To_Center - delta.X <= 0)
 			{
-				direction.Horisontal = DirectionHorisontal.Right;
+				_directionMove.Horisontal = DirectionHorisontal.Right;
 			}
-			else if (delta.X <= 0 && offset_relative_to_center - delta.X >= 0)
+			else if (delta.X <= 0 && offset_X_To_Center - delta.X >= 0)
 			{
-				direction.Horisontal = DirectionHorisontal.Left;
+				_directionMove.Horisontal = DirectionHorisontal.Left;
 			}
 			else
 			{
-				direction.Horisontal = DirectionHorisontal.None;
+				_directionMove.Horisontal = DirectionHorisontal.None;
 			}
 			// движение по оси Y
-			if (delta.Y >= 0 && offset_relative_to_center - delta.Y <= 0)
+			if (delta.Y >= 0 && offset_Y_To_Center - delta.Y <= 0)
 			{
-				direction.Vertical = DirectionVertical.Up;
+				_directionMove.Vertical = DirectionVertical.Up;
 			}
-			else if (delta.Y <= 0 && offset_relative_to_center - delta.Y >= 0)
+			else if (delta.Y <= 0 && offset_Y_To_Center - delta.Y >= 0)
 			{
-				direction.Vertical = DirectionVertical.Down;
+				_directionMove.Vertical = DirectionVertical.Down;
 			}
 			else
 			{
-				direction.Vertical = DirectionVertical.None;
+				_directionMove.Vertical = DirectionVertical.None;
 			}
 
-			Parent.Update(new GoTo(Parent.ID, direction));
+			Parent.Update(new GoTo(Parent.ID, _directionMove));
 		}
 
 		private void ExamineOfEnvironment()		// изучение окружения
 		{
-			Vec2 position = (Vec2)solidBody.Body?.GetPosition();
-			if (position == null)
+			var position = (Vec2)_solidBody.Body?.GetPosition();
+
+			Segment segment = new Segment
 			{
-				Log.AddNewRecord("Ошибка получения позиции игрока");
-				return;
-			}
+				P1 = position          // исходное место обзора
+			};
+			//segment.P2 = new Vec2(); // конечное
 
-			Segment segment = new Segment();
-			segment.P1 = position;          // исходное место обзора
-			//segment.P2 = new Vec2();        // конечное
+			SolidBody[] solidBodies = new SolidBody[_solidBody.CoveredObjects.Count];	// копируем объекты, дабы не вызвать ошибки 
+			_solidBody.CoveredObjects.CopyTo(solidBodies);								// при многопоточной работе
 
-
-			foreach (var bodyEnemy in solidBody.CoveredObjects)
+			foreach (var bodyEnemy in solidBodies)
 			{
 				if (bodyEnemy.Parent.Type == TypesGameObject.Weapon)
 					Parent.Update(new TryPickUp(Parent.ID));
 
 				if (bodyEnemy.Parent.Type == TypesGameObject.Player && bodyEnemy.Parent != Parent)
 				{
-					Parent.Update(new GoTo(Parent.ID, new Direction()));
-					segment.P2 = new Vec2(bodyEnemy.Shape.Location.X, bodyEnemy.Shape.Y);        // конечное
+					Parent.Update(new GoTo(Parent.ID, new Direction()));	// останавливаемя перед выстрелом
+					segment.P2 = new Vec2(bodyEnemy.Shape.Location.X, bodyEnemy.Shape.Y);   // конечное место обзора
 					var angle = VectorMethod.DefineAngle(segment.P1, segment.P2);
-					Parent.Update(new PlayerTurn(Parent.ID, angle));
+					Parent.Update(new PlayerTurn(Parent.ID, angle));		// поворачиваем оружеи в сторону цели
 					Shoot(segment.P2);
 				}
 			}
-
 		}
 	}
 }
