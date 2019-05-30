@@ -12,24 +12,24 @@ namespace BattleRoyalServer
 {
 	public class AI : Component
 	{
-		private static readonly int min_count_of_shoots = 0;
-		private static readonly int max_count_of_shoots = 5;
-		private static readonly int min_offset_relative_to_center = 5;
-		private static readonly int max_offset_relative_to_center = 135;
-		private static readonly int timeUpdateDircetion = 5;
-		private static readonly int timeUpdateExamineOfEnvironment = 1;
+		private static readonly int MinCountOfShoots = 0;
+		private static readonly int MaxCountOfShoots = 5;
+		private static readonly int MinOffsetRelativeToCenter = 5;
+		private static readonly int MaxOffsetRelativeToCenter = 135;
+		private static readonly int TimeUpdateDirection = 5;
+		private static readonly int TimeUpdateExamineOfEnvironment = 1;
 
-		private int offset_X_To_Center = 
-			GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
-		private int offset_Y_To_Center =
-			GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
+		private int _offsetXtoCenter = 
+			GetRandom.Random.Next(MinOffsetRelativeToCenter, MaxOffsetRelativeToCenter);
+		private int _offsetYtoCenter =
+			GetRandom.Random.Next(MinOffsetRelativeToCenter, MaxOffsetRelativeToCenter);
 
 		private SolidBody _solidBody;
 		private BodyZone  _targetZone;
-		private Direction _directionMove = new Direction();
+		private readonly Direction _directionMove = new Direction();
 
-		private TimeSpan _timerUpdateDircetion = new TimeSpan(0,0,0, timeUpdateDircetion);
-		private TimeSpan _timerExamineOfEnvironment = new TimeSpan(0, 0, 0, timeUpdateExamineOfEnvironment);
+		private TimeSpan _timerUpdateDirection = new TimeSpan(0,0,0, TimeUpdateDirection);
+		private TimeSpan _timerExamineOfEnvironment = new TimeSpan(0, 0, 0, TimeUpdateExamineOfEnvironment);
 
 		public AI(IGameObject parent) : base(parent)
 		{
@@ -62,19 +62,19 @@ namespace BattleRoyalServer
 
 		private void Handler_AI(IMessage msg)
 		{
-			_timerUpdateDircetion = _timerUpdateDircetion.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
+			_timerUpdateDirection = _timerUpdateDirection.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
 			_timerExamineOfEnvironment = _timerExamineOfEnvironment.Add(new TimeSpan(0, 0, 0, 0, -msg.TimePassed));
 
-			if (_timerUpdateDircetion.TotalMilliseconds <= 0.0f)
+			if (_timerUpdateDirection.TotalMilliseconds <= 0.0f)
 			{
-				_timerUpdateDircetion = new TimeSpan(0, 0, 0, timeUpdateDircetion);
-				offset_X_To_Center = GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
-				offset_Y_To_Center = GetRandom.Random.Next(min_offset_relative_to_center, max_offset_relative_to_center);
+				_timerUpdateDirection = new TimeSpan(0, 0, 0, TimeUpdateDirection);
+				_offsetXtoCenter = GetRandom.Random.Next(MinOffsetRelativeToCenter, MaxOffsetRelativeToCenter);
+				_offsetYtoCenter = GetRandom.Random.Next(MinOffsetRelativeToCenter, MaxOffsetRelativeToCenter);
 			}
 
 			if (_timerExamineOfEnvironment.TotalMilliseconds <= 0.0f)
 			{
-				_timerExamineOfEnvironment = new TimeSpan(0, 0, 0, timeUpdateExamineOfEnvironment);
+				_timerExamineOfEnvironment = new TimeSpan(0, 0, 0, TimeUpdateExamineOfEnvironment);
 				ExamineOfEnvironment();
 			}
 			Move();
@@ -84,7 +84,7 @@ namespace BattleRoyalServer
 		{
 			//рандомная стрельба
 			Random rand = GetRandom.Random;
-			int count = rand.Next(min_count_of_shoots, max_count_of_shoots);
+			int count = rand.Next(MinCountOfShoots, MaxCountOfShoots);
 
 			for (int i = 0; i < count; i++)
 			{
@@ -101,11 +101,11 @@ namespace BattleRoyalServer
 			Vector delta = new Vector(trigerPos.X - currentPos.X, trigerPos.Y - currentPos.Y);
 
 			// движение по оси X
-			if (delta.X >= 0 && offset_X_To_Center - delta.X <= 0)
+			if (delta.X >= 0 && _offsetXtoCenter - delta.X <= 0)
 			{
 				_directionMove.Horisontal = DirectionHorisontal.Right;
 			}
-			else if (delta.X <= 0 && offset_X_To_Center - delta.X >= 0)
+			else if (delta.X <= 0 && _offsetXtoCenter - delta.X >= 0)
 			{
 				_directionMove.Horisontal = DirectionHorisontal.Left;
 			}
@@ -114,11 +114,11 @@ namespace BattleRoyalServer
 				_directionMove.Horisontal = DirectionHorisontal.None;
 			}
 			// движение по оси Y
-			if (delta.Y >= 0 && offset_Y_To_Center - delta.Y <= 0)
+			if (delta.Y >= 0 && _offsetYtoCenter - delta.Y <= 0)
 			{
 				_directionMove.Vertical = DirectionVertical.Up;
 			}
-			else if (delta.Y <= 0 && offset_Y_To_Center - delta.Y >= 0)
+			else if (delta.Y <= 0 && _offsetYtoCenter - delta.Y >= 0)
 			{
 				_directionMove.Vertical = DirectionVertical.Down;
 			}
