@@ -68,6 +68,7 @@
     <Compile Include="GameMessages\FieldState.cs" />
     <Compile Include="GameMessages\GameObjectState.cs" />
     <Compile Include="GameMessages\GamerDied.cs" />
+    <Compile Include="GameMessages\GamerToBot.cs" />
     <Compile Include="GameMessages\GotDamage.cs" />
     <Compile Include="GameMessages\GoTo.cs" />
     <Compile Include="GameMessages\HealthyState.cs" />

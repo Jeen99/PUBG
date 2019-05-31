@@ -390,8 +390,16 @@ namespace BattleRoyalServer
 				if (incomingMessages.Count > 0)
 				{
 					IMessage msg = incomingMessages.Dequeue();
-					if(gameObjects.ContainsKey(msg.ID))
-						gameObjects[msg.ID]?.Update(msg);
+
+					if (gameObjects.ContainsKey(msg.ID))
+					{
+						if (msg.TypeMessage == TypesMessage.GamerToBot && gameObjects[msg.ID].Type == TypesGameObject.Player)
+						{
+							BuilderGameObject.UpdateGamerToBot(gameObjects[msg.ID] as Gamer);
+							continue;
+						}
+						gameObjects[msg.ID].Update(msg);
+					}
 				}
 				else Thread.Sleep(1);
 			}

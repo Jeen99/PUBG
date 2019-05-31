@@ -48,6 +48,7 @@ namespace CommonLibrary
 		MagazinState,
 		GamerDied,
 		ChangeBulletInWeapon,
-		ConnectionBroken
+		ConnectionBroken,
+		GamerToBot
 	}
 }

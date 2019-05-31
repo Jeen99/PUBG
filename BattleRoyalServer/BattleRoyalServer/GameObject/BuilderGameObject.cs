@@ -251,6 +251,26 @@ namespace BattleRoyalServer
 			return gameObject;
 		}
 
+		public static void UpdateGamerToBot(Gamer gameObject)
+		{
+			gameObject.IsClient = false;
+
+			ShapeDef sensorDef = CreateBaseCircleDef(setupsGamer, new SizeF(max_view_distance_for_AI, max_view_distance_for_AI));
+			sensorDef.IsSensor = true;
+			sensorDef.Filter.CategoryBits = (ushort)CollideCategory.Grenade;
+			sensorDef.Filter.MaskBits = (ushort)CollideCategory.Player;
+
+			var solidBody = gameObject.Components.GetComponent<SolidBody>();
+			solidBody.Body.CreateShape(sensorDef);
+
+			var AI = new AI(gameObject);
+			gameObject.Components.Add(AI);
+
+			gameObject.Components.GetComponent<Statistics>().Dispose();
+			
+			gameObject.Model.AddOrUpdateGameObject(gameObject);
+		}
+
 		public static void CreateNewBodyForWeapon(Weapon weapon, Vec2 startVelocity, PointF location)
 		{
 			SolidBody body = null;

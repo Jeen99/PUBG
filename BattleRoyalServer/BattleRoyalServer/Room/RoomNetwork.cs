@@ -299,11 +299,9 @@ namespace BattleRoyalServer
 
 		private void Handler_NetworkClientDisconnect(INetworkClient client)
 		{
-			//пока нет действий при отключении клиента
-			/*lock (AccessSinchClients)
-			{
-				Clients.Remove(client.Player.ID);	
-			}*/
+			Clients[client.Player.ID] = new NetworkFakeClient(client.Player);
+			roomLogic.RoomModel.AddIncomingMessage(new GamerToBot(client.Player.ID));
+
 		}
 
 		/// <summary>

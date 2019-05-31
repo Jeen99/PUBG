@@ -31,6 +31,12 @@ namespace BattleRoyalServer
 			this._visibleArea = new VisibleArea(Player);
 		}
 
+		public NetworkFakeClient(IPlayer player)
+		{
+			this.Player = player;
+			this._visibleArea = new VisibleArea(player);
+		}
+
 		public void Dispose()
 		{
 			Event_GamerIsLoaded = null;

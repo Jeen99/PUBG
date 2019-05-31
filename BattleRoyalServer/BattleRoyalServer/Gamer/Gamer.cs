@@ -33,7 +33,7 @@ namespace BattleRoyalServer
 			}
 		}
 
-		public bool IsClient { get; private set; }
+		public bool IsClient { get; set; }
 
 		public override void Setup()
 		{

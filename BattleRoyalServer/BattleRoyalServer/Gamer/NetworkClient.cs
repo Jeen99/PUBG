@@ -44,8 +44,8 @@ namespace BattleRoyalServer
 		//игрок вышел из игры до завершения игры
 		private void Client_EventEndSession(ConnectedClient<IMessage> Client)
 		{
-			Client.Close();
 			EventNetorkClientDisconnect?.Invoke(this);
+			Client.Close();
 		}
 
 		void IController<IMessage>.Hanlder_NewMessage(IMessage msg)
