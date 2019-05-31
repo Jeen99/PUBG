@@ -29,7 +29,7 @@ namespace BattleRoyalServer
 #else
 		private const int minGamerInBattle = 1;
 #endif
-		public Dictionary<ulong, IGameObject> gameObjects;
+		public IDictionary<ulong, IGameObject> gameObjects;
 		public IList<IPlayer> Players { get; private set; }
 		public IGameObject DeathZone { get; private set; }
 		public World Field { get; private set; }
@@ -175,7 +175,7 @@ namespace BattleRoyalServer
 		{
 			//инициализируем полей
 			Players = new List<IPlayer>();
-			gameObjects = new Dictionary<ulong, IGameObject>();
+			gameObjects = new ConcurrentDictionary<ulong, IGameObject>();
 			outgoingMessages = new ObservableQueue<IMessage>();
 			incomingMessages = new ObservableQueue<IMessage>();
 
