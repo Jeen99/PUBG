@@ -16,7 +16,7 @@ namespace CSInteraction.Server
         private BinaryFormatter formatter;
         private Thread threadOfHandlerMsg;
         public IController<T> Controler { get; set; }
-		private Mutex sendMsgSinch = new Mutex();
+		private object sendMsgSinch = new object();
 		
 		//уведомляет о получении нового сообщения от клиента
 		public event EndSession EventEndSession;
@@ -67,20 +67,18 @@ namespace CSInteraction.Server
                     }
                     //создаем и отправляем заголовк сообщения
                     byte[] TitleMsg = CreateTitleMessage((byte)InsideTypesMessage.ProgramMessage, BytesMsg.Length);
-					sendMsgSinch.WaitOne();
 
-					streamConnection.GetStream().Write(TitleMsg, 0, TitleMsg.Length);
-					streamConnection.GetStream().Write(BytesMsg, 0, BytesMsg.Length);
+                    lock (sendMsgSinch)
+                    {
+						streamConnection.GetStream().Write(TitleMsg, 0, TitleMsg.Length);
+						streamConnection.GetStream().Write(BytesMsg, 0, BytesMsg.Length);
+					}
                 }
             }
 			catch (IOException ex)
 			{
 				EventEndSession?.Invoke(this);
 			}
-			finally
-            {
-                sendMsgSinch.ReleaseMutex();
-            }
         }
 
         //соединяет тип сообщения и его длинну в один массив
