@@ -1,12 +1,8 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Timers;
 using CommonLibrary;
 using CommonLibrary.GameMessages;
-using CommonLibrary.CommonElements;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -27,7 +23,7 @@ namespace BattleRoyalServer
 		/// <summary>
 		/// Список игроков подлюченных к данной комнате
 		/// </summary>
-		public Dictionary<ulong, INetworkClient> Clients { get; private set; }
+		public IDictionary<ulong, INetworkClient> Clients { get; private set; }
 		
 		/// <summary>
 		/// Вызывается для отправки окружения клиентов в данный момент времени
@@ -37,7 +33,7 @@ namespace BattleRoyalServer
         public RoomNetwork(IList<QueueGamer> gamers, IRoomLogic roomLogic)
         {
 			//создаем список игроков на основе списка gamers и rooomLogic(ID), создаем таймер 
-			Clients = new Dictionary<ulong, INetworkClient>();			
+			Clients = new ConcurrentDictionary<ulong, INetworkClient>();
 			this.roomLogic = roomLogic;
 			CreateClients(gamers);
 			timerTotalSinch = new Timer(5 * 1000)
